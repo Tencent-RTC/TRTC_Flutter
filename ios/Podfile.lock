@@ -1,0 +1,88 @@
+PODS:
+  - Flutter (1.0.0)
+  - path_provider (0.0.1):
+    - Flutter
+  - path_provider_linux (0.0.1):
+    - Flutter
+  - path_provider_macos (0.0.1):
+    - Flutter
+  - path_provider_windows (0.0.1):
+    - Flutter
+  - "permission_handler (5.0.1+1)":
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+  - shared_preferences_linux (0.0.1):
+    - Flutter
+  - shared_preferences_macos (0.0.1):
+    - Flutter
+  - shared_preferences_web (0.0.1):
+    - Flutter
+  - shared_preferences_windows (0.0.1):
+    - Flutter
+  - tencent_trtc_cloud (0.0.1):
+    - Flutter
+    - TXLiteAVSDK_TRTC
+  - TXLiteAVSDK_TRTC (8.0.9613)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - path_provider (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider-1.6.24/ios/path_provider.podspec`)
+  - "path_provider_linux (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_linux-0.0.1+2/ios/path_provider_linux.podspec`)"
+  - "path_provider_macos (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_macos-0.0.4+6/ios/path_provider_macos.podspec`)"
+  - "path_provider_windows (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_windows-0.0.4+3/ios/path_provider_windows.podspec`)"
+  - "permission_handler (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/permission_handler-5.0.1+1/ios/permission_handler.podspec`)"
+  - "shared_preferences (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences-0.5.12+2/ios/shared_preferences.podspec`)"
+  - "shared_preferences_linux (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_linux-0.0.2+4/ios/shared_preferences_linux.podspec`)"
+  - "shared_preferences_macos (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_macos-0.0.1+11/ios/shared_preferences_macos.podspec`)"
+  - "shared_preferences_web (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_web-0.1.2+7/ios/shared_preferences_web.podspec`)"
+  - "shared_preferences_windows (from `/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_windows-0.0.1+3/ios/shared_preferences_windows.podspec`)"
+  - tencent_trtc_cloud (from `/Users/linzhi/Desktop/source/trtc-flutter-plugin-demo/trtc-flutter-plugin/ios/tencent_trtc_cloud.podspec`)
+  - TXLiteAVSDK_TRTC (from `./TXLiteAVSDK_TRTC.podspec`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  path_provider:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider-1.6.24/ios/path_provider.podspec"
+  path_provider_linux:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_linux-0.0.1+2/ios/path_provider_linux.podspec"
+  path_provider_macos:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_macos-0.0.4+6/ios/path_provider_macos.podspec"
+  path_provider_windows:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/path_provider_windows-0.0.4+3/ios/path_provider_windows.podspec"
+  permission_handler:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/permission_handler-5.0.1+1/ios/permission_handler.podspec"
+  shared_preferences:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences-0.5.12+2/ios/shared_preferences.podspec"
+  shared_preferences_linux:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_linux-0.0.2+4/ios/shared_preferences_linux.podspec"
+  shared_preferences_macos:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_macos-0.0.1+11/ios/shared_preferences_macos.podspec"
+  shared_preferences_web:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_web-0.1.2+7/ios/shared_preferences_web.podspec"
+  shared_preferences_windows:
+    :path: "/Users/linzhi/Desktop/software/flutter/.pub-cache/hosted/pub.flutter-io.cn/shared_preferences_windows-0.0.1+3/ios/shared_preferences_windows.podspec"
+  tencent_trtc_cloud:
+    :path: "/Users/linzhi/Desktop/source/trtc-flutter-plugin-demo/trtc-flutter-plugin/ios/tencent_trtc_cloud.podspec"
+  TXLiteAVSDK_TRTC:
+    :podspec: "./TXLiteAVSDK_TRTC.podspec"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider_linux: 4d630dc393e1f20364f3e3b4a2ff41d9674a84e4
+  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  path_provider_windows: a2b81600c677ac1959367280991971cb9a1edb3b
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  shared_preferences_linux: afefbfe8d921e207f01ede8b60373d9e3b566b78
+  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
+  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
+  shared_preferences_windows: 36b76d6f54e76ead957e60b49e2f124b4cd3e6ae
+  tencent_trtc_cloud: 1bd7a48b14e2a86f11de4d00c793a411be51e096
+  TXLiteAVSDK_TRTC: e150539f8bf3e7a7296dc30d376161f4ad296cc2
+
+PODFILE CHECKSUM: 52c16c2fa6e84a9baa376e742f788ba96a6fc3a7
+
+COCOAPODS: 1.9.3

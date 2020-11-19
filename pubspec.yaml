@@ -1,0 +1,34 @@
+name: trtc_demo
+description: TRTC Demo
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  tencent_trtc_cloud: ^0.0.2
+  cupertino_icons: 0.1.2
+  shared_preferences: 0.5.12+2
+  provider: 4.3.2
+  crypto: 2.1.5
+  toast: ^0.1.5
+  dio: 3.0.9
+  permission_handler: 5.0.1+1
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+   - images/watermark_img.png
+   - images/bg_main_title.png
+   - images/magic-line.png
