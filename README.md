@@ -12,14 +12,18 @@ DEMO地址 [Github](https://github.com/c1avie/trtc_demo)，任何问题可以通
 
 #### 如何使用
 
-在项目的 `pubspec.yaml`中写如下依赖
+1.flutter安装和环境配置
+
+参考[flutter官方文档](https://flutter.cn/docs/get-started/install)
+
+2.在项目的 `pubspec.yaml`中写如下依赖
 ```
 dependencies:
   tencent_trtc_cloud: 最新版本号
 ```
 该sdk需要`摄像头` `麦克风`权限来开始音视频通话
 
-iOS需要再Info.plist中加入对相机和麦克风的权限申请
+3.iOS需要再Info.plist中加入对相机和麦克风的权限申请
 ```
 <key>NSCameraUsageDescription</key>
 <string>授权摄像头权限才能正常视频通话</string>
@@ -28,7 +32,11 @@ iOS需要再Info.plist中加入对相机和麦克风的权限申请
 ```
 还需要添加字段 io.flutter.embedded_views_preview 值为 YES
 
-Android无需额外配置，已内部打入混淆规则
+4.添加ReplayKit.framework
+
+打开ios/Runner.xcworkspace，在Runner target的Build Phases > Link Binary With Libraries一栏添加
+
+5.Android无需额外配置，已内部打入混淆规则
 
 #### 快速开始
 
