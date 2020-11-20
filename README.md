@@ -2,6 +2,8 @@
 
 该flutter sdk是基于 腾讯云 iOS/Android 平台的 SDK进行封装。
 
+[API 概览](https://github.com/c1avie/trtc_demo/blob/master/API.md)
+
 [腾讯云 Android RTC 文档](https://cloud.tencent.com/document/product/647/32267)
 
 [腾讯云 iOS RTC 文档](https://cloud.tencent.com/document/product/647/32258)
