@@ -646,16 +646,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   onPressed: () {
                     Navigator.pushNamed(context, '/memberList');
                   }),
-              SettingPage(),
-              IconButton(
-                  icon: Icon(
-                    Icons.info,
-                    color: Colors.white,
-                    size: 36.0,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/test');
-                  }),
+              SettingPage()
             ],
           ),
           height: 70.0,
