@@ -4,9 +4,7 @@
 
 [API 概览](https://github.com/c1avie/trtc_demo/blob/master/API.md)
 
-[腾讯云 Android RTC 文档](https://cloud.tencent.com/document/product/647/32267)
-
-[腾讯云 iOS RTC 文档](https://cloud.tencent.com/document/product/647/32258)
+[API 详细文档](https://pub.dev/documentation/tencent_trtc_cloud/latest/index.html)
 
 DEMO地址 [Github](https://github.com/c1avie/trtc_demo)，任何问题可以通过 Github Issues 提问
 
