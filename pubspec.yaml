@@ -1,12 +1,12 @@
 name: trtc_demo
-description: TRTC Demo
+description: TRTC Demo.
 publish_to: 'none'
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  tencent_trtc_cloud: ^0.0.2
+  tencent_trtc_cloud: ^0.0.6
   cupertino_icons: 0.1.2
   shared_preferences: 0.5.12+2
   provider: 4.3.2
