@@ -32,7 +32,7 @@ dependencies:
 ```
 还需要添加字段 io.flutter.embedded_views_preview 值为 YES
 
-4.添加ReplayKit.framework
+4.添加ReplayKit.framework(0.0.6及以下版本需要添加)
 
 打开ios/Runner.xcworkspace，在Runner target的Build Phases > Link Binary With Libraries一栏添加
 
@@ -172,6 +172,16 @@ TRTC 的日志默认压缩加密，后缀为 .xlog。
 ##### iOS无法显示视频（Android是好的）
 
 请确认 io.flutter.embedded_views_preview为`YES`在你的info.plist中
+
+##### 更新sdk版本后，iOS CocoaPods 运行报错
+
+1.删除ios目录下Podfile.lock文件
+
+2.执行`pod repo update`
+
+3.执行`pod install`
+
+4.重新运行
 
 ##### Android Manifest merge failed编译失败
 

@@ -27,6 +27,8 @@
 
 | API                                                          | 描述                          |
 | ------------------------------------------------------------ | ----------------------------- |
+| [startPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startPublishing.html) | 开始向腾讯云的直播 CDN 推流。      |
+| [stopPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopPublishing.html) | 停止向腾讯云的直播 CDN 推流。      |
 | [setMixTranscodingConfig](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setMixTranscodingConfig.html) | 设置云端的混流转码参数。      |
 
 
@@ -61,6 +63,7 @@
 | [startLocalAudio](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startLocalAudio.html) | 开启本地音频的采集和上行。                                   |
 | [stopLocalAudio](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopLocalAudio.html) | 关闭本地音频的采集和上行。                                   |
 | [muteLocalAudio](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/muteLocalAudio.html) | 静音/取消静音本地的音频。                                    |
+| [setVideoMuteImage](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setVideoMuteImage.html) | 设置暂停推送本地视频时要推送的图片。                                    |
 | [setAudioRoute](https://pub.dev/documentation/tencent_trtc_cloud/latest/tx_device_manager/TXDeviceManager/setAudioRoute.html) | 设置音频路由。                                               |
 | [muteRemoteAudio](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/muteRemoteAudio.html) | 静音/取消静音指定的远端用户的声音。                          |
 | [muteAllRemoteAudio](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/muteAllRemoteAudio.html) | 静音/取消静音所有用户的声音。                                |
@@ -109,6 +112,8 @@
 | ------------------------------------------------------------ | --------------------------- |
 | [getSDKVersion](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/getSDKVersion.html) | 获取 SDK 版本信息。         |
 | [setLogLevel](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setLogLevel.html) | 设置 Log 输出级别。         |
+| [setLogDirPath](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setLogDirPath.html) | 修改日志保存路径。         |
+| [setLogCompressEnabled](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setLogCompressEnabled.html) | 启用或禁用 Log 的本地压缩。         |
 | [setConsoleEnabled](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setConsoleEnabled.html) | 启用或禁用控制台日志打印。  |
 
 
@@ -191,6 +196,8 @@
 
 | API                                                          | 描述                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [onStartPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 开始向腾讯云的直播 CDN 推流的回调，对应于 TRTCCloud 中的 startPublishing() 接口。 |
+| [onStopPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 停止向腾讯云的直播 CDN 推流的回调，对应于 TRTCCloud 中的 stopPublishing() 接口。 |
 | [onSetMixTranscodingConfig](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#af1c79a5ec3e0c106939e7f0d7849d694) | 设置云端的混流转码参数的回调，对应于 [TRTCCloud](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) 中的 setMixTranscodingConfig() 接口。 |
 
 

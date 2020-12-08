@@ -6,10 +6,10 @@ PODS:
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
-  - tencent_trtc_cloud (0.0.1):
+  - tencent_trtc_cloud (0.0.6):
     - Flutter
-    - TXLiteAVSDK_TRTC (= 8.0.9643)
-  - TXLiteAVSDK_TRTC (8.0.9643)
+    - TXLiteAVSDK_TRTC (= 8.1.9719)
+  - TXLiteAVSDK_TRTC (8.1.9719)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -39,8 +39,8 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  tencent_trtc_cloud: ee50c0cd0c4ac6c8188e2e9fe55555f73ffa4f4a
-  TXLiteAVSDK_TRTC: 4cbd2ee162d5f61eb484a2315bed488ea10bb355
+  tencent_trtc_cloud: 85aab6546109f730c9bce3e4563e0e618c954cda
+  TXLiteAVSDK_TRTC: dd581804b8badfffaf1d00856d7f2812eb8a47d4
 
 PODFILE CHECKSUM: 582abc418d1d8a5bd05e12990f620e914c956c14
 
