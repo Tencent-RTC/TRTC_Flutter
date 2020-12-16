@@ -29,6 +29,8 @@
 | ------------------------------------------------------------ | ----------------------------- |
 | [startPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startPublishing.html) | 开始向腾讯云的直播 CDN 推流。      |
 | [stopPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopPublishing.html) | 停止向腾讯云的直播 CDN 推流。      |
+| [startPublishCDNStream](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startPublishCDNStream.html) | 开始向友商云的直播 CDN 转推。      |
+| [stopPublishCDNStream](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopPublishCDNStream.html) | 停止向非腾讯云地址转推。     |
 | [setMixTranscodingConfig](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/setMixTranscodingConfig.html) | 设置云端的混流转码参数。      |
 
 
@@ -97,6 +99,14 @@
 | API                                                          | 描述                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [getAudioEffectManager](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/getAudioEffectManager.html) | 获取音效管理类 TXAudioEffectManager，用于管理BGM，短音效和人声特效。接口详情见[音效管理文档](https://pub.dev/documentation/tencent_trtc_cloud/latest/tx_audio_effect_manager/TXAudioEffectManager-class.html) |
+
+### 自定义消息发送
+
+| API                                                          | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [sendCustomCmdMsg](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/sendCustomCmdMsg.html) | 发送自定义消息给房间内所有用户。 |
+| [sendSEIMsg](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/sendSEIMsg.html) | 将小数据量的自定义数据嵌入视频帧中。                                           |
+
 
 ### 网络测试
 
@@ -188,8 +198,16 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [onCameraDidReady](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 摄像头准备就绪。                                             |
 | [onMicDidReady](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 麦克风准备就绪。                                             |
-| [onAudioRouteChanged](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 音频路由发生变化，音频路由即声音由哪里输出（扬声器或听筒）。 |
 | [onUserVoiceVolume](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 用于提示音量大小的回调，包括每个 userId 的音量和远端总音量。 |
+
+
+### 自定义消息的接收回调
+
+| API                                                          | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [onRecvCustomCmdMsg](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 收到自定义消息回调。 |
+| [onMissCustomCmdMsg](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 自定义消息丢失回调。 |
+| [onRecvSEIMsg](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#af1c79a5ec3e0c106939e7f0d7849d694) | 收到 SEI 消息的回调。 |
 
 
 ### CDN 旁路转推回调
@@ -198,6 +216,8 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [onStartPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 开始向腾讯云的直播 CDN 推流的回调，对应于 TRTCCloud 中的 startPublishing() 接口。 |
 | [onStopPublishing](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 停止向腾讯云的直播 CDN 推流的回调，对应于 TRTCCloud 中的 stopPublishing() 接口。 |
+| [onStartPublishCDNStream](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 启动旁路推流到 CDN 完成的回调。|
+| [onStopPublishCDNStream](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) | 停止旁路推流到 CDN 完成的回调。|
 | [onSetMixTranscodingConfig](http://doc.qcloudtrtc.com/group__TRTCCloudListener__android.html#af1c79a5ec3e0c106939e7f0d7849d694) | 设置云端的混流转码参数的回调，对应于 [TRTCCloud](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_listener/TRTCCloudListenerEnum-class.html) 中的 setMixTranscodingConfig() 接口。 |
 
 
@@ -212,10 +232,16 @@
 
 | 类名                                                         | 描述                                    |
 | ------------------------------------------------------------ | --------------------------------------- |
+| [TRTCCloudDef](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCCloudDef-class.html) | 关键类型定义变量。                              |
 | [TRTCParams](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCParams-class.html) | 进房参数。                              |
-| [TRTCVideoEncParam](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCVideoEncParam-class.html) | 编码参数。                              |
+| [TRTCSwitchRoomConfig](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCSwitchRoomConfig-class.html) | 切换房间参数参数。                              |
+| [TRTCVideoEncParam](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCVideoEncParam-class.html) | 视频编码参数。                              |
 | [TRTCNetworkQosParam](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCNetworkQosParam-class.html) | 网络流控相关参数。                      |
 | [TRTCRenderParams](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCRenderParams-class.html) | 远端图像参数。 |
 | [TRTCMixUser](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCMixUser-class.html) | 云端混流中每一路子画面的位置信息。 |
 | [TRTCTranscodingConfig](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCTranscodingConfig-class.html) | 云端混流（转码）配置。 |
+| [TXVoiceChangerType](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TXVoiceChangerType-class.html) | 变声类型定义（萝莉、大叔、重金属、外国人...）。 |
+| [TXVoiceReverbType](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TXVoiceReverbType-class.html) | 变声类型定义（KTV、小房间、大会堂、低沉、洪亮...）。 |
+| [AudioMusicParam](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/AudioMusicParam-class.html) | 音乐和人声设置接口参数。 |
 | [TRTCAudioRecordingParams](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCAudioRecordingParams-class.html) | 录音参数。 |
+| [TRTCPublishCDNParam](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud_def/TRTCPublishCDNParam-class.html) | CDN转推参数。 |
