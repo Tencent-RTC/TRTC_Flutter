@@ -101,17 +101,17 @@ trtcCloud.exitRoom();
 trtcCloud.registerListener(onRtcListener);
 onRtcListener(type, param) {
   //进房回调事件
-  if (type == TRTCCloudListenerEnum.onEnterRoom) {
+  if (type == TRTCCloudListener.onEnterRoom) {
     if (param > 0) {
       showToast('进房成功');
     }
   }
   // 远端用户进房
-  if (type == TRTCCloudListenerEnum.onRemoteUserEnterRoom) {
+  if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
     //param参数为远端用户userId
   }
   //远端用户是否存在可播放的主路画面（一般用于摄像头）
-  if (type == TRTCCloudListenerEnum.onUserVideoAvailable) {
+  if (type == TRTCCloudListener.onUserVideoAvailable) {
     //param['userId']表示远端用户id
     //param['visible']画面是否开启
   }
@@ -169,19 +169,15 @@ TRTC 的日志默认压缩加密，后缀为 .xlog。
 
 #### 常见问题
 
+更多常见问题参考[文档](https://github.com/c1avie/trtc_demo/blob/master/COMMON_ISSUE.md)
+
+##### 错误码
+
+[错误码信息查看](http://doc.qcloudtrtc.com/md_introduction_trtc_ErrorCodes.html)
+
 ##### iOS无法显示视频（Android是好的）
 
 请确认 io.flutter.embedded_views_preview为`YES`在你的info.plist中
-
-##### 更新sdk版本后，iOS CocoaPods 运行报错
-
-1.删除ios目录下Podfile.lock文件
-
-2.执行`pod repo update`
-
-3.执行`pod install`
-
-4.重新运行
 
 ##### Android Manifest merge failed编译失败
 

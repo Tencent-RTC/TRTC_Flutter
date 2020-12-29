@@ -137,28 +137,28 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
   /// 事件回调
   onRtcListener(type, param) {
-    if (type == TRTCCloudListenerEnum.onError) {
+    if (type == TRTCCloudListener.onError) {
       showErrordDialog(param['errMsg']);
     }
-    if (type == TRTCCloudListenerEnum.onEnterRoom) {
+    if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
         showToast('进房成功');
       }
     }
-    if (type == TRTCCloudListenerEnum.onExitRoom) {
+    if (type == TRTCCloudListener.onExitRoom) {
       if (param > 0) {
         showToast('退房成功');
       }
     }
     // 远端用户进房
-    if (type == TRTCCloudListenerEnum.onRemoteUserEnterRoom) {
+    if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
       userList.add({'userId': param, 'type': 'video', 'visible': false});
       screenUserList = getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
     }
     // 远端用户离开房间
-    if (type == TRTCCloudListenerEnum.onRemoteUserLeaveRoom) {
+    if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
       String userId = param['userId'];
       for (var i = 0; i < userList.length; i++) {
         if (userList[i]['userId'] == userId) {
@@ -170,7 +170,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       meetModel.setList(userList);
     }
     //远端用户是否存在可播放的主路画面（一般用于摄像头）
-    if (type == TRTCCloudListenerEnum.onUserVideoAvailable) {
+    if (type == TRTCCloudListener.onUserVideoAvailable) {
       String userId = param['userId'];
       // 根据状态对视频进行开启和关闭
       if (param['available']) {
@@ -196,7 +196,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
 
     //辅流监听
-    if (type == TRTCCloudListenerEnum.onUserSubStreamAvailable) {
+    if (type == TRTCCloudListener.onUserSubStreamAvailable) {
       String userId = param["userId"];
       //视频可用
       if (param["available"]) {
