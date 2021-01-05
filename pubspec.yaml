@@ -6,7 +6,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  tencent_trtc_cloud: ^0.1.3
+  tencent_trtc_cloud: ^0.1.5
   cupertino_icons: 0.1.2
   shared_preferences: 0.5.12+2
   provider: 4.3.2
