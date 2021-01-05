@@ -10,7 +10,7 @@
 	- 请确保您的项目已设置有效的开发者签名
 
 ## 前提条件
-您已[注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成[实名认证](https://cloud.tencent.com/document/product/378/3629)。
+您已【[注册腾讯云](https://cloud.tencent.com/document/product/378/17985)】账号，并完成【[实名认证](https://cloud.tencent.com/document/product/378/3629)】。
 
 ## 操作步骤
 <span id="step1"></span>
@@ -36,14 +36,14 @@
 5. 单击【关闭指引，进入控制台管理应用】。
 
 >本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
->正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见[服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+>正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见【[服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)】。
 
 ### 步骤4：编译运行
 1.执行`flutter pub get`
 
 2.Android调试：
-  *（1）可以执行`flutter run`
-  *（2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
+* （1）可以执行`flutter run`
+* （2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
   
 3.iOS调试：使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
 
