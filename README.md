@@ -11,7 +11,7 @@
 
 ## 前提条件
 
-您已[注册腾讯云](https://cloud.tencent.com/document/product/378/17985)账号，并完成[实名认证](https://cloud.tencent.com/document/product/378/3629)。
+您已[注册腾讯云】(https://cloud.tencent.com)账号，并完成实名认证。
 
 ## 操作步骤
 <span id="step1"></span>
@@ -29,7 +29,7 @@
 ### 步骤3：配置 Demo 工程文件
 1. 解压 [步骤2](#step2) 中下载的源码包。
 2. 找到并打开`/lib/debug/GenerateTestUserSig.dart`文件。
-3. 设置`GenerateTestUserSig.java`文件中的相关参数：
+3. 设置`GenerateTestUserSig.dart`文件中的相关参数：
   <ul><li>SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。</li>
   <li>SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。</li></ul> 
 <img src="https://imgcache.qq.com/operation/dianshi/other/flutterSercet.abb0c77a30a50a27bb36058bdabe1f051484c058.png" height="400" /> 
