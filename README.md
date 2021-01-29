@@ -11,7 +11,7 @@
 
 ## 前提条件
 
-您已[注册腾讯云】(https://cloud.tencent.com)账号，并完成实名认证。
+您已[注册腾讯云](https://cloud.tencent.com)账号，并完成实名认证。
 
 ## 操作步骤
 <span id="step1"></span>
