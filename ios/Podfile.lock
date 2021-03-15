@@ -4,8 +4,6 @@ PODS:
     - Flutter
   - "permission_handler (5.0.1+1)":
     - Flutter
-  - shared_preferences (0.0.1):
-    - Flutter
   - tencent_trtc_cloud (0.0.6):
     - Flutter
     - TXLiteAVSDK_TRTC (= 8.1.9719)
@@ -15,7 +13,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - tencent_trtc_cloud (from `.symlinks/plugins/tencent_trtc_cloud/ios`)
 
 SPEC REPOS:
@@ -29,8 +26,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
   tencent_trtc_cloud:
     :path: ".symlinks/plugins/tencent_trtc_cloud/ios"
 
@@ -38,7 +33,6 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
-  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   tencent_trtc_cloud: 569c900fe5e510a218145400538ead54b10b4e23
   TXLiteAVSDK_TRTC: dd581804b8badfffaf1d00856d7f2812eb8a47d4
 
