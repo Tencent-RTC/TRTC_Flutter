@@ -30,6 +30,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   bool isOpenCamera = true; //是否开启摄像头
   bool isFrontCamera = true; //是否是前置摄像头
   bool isSpeak = true; //是否是扬声器
+  bool isDoubleTap = false; //是否是双击放大
 
   bool isShowBeauty = true; //是否开启美颜设置
   String curBeauty = 'pitu'; //默认为P图
@@ -45,6 +46,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   int meetId;
   String us;
   int quality;
+
+  ScrollController scrollControl;
+  List viewArr = [];
   @override
   initState() {
     super.initState();
@@ -59,6 +63,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     });
     meetModel = context.read<MeetingModel>();
     iniRoom();
+    initScrollListener();
   }
 
   iniRoom() async {
@@ -76,22 +81,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     // 进房
     enterRoom();
 
-    if (isOpenCamera) {
-      //打开摄像头
-      userList.add(
-          {'userId': userInfo['userId'], 'type': 'video', 'visible': true});
-    } else {
-      userList.add(
-          {'userId': userInfo['userId'], 'type': 'video', 'visible': false});
-    }
-    if (isOpenMic) {
-      //开启麦克风
-      await trtcCloud.startLocalAudio(quality);
-    }
+    initData();
 
-    screenUserList = getScreenList(userList);
-    meetModel.setList(userList);
-    this.setState(() {});
     //设置美颜效果
     txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
     txBeautyManager.setBeautyLevel(6);
@@ -102,7 +93,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     userInfo['userSig'] =
         await GenerateTestUserSig.genTestSig(userInfo['userId']);
     meetModel.setUserInfo(userInfo);
-
     trtcCloud.enterRoom(
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
@@ -110,6 +100,33 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             userSig: userInfo['userSig'], // 用户签名
             roomId: meetId), //房间Id
         TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+  }
+
+  initData() async {
+    if (isOpenCamera) {
+      //打开摄像头
+      userList.add({
+        'userId': userInfo['userId'],
+        'type': 'video',
+        'visible': true,
+        'size': {'width': 0, 'height': 0}
+      });
+    } else {
+      userList.add({
+        'userId': userInfo['userId'],
+        'type': 'video',
+        'visible': false,
+        'size': {'width': 0, 'height': 0}
+      });
+    }
+    if (isOpenMic) {
+      //开启麦克风
+      await trtcCloud.startLocalAudio(quality);
+    }
+
+    screenUserList = getScreenList(userList);
+    meetModel.setList(userList);
+    this.setState(() {});
   }
 
   // 销毁房间的一些信息
@@ -122,6 +139,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   @override
   dispose() {
     destoryRoom();
+    scrollControl.dispose();
     super.dispose();
   }
 
@@ -136,9 +154,30 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   /// 事件回调
-  onRtcListener(type, param) {
+  onRtcListener(type, param) async {
+    if (type == TRTCCloudListener.onSwitchRoom) {
+      showToast(param['errCode'].toString() + param['errMsg']);
+    }
     if (type == TRTCCloudListener.onError) {
       showErrordDialog(param['errMsg']);
+    }
+    if (type == TRTCCloudListener.onStartPublishCDNStream) {
+      print('==onStartPublishCDNStream' + param.toString());
+    }
+    if (type == TRTCCloudListener.onStopPublishCDNStream) {
+      print('==onStopPublishCDNStream' + param.toString());
+    }
+    if (type == TRTCCloudListener.onRecvCustomCmdMsg) {
+      print('==onRecvCustomCmdMsg' + param.toString());
+      showToast(param['message']);
+    }
+    if (type == TRTCCloudListener.onMissCustomCmdMsg) {
+      print('==onMissCustomCmdMsg' + param.toString());
+      showToast(param['missed']);
+    }
+    if (type == TRTCCloudListener.onRecvSEIMsg) {
+      print('==onRecvSEIMsg' + param.toString());
+      showToast(param['message']);
     }
     if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
@@ -152,7 +191,13 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
     // 远端用户进房
     if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
-      userList.add({'userId': param, 'type': 'video', 'visible': false});
+      print("==onRemoteUserEnterRoom=" + param.toString());
+      userList.add({
+        'userId': param,
+        'type': 'video',
+        'visible': false,
+        'size': {'width': 0, 'height': 0}
+      });
       screenUserList = getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
@@ -171,7 +216,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
     //远端用户是否存在可播放的主路画面（一般用于摄像头）
     if (type == TRTCCloudListener.onUserVideoAvailable) {
+      print("==onUserVideoAvailable=" + param.toString());
       String userId = param['userId'];
+
       // 根据状态对视频进行开启和关闭
       if (param['available']) {
         for (var i = 0; i < userList.length; i++) {
@@ -190,6 +237,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           }
         }
       }
+
       screenUserList = getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
@@ -200,7 +248,12 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       String userId = param["userId"];
       //视频可用
       if (param["available"]) {
-        userList.add({'userId': userId, 'type': 'subStream', 'visible': true});
+        userList.add({
+          'userId': userId,
+          'type': 'subStream',
+          'visible': true,
+          'size': {'width': 0, 'height': 0}
+        });
       } else {
         for (var i = 0; i < userList.length; i++) {
           if (userList[i]['userId'] == userId &&
@@ -234,6 +287,34 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       break;
     }
     return result;
+  }
+
+  // 屏幕左右滚动事件监听
+  initScrollListener() {
+    scrollControl = ScrollController();
+    scrollControl.addListener(() {
+      var firstScreen = screenUserList[0];
+      if (scrollControl.offset >= scrollControl.position.maxScrollExtent &&
+          !scrollControl.position.outOfRange) {
+        for (var i = 1; i < firstScreen.length; i++) {
+          if (i != 0) {
+            trtcCloud.stopRemoteView(firstScreen[i]['userId'],
+                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
+          }
+        }
+      } else if (scrollControl.offset <=
+              scrollControl.position.minScrollExtent &&
+          !scrollControl.position.outOfRange) {
+        for (var i = 1; i < firstScreen.length; i++) {
+          if (i != 0) {
+            trtcCloud.startRemoteView(firstScreen[i]['userId'],
+                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewArr[i]);
+          }
+        }
+      } else {
+        // 滑动中
+      }
+    });
   }
 
   /// 获得视图宽高
@@ -307,26 +388,57 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
+  // 双击放大缩小功能
+  doubleTap(item) async {
+    Size screenSize = MediaQuery.of(context).size;
+
+    if (isDoubleTap) {
+      userList.remove(item);
+      isDoubleTap = false;
+      item['size'] = {'width': 0, 'height': 0};
+    } else {
+      userList.remove(item);
+      isDoubleTap = true;
+      item['size'] = {'width': screenSize.width, 'height': screenSize.height};
+    }
+    userList.add(item);
+    if (item['userId'] == userInfo['userId']) {
+      await trtcCloud.stopLocalPreview();
+    } else {
+      if (item['type'] == 'video') {
+        await trtcCloud.stopRemoteView(
+            item['userId'], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+      } else {
+        await trtcCloud.stopRemoteView(
+            item['userId'], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+      }
+    }
+    this.setState(() {});
+  }
+
   Widget renderView(item, valueKey) {
     if (item['visible']) {
-      if (item['userId'] == userInfo['userId']) {
-        return TRTCCloudVideoView(
-            key: valueKey,
-            onViewCreated: (viewId) {
-              trtcCloud.startLocalPreview(true, viewId);
-            });
-      } else {
-        return TRTCCloudVideoView(
-            key: valueKey,
-            onViewCreated: (viewId) {
-              trtcCloud.startRemoteView(
-                  item['userId'],
-                  item['type'] == 'video'
-                      ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL
-                      : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-                  viewId);
-            });
-      }
+      return GestureDetector(
+          key: valueKey,
+          onDoubleTap: () {
+            doubleTap(item);
+          },
+          child: TRTCCloudVideoView(
+              key: valueKey,
+              viewType: TRTCCloudDef.TRTC_VideoView_SurfaceView,
+              onViewCreated: (viewId) {
+                if (item['userId'] == userInfo['userId']) {
+                  trtcCloud.startLocalPreview(true, viewId);
+                } else {
+                  trtcCloud.startRemoteView(
+                      item['userId'],
+                      item['type'] == 'video'
+                          ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                          : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+                      viewId);
+                }
+                viewArr.add(viewId);
+              }));
     } else {
       return Container(
         alignment: Alignment.center,
@@ -666,47 +778,65 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         },
         child: Stack(
           children: <Widget>[
-            ListView(
-              scrollDirection: Axis.horizontal,
-              children: screenUserList
-                  .map<Widget>(
-                    (item) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: Color.fromRGBO(19, 41, 75, 1),
-                      child: Wrap(
-                        children: List.generate(
-                          item.length,
-                          (index) => LayoutBuilder(
-                            key: ValueKey(
-                                item[index]['userId'] + item[index]['type']),
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
-                              Size size = this.getViewSize(
-                                  userList.length, index, item.length);
-                              ValueKey valueKey = ValueKey(
-                                  item[index]['userId'] + item[index]['type']);
-
-                              return Container(
+            ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: screenUserList.length,
+                cacheExtent: 0,
+                controller: scrollControl,
+                itemBuilder: (BuildContext context, index) {
+                  var item = screenUserList[index];
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    color: Color.fromRGBO(19, 41, 75, 1),
+                    child: Wrap(
+                      children: List.generate(
+                        item.length,
+                        (index) => LayoutBuilder(
+                          key: ValueKey(item[index]['userId'] +
+                              item[index]['type'] +
+                              item[index]['size']['width'].toString()),
+                          builder: (BuildContext context,
+                              BoxConstraints constraints) {
+                            Size size = this.getViewSize(
+                                userList.length, index, item.length);
+                            double width = size.width;
+                            double height = size.height;
+                            ValueKey valueKey = ValueKey(item[index]['userId'] +
+                                item[index]['type'] +
+                                item[index]['size']['width'].toString());
+                            if (item[index]['size']['width'] > 0) {
+                              width = double.parse(
+                                  item[index]['size']['width'].toString());
+                              height = double.parse(
+                                  item[index]['size']['height'].toString());
+                            }
+                            //双击放到后
+                            if (isDoubleTap) {
+                              //其他视频渲染宽高设置为1，否则视频不推流
+                              if (item[index]['size']['width'] == 0) {
+                                width = 1;
+                                height = 1;
+                              }
+                            }
+                            return Container(
+                              key: valueKey,
+                              height: height,
+                              width: width,
+                              child: Stack(
                                 key: valueKey,
-                                height: size.height,
-                                width: size.width,
-                                child: Stack(
-                                  key: valueKey,
-                                  children: <Widget>[
-                                    renderView(item[index], valueKey),
-                                    videoVoice(item[index])
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                children: <Widget>[
+                                  renderView(item[index], valueKey),
+                                  videoVoice(item[index])
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                  )
-                  .toList(),
-            ),
+                  );
+                }),
             topSetting(),
             beautySetting(),
             bottomSetting()
