@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:toast/toast.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 import './setting.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
@@ -14,6 +17,11 @@ import 'package:trtc_demo/page/trtcmeetingdemo/index.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:provider/provider.dart';
+import 'package:system_alert_window/system_alert_window.dart';
+import 'package:replay_kit_launcher/replay_kit_launcher.dart';
+
+const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
+const iosExtensionName = 'TRTC Demo Screen';
 
 /// 视频页面
 class MeetingPage extends StatefulWidget {
@@ -31,7 +39,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   bool isFrontCamera = true; //是否是前置摄像头
   bool isSpeak = true; //是否是扬声器
   bool isDoubleTap = false; //是否是双击放大
-
+  bool isShowingWindow = false; //是否展示悬浮窗
+  int localViewId;
   bool isShowBeauty = true; //是否开启美颜设置
   String curBeauty = 'pitu'; //默认为P图
   double curBeautyValue = 6; // 美颜值默认为6
@@ -98,8 +107,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
             userId: userInfo['userId'], // 用户Id
             userSig: userInfo['userSig'], // 用户签名
+            role: TRTCCloudDef.TRTCRoleAnchor,
             roomId: meetId), //房间Id
-        TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+        TRTCCloudDef.TRTC_APP_SCENE_LIVE);
   }
 
   initData() async {
@@ -124,7 +134,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       await trtcCloud.startLocalAudio(quality);
     }
 
-    screenUserList = getScreenList(userList);
+    screenUserList = MeetingTool.getScreenList(userList);
     meetModel.setList(userList);
     this.setState(() {});
   }
@@ -140,6 +150,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   dispose() {
     destoryRoom();
     scrollControl.dispose();
+    SystemAlertWindow.closeSystemWindow();
     super.dispose();
   }
 
@@ -159,25 +170,29 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       showToast(param['errCode'].toString() + param['errMsg']);
     }
     if (type == TRTCCloudListener.onError) {
-      showErrordDialog(param['errMsg']);
+      if (param['errCode'] == -1308) {
+        showToast('启动录屏失败');
+        await trtcCloud.stopScreenCapture();
+        userList[0]['visible'] = true;
+        isShowingWindow = false;
+        this.setState(() {});
+        SystemAlertWindow.closeSystemWindow();
+        trtcCloud.startLocalPreview(true, localViewId);
+      } else {
+        showErrordDialog(param['errMsg']);
+      }
     }
-    if (type == TRTCCloudListener.onStartPublishCDNStream) {
-      print('==onStartPublishCDNStream' + param.toString());
+    if (type == TRTCCloudListener.onScreenCaptureStarted) {
+      showToast('屏幕分享开始');
     }
-    if (type == TRTCCloudListener.onStopPublishCDNStream) {
-      print('==onStopPublishCDNStream' + param.toString());
+    if (type == TRTCCloudListener.onScreenCapturePaused) {
+      showToast('屏幕分享暂停');
     }
-    if (type == TRTCCloudListener.onRecvCustomCmdMsg) {
-      print('==onRecvCustomCmdMsg' + param.toString());
-      showToast(param['message']);
+    if (type == TRTCCloudListener.onScreenCaptureResumed) {
+      showToast('屏幕分享恢复');
     }
-    if (type == TRTCCloudListener.onMissCustomCmdMsg) {
-      print('==onMissCustomCmdMsg' + param.toString());
-      showToast(param['missed']);
-    }
-    if (type == TRTCCloudListener.onRecvSEIMsg) {
-      print('==onRecvSEIMsg' + param.toString());
-      showToast(param['message']);
+    if (type == TRTCCloudListener.onScreenCaptureStoped) {
+      showToast('屏幕分享停止');
     }
     if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
@@ -198,7 +213,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         'visible': false,
         'size': {'width': 0, 'height': 0}
       });
-      screenUserList = getScreenList(userList);
+      screenUserList = MeetingTool.getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
     }
@@ -210,7 +225,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           userList.removeAt(i);
         }
       }
-      screenUserList = getScreenList(userList);
+      screenUserList = MeetingTool.getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
     }
@@ -238,7 +253,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         }
       }
 
-      screenUserList = getScreenList(userList);
+      screenUserList = MeetingTool.getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
     }
@@ -264,29 +279,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           }
         }
       }
-      screenUserList = getScreenList(userList);
+      screenUserList = MeetingTool.getScreenList(userList);
       this.setState(() {});
       meetModel.setList(userList);
     }
-  }
-
-  // 每4个一屏，得到一个二维数组
-  getScreenList(list) {
-    int len = 4; //4个一屏
-    List<List> result = List();
-    int index = 1;
-    while (true) {
-      if (index * len < list.length) {
-        List temp = list.skip((index - 1) * len).take(len).toList();
-        result.add(temp);
-        index++;
-        continue;
-      }
-      List temp = list.skip((index - 1) * len).toList();
-      result.add(temp);
-      break;
-    }
-    return result;
   }
 
   // 屏幕左右滚动事件监听
@@ -315,23 +311,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         // 滑动中
       }
     });
-  }
-
-  /// 获得视图宽高
-  Size getViewSize(int listLength, int index, int total) {
-    Size screenSize = MediaQuery.of(context).size;
-
-    if (listLength < 5) {
-      // 只有一个显示全屏
-      if (total == 1) {
-        return screenSize;
-      }
-      // 两个显示半屏
-      if (total == 2) {
-        return Size(screenSize.width, screenSize.height / 2);
-      }
-    }
-    return Size(screenSize.width / 2, screenSize.height / 2);
   }
 
   // sdk出错信查看
@@ -391,7 +370,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   // 双击放大缩小功能
   doubleTap(item) async {
     Size screenSize = MediaQuery.of(context).size;
-
     if (isDoubleTap) {
       userList.remove(item);
       isDoubleTap = false;
@@ -401,10 +379,12 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       isDoubleTap = true;
       item['size'] = {'width': screenSize.width, 'height': screenSize.height};
     }
-    userList.add(item);
+    // 用户自己
     if (item['userId'] == userInfo['userId']) {
+      userList.insert(0, item);
       await trtcCloud.stopLocalPreview();
     } else {
+      userList.add(item);
       if (item['type'] == 'video') {
         await trtcCloud.stopRemoteView(
             item['userId'], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
@@ -414,6 +394,51 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       }
     }
     this.setState(() {});
+  }
+
+  startShare() async {
+    await trtcCloud.stopLocalPreview();
+    trtcCloud.startScreenCapture(
+      TRTCVideoEncParam(
+        videoFps: 10,
+        videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720,
+        videoBitrate: 1600,
+        videoResolutionMode: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT,
+      ),
+      iosAppGroup,
+    );
+  }
+
+  onShareClick() async {
+    if (Platform.isAndroid) {
+      if (await SystemAlertWindow.requestPermissions) {
+        if (!isShowingWindow) {
+          await startShare();
+          userList[0]['visible'] = false;
+          this.setState(() {
+            isShowingWindow = true;
+            isOpenCamera = false;
+          });
+          MeetingTool.showOverlayWindow();
+        } else {
+          SystemAlertWindow.closeSystemWindow();
+          await trtcCloud.stopScreenCapture();
+          userList[0]['visible'] = true;
+          trtcCloud.startLocalPreview(true, localViewId);
+          this.setState(() {
+            isShowingWindow = false;
+            isOpenCamera = true;
+          });
+        }
+      }
+    } else {
+      await startShare();
+      //屏幕分享功能只能在真机测试
+      ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
+      this.setState(() {
+        isOpenCamera = false;
+      });
+    }
   }
 
   Widget renderView(item, valueKey) {
@@ -429,6 +454,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
               onViewCreated: (viewId) {
                 if (item['userId'] == userInfo['userId']) {
                   trtcCloud.startLocalPreview(true, viewId);
+                  setState(() {
+                    localViewId = viewId;
+                  });
                 } else {
                   trtcCloud.startRemoteView(
                       item['userId'],
@@ -458,7 +486,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       child: new Container(
           child: Row(children: <Widget>[
         Text(
-          item['userId'],
+          item['userId'] == userInfo['userId']
+              ? item['userId'] + "(me)"
+              : item['userId'],
           style: TextStyle(color: Colors.white),
         ),
         Container(
@@ -758,7 +788,17 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   onPressed: () {
                     Navigator.pushNamed(context, '/memberList');
                   }),
-              SettingPage()
+              IconButton(
+                icon: Icon(
+                  Icons.share_rounded,
+                  color: Colors.white,
+                  size: 36.0,
+                ),
+                onPressed: () {
+                  this.onShareClick();
+                },
+              ),
+              SettingPage(),
             ],
           ),
           height: 70.0,
@@ -798,8 +838,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               item[index]['size']['width'].toString()),
                           builder: (BuildContext context,
                               BoxConstraints constraints) {
-                            Size size = this.getViewSize(
-                                userList.length, index, item.length);
+                            Size size = MeetingTool.getViewSize(
+                                MediaQuery.of(context).size,
+                                userList.length,
+                                index,
+                                item.length);
                             double width = size.width;
                             double height = size.height;
                             ValueKey valueKey = ValueKey(item[index]['userId'] +

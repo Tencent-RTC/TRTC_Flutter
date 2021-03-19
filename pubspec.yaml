@@ -6,13 +6,15 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  tencent_trtc_cloud: ^0.2.0
+  tencent_trtc_cloud: ^0.2.1
   cupertino_icons: 0.1.2
   provider: 4.3.2
   crypto: 2.1.5
   toast: ^0.1.5
   dio: 3.0.9
   permission_handler: 5.0.1+1
+  system_alert_window: 0.4.2+2
+  replay_kit_launcher: ^0.2.0+1
   flutter:
     sdk: flutter
 
