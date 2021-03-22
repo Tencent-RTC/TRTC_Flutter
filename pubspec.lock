@@ -261,13 +261,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.3"
-  system_alert_window:
-    dependency: "direct main"
-    description:
-      name: system_alert_window
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.2+2"
   tencent_trtc_cloud:
     dependency: "direct main"
     description:

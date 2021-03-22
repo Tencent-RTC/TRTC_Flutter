@@ -17,7 +17,6 @@ import 'package:trtc_demo/page/trtcmeetingdemo/index.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:provider/provider.dart';
-import 'package:system_alert_window/system_alert_window.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
 
 const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
@@ -150,7 +149,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   dispose() {
     destoryRoom();
     scrollControl.dispose();
-    SystemAlertWindow.closeSystemWindow();
     super.dispose();
   }
 
@@ -176,7 +174,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         userList[0]['visible'] = true;
         isShowingWindow = false;
         this.setState(() {});
-        SystemAlertWindow.closeSystemWindow();
         trtcCloud.startLocalPreview(true, localViewId);
       } else {
         showErrordDialog(param['errMsg']);
@@ -411,25 +408,21 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
   onShareClick() async {
     if (Platform.isAndroid) {
-      if (await SystemAlertWindow.requestPermissions) {
-        if (!isShowingWindow) {
-          await startShare();
-          userList[0]['visible'] = false;
-          this.setState(() {
-            isShowingWindow = true;
-            isOpenCamera = false;
-          });
-          MeetingTool.showOverlayWindow();
-        } else {
-          SystemAlertWindow.closeSystemWindow();
-          await trtcCloud.stopScreenCapture();
-          userList[0]['visible'] = true;
-          trtcCloud.startLocalPreview(true, localViewId);
-          this.setState(() {
-            isShowingWindow = false;
-            isOpenCamera = true;
-          });
-        }
+      if (!isShowingWindow) {
+        await startShare();
+        userList[0]['visible'] = false;
+        this.setState(() {
+          isShowingWindow = true;
+          isOpenCamera = false;
+        });
+      } else {
+        await trtcCloud.stopScreenCapture();
+        userList[0]['visible'] = true;
+        trtcCloud.startLocalPreview(true, localViewId);
+        this.setState(() {
+          isShowingWindow = false;
+          isOpenCamera = true;
+        });
       }
     } else {
       await startShare();

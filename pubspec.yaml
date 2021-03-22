@@ -13,7 +13,6 @@ dependencies:
   toast: ^0.1.5
   dio: 3.0.9
   permission_handler: 5.0.1+1
-  system_alert_window: 0.4.2+2
   replay_kit_launcher: ^0.2.0+1
   flutter:
     sdk: flutter

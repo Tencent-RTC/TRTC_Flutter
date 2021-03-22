@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:system_alert_window/system_alert_window.dart';
+// import 'package:system_alert_window/system_alert_window.dart';
 
 class MeetingTool {
   // 每4个一屏，得到一个二维数组
@@ -40,18 +40,18 @@ class MeetingTool {
   }
 
   //屏幕分享时弹出小浮窗，防止切换到后台应用被杀死
-  static void showOverlayWindow() {
-    SystemWindowHeader header = SystemWindowHeader(
-      title: SystemWindowText(
-          text: "屏幕分享中", fontSize: 14, textColor: Colors.black45),
-      decoration: SystemWindowDecoration(startColor: Colors.grey[100]),
-    );
-    SystemAlertWindow.showSystemWindow(
-      width: 18,
-      height: 95,
-      header: header,
-      margin: SystemWindowMargin(top: 200),
-      gravity: SystemWindowGravity.TOP,
-    );
-  }
+  // static void showOverlayWindow() {
+  //   SystemWindowHeader header = SystemWindowHeader(
+  //     title: SystemWindowText(
+  //         text: "屏幕分享中", fontSize: 14, textColor: Colors.black45),
+  //     decoration: SystemWindowDecoration(startColor: Colors.grey[100]),
+  //   );
+  //   SystemAlertWindow.showSystemWindow(
+  //     width: 18,
+  //     height: 95,
+  //     header: header,
+  //     margin: SystemWindowMargin(top: 200),
+  //     gravity: SystemWindowGravity.TOP,
+  //   );
+  // }
 }
