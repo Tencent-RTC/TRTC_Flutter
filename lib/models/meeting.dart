@@ -6,6 +6,7 @@ class MeetingModel extends ChangeNotifier {
   /// Internal, private state of the cart.
   List _userList = [];
   Map _userInfo = {};
+  Map _userSetting = {};
 
   /// An unmodifiable view of the items in the cart.
   UnmodifiableListView get userList => UnmodifiableListView(_userList);
@@ -17,6 +18,14 @@ class MeetingModel extends ChangeNotifier {
 
   void setUserInfo(userInfo) {
     _userInfo = userInfo;
+  }
+
+  void setUserSettig(userSetting) {
+    _userSetting = userSetting;
+  }
+
+  getUserSetting() {
+    return _userSetting;
   }
 
   getUserInfo() {

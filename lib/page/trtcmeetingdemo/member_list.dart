@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class MemberListPage extends StatefulWidget {
 }
 
 class MemberListPageState extends State<MemberListPage> {
-  TRTCCloud trtcCloud;
+  late TRTCCloud trtcCloud;
   var meetModel;
   var userInfo;
   List micList = [];
@@ -29,15 +29,14 @@ class MemberListPageState extends State<MemberListPage> {
   }
 
   initRoom() async {
-    trtcCloud = await TRTCCloud.sharedInstance();
+    trtcCloud = (await TRTCCloud.sharedInstance())!;
   }
 
   showToast(text) {
-    Toast.show(
-      text,
-      context,
-      duration: Toast.LENGTH_SHORT,
-      gravity: Toast.BOTTOM,
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
     );
   }
 

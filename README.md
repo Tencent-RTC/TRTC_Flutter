@@ -1,4 +1,7 @@
 # 跑通Demo(Flutter)
+
+[英文](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [日文](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
+
 本文主要介绍如何快速运行腾讯云 TRTC Demo（Flutter）。
 ## 环境要求
 - Flutter 版本 1.12及以上

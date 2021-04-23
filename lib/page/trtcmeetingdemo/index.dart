@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
+import 'package:trtc_demo/models/meeting.dart';
+import 'package:provider/provider.dart';
 
 // 多人视频会议首页
 class IndexPage extends StatefulWidget {
-  IndexPage({Key key}) : super(key: key);
+  IndexPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => IndexPageState();
@@ -16,9 +20,6 @@ class IndexPage extends StatefulWidget {
 class IndexPageState extends State<IndexPage> {
   /// 用户id
   String userId = '';
-
-  /// 登录后签名
-  String userSig;
 
   /// 会议id
   String meetId = '';
@@ -37,11 +38,10 @@ class IndexPageState extends State<IndexPage> {
 
   // 提示浮层
   showToast(text) {
-    Toast.show(
-      text,
-      context,
-      duration: Toast.LENGTH_SHORT,
-      gravity: Toast.CENTER,
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
     );
   }
 
@@ -100,15 +100,18 @@ class IndexPageState extends State<IndexPage> {
       return;
     }
     unFocus();
-    if (await Permission.camera.request().isGranted &&
-        await Permission.microphone.request().isGranted) {
-      Navigator.pushNamed(context, "/video", arguments: {
+    if (Platform.isMacOS ||
+        (await Permission.camera.request().isGranted &&
+            await Permission.microphone.request().isGranted)) {
+      var meetModel = context.read<MeetingModel>();
+      meetModel.setUserSettig({
         "meetId": int.parse(meetId),
         "userId": userId,
         "enabledCamera": enabledCamera,
         "enabledMicrophone": enabledMicrophone,
         "quality": quality
       });
+      Navigator.pushNamed(context, "/video");
     } else {
       showToast('需要获取音视频权限才能进入');
     }
@@ -200,50 +203,6 @@ class IndexPageState extends State<IndexPage> {
                         value: enabledMicrophone,
                         onChanged: (value) =>
                             this.setState(() => enabledMicrophone = value),
-                      ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      title:
-                          Text("音质选择", style: TextStyle(color: Colors.white)),
-                      subtitle: Row(
-                        children: [
-                          {
-                            "text": "语音",
-                            "value": TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH
-                          },
-                          {
-                            "text": "标准",
-                            "value": TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT
-                          },
-                          {
-                            "text": "音乐",
-                            "value": TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC
-                          },
-                        ]
-                            .map(
-                              (e) => Expanded(
-                                child: Row(
-                                  children: [
-                                    Theme(
-                                      data: ThemeData(
-                                          unselectedWidgetColor:
-                                              Color.fromRGBO(102, 102, 102, 1)),
-                                      child: Radio(
-                                        hoverColor: Colors.white,
-                                        value: e["value"],
-                                        groupValue: this.quality,
-                                        onChanged: (value) => this.setState(
-                                            () => this.quality = value),
-                                      ),
-                                    ),
-                                    Text(e["text"],
-                                        style: TextStyle(color: Colors.white)),
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
                       ),
                     ),
                   ],

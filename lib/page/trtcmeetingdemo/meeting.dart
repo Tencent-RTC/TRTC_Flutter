@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 import './setting.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
@@ -39,44 +37,39 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   bool isSpeak = true; //是否是扬声器
   bool isDoubleTap = false; //是否是双击放大
   bool isShowingWindow = false; //是否展示悬浮窗
-  int localViewId;
+  int? localViewId;
   bool isShowBeauty = true; //是否开启美颜设置
   String curBeauty = 'pitu'; //默认为P图
   double curBeautyValue = 6; // 美颜值默认为6
 
-  TRTCCloud trtcCloud;
-  TXDeviceManager txDeviceManager;
-  TXBeautyManager txBeautyManager;
-  TXAudioEffectManager txAudioManager;
+  late TRTCCloud trtcCloud;
+  late TXDeviceManager txDeviceManager;
+  late TXBeautyManager txBeautyManager;
+  late TXAudioEffectManager txAudioManager;
 
   List userList = [];
   List screenUserList = [];
-  int meetId;
-  String us;
-  int quality;
+  int? meetId;
+  int quality = TRTCCloudDef.TRTCSystemVolumeTypeVOIP;
 
-  ScrollController scrollControl;
+  late ScrollController scrollControl;
   List viewArr = [];
   @override
   initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Map arguments =
-          ModalRoute.of(_scaffoldKey.currentContext).settings.arguments;
-      meetId = arguments["meetId"];
-      userInfo['userId'] = arguments["userId"];
-      isOpenCamera = arguments["enabledCamera"];
-      isOpenMic = arguments["enabledMicrophone"];
-      quality = arguments["quality"];
-    });
     meetModel = context.read<MeetingModel>();
+    var userSetting = meetModel.getUserSetting();
+    meetId = userSetting["meetId"];
+    userInfo['userId'] = userSetting["userId"];
+    isOpenCamera = userSetting["enabledCamera"];
+    isOpenMic = userSetting["enabledMicrophone"];
     iniRoom();
     initScrollListener();
   }
 
   iniRoom() async {
     // 创建 TRTCCloud 单例
-    trtcCloud = await TRTCCloud.sharedInstance();
+    trtcCloud = (await TRTCCloud.sharedInstance())!;
     // 获取设备管理模块
     txDeviceManager = trtcCloud.getDeviceManager();
     // 获取美颜管理对象
@@ -107,7 +100,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             userId: userInfo['userId'], // 用户Id
             userSig: userInfo['userSig'], // 用户签名
             role: TRTCCloudDef.TRTCRoleAnchor,
-            roomId: meetId), //房间Id
+            roomId: meetId!), //房间Id
         TRTCCloudDef.TRTC_APP_SCENE_LIVE);
   }
 
@@ -154,11 +147,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
   // 提示浮层
   showToast(text) {
-    Toast.show(
-      text,
-      context,
-      duration: Toast.LENGTH_SHORT,
-      gravity: Toast.CENTER,
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
     );
   }
 
@@ -174,6 +166,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         userList[0]['visible'] = true;
         isShowingWindow = false;
         this.setState(() {});
+        // SystemAlertWindow.closeSystemWindow();
         trtcCloud.startLocalPreview(true, localViewId);
       } else {
         showErrordDialog(param['errMsg']);
@@ -311,7 +304,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   // sdk出错信查看
-  Future<bool> showErrordDialog(errorMsg) {
+  Future<bool?> showErrordDialog(errorMsg) {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -320,7 +313,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           title: Text("提示"),
           content: Text(errorMsg),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("确定"),
               onPressed: () {
                 //关闭对话框并返回true
@@ -339,7 +332,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   // 弹出退房确认对话框
-  Future<bool> showExitMeetingConfirmDialog() {
+  Future<bool?> showExitMeetingConfirmDialog() {
     return showDialog<bool>(
       context: context,
       builder: (context) {
@@ -347,11 +340,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           title: Text("提示"),
           content: Text("确定退出会议?"),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text("取消"),
               onPressed: () => Navigator.of(context).pop(), // 关闭对话框
             ),
-            FlatButton(
+            TextButton(
               child: Text("确定"),
               onPressed: () {
                 //关闭对话框并返回true
@@ -548,7 +541,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 textColor: Colors.white,
                 onPressed: () async {
                   //弹出对话框并等待其关闭
-                  bool delete = await showExitMeetingConfirmDialog();
+                  bool? delete = await showExitMeetingConfirmDialog();
                   if (delete != null) {
                     trtcCloud.exitRoom();
                     Navigator.pop(context);
@@ -791,7 +784,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   this.onShareClick();
                 },
               ),
-              SettingPage(),
+              SettingPage()
             ],
           ),
           height: 70.0,
