@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ import 'package:trtc_demo/models/meeting.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:provider/provider.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
+
+import 'tool.dart';
 
 const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
 const iosExtensionName = 'TRTC Demo Screen';
@@ -41,6 +45,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   bool isShowBeauty = true; //是否开启美颜设置
   String curBeauty = 'pitu'; //默认为P图
   double curBeautyValue = 6; // 美颜值默认为6
+  String doubleUserId = ""; //双击放大的用户id
 
   late TRTCCloud trtcCloud;
   late TXDeviceManager txDeviceManager;
@@ -48,6 +53,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   late TXAudioEffectManager txAudioManager;
 
   List userList = [];
+  List userListLast = []; //切后台时的备份
   List screenUserList = [];
   int? meetId;
   int quality = TRTCCloudDef.TRTCSystemVolumeTypeVOIP;
@@ -57,6 +63,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   @override
   initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     meetModel = context.read<MeetingModel>();
     var userSetting = meetModel.getUserSetting();
     meetId = userSetting["meetId"];
@@ -87,6 +94,33 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     //设置美颜效果
     txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
     txBeautyManager.setBeautyLevel(6);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+        break;
+      case AppLifecycleState.resumed: //从后台切换前台，界面可见
+        print("==resumed video=" + localViewId.toString());
+        userListLast = jsonDecode(jsonEncode(userList));
+        userList = [];
+        screenUserList = MeetingTool.getScreenList(userList);
+        this.setState(() {});
+
+        const timeout = const Duration(milliseconds: 100); //10ms
+        Timer(timeout, () {
+          userList = userListLast;
+          screenUserList = MeetingTool.getScreenList(userList);
+          this.setState(() {});
+        });
+        break;
+      case AppLifecycleState.paused: // 界面不可见，后台
+        print("==paused video");
+        break;
+      case AppLifecycleState.detached: // APP结束时调用
+        break;
+    }
   }
 
   // 进入房间
@@ -140,6 +174,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
   @override
   dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
     destoryRoom();
     scrollControl.dispose();
     super.dispose();
@@ -214,6 +249,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         if (userList[i]['userId'] == userId) {
           userList.removeAt(i);
         }
+      }
+      //正在放大的视频用户退房了
+      if (doubleUserId == userId) {
+        isDoubleTap = false;
       }
       screenUserList = MeetingTool.getScreenList(userList);
       this.setState(() {});
@@ -363,16 +402,17 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     if (isDoubleTap) {
       userList.remove(item);
       isDoubleTap = false;
+      doubleUserId = "";
       item['size'] = {'width': 0, 'height': 0};
     } else {
       userList.remove(item);
       isDoubleTap = true;
+      doubleUserId = item['userId'];
       item['size'] = {'width': screenSize.width, 'height': screenSize.height};
     }
     // 用户自己
     if (item['userId'] == userInfo['userId']) {
       userList.insert(0, item);
-      await trtcCloud.stopLocalPreview();
     } else {
       userList.add(item);
       if (item['type'] == 'video') {
@@ -382,7 +422,14 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         await trtcCloud.stopRemoteView(
             item['userId'], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
       }
+      //修复切换远端视频时本地视频不渲染的问题
+      if (isDoubleTap) {
+        userList[0]['visible'] = false;
+      } else {
+        userList[0]['visible'] = true;
+      }
     }
+
     this.setState(() {});
   }
 
@@ -831,22 +878,22 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                                 item.length);
                             double width = size.width;
                             double height = size.height;
-                            ValueKey valueKey = ValueKey(item[index]['userId'] +
-                                item[index]['type'] +
-                                item[index]['size']['width'].toString());
-                            if (item[index]['size']['width'] > 0) {
-                              width = double.parse(
-                                  item[index]['size']['width'].toString());
-                              height = double.parse(
-                                  item[index]['size']['height'].toString());
-                            }
-                            //双击放到后
+                            //双击放大后
                             if (isDoubleTap) {
                               //其他视频渲染宽高设置为1，否则视频不推流
                               if (item[index]['size']['width'] == 0) {
                                 width = 1;
                                 height = 1;
                               }
+                            }
+                            ValueKey valueKey = ValueKey(item[index]['userId'] +
+                                item[index]['type'] +
+                                (isDoubleTap ? "1" : "0"));
+                            if (item[index]['size']['width'] > 0) {
+                              width = double.parse(
+                                  item[index]['size']['width'].toString());
+                              height = double.parse(
+                                  item[index]['size']['height'].toString());
                             }
                             return Container(
                               key: valueKey,
