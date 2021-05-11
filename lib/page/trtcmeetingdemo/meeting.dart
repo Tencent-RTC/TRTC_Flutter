@@ -46,6 +46,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   String curBeauty = 'pitu'; //默认为P图
   double curBeautyValue = 6; // 美颜值默认为6
   String doubleUserId = ""; //双击放大的用户id
+  String doubleUserIdType = ""; //双击放大用户id的类型，视频or屏幕分享
 
   late TRTCCloud trtcCloud;
   late TXDeviceManager txDeviceManager;
@@ -275,6 +276,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         for (var i = 0; i < userList.length; i++) {
           if (userList[i]['userId'] == userId &&
               userList[i]['type'] == 'video') {
+            if (isDoubleTap &&
+                doubleUserId == userList[i]['userId'] &&
+                doubleUserIdType == userList[i]['type']) {
+              doubleTap(userList[i]);
+            }
             trtcCloud.stopRemoteView(
                 userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
             userList[i]['visible'] = false;
@@ -302,6 +308,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         for (var i = 0; i < userList.length; i++) {
           if (userList[i]['userId'] == userId &&
               userList[i]['type'] == 'subStream') {
+            if (isDoubleTap &&
+                doubleUserId == userList[i]['userId'] &&
+                doubleUserIdType == userList[i]['type']) {
+              doubleTap(userList[i]);
+            }
             trtcCloud.stopRemoteView(
                 userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
             userList.removeAt(i);
@@ -403,16 +414,22 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       userList.remove(item);
       isDoubleTap = false;
       doubleUserId = "";
+      doubleUserIdType = "";
       item['size'] = {'width': 0, 'height': 0};
     } else {
       userList.remove(item);
       isDoubleTap = true;
       doubleUserId = item['userId'];
+      doubleUserIdType = item['type'];
       item['size'] = {'width': screenSize.width, 'height': screenSize.height};
     }
     // 用户自己
     if (item['userId'] == userInfo['userId']) {
       userList.insert(0, item);
+      // ios视频重新渲染必须先stopLocalPreview
+      if (Platform.isIOS) {
+        await trtcCloud.stopLocalPreview();
+      }
     } else {
       userList.add(item);
       if (item['type'] == 'video') {
@@ -426,7 +443,13 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       if (isDoubleTap) {
         userList[0]['visible'] = false;
       } else {
-        userList[0]['visible'] = true;
+        if (Platform.isIOS) {
+          await trtcCloud.stopLocalPreview();
+        }
+        //手动关闭摄像头，放大缩小后状态不更新
+        if (isOpenCamera) {
+          userList[0]['visible'] = true;
+        }
       }
     }
 
@@ -790,6 +813,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                     if (isOpenCamera) {
                       userList[0]['visible'] = false;
                       trtcCloud.stopLocalPreview();
+                      if (isDoubleTap &&
+                          doubleUserId == userList[0]['userId']) {
+                        // 如果处在放大功能下，取消掉放大功能
+                        doubleTap(userList[0]);
+                      }
                     } else {
                       userList[0]['visible'] = true;
                     }
