@@ -57,7 +57,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   List userListLast = []; //切后台时的备份
   List screenUserList = [];
   int? meetId;
-  int quality = TRTCCloudDef.TRTCSystemVolumeTypeVOIP;
+  int quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
 
   late ScrollController scrollControl;
   List viewArr = [];
@@ -134,9 +134,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
             userId: userInfo['userId'], // 用户Id
             userSig: userInfo['userSig'], // 用户签名
-            role: TRTCCloudDef.TRTCRoleAnchor,
             roomId: meetId!), //房间Id
-        TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+        TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
   }
 
   initData() async {
@@ -859,7 +858,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   this.onShareClick();
                 },
               ),
-              SettingPage()
+              SettingPage(),
             ],
           ),
           height: 70.0,
