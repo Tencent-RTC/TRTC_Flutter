@@ -859,6 +859,15 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 },
               ),
               SettingPage(),
+              IconButton(
+                  icon: Icon(
+                    Icons.info,
+                    color: Colors.white,
+                    size: 36.0,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/test');
+                  }),
             ],
           ),
           height: 70.0,
@@ -922,6 +931,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               height = double.parse(
                                   item[index]['size']['height'].toString());
                             }
+                            print("==valueKey=" + valueKey.toString());
                             return Container(
                               key: valueKey,
                               height: height,
