@@ -9,7 +9,7 @@ PODS:
     - Flutter
   - replay_kit_launcher (0.3.0):
     - Flutter
-  - tencent_trtc_cloud (0.0.6):
+  - tencent_trtc_cloud (0.0.7):
     - Flutter
     - TXLiteAVSDK_TRTC (= 8.1.9719)
   - Toast (4.0.0)
@@ -48,10 +48,10 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 9c6874fe17ce278a6f0e99e3698acf194480e9a2
-  tencent_trtc_cloud: 569c900fe5e510a218145400538ead54b10b4e23
+  tencent_trtc_cloud: 0dd18caa6f48cd5fbcf67109999b51aaa91b7f6e
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TXLiteAVSDK_TRTC: dd581804b8badfffaf1d00856d7f2812eb8a47d4
 
-PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

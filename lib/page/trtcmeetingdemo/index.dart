@@ -223,7 +223,7 @@ class IndexPageState extends State<IndexPage> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
