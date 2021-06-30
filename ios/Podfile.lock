@@ -39,8 +39,14 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 9c6874fe17ce278a6f0e99e3698acf194480e9a2
+<<<<<<< HEAD
   tencent_trtc_cloud: 4f74665a844dea0b89f7dba16d41c9fb6c7dbb94
   TXLiteAVSDK_TRTC: a3d3f21288b27dc3ef654e34c58fb4536fcfdad3
+=======
+  tencent_trtc_cloud: 0dd18caa6f48cd5fbcf67109999b51aaa91b7f6e
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TXLiteAVSDK_TRTC: dd581804b8badfffaf1d00856d7f2812eb8a47d4
+>>>>>>> c2cd41d4ac4c3cb595ca81011d778362364227eb
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 

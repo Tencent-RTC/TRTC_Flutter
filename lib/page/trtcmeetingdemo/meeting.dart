@@ -103,17 +103,22 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
         print("==resumed video=" + localViewId.toString());
-        userListLast = jsonDecode(jsonEncode(userList));
-        userList = [];
-        screenUserList = MeetingTool.getScreenList(userList);
-        this.setState(() {});
-
-        const timeout = const Duration(milliseconds: 100); //10ms
-        Timer(timeout, () {
-          userList = userListLast;
+        if (Platform.isAndroid) {
+          userListLast = jsonDecode(jsonEncode(userList));
+          userList = [];
           screenUserList = MeetingTool.getScreenList(userList);
           this.setState(() {});
-        });
+
+          const timeout = const Duration(milliseconds: 100); //10ms
+          Timer(timeout, () {
+            userList = userListLast;
+            screenUserList = MeetingTool.getScreenList(userList);
+            this.setState(() {});
+          });
+        } else if (Platform.isIOS && isOpenCamera) {
+          //在ios下如果localViewId和上次的不一样时候需要调用updateLocalView，一样的话就不需要调用
+          //trtcCloud.updateLocalView(localViewId);
+        }
         break;
       case AppLifecycleState.paused: // 界面不可见，后台
         print("==paused video");
@@ -911,6 +916,15 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 },
               ),
               SettingPage(),
+              IconButton(
+                  icon: Icon(
+                    Icons.info,
+                    color: Colors.white,
+                    size: 36.0,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/test');
+                  }),
             ],
           ),
           height: 70.0,
