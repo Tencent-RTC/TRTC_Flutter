@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:provider/provider.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 
 /// 成员列表页面
 class MemberListPage extends StatefulWidget {
@@ -30,14 +30,6 @@ class MemberListPageState extends State<MemberListPage> {
 
   initRoom() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
-  }
-
-  showToast(text) {
-    Fluttertoast.showToast(
-      msg: text,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-    );
   }
 
   @override
@@ -131,7 +123,7 @@ class MemberListPageState extends State<MemberListPage> {
                         color: Color.fromRGBO(245, 108, 108, 1),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(true);
-                          showToast('全体禁音');
+                          MeetingTool.toast('全体禁音', context);
                           for (var i = 0; i < micList.length; i++) {
                             micMap[micList[i]['userId']] = true;
                           }
@@ -144,7 +136,7 @@ class MemberListPageState extends State<MemberListPage> {
                         color: Color.fromRGBO(64, 158, 255, 1),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(false);
-                          showToast('解除全体禁音');
+                          MeetingTool.toast('解除全体禁音', context);
                           this.setState(() {
                             micMap = {};
                           });

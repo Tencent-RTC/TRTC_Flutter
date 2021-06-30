@@ -22,7 +22,6 @@
 | [switchRoom](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/switchRoom.html) | 切换房间。         |
 
 
-
 ### CDN 相关接口函数
 
 | API                                                          | 描述                          |
@@ -40,6 +39,7 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [startLocalPreview](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startLocalPreview.html) | 开启本地视频的预览画面。                                     |
 | [stopLocalPreview](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopLocalPreview.html) | 停止本地视频采集及预览。                                     |
+| [updateLocalView](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/updateLocalView.html) | 更新本地视频预览画面的窗口。                                     |
 | [muteLocalVideo](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/muteLocalVideo.html) | 暂停/恢复推送本地的视频数据。                                |
 | [startRemoteView](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startRemoteView.html) | 开始显示远端视频画面。                                       |
 | [stopRemoteView](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopRemoteView.html) | 停止显示远端视频画面，同时不再拉取该远端用户的视频数据流。   |
@@ -77,6 +77,8 @@
 | [startAudioRecording](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startAudioRecording.html) | 开始录音。                                                   |
 | [stopAudioRecording](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopAudioRecording.html) | 停止录音。                                                   |
 | [setSystemVolumeType](https://pub.dev/documentation/tencent_trtc_cloud/latest/tx_device_manager/TXDeviceManager/setSystemVolumeType.html) | 设置通话时使用的系统音量类型。                               |
+| [startLocalRecording](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/startLocalRecording.html) | 开启本地录制。                                                   |
+| [stopLocalRecording](https://pub.dev/documentation/tencent_trtc_cloud/latest/trtc_cloud/TRTCCloud/stopLocalRecording.html) | 停止本地录制。                                                   |
 
 
 ### 设备管理接口

@@ -1,16 +1,24 @@
 # 跑通Demo(Flutter)
 
-[English document](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [英語の文書](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
+[English document](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [日本語の文書](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
 
 本文主要介绍如何快速运行腾讯云 TRTC Demo（Flutter）。
+
+注意：目前Windows/MacOs端仅支持音频，视频接口暂不支持；安卓/iOS端支持视频通话
+
 ## 环境要求
-- Flutter 版本 1.12及以上
+- Flutter 版本 2.0及以上
 - Android开发 
 	-  Android Studio 3.5及以上版本
 	-  App 要求 Android 4.1及以上设备
-- iOS 开发
+- iOS & macOS 开发
 	- Xcode 11.0及以上版本
+	- macOS 系统版本要求 10.11 及以上
 	- 请确保您的项目已设置有效的开发者签名
+- Windows 开发
+	- 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
+    - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
+	- 安装 Visual Studio 2019[https://visualstudio.microsoft.com/zh-hans/downloads/]
 
 ## 前提条件
 
@@ -51,6 +59,14 @@
 * （2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
   
 3.iOS调试：使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
+
+4.windows调试：
+* （1）启用windows支持：flutter config --enable-windows-desktop
+* （2）flutter run -d windows
+
+4.macOS调试
+* （1）启用macOS支持：flutter config --enable-macos-desktop
+* （2）执行`flutter run -d macos`
 
 #### 如何查看 TRTC 日志？
 TRTC 的日志默认压缩加密，后缀为 .xlog。

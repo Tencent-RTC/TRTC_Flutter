@@ -1,0 +1,6 @@
+framework module replay_kit_launcher {
+  umbrella header "replay_kit_launcher-umbrella.h"
+
+  export *
+  module * { export * }
+}

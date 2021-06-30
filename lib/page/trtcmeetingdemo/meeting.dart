@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 import './setting.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
@@ -93,7 +92,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     initData();
 
     //设置美颜效果
-    txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
+    txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_NATURE);
     txBeautyManager.setBeautyLevel(6);
   }
 
@@ -134,8 +133,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
             userId: userInfo['userId'], // 用户Id
             userSig: userInfo['userSig'], // 用户签名
+            role: TRTCCloudDef.TRTCRoleAnchor,
             roomId: meetId!), //房间Id
-        TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+        TRTCCloudDef.TRTC_APP_SCENE_LIVE);
   }
 
   initData() async {
@@ -180,23 +180,13 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  // 提示浮层
-  showToast(text) {
-    Fluttertoast.showToast(
-      msg: text,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-    );
-  }
-
   /// 事件回调
   onRtcListener(type, param) async {
-    if (type == TRTCCloudListener.onSwitchRoom) {
-      showToast(param['errCode'].toString() + param['errMsg']);
-    }
+    print("==rtc listener type=" + type.toString());
+    print("==rtc listener param=" + param.toString());
     if (type == TRTCCloudListener.onError) {
       if (param['errCode'] == -1308) {
-        showToast('启动录屏失败');
+        MeetingTool.toast('启动录屏失败', context);
         await trtcCloud.stopScreenCapture();
         userList[0]['visible'] = true;
         isShowingWindow = false;
@@ -207,26 +197,88 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         showErrordDialog(param['errMsg']);
       }
     }
+    if (type == TRTCCloudListener.onSpeedTest) {
+      MeetingTool.toast(
+          'onSpeedTest=' + param['finishedCount'].toString(), context);
+    }
+    if (type == TRTCCloudListener.onStartPublishing) {
+      MeetingTool.toast(
+          'onStartPublishing：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
+    if (type == TRTCCloudListener.onStopPublishing) {
+      MeetingTool.toast(
+          'onStopPublishing：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
+    if (type == TRTCCloudListener.onStartPublishCDNStream) {
+      MeetingTool.toast(
+          'onStartPublishCDNStream：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
+    if (type == TRTCCloudListener.onStopPublishCDNStream) {
+      MeetingTool.toast(
+          'onStopPublishCDNStream：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
+    if (type == TRTCCloudListener.onUserVoiceVolume) {
+      MeetingTool.toast(
+          'onUserVoiceVolume=' + param['totalVolume'].toString(), context);
+    }
+    if (type == TRTCCloudListener.onSwitchRoom) {
+      MeetingTool.toast(
+          "switchRoom code=" +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
+    if (type == TRTCCloudListener.onSwitchRole) {
+      MeetingTool.toast(
+          "switchRoom code=" +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
+    }
     if (type == TRTCCloudListener.onScreenCaptureStarted) {
-      showToast('屏幕分享开始');
+      MeetingTool.toast('屏幕分享开始', context);
     }
     if (type == TRTCCloudListener.onScreenCapturePaused) {
-      showToast('屏幕分享暂停');
+      MeetingTool.toast('屏幕分享暂停', context);
     }
     if (type == TRTCCloudListener.onScreenCaptureResumed) {
-      showToast('屏幕分享恢复');
+      MeetingTool.toast('屏幕分享恢复', context);
     }
     if (type == TRTCCloudListener.onScreenCaptureStoped) {
-      showToast('屏幕分享停止');
+      MeetingTool.toast('屏幕分享停止', context);
+    }
+    if (type == TRTCCloudListener.onMusicObserverStart) {
+      MeetingTool.toast('背景音乐开始播放', context);
+    }
+    if (type == TRTCCloudListener.onMusicObserverComplete) {
+      MeetingTool.toast('背景音乐结束播放', context);
     }
     if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
-        showToast('进房成功');
+        MeetingTool.toast('进房成功', context);
       }
     }
     if (type == TRTCCloudListener.onExitRoom) {
       if (param > 0) {
-        showToast('退房成功');
+        MeetingTool.toast('退房成功', context);
       }
     }
     // 远端用户进房
@@ -922,6 +974,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               height = double.parse(
                                   item[index]['size']['height'].toString());
                             }
+                            print("==valueKey=" + valueKey.toString());
                             return Container(
                               key: valueKey,
                               height: height,

@@ -10,9 +10,11 @@ class SettingPage extends StatefulWidget {
   State<StatefulWidget> createState() => SettingPageState();
 }
 
-class SettingPageState extends State<SettingPage> {
+class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
   late TRTCCloud trtcCloud;
 
+  bool isShowSetDialog = false;
+  bool isAPPPausedToClosed = false;
   double currentCaptureValue = 100; //默认采集音量
   double currentPlayValue = 100; //默认播放音量
   bool enabledMirror = true;
@@ -92,6 +94,7 @@ class SettingPageState extends State<SettingPage> {
   @override
   initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     initRoom();
   }
 
@@ -179,191 +182,224 @@ class SettingPageState extends State<SettingPage> {
 
   /// 用户列表点击事件
   showSetDialog() {
-    showModalBottomSheet(
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context1, state) {
-            return Container(
-              color: Color.fromRGBO(19, 41, 75, 1),
-              child: MaterialApp(
-                home: DefaultTabController(
-                  length: 2,
-                  child: Scaffold(
-                    backgroundColor: Color.fromRGBO(19, 41, 75, 1),
-                    appBar: AppBar(
-                        backgroundColor: Color.fromRGBO(19, 41, 75, 1),
-                        bottom: TabBar(
-                          tabs: [
-                            Tab(text: '视频'),
-                            Tab(text: '音频'),
-                          ],
-                        ),
-                        title: Text('设置', textAlign: TextAlign.center)),
-                    body: TabBarView(
-                      children: [
-                        Container(
+    isShowSetDialog = true;
+    Future<void> future = showModalBottomSheet(
+      enableDrag: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context1, state) {
+          return Container(
+            color: Color.fromRGBO(19, 41, 75, 1),
+            child: MaterialApp(
+              home: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  backgroundColor: Color.fromRGBO(19, 41, 75, 1),
+                  appBar: AppBar(
+                      backgroundColor: Color.fromRGBO(19, 41, 75, 1),
+                      bottom: TabBar(
+                        tabs: [
+                          Tab(text: '视频'),
+                          Tab(text: '音频'),
+                        ],
+                      ),
+                      title: Text('设置', textAlign: TextAlign.center)),
+                  body: TabBarView(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(children: [
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                  width: 110,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('分辨率',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white))),
+                              GestureDetector(
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: 100.0,
+                                  height: 50.0,
+                                  child: Text(
+                                    currentResolution,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                onTap: () => showResolution(state),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                  width: 110,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('帧率',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white))),
+                              GestureDetector(
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: 100.0,
+                                  height: 50.0,
+                                  child: Text(
+                                    currentVideoFps.toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                onTap: () => showVideoFps(state), //点击
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                  width: 85,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('码率',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white))),
+                              Expanded(
+                                flex: 2,
+                                child: Slider(
+                                  value: currentBitrate,
+                                  min: minBitrate,
+                                  max: maxBitrate,
+                                  divisions: (maxBitrate - minBitrate).round(),
+                                  label: currentBitrate.round().toString(),
+                                  onChanged: (double value) {
+                                    trtcCloud.setVideoEncoderParam(
+                                        TRTCVideoEncParam(
+                                            videoBitrate: value.round(),
+                                            videoFps: currentVideoFps,
+                                            videoResolution: currentResValue));
+                                    state(() {
+                                      currentBitrate = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(currentBitrate.round().toString() + 'kbps',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                  width: 95,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text('本地镜像',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white))),
+                              Container(
+                                  alignment: Alignment.centerLeft,
+                                  width: 100.0,
+                                  height: 50.0,
+                                  child: Switch(
+                                      value: enabledMirror,
+                                      onChanged: (value) =>
+                                          dealMirror(state, value)))
+                            ],
+                          ),
+                        ]),
+                      ),
+                      Container(
                           padding: const EdgeInsets.all(20.0),
                           child: Column(children: [
                             Row(
                               children: <Widget>[
-                                Container(
-                                    width: 110,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('分辨率',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white))),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: 100.0,
-                                    height: 50.0,
-                                    child: Text(
-                                      currentResolution,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  onTap: () => showResolution(state),
+                                Text('采集音量',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white)),
+                                Slider(
+                                  value: currentCaptureValue,
+                                  min: 0,
+                                  max: 100,
+                                  divisions: 100,
+                                  label: currentCaptureValue.round().toString(),
+                                  onChanged: (double value) {
+                                    trtcCloud
+                                        .setAudioCaptureVolume(value.round());
+                                    state(() {
+                                      currentCaptureValue = value;
+                                    });
+                                  },
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                    width: 110,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('帧率',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white))),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: 100.0,
-                                    height: 50.0,
-                                    child: Text(
-                                      currentVideoFps.toString(),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  onTap: () => showVideoFps(state), //点击
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                    width: 85,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('码率',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white))),
-                                Expanded(
-                                  flex: 2,
-                                  child: Slider(
-                                    value: currentBitrate,
-                                    min: minBitrate,
-                                    max: maxBitrate,
-                                    divisions:
-                                        (maxBitrate - minBitrate).round(),
-                                    label: currentBitrate.round().toString(),
-                                    onChanged: (double value) {
-                                      trtcCloud.setVideoEncoderParam(
-                                          TRTCVideoEncParam(
-                                              videoBitrate: value.round(),
-                                              videoFps: currentVideoFps,
-                                              videoResolution:
-                                                  currentResValue));
-                                      state(() {
-                                        currentBitrate = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Text(currentBitrate.round().toString() + 'kbps',
+                                Text(currentCaptureValue.round().toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white)),
                               ],
                             ),
                             Row(
                               children: <Widget>[
-                                Container(
-                                    width: 95,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('本地镜像',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white))),
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: 100.0,
-                                    height: 50.0,
-                                    child: Switch(
-                                        value: enabledMirror,
-                                        onChanged: (value) =>
-                                            dealMirror(state, value)))
+                                Text('播放音量',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white)),
+                                Slider(
+                                  value: currentPlayValue,
+                                  min: 0,
+                                  max: 100,
+                                  divisions: 100,
+                                  label: currentPlayValue.round().toString(),
+                                  onChanged: (double value) {
+                                    trtcCloud
+                                        .setAudioPlayoutVolume(value.round());
+                                    state(() {
+                                      currentPlayValue = value;
+                                    });
+                                  },
+                                ),
+                                Text(currentPlayValue.round().toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white)),
                               ],
                             ),
-                          ]),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(children: [
-                              Row(
-                                children: <Widget>[
-                                  Text('采集音量',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white)),
-                                  Slider(
-                                    value: currentCaptureValue,
-                                    min: 0,
-                                    max: 100,
-                                    divisions: 100,
-                                    label:
-                                        currentCaptureValue.round().toString(),
-                                    onChanged: (double value) {
-                                      trtcCloud
-                                          .setAudioCaptureVolume(value.round());
-                                      state(() {
-                                        currentCaptureValue = value;
-                                      });
-                                    },
-                                  ),
-                                  Text(currentCaptureValue.round().toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white)),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text('播放音量',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white)),
-                                  Slider(
-                                    value: currentPlayValue,
-                                    min: 0,
-                                    max: 100,
-                                    divisions: 100,
-                                    label: currentPlayValue.round().toString(),
-                                    onChanged: (double value) {
-                                      trtcCloud
-                                          .setAudioPlayoutVolume(value.round());
-                                      state(() {
-                                        currentPlayValue = value;
-                                      });
-                                    },
-                                  ),
-                                  Text(currentPlayValue.round().toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Colors.white)),
-                                ],
-                              ),
-                            ]))
-                      ],
-                    ),
+                          ]))
+                    ],
                   ),
                 ),
               ),
-            );
-          });
-        },
-        context: context);
+            ),
+          );
+        });
+      },
+      context: context,
+    );
+    future.then((void value) {
+      isShowSetDialog = false;
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.detached:
+        break;
+
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.resumed: ////从后台切换前台，界面可见
+        {
+          //当因为进入后台关闭设置界面的时候，再重新打开一下即可
+          if (isAPPPausedToClosed) {
+            isAPPPausedToClosed = false;
+            showSetDialog();
+          }
+        }
+        break;
+      case AppLifecycleState.paused: // // 界面不可见，后台
+        {
+          //当设置打开了的时候进入后台，设置界面设置为不可见。用户必须重新点击打开设置界面。
+          if (isShowSetDialog) {
+            Navigator.pop(context);
+            isAPPPausedToClosed = true;
+          }
+        }
+        break;
+    }
   }
 
   @override
@@ -375,6 +411,7 @@ class SettingPageState extends State<SettingPage> {
           size: 36.0,
         ),
         onPressed: () {
+          print('==showSetDialog');
           showSetDialog();
         });
   }

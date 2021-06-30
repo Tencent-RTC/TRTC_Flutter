@@ -1,16 +1,17 @@
 name: trtc_demo
 description: TRTC Demo.
 publish_to: 'none'
-
+version: 2.0.0
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  tencent_trtc_cloud: ^1.0.0
+  tencent_trtc_cloud: ^1.0.9
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
   crypto: ^3.0.1
-  fluttertoast: ^8.0.6
+  # fluttertoast: ^8.0.6
+  flutter_styled_toast: ^2.0.0
   dio: ^4.0.0
   # flutter 版本是1.xxx 请用 path_provider: ^1.6.18
   # path_provider: ^1.6.18
@@ -25,7 +26,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

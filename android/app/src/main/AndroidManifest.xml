@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
+        <activity 
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity" 
             android:theme="@android:style/Theme.Translucent"/>
         <!-- Don't delete the meta-data below.
