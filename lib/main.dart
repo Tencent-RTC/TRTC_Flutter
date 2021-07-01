@@ -5,6 +5,7 @@ import 'package:trtc_demo/page/trtcmeetingdemo/index.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/meeting.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/member_list.dart';
 import 'package:trtc_demo/models/meeting.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/test_api.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class _MyAppState extends State<MyApp> {
           "/index": (context) => IndexPage(),
           "/video": (context) => MeetingPage(),
           "/memberList": (context) => MemberListPage(),
+          "/test": (context) => TestPage(),
         },
       ),
     );

@@ -22,13 +22,6 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
-	<key>NSAppClip</key>
-	<dict>
-		<key>NSAppClipRequestEphemeralUserNotification</key>
-		<true/>
-		<key>NSAppClipRequestLocationConfirmation</key>
-		<true/>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>授权摄像头权限才能正常视频通话</string>
 	<key>NSHumanReadableCopyright</key>
