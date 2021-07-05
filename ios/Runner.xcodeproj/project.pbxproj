@@ -44,11 +44,8 @@
 		};
 		E144EF392600B41100CDA725 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-<<<<<<< HEAD
 			buildActionMask = 8;
-=======
 			buildActionMask = 2147483647;
->>>>>>> c2cd41d4ac4c3cb595ca81011d778362364227eb
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
@@ -320,8 +317,6 @@
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
-<<<<<<< HEAD
-=======
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -336,7 +331,6 @@
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		CC05010D59A1225C936CA8C5 /* [CP] Embed Pods Frameworks */ = {
->>>>>>> c2cd41d4ac4c3cb595ca81011d778362364227eb
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -350,7 +344,6 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
-<<<<<<< HEAD
 		CC05010D59A1225C936CA8C5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -371,8 +364,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-=======
->>>>>>> c2cd41d4ac4c3cb595ca81011d778362364227eb
 		FD6DF0A0643B868A2C301F96 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
