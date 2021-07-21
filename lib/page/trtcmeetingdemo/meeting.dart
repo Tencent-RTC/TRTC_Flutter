@@ -129,7 +129,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   // 进入房间
-  enterRoom() async {
+  enterRoom() async {    
     userInfo['userSig'] =
         await GenerateTestUserSig.genTestSig(userInfo['userId']);
     meetModel.setUserInfo(userInfo);
@@ -202,61 +202,29 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         showErrordDialog(param['errMsg']);
       }
     }
-    if (type == TRTCCloudListener.onSpeedTest) {
-      MeetingTool.toast(
-          'onSpeedTest=' + param['finishedCount'].toString(), context);
+    if(type == TRTCCloudListener.onSpeedTest) {
+      MeetingTool.toast('onSpeedTest=' + param['finishedCount'].toString(), context);
     }
-    if (type == TRTCCloudListener.onStartPublishing) {
-      MeetingTool.toast(
-          'onStartPublishing：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+    if(type == TRTCCloudListener.onStartPublishing) {
+      MeetingTool.toast('onStartPublishing：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
-    if (type == TRTCCloudListener.onStopPublishing) {
-      MeetingTool.toast(
-          'onStopPublishing：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+    if(type == TRTCCloudListener.onStopPublishing) {
+      MeetingTool.toast('onStopPublishing：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
-    if (type == TRTCCloudListener.onStartPublishCDNStream) {
-      MeetingTool.toast(
-          'onStartPublishCDNStream：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+    if(type == TRTCCloudListener.onStartPublishCDNStream) {
+      MeetingTool.toast('onStartPublishCDNStream：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
-    if (type == TRTCCloudListener.onStopPublishCDNStream) {
-      MeetingTool.toast(
-          'onStopPublishCDNStream：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+    if(type == TRTCCloudListener.onStopPublishCDNStream) {
+      MeetingTool.toast('onStopPublishCDNStream：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
-    if (type == TRTCCloudListener.onUserVoiceVolume) {
-      MeetingTool.toast(
-          'onUserVoiceVolume=' + param['totalVolume'].toString(), context);
+    if(type == TRTCCloudListener.onUserVoiceVolume) {
+       MeetingTool.toast('onUserVoiceVolume=' + param['totalVolume'].toString(), context);
     }
     if (type == TRTCCloudListener.onSwitchRoom) {
-      MeetingTool.toast(
-          "switchRoom code=" +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+      MeetingTool.toast("switchRoom code=" + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
     if (type == TRTCCloudListener.onSwitchRole) {
-      MeetingTool.toast(
-          "switchRoom code=" +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
+      MeetingTool.toast("switchRoom code=" + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
     }
     if (type == TRTCCloudListener.onScreenCaptureStarted) {
       MeetingTool.toast('屏幕分享开始', context);

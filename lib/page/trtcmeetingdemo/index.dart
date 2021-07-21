@@ -42,6 +42,13 @@ class IndexPageState extends State<IndexPage> {
   @override
   initState() {
     super.initState();
+    Future.delayed(Duration(microseconds: 500), () {
+      if (Platform.isMacOS || Platform.isWindows) {
+        setState(() {
+          enableTextureRendering = true;
+        });
+      }
+    });
   }
 
   // 隐藏底部输入框
@@ -109,10 +116,14 @@ class IndexPageState extends State<IndexPage> {
       "enabledMicrophone": enabledMicrophone,
       "quality": quality
     });
-    if (enableTextureRendering)
+    if (enableTextureRendering) {
+      if (Platform.isWindows) {
+        MeetingTool.toast('windows 的本地纹理渲染还不支持', context);
+      }
       Navigator.pushNamed(context, "/textureRender");
-    else
+    } else {
       Navigator.pushNamed(context, "/video");
+    }
   }
 
   @override
@@ -201,6 +212,21 @@ class IndexPageState extends State<IndexPage> {
                         value: enabledMicrophone,
                         onChanged: (value) =>
                             this.setState(() => enabledMicrophone = value),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      title: Text("纹理渲染（内测阶段）",
+                          style: TextStyle(color: Colors.white)),
+                      trailing: Switch(
+                        value: enableTextureRendering,
+                        onChanged: (value) {
+                          if (Platform.isMacOS || Platform.isWindows) {
+                            MeetingTool.toast('PC 只支持纹理渲染', context);
+                            return;
+                          }
+                          this.setState(() => enableTextureRendering = value);
+                        },
                       ),
                     ),
                   ],

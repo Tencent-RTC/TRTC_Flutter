@@ -28,295 +28,295 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0010B2C2D3A5CE4828B72AEBC3E2F12A /* ReplayKitLauncherPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B378874F4F3FC6A516C653E7D0AC3A8E /* ReplayKitLauncherPlugin.m */; };
+		000D861B74CEF637A04C95D42B241209 /* AudioVideoPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = EB22AF3C026E387765232E960EE82798 /* AudioVideoPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0292DC062F39BA02B741A05471CF5A50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		07912914787E88526299AA999E398829 /* permission_handler-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EDDFA042AB06F4BD4583B043B044EFFD /* permission_handler-dummy.m */; };
-		08A55CFC17A0BD9AADAA9D52B097604F /* TencentRtcPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B33014AC08336592B1DAF5CF9981509 /* TencentRtcPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0DB42E77227630DA93D2CCD2508F2314 /* PermissionHandlerPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = B6878E567DCDCC80D76D0587AAD73956 /* PermissionHandlerPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		112B4AA3C275E6C32112BB20AF477BBA /* LocationPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 08472B5BB470F762F6900C5041019AE0 /* LocationPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1183E5069780FE25FF2ED7F059A67F57 /* FLTPathProviderPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F8390020D10E6C6CD1D14A5B6209933 /* FLTPathProviderPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1D787F1243C2781D685F73DC491986D6 /* PermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C6D249C797DE9F89EE47212EA5A75FD /* PermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		21AE68C6B51C61F90FB5FD7DFAD1AE2A /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8F2BD1792A23D479A248EAD2D13823 /* DeviceManager.swift */; };
-		25BB6C16D2457ECED710DE11210240D8 /* EventPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 5507C1138C617980ADE3815C60BC457D /* EventPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27CF3239C87039D95AB2C33E7F97915A /* SpeechPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 260116551F24D1D4E7AA5569FBBE71D4 /* SpeechPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		30D14953AD96BC7462D01E295A1BCA0B /* ReplayKitLauncherPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E50C461E8CB248A6769091AA86A4D69 /* ReplayKitLauncherPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		347CAA592A15C507C81A59602DE77EBF /* AudioVideoPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EB115F3F45436180B98DF7A60E00F0A /* AudioVideoPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		35219EB166EB557370F2336349736113 /* UnknownPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 829718D1092B1BB52C990BF95E4792CC /* UnknownPermissionStrategy.m */; };
-		35DD2E5CCA82D383A4045A66811942C8 /* MediaLibraryPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = F2319236AF589DCB52EDB7AF11C5CC34 /* MediaLibraryPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		38BE269FC438A27670A3E97BABC1B774 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F786BADC4E27E726030CF7A1D3A8134 /* CloudManager.swift */; };
-		39BDA6A2B5F5EA1A8350829480BD87B6 /* PhonePermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 02A9C8CEAC33D37DBAC50656DC6EAC24 /* PhonePermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3AEE0F3BE0E2911B575D95E7FF717CEE /* FLTPathProviderPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = FBFA308C4774B9D66A7CA551BE3D0C69 /* FLTPathProviderPlugin.m */; };
-		3B4C7345C9CE78D7F68EB7C7AC21DC6A /* PermissionHandlerEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 21EC76DBB83A38E11E2D426A03DD30EB /* PermissionHandlerEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4607846471B7BB178E0CE8B93ACF7AE7 /* SpeechPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = E036109B4996B1AA2AC35281984CF2AA /* SpeechPermissionStrategy.m */; };
+		07912914787E88526299AA999E398829 /* permission_handler-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BCE593F32E40EA1EFE7CAD00C1A445 /* permission_handler-dummy.m */; };
+		090623A9B8E9FDD4DE5D7707B36F015D /* BeautyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282528CA3FF7A996C737272BA47DC337 /* BeautyManager.swift */; };
+		0BF86FA3E17FA03C67222500557FD569 /* txg_log.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7607ACF877EB3C1DFB5DECB9CBD460 /* txg_log.m */; };
+		14244A3597FC6A4D16229FD0AB66939D /* ReplayKitLauncherPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = F2374329DE4311DD543F704147195D38 /* ReplayKitLauncherPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15CA3ABDFAF38676065F344043095903 /* UnknownPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C0B5B5B8754304026478313E8800D1F9 /* UnknownPermissionStrategy.m */; };
+		15EB531A0AA6A81DB0BDC4D4D23D5C49 /* BluetoothPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 69B87AACF752F2818B698CCED7A56411 /* BluetoothPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		21FD7AC89BDF0C5D150D27426AA9481F /* TencentTRTCCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867AC437ADCB59FE8F7B3303F91B934E /* TencentTRTCCloud.swift */; };
+		29BF62DD00923FCAF08DCCF466C4A1C9 /* LocationPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BFCC0A1FD6E164DB02EA4AA4457497D /* LocationPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D4940BEB43DF3E0E611CC721F1AB699 /* TencentRtcPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 375212AD8AA2E56828CA662A794BDD37 /* TencentRtcPlugin.m */; };
+		2FDB02D11E1604A92EC110C2BD062F16 /* PhotoPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A56DEDB4EFCD2A7672F0466D9BFB168 /* PhotoPermissionStrategy.m */; };
+		35376F6593D98EF0C9DDED92C03F003F /* ReplayKitLauncherPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 6041D4C2B16486E7D1AC961329129644 /* ReplayKitLauncherPlugin.m */; };
+		3A445B60506C5E7BFA484EBAA6EFE839 /* txg_log.c in Sources */ = {isa = PBXBuildFile; fileRef = 81B3518F3822A9AD309E6B37302B5FA6 /* txg_log.c */; };
+		3D26B34BAB10F995BAB9991CBB7C3365 /* StoragePermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B106C10B07574EDB6D43E327F1249B0 /* StoragePermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3F136E5207A822D36B9E2C0F8758D86F /* Codec.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5EBE0CDF840AEE6E679C424D455205 /* Codec.m */; };
+		4060E30BD484B72DB3894751DAA23FAB /* PermissionHandlerPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = CDA0301A3DC4CD5CD443C61C9247CBE9 /* PermissionHandlerPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4564146A1891387934173EF102D0B17B /* TRTCCloudVideoPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D76AC14C17D1225C887A12BDF16050 /* TRTCCloudVideoPlatformView.swift */; };
+		485C0253679D4CED49B9CDCA275F0D94 /* TencentRtcPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 702D1D1323C50C7AE2C80F451E292143 /* TencentRtcPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		49A3F1B53A5335835E24C282C3F26A2B /* SpeechPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD79E5BEC207D8A67C8150548E37061 /* SpeechPermissionStrategy.m */; };
 		4C337F705840F2DDF9E821C93BD7A9FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		521F0EF858F6A0C1D54158F59837EF9D /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5CF748CCDCCDAFE33414C28ED99692 /* CommonUtils.swift */; };
-		5342755D12F38952365E71EE97F4072D /* BluetoothPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3410D55C20E7154B1A26CAE305712612 /* BluetoothPermissionStrategy.m */; };
-		54D2231FB20B58A68AC613D54D61FBD2 /* NotificationPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = E6EAC7A6277BB1017E97791456066E66 /* NotificationPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4CF78FA4A3E4165C7889D73FDF6E2E34 /* Codec.h in Headers */ = {isa = PBXBuildFile; fileRef = CE22E87D1D90810796661BF2E9092170 /* Codec.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		561BB43EDCD2CD1BD05908500D688B20 /* ContactPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DEB313EE3BD2DED6E9227E31847B367 /* ContactPermissionStrategy.m */; };
 		5813AA7CCCEE32A9B367CB4D74C39F1D /* Pods-Runner-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C932BD54DBB963102A89E0F9E3948 /* Pods-Runner-dummy.m */; };
-		5D5855BFA8F8DACBD0E66165917FE256 /* ContactPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = E3BE3F1A116DF6F482FE6B46FB5C23DE /* ContactPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F865D2D2D17145844436D2397F9BE5F /* txg_log.c in Sources */ = {isa = PBXBuildFile; fileRef = C6628791BD8CC5B82C3F0C8EA842E804 /* txg_log.c */; };
-		61F3111A8CEE359D179EBD40830B2AA3 /* PhotoPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CD5B9F47BB62A2606C4218CFBA363A /* PhotoPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		58D93788192D97996EEE28AF83969C1F /* NotificationPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB3FF7228848D6F368BC2FFAE6C6D92 /* NotificationPermissionStrategy.m */; };
+		5CAF87AD8B3B9D77CD069324C48FF1BE /* SpeechPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = A86D5E9E7BF63536C18111BD30900128 /* SpeechPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		64DC6DB94D0E996BBDEA59F74A68C65D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		653C0352E810B733677C1408174C6649 /* PermissionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C39AF190A16AF1028C2F3A4A0D601354 /* PermissionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6873EE954FEF8D2891DEDC1D4E9885B8 /* txg_log.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D5C49C8BB031C421A50024A00255678 /* txg_log.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B006A7926230542B2FDD396900FE2C4 /* StoragePermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 00C9E3DFAD6D3B1B297DD0C888F4CEA3 /* StoragePermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7224A9874B7454D9AEB6CB248936E8D5 /* PhotoPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2484498B6E3237B8B65BFCF0DB8C61E7 /* PhotoPermissionStrategy.m */; };
-		7540EE81C5DB10283B7EFC8458237AE8 /* SensorPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A98782FAA8CCF946128C593BB924AD1 /* SensorPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		76D64CEEF5CED81EAA0CF94E5A1E20CD /* AudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837D5B1C08BFFD23FBC9ACE1EDDFBA75 /* AudioEffectManager.swift */; };
+		689CF3566C58D4E3B57A6CDFA21635BC /* MediaLibraryPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 235F00F57B9B56B493265ED7D227D3D2 /* MediaLibraryPermissionStrategy.m */; };
+		6B54A84A67FE0DC7C4571FC6F80C0602 /* TencentVideoTextureRender.mm in Sources */ = {isa = PBXBuildFile; fileRef = 483479BE4A19292901FBB044F1D80936 /* TencentVideoTextureRender.mm */; };
+		6FD784C0D8261DCB0FF4EB291378CBBB /* FLTPathProviderPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 936B2A977C5C4DC6F362D9FA7D195080 /* FLTPathProviderPlugin.m */; };
+		73F0E993CE23365E34EF5DD605F9F3CF /* SensorPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6A08E21189C2EE89E0FB0472DB8E6 /* SensorPermissionStrategy.m */; };
 		783F0C21F615D21D0ACAB61D8C1B93B8 /* Pods-Runner-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 96BF45FBE2BC9AD7B2D7E56D01B5EE46 /* Pods-Runner-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		79C7348957FB66A7AD44C129303AB66C /* Codec.h in Headers */ = {isa = PBXBuildFile; fileRef = 3BC6F500CE24C1C34AF721624F7C467E /* Codec.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7C3946B22078537097AC05018DEBFD95 /* TencentTRTCCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76796702E6C8887081A78AF47A007FB0 /* TencentTRTCCloud.swift */; };
-		866E7A2597893B3570C5AB0A5C989D5C /* replay_kit_launcher-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 801343865F773FC7C23F01F4DEB341D9 /* replay_kit_launcher-dummy.m */; };
-		8F91842C7ED23A4180ABAF7217051652 /* TencentVideoTextureRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 5488E54A2B880A4BF80B2068933E5013 /* TencentVideoTextureRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		92AAFA18CBDA0E6AB5A7CC21313B58AF /* PhonePermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 731852FEAA2FA773C9E9AB6569C8C0BF /* PhonePermissionStrategy.m */; };
-		9CB416A2713B5313F7A6A3192484BAEE /* ListenerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3BB1213B8C593C7F442DC2211D96FB /* ListenerType.swift */; };
-		A816587E6AF716CB14CD891C420E17AB /* NotificationPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B128C441C7F641C0001FD6F00707681 /* NotificationPermissionStrategy.m */; };
-		ABFF9E96E57BC7D996200183AA718C3A /* path_provider-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E3D9AF97FE328E3A5F4322D8C4B7A2 /* path_provider-dummy.m */; };
-		B09CA5ABCA800090CBADBAB8919BD2B6 /* LocationPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 806C11B16FCBACEFD6304708EE69F591 /* LocationPermissionStrategy.m */; };
-		B59F3975F8AD876BBA868C40B6D377E0 /* txg_log.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BD3CC6F1660E263067BBA6A545CC7 /* txg_log.m */; };
-		B9507C7933F722105D09A14BE969EB5B /* AudioVideoPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4876EE7EF0E88697EEC3983F3E123B /* AudioVideoPermissionStrategy.m */; };
-		BE45CF86BC31D1DE8A33D0E126BA6B0F /* tencent_trtc_cloud-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 266FBAFD8546D6D8345D6A60EC4805DE /* tencent_trtc_cloud-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C26C62210E77917300FB47C76FC55A45 /* permission_handler-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9724D26D38E481EC91D9B462BD7502B1 /* permission_handler-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2D59D40AF07349180F2C4939D1E28BC /* EventPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = AD12E8A02E09D0C8EAC5BDF40D6D3EAC /* EventPermissionStrategy.m */; };
-		C790ABAE2F86C6C53446CD124D649348 /* ContactPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = D502750D9DF70383C4F086D51C3EDCE2 /* ContactPermissionStrategy.m */; };
-		CCC0C30D33FC83FC89D0FDBFA93DE5ED /* replay_kit_launcher-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9AF67972591186C38E474B1002E5CF /* replay_kit_launcher-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CD63A4896E8523E5A671D46659422E74 /* tencent_trtc_cloud-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4157BFB47283248D09C86FC6D48A0F /* tencent_trtc_cloud-dummy.m */; };
-		CD6E145873DDA37C0B416A086A525421 /* UnknownPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F550B32BC6D9837A4466C601E095F00 /* UnknownPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DD4EA8A35616A3D806057EB5FE4C16AA /* JsonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C6D56C7CF7844EE1D6F76D55F0EA03 /* JsonUtil.swift */; };
-		DE508550A25631347C14EB2E5611E796 /* TencentVideoTextureRender.mm in Sources */ = {isa = PBXBuildFile; fileRef = B626228DB95F17308EECED3BF7C5B509 /* TencentVideoTextureRender.mm */; };
-		DF87352AB14AAC1B357D502CC7E1E0DB /* BluetoothPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D5C35D9D44A2DB036B847BAABDA4B32 /* BluetoothPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E22E6C53570B055C1321B65D3E79CBC3 /* PermissionHandlerPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B98D5041619B6019EEB9E5ADF17F103 /* PermissionHandlerPlugin.m */; };
-		E2E696CCF9E09B68EA478D482E31B0A5 /* TRTCCloudVideoPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3623A0108A96F0F21AFB2D910790727B /* TRTCCloudVideoPlatformView.swift */; };
-		E44A91269FABFC926FF55606D4CEA399 /* MediaLibraryPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A51A10505E576B96EFBCE19C641692 /* MediaLibraryPermissionStrategy.m */; };
-		E58125698FA42A502628F072F7531A5F /* StoragePermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B199DBC746B6F4B35FF1F036BCE01DD /* StoragePermissionStrategy.m */; };
+		7CFF675817358F806865D46D76C4E1CC /* NotificationPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = F5DCFF35A31BF1AB430161205D25840B /* NotificationPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		822335CDBDB3D4958F3B8E9AFB9FD7BD /* SensorPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = ECD8172DBEA80B29A30DAF15954C801B /* SensorPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8454C753279EEF19855D0EAEA298899C /* MediaLibraryPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E93ED7270500E00498A813022E7E196 /* MediaLibraryPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		866E7A2597893B3570C5AB0A5C989D5C /* replay_kit_launcher-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 95574C9603666046F113557AB471ED6C /* replay_kit_launcher-dummy.m */; };
+		8B7D3980B41444EA12C4C417099D00B5 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF43A832D857FD32A01D7416FC888E72 /* Listener.swift */; };
+		8F28BFAE157020B598DF070E17230714 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE3ABF8F7140E9DAD9CDE2D76D2B071 /* DeviceManager.swift */; };
+		91180B453890189C4DB99A9C03B63496 /* PermissionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 483899B5D94461F13633B2F925667AB2 /* PermissionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		94029603A587C6BCCBE352645D0880B4 /* AudioVideoPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689667C40F7D6B96E0C23AF0B642D6C /* AudioVideoPermissionStrategy.m */; };
+		94E20C8673079558459E0E6F4835D27D /* EventPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E34B82A33F05E8C91BE40E2AEDCF29C /* EventPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98E6428827A21F7F228522DB044492F0 /* CommonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C518AF36FCA5A3F89D831A6C00296 /* CommonUtils.swift */; };
+		9A8A13AB28A15C66D064C43953EE806C /* FLTPathProviderPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = E3ECBDB0ED947623DD103D83DB863AD1 /* FLTPathProviderPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9CB38B329A80A39F86E19575D5743802 /* PhonePermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C7A00AB2E3BB7DE28DACF1B3835E7D2B /* PhonePermissionStrategy.m */; };
+		AAFDC3BDE1B8BF3ADEBAD51F18223C05 /* txg_log.h in Headers */ = {isa = PBXBuildFile; fileRef = A0227A5DEAC978E8D7200F8BE7A8FE18 /* txg_log.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ABFF9E96E57BC7D996200183AA718C3A /* path_provider-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E4CFD9EE325526F5935F307AEC393E /* path_provider-dummy.m */; };
+		B14C4210E7E98AA09DCB862F65725FA1 /* JsonUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623E72DF5645DE67E184D374A876C018 /* JsonUtil.swift */; };
+		B17D5107B009FEBC4FB836E9AB8AC5F7 /* StoragePermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B11318E7711A3FBFE714AB9D09BE93E /* StoragePermissionStrategy.m */; };
+		B1E8E63ED1DB917471C71292D1831F9A /* PermissionHandlerEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 38569150C5F0EC13BE2C0EA82D30DDE2 /* PermissionHandlerEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B2B17358057918D4BB5C281C87955D1D /* PhotoPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = C0CB29DDFF829EF6784D743A2494DA08 /* PhotoPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B84BF83A656D7878A97E20394BB613DA /* AudioEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03178917D1F354DECB4B683E61080EAD /* AudioEffectManager.swift */; };
+		BD3A24BE3174398D7EAA9DD5FF6E9237 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29DB92D751C5329027B28C1BBFE6F81 /* CloudManager.swift */; };
+		BE45CF86BC31D1DE8A33D0E126BA6B0F /* tencent_trtc_cloud-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B2A5F5A67D1C4A5D57BDB43AFD65A26 /* tencent_trtc_cloud-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C26C62210E77917300FB47C76FC55A45 /* permission_handler-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D07BB79CC00CD81C3D557A219AAF201A /* permission_handler-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C398DD021EDCC5CBC88D1443CB90F489 /* PhonePermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = C040DA058BE9EE82BA28B431BAE4B256 /* PhonePermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C58D9B878EF86596A3D4D985E6384999 /* PermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = EEA08C352A17BA59B310808247CC105E /* PermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C712F82E8F21FC6C3BA0FE61E538E227 /* UnknownPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3568D7A047E444CA0FC80F96484BD774 /* UnknownPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC5064DBFCE9D919BC07EF3E62AEB658 /* EventPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC45529930A2191C611FBF43E6C8E94 /* EventPermissionStrategy.m */; };
+		CCC0C30D33FC83FC89D0FDBFA93DE5ED /* replay_kit_launcher-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DD89F2B8BFE4B21C48915BC031A8A622 /* replay_kit_launcher-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CD63A4896E8523E5A671D46659422E74 /* tencent_trtc_cloud-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7883402D3B358371AAA07011EBD433C5 /* tencent_trtc_cloud-dummy.m */; };
+		DB8304E97CBCD397BFBB00BD60781FA7 /* BluetoothPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E485D2433CBB14BC1220F26EC4BE7E0 /* BluetoothPermissionStrategy.m */; };
+		E1EFF7293BA4EE66DB8C76834B3C6DC3 /* ContactPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = CEFA3B7C301F00F00BA9C79A688D07A6 /* ContactPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E3785A6DDE2F5D0B9EF3FF7C4C088395 /* LocationPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0121182900E7D2B633CF99F104D0967D /* LocationPermissionStrategy.m */; };
+		E47A69F1E213E45A9B1D78A57F56CF7B /* PermissionHandlerPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFADB8FEEDEC085F3E7B65B31220A36 /* PermissionHandlerPlugin.m */; };
+		E7200EB5652CA168DE68F9B11141A0B8 /* ListenerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4831D59233F270E60B21C1F1A9B796 /* ListenerType.swift */; };
 		E8A36E6F3E14C5749D59AC156DB4DFDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		E8AA85E447BBF206EC15EA0B2E908E3D /* Codec.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A3E57D8E522FAF1DC593CB9E8F3261 /* Codec.m */; };
 		EAF0CD42EB9770B25E43089462FFA65C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		EC9CF016618C5D50FFFCD71F0F987D76 /* PermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8C12AD9C3928F72FC6EA8EBB9795EF /* PermissionManager.m */; };
-		F62B7230E52203D6CA0F853E8F4121DD /* TencentRtcPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = E22E9EBADDDFB76DD940CA1B920D433A /* TencentRtcPlugin.m */; };
-		F965B06CD8A4BB9A252DA20E04830DE6 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF6918FE1B18BC8AAF4C3BCC87B5507 /* Listener.swift */; };
-		F96FFDF9BF7F14A2DE29CB1F2DB9B45D /* path_provider-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A0611E65E1F54873643C9519A81AD18D /* path_provider-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FB650BF7EB373939AB4B7D5B056D8981 /* BeautyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085A16BDB448719E427D51EAC2B52682 /* BeautyManager.swift */; };
-		FEF7A605A9B5527F3ACC99035D0AD1AB /* SensorPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2AEC4191B8033DE0F2BB0990B2CA05 /* SensorPermissionStrategy.m */; };
+		F7090EF78580E6F79A42E244E34A3425 /* TencentVideoTextureRender.h in Headers */ = {isa = PBXBuildFile; fileRef = ED1E8AE76047B84BC15325BC34368DD6 /* TencentVideoTextureRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F7DD4F64573AE9D655AEA1E921BFC0F4 /* PermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFC41B1A358ECEF4937C259ED6EC960 /* PermissionManager.m */; };
+		F96FFDF9BF7F14A2DE29CB1F2DB9B45D /* path_provider-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E73332A06A1E2F5D932E543135415218 /* path_provider-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0B660DE78F45F0C4A9300DF8C5E31ED9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
-		};
-		61A408041168D515669079CD86DF5DEC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
-		};
-		65D38D2046591C1D048FA7634F7FA8DE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
-		};
-		72BBD21AB5C0245EB0C14D9A09E91201 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F7FA33F6627F67543E21479491D5E3DD;
-			remoteInfo = TXLiteAVSDK_TRTC;
-		};
-		7A18ACC2221A9A7D556542993B2A6695 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 12B859C8AB1E1F60F394E9FE420C97D1;
-			remoteInfo = tencent_trtc_cloud;
-		};
-		9FD67995B1D35984A9B6785336FD2EFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1E04911DB764264DDC82F2884A71EB04;
-			remoteInfo = replay_kit_launcher;
-		};
-		A07265DE2F8C1643CD8AC89523DECD32 /* PBXContainerItemProxy */ = {
+		0E737547B9D759F8D11F631EED243876 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 829F2751587AAC5B031CFBFF4DFF38AF;
 			remoteInfo = permission_handler;
 		};
-		DAB7FCE402DE8124EB7FED9B38B92A28 /* PBXContainerItemProxy */ = {
+		1AB9EEBA06A19108F00BD907803C6D98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
+			remoteGlobalIDString = 12B859C8AB1E1F60F394E9FE420C97D1;
+			remoteInfo = tencent_trtc_cloud;
 		};
-		E29F8DE8695CDDC8C67A93DD893D13D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
-			remoteInfo = Flutter;
-		};
-		F181AD2544363CBF4965F0D2DE447E4F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B52BACC7A506ACAE698D47A26EBD7CFB;
-			remoteInfo = path_provider;
-		};
-		F1839408242DEAE1E4ECAE4DB62A5B08 /* PBXContainerItemProxy */ = {
+		28665EDECB1210D9F00ACF402F5F5AAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F7FA33F6627F67543E21479491D5E3DD;
 			remoteInfo = TXLiteAVSDK_TRTC;
 		};
+		692C833E98E4BAA98079D9D9CF07206D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		78ADB23E8E414C60467CF933362BBACE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E04911DB764264DDC82F2884A71EB04;
+			remoteInfo = replay_kit_launcher;
+		};
+		7B7226D3CE2B7E065C752D8B73045791 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7FA33F6627F67543E21479491D5E3DD;
+			remoteInfo = TXLiteAVSDK_TRTC;
+		};
+		7CC2DC699CCA0AC82D6FCC6134DF6804 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		B47F575FF01FEECD96A8CCD5C09701A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		D1B6E24C903797DD80867A634D1D7AB2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		E03A4004F0E25A4E111796D4C9969CB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
+		};
+		E4CAD3D9EE8AAC5071854110F340AF26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B52BACC7A506ACAE698D47A26EBD7CFB;
+			remoteInfo = path_provider;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00C9E3DFAD6D3B1B297DD0C888F4CEA3 /* StoragePermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = StoragePermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/StoragePermissionStrategy.h"; sourceTree = "<group>"; };
+		0121182900E7D2B633CF99F104D0967D /* LocationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LocationPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/LocationPermissionStrategy.m"; sourceTree = "<group>"; };
 		0182E2EE45ACF1E747409ABAC68CA191 /* TXVideoCustomProcessDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXVideoCustomProcessDelegate.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXVideoCustomProcessDelegate.h; sourceTree = "<group>"; };
-		02A9C8CEAC33D37DBAC50656DC6EAC24 /* PhonePermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhonePermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhonePermissionStrategy.h"; sourceTree = "<group>"; };
-		08472B5BB470F762F6900C5041019AE0 /* LocationPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LocationPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/LocationPermissionStrategy.h"; sourceTree = "<group>"; };
-		085A16BDB448719E427D51EAC2B52682 /* BeautyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeautyManager.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/manager/BeautyManager.swift"; sourceTree = "<group>"; };
-		0B33014AC08336592B1DAF5CF9981509 /* TencentRtcPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TencentRtcPlugin.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/TencentRtcPlugin.h"; sourceTree = "<group>"; };
+		03178917D1F354DECB4B683E61080EAD /* AudioEffectManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioEffectManager.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/manager/AudioEffectManager.swift"; sourceTree = "<group>"; };
+		0B106C10B07574EDB6D43E327F1249B0 /* StoragePermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = StoragePermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/StoragePermissionStrategy.h"; sourceTree = "<group>"; };
 		0F5B7036D59F52A636AC73F301007F78 /* TXLiteAVSDK_TRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TXLiteAVSDK_TRTC.debug.xcconfig; sourceTree = "<group>"; };
 		1029E663B10DC3A9B07C5BA152BADA7C /* permission_handler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = permission_handler.framework; path = permission_handler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		10B280334D74299C234B9CAD569DC6E5 /* TXLivePlayListener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLivePlayListener.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLivePlayListener.h; sourceTree = "<group>"; };
 		1258FAE4B51CAA5A2A105F33F57A5EE0 /* TRTCCloudDef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TRTCCloudDef.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TRTCCloudDef.h; sourceTree = "<group>"; };
+		137B7D377E28DFFC734B87CBC59BA6DC /* replay_kit_launcher-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "replay_kit_launcher-prefix.pch"; sourceTree = "<group>"; };
 		15DB87C29FE6CC793EF53D458CE0642C /* TXLivePlayConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLivePlayConfig.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLivePlayConfig.h; sourceTree = "<group>"; };
-		1A5856A73AB7F2C0F638DD6FC12A2D47 /* replay_kit_launcher.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = replay_kit_launcher.modulemap; sourceTree = "<group>"; };
-		1B3BB1213B8C593C7F442DC2211D96FB /* ListenerType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ListenerType.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/enums/ListenerType.swift"; sourceTree = "<group>"; };
-		1F550B32BC6D9837A4466C601E095F00 /* UnknownPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UnknownPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/UnknownPermissionStrategy.h"; sourceTree = "<group>"; };
-		21EC76DBB83A38E11E2D426A03DD30EB /* PermissionHandlerEnums.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionHandlerEnums.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerEnums.h"; sourceTree = "<group>"; };
-		2484498B6E3237B8B65BFCF0DB8C61E7 /* PhotoPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhotoPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhotoPermissionStrategy.m"; sourceTree = "<group>"; };
-		24F534B159C4629958256D7CF18EFC8B /* permission_handler.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = permission_handler.podspec; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/permission_handler.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		260116551F24D1D4E7AA5569FBBE71D4 /* SpeechPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SpeechPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SpeechPermissionStrategy.h"; sourceTree = "<group>"; };
-		266FBAFD8546D6D8345D6A60EC4805DE /* tencent_trtc_cloud-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "tencent_trtc_cloud-umbrella.h"; sourceTree = "<group>"; };
-		27324E6E376477F44BE1D84951B8F339 /* replay_kit_launcher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "replay_kit_launcher-Info.plist"; sourceTree = "<group>"; };
-		28A51A10505E576B96EFBCE19C641692 /* MediaLibraryPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MediaLibraryPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/MediaLibraryPermissionStrategy.m"; sourceTree = "<group>"; };
+		160596FAFBA552A328949D9B404D4E8D /* path_provider-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "path_provider-Info.plist"; sourceTree = "<group>"; };
+		1927C2163436BEF9957F8B0EB0CA9F8F /* path_provider.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = path_provider.podspec; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/path_provider.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1CD79E5BEC207D8A67C8150548E37061 /* SpeechPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SpeechPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SpeechPermissionStrategy.m"; sourceTree = "<group>"; };
+		1CFADB8FEEDEC085F3E7B65B31220A36 /* PermissionHandlerPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PermissionHandlerPlugin.m; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerPlugin.m"; sourceTree = "<group>"; };
+		1E485D2433CBB14BC1220F26EC4BE7E0 /* BluetoothPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BluetoothPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/BluetoothPermissionStrategy.m"; sourceTree = "<group>"; };
+		1E93ED7270500E00498A813022E7E196 /* MediaLibraryPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MediaLibraryPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/MediaLibraryPermissionStrategy.h"; sourceTree = "<group>"; };
+		235F00F57B9B56B493265ED7D227D3D2 /* MediaLibraryPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MediaLibraryPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/MediaLibraryPermissionStrategy.m"; sourceTree = "<group>"; };
+		282528CA3FF7A996C737272BA47DC337 /* BeautyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeautyManager.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/manager/BeautyManager.swift"; sourceTree = "<group>"; };
+		28BAF630FD4284E6600CDC76E9D4D515 /* permission_handler-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "permission_handler-prefix.pch"; sourceTree = "<group>"; };
+		28E6A08E21189C2EE89E0FB0472DB8E6 /* SensorPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SensorPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SensorPermissionStrategy.m"; sourceTree = "<group>"; };
 		29BE8E2E409E40A16BCAA0C3CBC2D1DF /* TXLiveSDKTypeDef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveSDKTypeDef.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveSDKTypeDef.h; sourceTree = "<group>"; };
-		2B5CF748CCDCCDAFE33414C28ED99692 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CommonUtils.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/utils/CommonUtils.swift"; sourceTree = "<group>"; };
-		2C162A667DDC81ACCB775CA8B7ACB2AA /* replay_kit_launcher-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "replay_kit_launcher-prefix.pch"; sourceTree = "<group>"; };
-		2DE994C10AABFC217DCC90CC8E7C1CFB /* path_provider-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "path_provider-prefix.pch"; sourceTree = "<group>"; };
+		2AE0EB50B65D62BDBE4EFB6A6BC63789 /* path_provider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = path_provider.release.xcconfig; sourceTree = "<group>"; };
 		317C26B9A7CEDD34ADE8F37FAAB7AC20 /* Pods-Runner-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Runner-frameworks.sh"; sourceTree = "<group>"; };
-		3410D55C20E7154B1A26CAE305712612 /* BluetoothPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BluetoothPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/BluetoothPermissionStrategy.m"; sourceTree = "<group>"; };
+		32E0AB9789A5C1EEB23509AA08B528B3 /* replay_kit_launcher.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = replay_kit_launcher.podspec; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/replay_kit_launcher.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3465F267C4AEC14C3B88F1337A4BFC0A /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TXLiteAVSDK_TRTC.framework; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
-		3623A0108A96F0F21AFB2D910790727B /* TRTCCloudVideoPlatformView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TRTCCloudVideoPlatformView.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/view/TRTCCloudVideoPlatformView.swift"; sourceTree = "<group>"; };
-		3B128C441C7F641C0001FD6F00707681 /* NotificationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NotificationPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/NotificationPermissionStrategy.m"; sourceTree = "<group>"; };
-		3BC6F500CE24C1C34AF721624F7C467E /* Codec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Codec.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/util/Codec.h"; sourceTree = "<group>"; };
-		3CF6918FE1B18BC8AAF4C3BCC87B5507 /* Listener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Listener.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/listener/Listener.swift"; sourceTree = "<group>"; };
-		3D5C35D9D44A2DB036B847BAABDA4B32 /* BluetoothPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BluetoothPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/BluetoothPermissionStrategy.h"; sourceTree = "<group>"; };
-		41CEE4488594E0DA33F3D6ED10EE415E /* permission_handler.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = permission_handler.modulemap; sourceTree = "<group>"; };
+		3568D7A047E444CA0FC80F96484BD774 /* UnknownPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UnknownPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/UnknownPermissionStrategy.h"; sourceTree = "<group>"; };
+		375212AD8AA2E56828CA662A794BDD37 /* TencentRtcPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TencentRtcPlugin.m; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/TencentRtcPlugin.m"; sourceTree = "<group>"; };
+		38569150C5F0EC13BE2C0EA82D30DDE2 /* PermissionHandlerEnums.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionHandlerEnums.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerEnums.h"; sourceTree = "<group>"; };
+		3B2A5F5A67D1C4A5D57BDB43AFD65A26 /* tencent_trtc_cloud-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "tencent_trtc_cloud-umbrella.h"; sourceTree = "<group>"; };
+		415C7A0CCCCD35085475954106B55E26 /* replay_kit_launcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = replay_kit_launcher.debug.xcconfig; sourceTree = "<group>"; };
 		42201B5500B1923EE6E39187DA9057A0 /* Flutter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter.release.xcconfig; sourceTree = "<group>"; };
-		424FE82A1D13D3F7CB277180B02B4BAA /* path_provider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = path_provider.release.xcconfig; sourceTree = "<group>"; };
-		48A3E57D8E522FAF1DC593CB9E8F3261 /* Codec.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Codec.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/util/Codec.m"; sourceTree = "<group>"; };
-		4A98782FAA8CCF946128C593BB924AD1 /* SensorPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SensorPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SensorPermissionStrategy.h"; sourceTree = "<group>"; };
-		4C6D249C797DE9F89EE47212EA5A75FD /* PermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PermissionStrategy.h"; sourceTree = "<group>"; };
-		4F9AF67972591186C38E474B1002E5CF /* replay_kit_launcher-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "replay_kit_launcher-umbrella.h"; sourceTree = "<group>"; };
+		42BCE593F32E40EA1EFE7CAD00C1A445 /* permission_handler-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "permission_handler-dummy.m"; sourceTree = "<group>"; };
+		483479BE4A19292901FBB044F1D80936 /* TencentVideoTextureRender.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = TencentVideoTextureRender.mm; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/view/TencentVideoTextureRender.mm"; sourceTree = "<group>"; };
+		483899B5D94461F13633B2F925667AB2 /* PermissionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionManager.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionManager.h"; sourceTree = "<group>"; };
+		48C565308FDBB9E3EFF222AC5A46DA8E /* tencent_trtc_cloud-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "tencent_trtc_cloud-prefix.pch"; sourceTree = "<group>"; };
+		4B11318E7711A3FBFE714AB9D09BE93E /* StoragePermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = StoragePermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/StoragePermissionStrategy.m"; sourceTree = "<group>"; };
 		4FD4E1A1A6FDB88B87F0AB1A272FA632 /* tencent_trtc_cloud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = tencent_trtc_cloud.framework; path = tencent_trtc_cloud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51825CD8F0558EFA53D9510F0E5BFA16 /* Pods-Runner-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Runner-Info.plist"; sourceTree = "<group>"; };
-		5488E54A2B880A4BF80B2068933E5013 /* TencentVideoTextureRender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TencentVideoTextureRender.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/view/TencentVideoTextureRender.h"; sourceTree = "<group>"; };
-		5507C1138C617980ADE3815C60BC457D /* EventPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EventPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/EventPermissionStrategy.h"; sourceTree = "<group>"; };
 		55E47105E5E6A156E1FA0041A31246FC /* TXLiveBase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveBase.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveBase.h; sourceTree = "<group>"; };
-		5932A54BB8B44A18E2971F1C73D1E2B9 /* replay_kit_launcher.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = replay_kit_launcher.podspec; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/replay_kit_launcher.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		5B199DBC746B6F4B35FF1F036BCE01DD /* StoragePermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = StoragePermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/StoragePermissionStrategy.m"; sourceTree = "<group>"; };
-		5BD25126247E58E7FDDB8A29E3D25681 /* permission_handler-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "permission_handler-prefix.pch"; sourceTree = "<group>"; };
-		5D8C12AD9C3928F72FC6EA8EBB9795EF /* PermissionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PermissionManager.m; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionManager.m"; sourceTree = "<group>"; };
+		5689667C40F7D6B96E0C23AF0B642D6C /* AudioVideoPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AudioVideoPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/AudioVideoPermissionStrategy.m"; sourceTree = "<group>"; };
+		577912409EB792DACFD1B0BF865D2923 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/LICENSE"; sourceTree = "<group>"; };
+		6041D4C2B16486E7D1AC961329129644 /* ReplayKitLauncherPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ReplayKitLauncherPlugin.m; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/Classes/ReplayKitLauncherPlugin.m"; sourceTree = "<group>"; };
+		623E72DF5645DE67E184D374A876C018 /* JsonUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JsonUtil.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/utils/JsonUtil.swift"; sourceTree = "<group>"; };
+		62DD857BABFB0157EAA55506E97E8484 /* tencent_trtc_cloud-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "tencent_trtc_cloud-Info.plist"; sourceTree = "<group>"; };
 		669E8F25E1897672BDB80B7EB784DA24 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Runner.framework; path = "Pods-Runner.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A4157BFB47283248D09C86FC6D48A0F /* tencent_trtc_cloud-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "tencent_trtc_cloud-dummy.m"; sourceTree = "<group>"; };
-		6BE9ABA49D434C1D19BD66B8CD3081AF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/LICENSE"; sourceTree = "<group>"; };
-		6E50C461E8CB248A6769091AA86A4D69 /* ReplayKitLauncherPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ReplayKitLauncherPlugin.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/Classes/ReplayKitLauncherPlugin.h"; sourceTree = "<group>"; };
-		6EB115F3F45436180B98DF7A60E00F0A /* AudioVideoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AudioVideoPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/AudioVideoPermissionStrategy.h"; sourceTree = "<group>"; };
+		69B87AACF752F2818B698CCED7A56411 /* BluetoothPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BluetoothPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/BluetoothPermissionStrategy.h"; sourceTree = "<group>"; };
+		6EABCD3CF8A5E8EF544036C76976226B /* path_provider-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "path_provider-prefix.pch"; sourceTree = "<group>"; };
 		6F73E7FF9272BCD2FB4B2D2F98ADC7AE /* TRTCStatistics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TRTCStatistics.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TRTCStatistics.h; sourceTree = "<group>"; };
-		6F8390020D10E6C6CD1D14A5B6209933 /* FLTPathProviderPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLTPathProviderPlugin.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/Classes/FLTPathProviderPlugin.h"; sourceTree = "<group>"; };
 		701F1B263D8B10F4C670147C4221B9FD /* TXAudioCustomProcessDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXAudioCustomProcessDelegate.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXAudioCustomProcessDelegate.h; sourceTree = "<group>"; };
+		702D1D1323C50C7AE2C80F451E292143 /* TencentRtcPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TencentRtcPlugin.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/TencentRtcPlugin.h"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		731852FEAA2FA773C9E9AB6569C8C0BF /* PhonePermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhonePermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhonePermissionStrategy.m"; sourceTree = "<group>"; };
-		738BD3CC6F1660E263067BBA6A545CC7 /* txg_log.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = txg_log.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/utils/txg_log.m"; sourceTree = "<group>"; };
-		76796702E6C8887081A78AF47A007FB0 /* TencentTRTCCloud.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TencentTRTCCloud.swift; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/TencentTRTCCloud.swift"; sourceTree = "<group>"; };
+		7883402D3B358371AAA07011EBD433C5 /* tencent_trtc_cloud-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "tencent_trtc_cloud-dummy.m"; sourceTree = "<group>"; };
 		788E7C5BD0F650252EBAFC0CBB195EFD /* TRTCCloudDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TRTCCloudDelegate.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TRTCCloudDelegate.h; sourceTree = "<group>"; };
+		7A56DEDB4EFCD2A7672F0466D9BFB168 /* PhotoPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhotoPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhotoPermissionStrategy.m"; sourceTree = "<group>"; };
 		7B3C932BD54DBB963102A89E0F9E3948 /* Pods-Runner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Runner-dummy.m"; sourceTree = "<group>"; };
-		7B8DF3701A3135DA1ABE59000D074800 /* tencent_trtc_cloud.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = tencent_trtc_cloud.modulemap; sourceTree = "<group>"; };
-		7B98D5041619B6019EEB9E5ADF17F103 /* PermissionHandlerPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PermissionHandlerPlugin.m; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerPlugin.m"; sourceTree = "<group>"; };
-		7D5C49C8BB031C421A50024A00255678 /* txg_log.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = txg_log.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/utils/txg_log.h"; sourceTree = "<group>"; };
-		801343865F773FC7C23F01F4DEB341D9 /* replay_kit_launcher-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "replay_kit_launcher-dummy.m"; sourceTree = "<group>"; };
-		806C11B16FCBACEFD6304708EE69F591 /* LocationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LocationPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/LocationPermissionStrategy.m"; sourceTree = "<group>"; };
+		7BFCC0A1FD6E164DB02EA4AA4457497D /* LocationPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LocationPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/LocationPermissionStrategy.h"; sourceTree = "<group>"; };
+		7D0DBD84B997DB55D8698DD6FCB8AE22 /* permission_handler.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = permission_handler.podspec; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/permission_handler.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7E34B82A33F05E8C91BE40E2AEDCF29C /* EventPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EventPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/EventPermissionStrategy.h"; sourceTree = "<group>"; };
+		81123933C788172EACD4FE6FB4CEA388 /* tencent_trtc_cloud.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = tencent_trtc_cloud.podspec; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/tencent_trtc_cloud.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8154BA0E688F6345D3B6D5D53DA0111B /* Flutter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter.debug.xcconfig; sourceTree = "<group>"; };
-		829718D1092B1BB52C990BF95E4792CC /* UnknownPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = UnknownPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/UnknownPermissionStrategy.m"; sourceTree = "<group>"; };
-		837D5B1C08BFFD23FBC9ACE1EDDFBA75 /* AudioEffectManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioEffectManager.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/manager/AudioEffectManager.swift"; sourceTree = "<group>"; };
+		81B3518F3822A9AD309E6B37302B5FA6 /* txg_log.c */ = {isa = PBXFileReference; includeInIndex = 1; name = txg_log.c; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/utils/txg_log.c"; sourceTree = "<group>"; };
+		867AC437ADCB59FE8F7B3303F91B934E /* TencentTRTCCloud.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TencentTRTCCloud.swift; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/TencentTRTCCloud.swift"; sourceTree = "<group>"; };
 		86D240D7176FB414A04848219E88E8EF /* TXDeviceManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXDeviceManager.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXDeviceManager.h; sourceTree = "<group>"; };
-		86FDB2DF96D39E3E06E1F99E106B8B62 /* tencent_trtc_cloud.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = tencent_trtc_cloud.debug.xcconfig; sourceTree = "<group>"; };
+		871F8057604E86F9229D7057D2C93997 /* path_provider.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = path_provider.modulemap; sourceTree = "<group>"; };
+		8726237D3908177575DE375DB22A90C7 /* permission_handler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler.release.xcconfig; sourceTree = "<group>"; };
+		8740A0D0CB5BCA8B47ECE4E42686C45E /* permission_handler.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = permission_handler.modulemap; sourceTree = "<group>"; };
 		88F00E8C16AED062C3BFA4814206A993 /* TXLiteAVSDK_TRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TXLiteAVSDK_TRTC.release.xcconfig; sourceTree = "<group>"; };
-		8F060ED0BD82BFD1A3F4578695572170 /* replay_kit_launcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = replay_kit_launcher.debug.xcconfig; sourceTree = "<group>"; };
-		8F54B93AF06BF94676AE1245B8AEB5C8 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/LICENSE"; sourceTree = "<group>"; };
-		95C6D56C7CF7844EE1D6F76D55F0EA03 /* JsonUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JsonUtil.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/utils/JsonUtil.swift"; sourceTree = "<group>"; };
+		8A91E7E24A9D7034EF3E8EE5F1E88024 /* path_provider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = path_provider.debug.xcconfig; sourceTree = "<group>"; };
+		8BFC41B1A358ECEF4937C259ED6EC960 /* PermissionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PermissionManager.m; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionManager.m"; sourceTree = "<group>"; };
+		8DEB313EE3BD2DED6E9227E31847B367 /* ContactPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ContactPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/ContactPermissionStrategy.m"; sourceTree = "<group>"; };
+		900CEC4DFEA691F835F86DA19ED5306E /* replay_kit_launcher.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = replay_kit_launcher.modulemap; sourceTree = "<group>"; };
+		936B2A977C5C4DC6F362D9FA7D195080 /* FLTPathProviderPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FLTPathProviderPlugin.m; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/Classes/FLTPathProviderPlugin.m"; sourceTree = "<group>"; };
+		95574C9603666046F113557AB471ED6C /* replay_kit_launcher-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "replay_kit_launcher-dummy.m"; sourceTree = "<group>"; };
 		96BF45FBE2BC9AD7B2D7E56D01B5EE46 /* Pods-Runner-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Runner-umbrella.h"; sourceTree = "<group>"; };
-		9724D26D38E481EC91D9B462BD7502B1 /* permission_handler-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "permission_handler-umbrella.h"; sourceTree = "<group>"; };
-		9AE36606359EEAF0F9D3E5F6B6049B39 /* tencent_trtc_cloud-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "tencent_trtc_cloud-Info.plist"; sourceTree = "<group>"; };
+		970C518AF36FCA5A3F89D831A6C00296 /* CommonUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CommonUtils.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/utils/CommonUtils.swift"; sourceTree = "<group>"; };
+		9C6119BD5FB48EDDC59521B55F6BD5B4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/LICENSE"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9F786BADC4E27E726030CF7A1D3A8134 /* CloudManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CloudManager.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/manager/CloudManager.swift"; sourceTree = "<group>"; };
 		9F79F8269DC34AC56BB3D1D9652C0D86 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
-		A0611E65E1F54873643C9519A81AD18D /* path_provider-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "path_provider-umbrella.h"; sourceTree = "<group>"; };
-		A2E3D9AF97FE328E3A5F4322D8C4B7A2 /* path_provider-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "path_provider-dummy.m"; sourceTree = "<group>"; };
+		A0227A5DEAC978E8D7200F8BE7A8FE18 /* txg_log.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = txg_log.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/utils/txg_log.h"; sourceTree = "<group>"; };
+		A406C73E3267FC1D98D5E08E396E419E /* tencent_trtc_cloud.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = tencent_trtc_cloud.debug.xcconfig; sourceTree = "<group>"; };
 		A590B77A45A3E391B01E81ABA78DC2C3 /* TRTCCloud.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TRTCCloud.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TRTCCloud.h; sourceTree = "<group>"; };
 		A802361D5F80D1D4234F40623BAA694C /* TXLiteAVEncodedDataProcessingListener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiteAVEncodedDataProcessingListener.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiteAVEncodedDataProcessingListener.h; sourceTree = "<group>"; };
-		A8C6D55AF29C76B8E5449D5662BA963B /* permission_handler-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "permission_handler-Info.plist"; sourceTree = "<group>"; };
+		A86D5E9E7BF63536C18111BD30900128 /* SpeechPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SpeechPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SpeechPermissionStrategy.h"; sourceTree = "<group>"; };
 		AAD7F6F23B677E3D5C766D4C0651F224 /* Flutter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Flutter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		AD12E8A02E09D0C8EAC5BDF40D6D3EAC /* EventPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EventPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/EventPermissionStrategy.m"; sourceTree = "<group>"; };
-		AEDCF0174028038D1D7DDD4010CBCA4F /* path_provider.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = path_provider.modulemap; sourceTree = "<group>"; };
+		ABE3ABF8F7140E9DAD9CDE2D76D2B071 /* DeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceManager.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/manager/DeviceManager.swift"; sourceTree = "<group>"; };
+		ADBD35B232B90B3F02F1E1788D8915BD /* replay_kit_launcher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "replay_kit_launcher-Info.plist"; sourceTree = "<group>"; };
 		B0388AAA794C5168D28BA659581B347E /* TXLiveRecordListener.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveRecordListener.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveRecordListener.h; sourceTree = "<group>"; };
-		B28589DDB32A11B613559346BCCC25C7 /* permission_handler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler.debug.xcconfig; sourceTree = "<group>"; };
-		B378874F4F3FC6A516C653E7D0AC3A8E /* ReplayKitLauncherPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ReplayKitLauncherPlugin.m; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/Classes/ReplayKitLauncherPlugin.m"; sourceTree = "<group>"; };
-		B626228DB95F17308EECED3BF7C5B509 /* TencentVideoTextureRender.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = TencentVideoTextureRender.mm; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/view/TencentVideoTextureRender.mm"; sourceTree = "<group>"; };
-		B6878E567DCDCC80D76D0587AAD73956 /* PermissionHandlerPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionHandlerPlugin.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerPlugin.h"; sourceTree = "<group>"; };
-		B716048228396F56A361B05B98AFD517 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/LICENSE"; sourceTree = "<group>"; };
+		B29DB92D751C5329027B28C1BBFE6F81 /* CloudManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CloudManager.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/manager/CloudManager.swift"; sourceTree = "<group>"; };
+		B2D76AC14C17D1225C887A12BDF16050 /* TRTCCloudVideoPlatformView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TRTCCloudVideoPlatformView.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/view/TRTCCloudVideoPlatformView.swift"; sourceTree = "<group>"; };
 		BBE8C8B047F8860D64C9AB81C90239C7 /* TXLiveSDKEventDef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveSDKEventDef.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveSDKEventDef.h; sourceTree = "<group>"; };
-		BD206429164CDF60F5E75B09E0441011 /* replay_kit_launcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = replay_kit_launcher.release.xcconfig; sourceTree = "<group>"; };
+		BCB3FF7228848D6F368BC2FFAE6C6D92 /* NotificationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NotificationPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/NotificationPermissionStrategy.m"; sourceTree = "<group>"; };
+		BE4831D59233F270E60B21C1F1A9B796 /* ListenerType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ListenerType.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/enums/ListenerType.swift"; sourceTree = "<group>"; };
 		BE73FC441E3FA1CD128D0735EE57657D /* TXLiteAVBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiteAVBuffer.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiteAVBuffer.h; sourceTree = "<group>"; };
+		BEC45529930A2191C611FBF43E6C8E94 /* EventPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EventPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/EventPermissionStrategy.m"; sourceTree = "<group>"; };
 		C0051CF0139DC9D55FFCD08BFB3C6823 /* TXAudioEffectManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXAudioEffectManager.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXAudioEffectManager.h; sourceTree = "<group>"; };
-		C236A9A2E66BE50B51C4D0AE8EB871D3 /* path_provider-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "path_provider-Info.plist"; sourceTree = "<group>"; };
-		C2CD5B9F47BB62A2606C4218CFBA363A /* PhotoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhotoPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhotoPermissionStrategy.h"; sourceTree = "<group>"; };
-		C39AF190A16AF1028C2F3A4A0D601354 /* PermissionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionManager.h; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionManager.h"; sourceTree = "<group>"; };
-		C6628791BD8CC5B82C3F0C8EA842E804 /* txg_log.c */ = {isa = PBXFileReference; includeInIndex = 1; name = txg_log.c; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/utils/txg_log.c"; sourceTree = "<group>"; };
+		C040DA058BE9EE82BA28B431BAE4B256 /* PhonePermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhonePermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhonePermissionStrategy.h"; sourceTree = "<group>"; };
+		C0B5B5B8754304026478313E8800D1F9 /* UnknownPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = UnknownPermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/UnknownPermissionStrategy.m"; sourceTree = "<group>"; };
+		C0CB29DDFF829EF6784D743A2494DA08 /* PhotoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhotoPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhotoPermissionStrategy.h"; sourceTree = "<group>"; };
 		C6EA98402A94995D022D330B64B5203D /* Pods-Runner-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Runner-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C75FAB25BD90F5841CA033A07E409D01 /* replay_kit_launcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = replay_kit_launcher.framework; path = replay_kit_launcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A00AB2E3BB7DE28DACF1B3835E7D2B /* PhonePermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhonePermissionStrategy.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PhonePermissionStrategy.m"; sourceTree = "<group>"; };
+		CDA0301A3DC4CD5CD443C61C9247CBE9 /* PermissionHandlerPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionHandlerPlugin.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/PermissionHandlerPlugin.h"; sourceTree = "<group>"; };
 		CDAECCF4B5E08124ED410F09FD5A5DF9 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		CE22E87D1D90810796661BF2E9092170 /* Codec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Codec.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/util/Codec.h"; sourceTree = "<group>"; };
+		CEFA3B7C301F00F00BA9C79A688D07A6 /* ContactPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ContactPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/ContactPermissionStrategy.h"; sourceTree = "<group>"; };
 		CFCE5D47660515234FEAC6F3FAA56DFE /* TXLivePlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLivePlayer.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLivePlayer.h; sourceTree = "<group>"; };
-		D2CDA753D17D85B2AA10B378743287D0 /* tencent_trtc_cloud-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "tencent_trtc_cloud-prefix.pch"; sourceTree = "<group>"; };
+		D07BB79CC00CD81C3D557A219AAF201A /* permission_handler-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "permission_handler-umbrella.h"; sourceTree = "<group>"; };
+		D23FDE39CCC3B6E02A163018677548DD /* permission_handler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler.debug.xcconfig; sourceTree = "<group>"; };
 		D2FA70CA298C392CB8332ADEEDD1CE85 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		D502750D9DF70383C4F086D51C3EDCE2 /* ContactPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ContactPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/ContactPermissionStrategy.m"; sourceTree = "<group>"; };
+		D60FCC6E8474C9FFFE591C0A32C1786F /* tencent_trtc_cloud.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = tencent_trtc_cloud.release.xcconfig; sourceTree = "<group>"; };
 		D7CB72A02EC6E55BFC74A9C6B5A3BF32 /* TXLiteAVCode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiteAVCode.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiteAVCode.h; sourceTree = "<group>"; };
-		D88F13A468E4CE304C93D9CF7ED07802 /* permission_handler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler.release.xcconfig; sourceTree = "<group>"; };
 		D9F2B4CB813B4BDC4D164C6E0868930A /* Pods-Runner-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Runner-acknowledgements.plist"; sourceTree = "<group>"; };
 		DAE35F9EEF7110C6DC7645F4C250E0F5 /* path_provider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = path_provider.framework; path = path_provider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC2AEC4191B8033DE0F2BB0990B2CA05 /* SensorPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SensorPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SensorPermissionStrategy.m"; sourceTree = "<group>"; };
 		DC3C6A01DC8DC55C3D2CE756FAF99907 /* TXLiveRecordTypeDef.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveRecordTypeDef.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveRecordTypeDef.h; sourceTree = "<group>"; };
-		E036109B4996B1AA2AC35281984CF2AA /* SpeechPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SpeechPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SpeechPermissionStrategy.m"; sourceTree = "<group>"; };
-		E12AFAF41CBE49A6E7C190718DCE42D4 /* path_provider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = path_provider.debug.xcconfig; sourceTree = "<group>"; };
-		E22E9EBADDDFB76DD940CA1B920D433A /* TencentRtcPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TencentRtcPlugin.m; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/TencentRtcPlugin.m"; sourceTree = "<group>"; };
+		DD89F2B8BFE4B21C48915BC031A8A622 /* replay_kit_launcher-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "replay_kit_launcher-umbrella.h"; sourceTree = "<group>"; };
+		E02B11B74AAB43A3C3B59B120DE023E8 /* permission_handler-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "permission_handler-Info.plist"; sourceTree = "<group>"; };
 		E251E2CDC782AC4CA2A96141B006E336 /* TXBeautyManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXBeautyManager.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXBeautyManager.h; sourceTree = "<group>"; };
-		E3397C86193086432B0A5AA10A3CA133 /* tencent_trtc_cloud.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = tencent_trtc_cloud.podspec; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/tencent_trtc_cloud.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		E3BE3F1A116DF6F482FE6B46FB5C23DE /* ContactPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ContactPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/ContactPermissionStrategy.h"; sourceTree = "<group>"; };
-		E45678B728FDF273EA1C2C70DB331E15 /* path_provider.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = path_provider.podspec; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/path_provider.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		E6EAC7A6277BB1017E97791456066E66 /* NotificationPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NotificationPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/NotificationPermissionStrategy.h"; sourceTree = "<group>"; };
-		E7ABE7A86AA50FC2F9F4FB930166A8F0 /* tencent_trtc_cloud.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = tencent_trtc_cloud.release.xcconfig; sourceTree = "<group>"; };
+		E32754B7E314E0D0FDB9F280C5311015 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/LICENSE"; sourceTree = "<group>"; };
+		E3ECBDB0ED947623DD103D83DB863AD1 /* FLTPathProviderPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLTPathProviderPlugin.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/Classes/FLTPathProviderPlugin.h"; sourceTree = "<group>"; };
+		E73332A06A1E2F5D932E543135415218 /* path_provider-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "path_provider-umbrella.h"; sourceTree = "<group>"; };
 		E975185F5D7106C5BF3B5572377CCC99 /* TXLiveAudioSessionDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiveAudioSessionDelegate.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiveAudioSessionDelegate.h; sourceTree = "<group>"; };
-		EB4876EE7EF0E88697EEC3983F3E123B /* AudioVideoPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AudioVideoPermissionStrategy.m; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/AudioVideoPermissionStrategy.m"; sourceTree = "<group>"; };
-		EDDFA042AB06F4BD4583B043B044EFFD /* permission_handler-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "permission_handler-dummy.m"; sourceTree = "<group>"; };
-		F2319236AF589DCB52EDB7AF11C5CC34 /* MediaLibraryPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MediaLibraryPermissionStrategy.h; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/MediaLibraryPermissionStrategy.h"; sourceTree = "<group>"; };
+		EB22AF3C026E387765232E960EE82798 /* AudioVideoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AudioVideoPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/AudioVideoPermissionStrategy.h"; sourceTree = "<group>"; };
+		ECD8172DBEA80B29A30DAF15954C801B /* SensorPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SensorPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/SensorPermissionStrategy.h"; sourceTree = "<group>"; };
+		ED1E8AE76047B84BC15325BC34368DD6 /* TencentVideoTextureRender.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TencentVideoTextureRender.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/view/TencentVideoTextureRender.h"; sourceTree = "<group>"; };
+		EE4D3DDCE7C67248A9F13611F4985D9F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/LICENSE"; sourceTree = "<group>"; };
+		EEA08C352A17BA59B310808247CC105E /* PermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/PermissionStrategy.h"; sourceTree = "<group>"; };
+		EF43A832D857FD32A01D7416FC888E72 /* Listener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Listener.swift; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/listener/Listener.swift"; sourceTree = "<group>"; };
+		F1DFA2C6DA92235401C385D2DAD740F4 /* tencent_trtc_cloud.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = tencent_trtc_cloud.modulemap; sourceTree = "<group>"; };
+		F1E4CFD9EE325526F5935F307AEC393E /* path_provider-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "path_provider-dummy.m"; sourceTree = "<group>"; };
+		F2374329DE4311DD543F704147195D38 /* ReplayKitLauncherPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ReplayKitLauncherPlugin.h; path = "../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios/Classes/ReplayKitLauncherPlugin.h"; sourceTree = "<group>"; };
 		F49C32B3B8CF59AB437BFD7314674868 /* Pods-Runner.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Runner.modulemap"; sourceTree = "<group>"; };
 		F544B2B91141112EA34CF7DE9102D858 /* TXAudioRawDataDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXAudioRawDataDelegate.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXAudioRawDataDelegate.h; sourceTree = "<group>"; };
-		FB73D5C86C523B2CE12A9C32CF1E553D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/LICENSE"; sourceTree = "<group>"; };
-		FBFA308C4774B9D66A7CA551BE3D0C69 /* FLTPathProviderPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FLTPathProviderPlugin.m; path = "../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios/Classes/FLTPathProviderPlugin.m"; sourceTree = "<group>"; };
-		FD8F2BD1792A23D479A248EAD2D13823 /* DeviceManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DeviceManager.swift; path = "../../../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios/Classes/manager/DeviceManager.swift"; sourceTree = "<group>"; };
+		F5DCFF35A31BF1AB430161205D25840B /* NotificationPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NotificationPermissionStrategy.h; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/strategies/NotificationPermissionStrategy.h"; sourceTree = "<group>"; };
+		F81BEFEC6AA39E26D6BF8B41E702332E /* replay_kit_launcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = replay_kit_launcher.release.xcconfig; sourceTree = "<group>"; };
+		FB5EBE0CDF840AEE6E679C424D455205 /* Codec.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Codec.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios/Classes/util/Codec.m"; sourceTree = "<group>"; };
+		FE7607ACF877EB3C1DFB5DECB9CBD460 /* txg_log.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = txg_log.m; path = "../../../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios/Classes/utils/txg_log.m"; sourceTree = "<group>"; };
 		FF01138455D8D80061DD67A17D024D2F /* TXLiteAVSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TXLiteAVSDK.h; path = TXLiteAVSDK_TRTC/TXLiteAVSDK_TRTC.framework/Headers/TXLiteAVSDK.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -364,128 +364,124 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01376723CEAFB41CD8BFCC210836A635 /* .. */ = {
+		0AF8E79616537F06D378FEC816E5D4CA /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				6DC61D0D0D3576F678C10BA70A26E70F /* .. */,
+				577912409EB792DACFD1B0BF865D2923 /* LICENSE */,
+				81123933C788172EACD4FE6FB4CEA388 /* tencent_trtc_cloud.podspec */,
 			);
-			name = ..;
-			path = ..;
+			name = Pod;
 			sourceTree = "<group>";
 		};
-		018B33892CAF9B4331E92173D9F1B732 /* TRTCSimpleDemo */ = {
+		0C8E2F9F72D1718BDD029E0392E040AB /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				A21A374185E67B629C2E47E197B245BB /* ios */,
-			);
-			name = TRTCSimpleDemo;
-			path = TRTCSimpleDemo;
-			sourceTree = "<group>";
-		};
-		08D154DA27145E4DFFDC4E40864CE036 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				89F1791E5CFF86DEBFE1834AD04FB0F3 /* .. */,
-			);
-			name = ..;
-			path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios";
-			sourceTree = "<group>";
-		};
-		092672E47C487E296E7B47F71ACFAE26 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				429324AB3B861F2421C5704B5AEA5982 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		0C1C639498645F7A8C266E50A3F00813 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				6ACCFC7607C2A3862217C85529ECFC07 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		0C94B95168BBCD00D3A6B75877CABA6C /* TRTCSimpleDemo */ = {
-			isa = PBXGroup;
-			children = (
-				5A7E92BF1976DC904A730C25EDAE23C4 /* ios */,
-			);
-			name = TRTCSimpleDemo;
-			path = TRTCSimpleDemo;
-			sourceTree = "<group>";
-		};
-		143D7304D953EF1BC745A38922F29FFC /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				4C0CF5E10F19DB1691AD89590C2D4F95 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		1E70552A6D03A5713F616FB6A1C5E7D2 /* plugins */ = {
-			isa = PBXGroup;
-			children = (
-				385A5761646CBCB93432474A3211DD1C /* path_provider */,
+				2351094F23163E8990A91BFFD120FC3D /* permission_handler */,
 			);
 			name = plugins;
 			path = plugins;
 			sourceTree = "<group>";
 		};
-		220CB6FBAB275479F7A78C35AC8DCC7D /* TRTCSimpleDemo */ = {
+		0CA1E1AAC01D94009C8D91C152FF3F8C /* util */ = {
 			isa = PBXGroup;
 			children = (
-				BCC13A95AF69CE04F7D3A31B04654426 /* ios */,
-			);
-			name = TRTCSimpleDemo;
-			path = TRTCSimpleDemo;
-			sourceTree = "<group>";
-		};
-		225FAABDFD57C0E5DDCFF363FD2865E7 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				FD97CA9326F2EF3984E8EEF5DBE3BE10 /* .. */,
-			);
-			name = ..;
-			path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios";
-			sourceTree = "<group>";
-		};
-		239F26B5357A026CA911E18F73C1F1A5 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				AEDCF0174028038D1D7DDD4010CBCA4F /* path_provider.modulemap */,
-				A2E3D9AF97FE328E3A5F4322D8C4B7A2 /* path_provider-dummy.m */,
-				C236A9A2E66BE50B51C4D0AE8EB871D3 /* path_provider-Info.plist */,
-				2DE994C10AABFC217DCC90CC8E7C1CFB /* path_provider-prefix.pch */,
-				A0611E65E1F54873643C9519A81AD18D /* path_provider-umbrella.h */,
-				E12AFAF41CBE49A6E7C190718DCE42D4 /* path_provider.debug.xcconfig */,
-				424FE82A1D13D3F7CB277180B02B4BAA /* path_provider.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../../../Pods/Target Support Files/path_provider";
-			sourceTree = "<group>";
-		};
-		28F4CF95760FA3418B6EE5E5C841785C /* util */ = {
-			isa = PBXGroup;
-			children = (
-				3BC6F500CE24C1C34AF721624F7C467E /* Codec.h */,
-				48A3E57D8E522FAF1DC593CB9E8F3261 /* Codec.m */,
+				CE22E87D1D90810796661BF2E9092170 /* Codec.h */,
+				FB5EBE0CDF840AEE6E679C424D455205 /* Codec.m */,
 			);
 			name = util;
 			path = util;
 			sourceTree = "<group>";
 		};
-		29AB95BD24D06BAADB846EFCB352AC90 /* ios */ = {
+		0EA05D15041C383747B20D9065F18C5E /* c1avie */ = {
 			isa = PBXGroup;
 			children = (
-				38CD77DB3FE4C7F10E5FCD01F3F64C81 /* .symlinks */,
+				C5288D065473D1F634E717B60909217F /* TRTCSimpleDemo */,
+			);
+			name = c1avie;
+			path = c1avie;
+			sourceTree = "<group>";
+		};
+		0F7FC9CD905E3060BAF744D6040F104C /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				75F4E2123B670DD85205BD139EBFB655 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		14ACAF3140C4CBD88EA15EA189908864 /* replay_kit_launcher */ = {
+			isa = PBXGroup;
+			children = (
+				AD6AED89C0080F9C6A628AE96939F4CD /* ios */,
+			);
+			name = replay_kit_launcher;
+			path = replay_kit_launcher;
+			sourceTree = "<group>";
+		};
+		1823E2873879222E5550373414198C62 /* GitHub */ = {
+			isa = PBXGroup;
+			children = (
+				6F2A8261A6E6156256DCAAD86A55D465 /* c1avie */,
+			);
+			name = GitHub;
+			path = GitHub;
+			sourceTree = "<group>";
+		};
+		1893496779CA2D0715F8B49B3A0AC6BB /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				84D4BA2B260C22B952B6D9DF606000E6 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		18C61F3B2286D6DA729D871E66BFDC9F /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				281DAA9D33B2677E5433E9534DF952A9 /* .symlinks */,
 			);
 			name = ios;
 			path = ios;
+			sourceTree = "<group>";
+		};
+		19C85327EC8163DD3F082FA66AB50B23 /* listener */ = {
+			isa = PBXGroup;
+			children = (
+				EF43A832D857FD32A01D7416FC888E72 /* Listener.swift */,
+			);
+			name = listener;
+			path = listener;
+			sourceTree = "<group>";
+		};
+		2351094F23163E8990A91BFFD120FC3D /* permission_handler */ = {
+			isa = PBXGroup;
+			children = (
+				9D9427D60677E56CFE0651A8E2BD799E /* ios */,
+			);
+			name = permission_handler;
+			path = permission_handler;
+			sourceTree = "<group>";
+		};
+		281DAA9D33B2677E5433E9534DF952A9 /* .symlinks */ = {
+			isa = PBXGroup;
+			children = (
+				AF70978A08B0709813AAD09CC37D2F02 /* plugins */,
+			);
+			name = .symlinks;
+			path = .symlinks;
+			sourceTree = "<group>";
+		};
+		2B4A82ACFB165EC51B680FDE788388CD /* permission_handler */ = {
+			isa = PBXGroup;
+			children = (
+				F8C28E6826A60EF3A95AB10DBF980476 /* .. */,
+				5EC1E54B747B4934BEFEA1BEFC43BEB6 /* Pod */,
+				6A34FC382AE8A066DEAC4F5A38709F22 /* Support Files */,
+			);
+			name = permission_handler;
+			path = ../.symlinks/plugins/permission_handler/ios;
 			sourceTree = "<group>";
 		};
 		2CBBF95240387D2658B2E3B908B86A7C /* Pods */ = {
@@ -496,55 +492,49 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		376F421F439B0C2090CE0740843EE8B5 /* Classes */ = {
+		2D834CFAD7144625A477A8D68268ED54 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				21EC76DBB83A38E11E2D426A03DD30EB /* PermissionHandlerEnums.h */,
-				B6878E567DCDCC80D76D0587AAD73956 /* PermissionHandlerPlugin.h */,
-				7B98D5041619B6019EEB9E5ADF17F103 /* PermissionHandlerPlugin.m */,
-				C39AF190A16AF1028C2F3A4A0D601354 /* PermissionManager.h */,
-				5D8C12AD9C3928F72FC6EA8EBB9795EF /* PermissionManager.m */,
-				8F54EDC18448AA68F81E7673D9E8546C /* strategies */,
-				28F4CF95760FA3418B6EE5E5C841785C /* util */,
-			);
-			name = Classes;
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		385A5761646CBCB93432474A3211DD1C /* path_provider */ = {
-			isa = PBXGroup;
-			children = (
-				729BE10B6A7172D971BE1166211E8562 /* ios */,
-			);
-			name = path_provider;
-			path = path_provider;
-			sourceTree = "<group>";
-		};
-		38CD77DB3FE4C7F10E5FCD01F3F64C81 /* .symlinks */ = {
-			isa = PBXGroup;
-			children = (
-				997F2C373D73542EECCE1BE10C870294 /* plugins */,
-			);
-			name = .symlinks;
-			path = .symlinks;
-			sourceTree = "<group>";
-		};
-		3CB2E4AE5AF0E08EEFA8C6BA418E3BA5 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				5000B69D113356C69815366F2F49AA65 /* .. */,
+				1823E2873879222E5550373414198C62 /* GitHub */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		3EB07F8A7FABFBCFA766CB38C75122B7 /* Pod */ = {
+		33BF9B5BEA90D2B1E4BB898CE7CDEC53 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				B716048228396F56A361B05B98AFD517 /* LICENSE */,
-				E3397C86193086432B0A5AA10A3CA133 /* tencent_trtc_cloud.podspec */,
+				C54373ED632D9CCA057C9F1AE61AC9C6 /* .. */,
 			);
-			name = Pod;
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		3645711584284253F6579ED3E995972A /* .symlinks */ = {
+			isa = PBXGroup;
+			children = (
+				0C8E2F9F72D1718BDD029E0392E040AB /* plugins */,
+			);
+			name = .symlinks;
+			path = .symlinks;
+			sourceTree = "<group>";
+		};
+		39D597FA86E30ABEEBEA7B1A92807D29 /* enums */ = {
+			isa = PBXGroup;
+			children = (
+				BE4831D59233F270E60B21C1F1A9B796 /* ListenerType.swift */,
+			);
+			name = enums;
+			path = enums;
+			sourceTree = "<group>";
+		};
+		3ED81A6F6997B7933564580B82D8EE2D /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				9B176583B0E8A4D7BE9711C80A594044 /* GitHub */,
+			);
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		407C255FB5B756E6FE1EB44E2C1ED9A2 /* TXLiteAVSDK_TRTC */ = {
@@ -580,109 +570,35 @@
 			path = TXLiteAVSDK_TRTC;
 			sourceTree = "<group>";
 		};
-		429324AB3B861F2421C5704B5AEA5982 /* .. */ = {
+		4662706B67900019F41AEF9F804FAAD4 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				837039604FD99B45602FADF08B8F374C /* .. */,
+				4C0CD0D42E86C4BF927F8C533A2ED9FD /* .. */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		47FE51E366FADD4B6740D2C18A211C22 /* replay_kit_launcher */ = {
+		4C0CD0D42E86C4BF927F8C533A2ED9FD /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				225FAABDFD57C0E5DDCFF363FD2865E7 /* .. */,
-				8A8F09D0D9A90A6B6513314A118E2C06 /* Pod */,
-				9530ACC212E86759DC6FAB9E0B004893 /* Support Files */,
-			);
-			name = replay_kit_launcher;
-			path = ../.symlinks/plugins/replay_kit_launcher/ios;
-			sourceTree = "<group>";
-		};
-		48282637BE0A78FB44A377BBEDCF5F52 /* manager */ = {
-			isa = PBXGroup;
-			children = (
-				837D5B1C08BFFD23FBC9ACE1EDDFBA75 /* AudioEffectManager.swift */,
-				085A16BDB448719E427D51EAC2B52682 /* BeautyManager.swift */,
-				9F786BADC4E27E726030CF7A1D3A8134 /* CloudManager.swift */,
-				FD8F2BD1792A23D479A248EAD2D13823 /* DeviceManager.swift */,
-			);
-			name = manager;
-			path = manager;
-			sourceTree = "<group>";
-		};
-		48D10468CE56ABDA3F949B75F20922C3 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				A9ABCEEDF61C759F08BBAACB7772F712 /* .. */,
+				EE51E80F057CFBD20A33ADAA9B903B1C /* GitHub */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		4AA8F9DD915507C4550F9B43A70892D6 /* .. */ = {
+		5730A7F60078E1E2173EEF4574E8A9D3 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				C222F6204F28C0A6D941561F38A39989 /* .. */,
+				970C518AF36FCA5A3F89D831A6C00296 /* CommonUtils.swift */,
+				623E72DF5645DE67E184D374A876C018 /* JsonUtil.swift */,
+				81B3518F3822A9AD309E6B37302B5FA6 /* txg_log.c */,
+				A0227A5DEAC978E8D7200F8BE7A8FE18 /* txg_log.h */,
+				FE7607ACF877EB3C1DFB5DECB9CBD460 /* txg_log.m */,
 			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		4C0CF5E10F19DB1691AD89590C2D4F95 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				0C1C639498645F7A8C266E50A3F00813 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		4C91C02242C9BE5B05233B054EBBA826 /* .symlinks */ = {
-			isa = PBXGroup;
-			children = (
-				96F175188E2BABF0FDC3FD37A21334B2 /* plugins */,
-			);
-			name = .symlinks;
-			path = .symlinks;
-			sourceTree = "<group>";
-		};
-		4DCB43291EED8FDA23DA4F330380263B /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				6E50C461E8CB248A6769091AA86A4D69 /* ReplayKitLauncherPlugin.h */,
-				B378874F4F3FC6A516C653E7D0AC3A8E /* ReplayKitLauncherPlugin.m */,
-			);
-			name = Classes;
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		5000B69D113356C69815366F2F49AA65 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				D8EC01A7F639C13EFE99D4C9A28ED7ED /* github */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		5619F69C736068CC5EFE441E2699CCC1 /* permission_handler */ = {
-			isa = PBXGroup;
-			children = (
-				D8022EE8170AC290238707C948A6D5AF /* ios */,
-			);
-			name = permission_handler;
-			path = permission_handler;
-			sourceTree = "<group>";
-		};
-		56702DBEC23BE0749A5721FBA4CE5EF0 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				634626153F7DF26BF4C8CFC163037889 /* .. */,
-			);
-			name = ..;
-			path = ..;
+			name = utils;
+			path = utils;
 			sourceTree = "<group>";
 		};
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
@@ -693,110 +609,125 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		59AE621EF21C524109C8D2FB17EA50FF /* tencent_trtc_cloud */ = {
+		5B0F1207E072978A3C0972C2E3E95436 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				A015C42D7C8F561D024C5A3944F0367D /* ios */,
+				3ED81A6F6997B7933564580B82D8EE2D /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		5EAEE5DF7CEEA9D300EE552AC06CCC46 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				33BF9B5BEA90D2B1E4BB898CE7CDEC53 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		5EC1E54B747B4934BEFEA1BEFC43BEB6 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				E32754B7E314E0D0FDB9F280C5311015 /* LICENSE */,
+				7D0DBD84B997DB55D8698DD6FCB8AE22 /* permission_handler.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		5F121527EF7F9E5C3DFEB11A75F121FA /* tencent_trtc_cloud */ = {
+			isa = PBXGroup;
+			children = (
+				9EEFD11E81D9AFA9857F30E6868B5EB3 /* ios */,
 			);
 			name = tencent_trtc_cloud;
 			path = tencent_trtc_cloud;
 			sourceTree = "<group>";
 		};
-		59D7F480A3895A8720DBD42DA21D46F3 /* github */ = {
+		64E372E9041229C796A9BE74DF2B2895 /* strategies */ = {
 			isa = PBXGroup;
 			children = (
-				8C86BC1638FD7FF3D58C08B667590904 /* TRTCSimpleDemo */,
+				EB22AF3C026E387765232E960EE82798 /* AudioVideoPermissionStrategy.h */,
+				5689667C40F7D6B96E0C23AF0B642D6C /* AudioVideoPermissionStrategy.m */,
+				69B87AACF752F2818B698CCED7A56411 /* BluetoothPermissionStrategy.h */,
+				1E485D2433CBB14BC1220F26EC4BE7E0 /* BluetoothPermissionStrategy.m */,
+				CEFA3B7C301F00F00BA9C79A688D07A6 /* ContactPermissionStrategy.h */,
+				8DEB313EE3BD2DED6E9227E31847B367 /* ContactPermissionStrategy.m */,
+				7E34B82A33F05E8C91BE40E2AEDCF29C /* EventPermissionStrategy.h */,
+				BEC45529930A2191C611FBF43E6C8E94 /* EventPermissionStrategy.m */,
+				7BFCC0A1FD6E164DB02EA4AA4457497D /* LocationPermissionStrategy.h */,
+				0121182900E7D2B633CF99F104D0967D /* LocationPermissionStrategy.m */,
+				1E93ED7270500E00498A813022E7E196 /* MediaLibraryPermissionStrategy.h */,
+				235F00F57B9B56B493265ED7D227D3D2 /* MediaLibraryPermissionStrategy.m */,
+				F5DCFF35A31BF1AB430161205D25840B /* NotificationPermissionStrategy.h */,
+				BCB3FF7228848D6F368BC2FFAE6C6D92 /* NotificationPermissionStrategy.m */,
+				EEA08C352A17BA59B310808247CC105E /* PermissionStrategy.h */,
+				C040DA058BE9EE82BA28B431BAE4B256 /* PhonePermissionStrategy.h */,
+				C7A00AB2E3BB7DE28DACF1B3835E7D2B /* PhonePermissionStrategy.m */,
+				C0CB29DDFF829EF6784D743A2494DA08 /* PhotoPermissionStrategy.h */,
+				7A56DEDB4EFCD2A7672F0466D9BFB168 /* PhotoPermissionStrategy.m */,
+				ECD8172DBEA80B29A30DAF15954C801B /* SensorPermissionStrategy.h */,
+				28E6A08E21189C2EE89E0FB0472DB8E6 /* SensorPermissionStrategy.m */,
+				A86D5E9E7BF63536C18111BD30900128 /* SpeechPermissionStrategy.h */,
+				1CD79E5BEC207D8A67C8150548E37061 /* SpeechPermissionStrategy.m */,
+				0B106C10B07574EDB6D43E327F1249B0 /* StoragePermissionStrategy.h */,
+				4B11318E7711A3FBFE714AB9D09BE93E /* StoragePermissionStrategy.m */,
+				3568D7A047E444CA0FC80F96484BD774 /* UnknownPermissionStrategy.h */,
+				C0B5B5B8754304026478313E8800D1F9 /* UnknownPermissionStrategy.m */,
 			);
-			name = github;
-			path = github;
+			name = strategies;
+			path = strategies;
 			sourceTree = "<group>";
 		};
-		5A7E92BF1976DC904A730C25EDAE23C4 /* ios */ = {
+		65D1DD8FA0D24701FFEDEB518AD925DD /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				4C91C02242C9BE5B05233B054EBBA826 /* .symlinks */,
+				14ACAF3140C4CBD88EA15EA189908864 /* replay_kit_launcher */,
 			);
-			name = ios;
-			path = ios;
+			name = plugins;
+			path = plugins;
 			sourceTree = "<group>";
 		};
-		5E0CA55922914DF50495EDC7E3C65BF0 /* Classes */ = {
+		6800426F9262B8BA70B9AA3E422A5870 /* path_provider */ = {
 			isa = PBXGroup;
 			children = (
-				6F8390020D10E6C6CD1D14A5B6209933 /* FLTPathProviderPlugin.h */,
-				FBFA308C4774B9D66A7CA551BE3D0C69 /* FLTPathProviderPlugin.m */,
+				C74C03AC68FFE107AC3710D59A4F5859 /* .. */,
+				DC64BA9C22AEB4F45AF3151EE8587F54 /* Pod */,
+				A802AC6B3782B3218C22FB7250F0F884 /* Support Files */,
 			);
-			name = Classes;
-			path = Classes;
+			name = path_provider;
+			path = ../.symlinks/plugins/path_provider/ios;
 			sourceTree = "<group>";
 		};
-		5E3757A7F88EA4C1640336007FE1ED95 /* .symlinks */ = {
+		6A34FC382AE8A066DEAC4F5A38709F22 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				1E70552A6D03A5713F616FB6A1C5E7D2 /* plugins */,
+				8740A0D0CB5BCA8B47ECE4E42686C45E /* permission_handler.modulemap */,
+				42BCE593F32E40EA1EFE7CAD00C1A445 /* permission_handler-dummy.m */,
+				E02B11B74AAB43A3C3B59B120DE023E8 /* permission_handler-Info.plist */,
+				28BAF630FD4284E6600CDC76E9D4D515 /* permission_handler-prefix.pch */,
+				D07BB79CC00CD81C3D557A219AAF201A /* permission_handler-umbrella.h */,
+				D23FDE39CCC3B6E02A163018677548DD /* permission_handler.debug.xcconfig */,
+				8726237D3908177575DE375DB22A90C7 /* permission_handler.release.xcconfig */,
 			);
-			name = .symlinks;
-			path = .symlinks;
+			name = "Support Files";
+			path = "../../../../Pods/Target Support Files/permission_handler";
 			sourceTree = "<group>";
 		};
-		634626153F7DF26BF4C8CFC163037889 /* .. */ = {
+		6F2A8261A6E6156256DCAAD86A55D465 /* c1avie */ = {
 			isa = PBXGroup;
 			children = (
-				FFB3508BDF907F1AF5E8D2B2FF718B7C /* .. */,
+				B2CBB6EA948B2F637BEE0AA546E63C06 /* TRTCSimpleDemo */,
 			);
-			name = ..;
-			path = ..;
+			name = c1avie;
+			path = c1avie;
 			sourceTree = "<group>";
 		};
-		6ACCFC7607C2A3862217C85529ECFC07 /* .. */ = {
+		7397DCFC3BE2558E1B2DF31B65BA1523 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				4AA8F9DD915507C4550F9B43A70892D6 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		6DC61D0D0D3576F678C10BA70A26E70F /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				73961EED21915F1835C6288914E5016B /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		6E326F985EAC3D0BFF92B011A7543B5D /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				F672E04B0838C64EDA969A25A74B3864 /* github */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		70C4F4550365DA1A84916A8841ABBE62 /* listener */ = {
-			isa = PBXGroup;
-			children = (
-				3CF6918FE1B18BC8AAF4C3BCC87B5507 /* Listener.swift */,
-			);
-			name = listener;
-			path = listener;
-			sourceTree = "<group>";
-		};
-		729BE10B6A7172D971BE1166211E8562 /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				5E0CA55922914DF50495EDC7E3C65BF0 /* Classes */,
-			);
-			name = ios;
-			path = ios;
-			sourceTree = "<group>";
-		};
-		73961EED21915F1835C6288914E5016B /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				A15A2B40FD5A0C563CE195A098843F6F /* .. */,
+				ABEAA3E13EBBC3E8A4741AAD2407A01E /* .. */,
 			);
 			name = ..;
 			path = ..;
@@ -810,6 +741,42 @@
 			);
 			name = Flutter;
 			path = ../Flutter;
+			sourceTree = "<group>";
+		};
+		75F4E2123B670DD85205BD139EBFB655 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				A7947AE2A5C2CA970658E249367B9790 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		770556795A0A72B45E0325EA06BDD9C5 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				0F7FC9CD905E3060BAF744D6040F104C /* .. */,
+			);
+			name = ..;
+			path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.1.1/ios";
+			sourceTree = "<group>";
+		};
+		778F1A9284BD57F0AFF759D2B83FD6BF /* TRTCSimpleDemo */ = {
+			isa = PBXGroup;
+			children = (
+				18C61F3B2286D6DA729D871E66BFDC9F /* ios */,
+			);
+			name = TRTCSimpleDemo;
+			path = TRTCSimpleDemo;
+			sourceTree = "<group>";
+		};
+		7853483374B45B2717C5E9FB9F238E1F /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				9C6119BD5FB48EDDC59521B55F6BD5B4 /* LICENSE */,
+				32E0AB9789A5C1EEB23509AA08B528B3 /* replay_kit_launcher.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		791C6E4B424AF06279F8918FA67B8ED6 /* Targets Support Files */ = {
@@ -838,206 +805,116 @@
 			path = "Target Support Files/Pods-Runner";
 			sourceTree = "<group>";
 		};
-		7B9CCFE442BA31CE6F5EE0123FBDFE7D /* .. */ = {
+		7BB000288E25B8BEF2EBB45AD4DD1A62 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				56702DBEC23BE0749A5721FBA4CE5EF0 /* .. */,
+				38569150C5F0EC13BE2C0EA82D30DDE2 /* PermissionHandlerEnums.h */,
+				CDA0301A3DC4CD5CD443C61C9247CBE9 /* PermissionHandlerPlugin.h */,
+				1CFADB8FEEDEC085F3E7B65B31220A36 /* PermissionHandlerPlugin.m */,
+				483899B5D94461F13633B2F925667AB2 /* PermissionManager.h */,
+				8BFC41B1A358ECEF4937C259ED6EC960 /* PermissionManager.m */,
+				64E372E9041229C796A9BE74DF2B2895 /* strategies */,
+				0CA1E1AAC01D94009C8D91C152FF3F8C /* util */,
 			);
-			name = ..;
-			path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios";
+			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
-		7C183EDA0213A320ED5929EDB7440800 /* .. */ = {
+		7D0F62A33364777EAB520CDD4C4043B8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CBA164C31873927BB19BC534184F750E /* .. */,
+				E3ECBDB0ED947623DD103D83DB863AD1 /* FLTPathProviderPlugin.h */,
+				936B2A977C5C4DC6F362D9FA7D195080 /* FLTPathProviderPlugin.m */,
+			);
+			name = Classes;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		7FBE179D99C87C07B3F6C421A3266FFB /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				DAFE965DBDA88F5957825E9EC11B2E71 /* .symlinks */,
+			);
+			name = ios;
+			path = ios;
+			sourceTree = "<group>";
+		};
+		84D4BA2B260C22B952B6D9DF606000E6 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				E73EC2A5B370AA5B98FA7C5627FA9FD8 /* GitHub */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		7FA3C77C9CECDFDD00B5535761F3F9FB /* plugins */ = {
+		8C5023A1D06554630DD254E0AD692DF1 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				59AE621EF21C524109C8D2FB17EA50FF /* tencent_trtc_cloud */,
+				5B0F1207E072978A3C0972C2E3E95436 /* .. */,
 			);
-			name = plugins;
-			path = plugins;
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
-		7FEEF776CDF084F2B885C146A6900956 /* Support Files */ = {
+		8C7DC217001D40BE59874E0F60C8B6CE /* c1avie */ = {
 			isa = PBXGroup;
 			children = (
-				7B8DF3701A3135DA1ABE59000D074800 /* tencent_trtc_cloud.modulemap */,
-				6A4157BFB47283248D09C86FC6D48A0F /* tencent_trtc_cloud-dummy.m */,
-				9AE36606359EEAF0F9D3E5F6B6049B39 /* tencent_trtc_cloud-Info.plist */,
-				D2CDA753D17D85B2AA10B378743287D0 /* tencent_trtc_cloud-prefix.pch */,
-				266FBAFD8546D6D8345D6A60EC4805DE /* tencent_trtc_cloud-umbrella.h */,
-				86FDB2DF96D39E3E06E1F99E106B8B62 /* tencent_trtc_cloud.debug.xcconfig */,
-				E7ABE7A86AA50FC2F9F4FB930166A8F0 /* tencent_trtc_cloud.release.xcconfig */,
+				CC55054BCDE7F99ACA680221DC8BF5B2 /* TRTCSimpleDemo */,
+			);
+			name = c1avie;
+			path = c1avie;
+			sourceTree = "<group>";
+		};
+		8E546C5164BDF52A41E05BE6E4B7D16F /* .symlinks */ = {
+			isa = PBXGroup;
+			children = (
+				65D1DD8FA0D24701FFEDEB518AD925DD /* plugins */,
+			);
+			name = .symlinks;
+			path = .symlinks;
+			sourceTree = "<group>";
+		};
+		963999FA46F8B7841E026F8AAE8ABF35 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F1DFA2C6DA92235401C385D2DAD740F4 /* tencent_trtc_cloud.modulemap */,
+				7883402D3B358371AAA07011EBD433C5 /* tencent_trtc_cloud-dummy.m */,
+				62DD857BABFB0157EAA55506E97E8484 /* tencent_trtc_cloud-Info.plist */,
+				48C565308FDBB9E3EFF222AC5A46DA8E /* tencent_trtc_cloud-prefix.pch */,
+				3B2A5F5A67D1C4A5D57BDB43AFD65A26 /* tencent_trtc_cloud-umbrella.h */,
+				A406C73E3267FC1D98D5E08E396E419E /* tencent_trtc_cloud.debug.xcconfig */,
+				D60FCC6E8474C9FFFE591C0A32C1786F /* tencent_trtc_cloud.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "../../../../Pods/Target Support Files/tencent_trtc_cloud";
 			sourceTree = "<group>";
 		};
-		80A7EA123569889B84749E3B577DEDF2 /* Pod */ = {
+		9A4776F993E9D0F14E93011A12B50EEF /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				8F54B93AF06BF94676AE1245B8AEB5C8 /* LICENSE */,
-				E45678B728FDF273EA1C2C70DB331E15 /* path_provider.podspec */,
+				3645711584284253F6579ED3E995972A /* .symlinks */,
 			);
-			name = Pod;
+			name = ios;
+			path = ios;
 			sourceTree = "<group>";
 		};
-		837039604FD99B45602FADF08B8F374C /* .. */ = {
+		9AD95189A533E62F7A192506CF21D366 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				6E326F985EAC3D0BFF92B011A7543B5D /* .. */,
+				5EAEE5DF7CEEA9D300EE552AC06CCC46 /* .. */,
 			);
 			name = ..;
-			path = ..;
+			path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/replay_kit_launcher-0.3.0/ios";
 			sourceTree = "<group>";
 		};
-		86D807F94F1F2C532BAFB629CA5E0CD3 /* Pod */ = {
+		9B176583B0E8A4D7BE9711C80A594044 /* GitHub */ = {
 			isa = PBXGroup;
 			children = (
-				6BE9ABA49D434C1D19BD66B8CD3081AF /* LICENSE */,
-				24F534B159C4629958256D7CF18EFC8B /* permission_handler.podspec */,
+				0EA05D15041C383747B20D9065F18C5E /* c1avie */,
 			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		8886838E4A3835655C746A93480BA9BE /* permission_handler */ = {
-			isa = PBXGroup;
-			children = (
-				7B9CCFE442BA31CE6F5EE0123FBDFE7D /* .. */,
-				86D807F94F1F2C532BAFB629CA5E0CD3 /* Pod */,
-				C052DD44213AFC49D2BDE42D25ECAE6D /* Support Files */,
-			);
-			name = permission_handler;
-			path = ../.symlinks/plugins/permission_handler/ios;
-			sourceTree = "<group>";
-		};
-		89F1791E5CFF86DEBFE1834AD04FB0F3 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				01376723CEAFB41CD8BFCC210836A635 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		8A8F09D0D9A90A6B6513314A118E2C06 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				FB73D5C86C523B2CE12A9C32CF1E553D /* LICENSE */,
-				5932A54BB8B44A18E2971F1C73D1E2B9 /* replay_kit_launcher.podspec */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		8C86BC1638FD7FF3D58C08B667590904 /* TRTCSimpleDemo */ = {
-			isa = PBXGroup;
-			children = (
-				29AB95BD24D06BAADB846EFCB352AC90 /* ios */,
-			);
-			name = TRTCSimpleDemo;
-			path = TRTCSimpleDemo;
-			sourceTree = "<group>";
-		};
-		8C9581238EEE43F3C70FA7F7FBCEADD6 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				F72BCB9FAF63C4E5A03D69766A2B9EE0 /* .. */,
-			);
-			name = ..;
-			path = "../../../../../../../yun/flutterProject/flutter2.2.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-1.0.9/ios";
-			sourceTree = "<group>";
-		};
-		8F54EDC18448AA68F81E7673D9E8546C /* strategies */ = {
-			isa = PBXGroup;
-			children = (
-				6EB115F3F45436180B98DF7A60E00F0A /* AudioVideoPermissionStrategy.h */,
-				EB4876EE7EF0E88697EEC3983F3E123B /* AudioVideoPermissionStrategy.m */,
-				3D5C35D9D44A2DB036B847BAABDA4B32 /* BluetoothPermissionStrategy.h */,
-				3410D55C20E7154B1A26CAE305712612 /* BluetoothPermissionStrategy.m */,
-				E3BE3F1A116DF6F482FE6B46FB5C23DE /* ContactPermissionStrategy.h */,
-				D502750D9DF70383C4F086D51C3EDCE2 /* ContactPermissionStrategy.m */,
-				5507C1138C617980ADE3815C60BC457D /* EventPermissionStrategy.h */,
-				AD12E8A02E09D0C8EAC5BDF40D6D3EAC /* EventPermissionStrategy.m */,
-				08472B5BB470F762F6900C5041019AE0 /* LocationPermissionStrategy.h */,
-				806C11B16FCBACEFD6304708EE69F591 /* LocationPermissionStrategy.m */,
-				F2319236AF589DCB52EDB7AF11C5CC34 /* MediaLibraryPermissionStrategy.h */,
-				28A51A10505E576B96EFBCE19C641692 /* MediaLibraryPermissionStrategy.m */,
-				E6EAC7A6277BB1017E97791456066E66 /* NotificationPermissionStrategy.h */,
-				3B128C441C7F641C0001FD6F00707681 /* NotificationPermissionStrategy.m */,
-				4C6D249C797DE9F89EE47212EA5A75FD /* PermissionStrategy.h */,
-				02A9C8CEAC33D37DBAC50656DC6EAC24 /* PhonePermissionStrategy.h */,
-				731852FEAA2FA773C9E9AB6569C8C0BF /* PhonePermissionStrategy.m */,
-				C2CD5B9F47BB62A2606C4218CFBA363A /* PhotoPermissionStrategy.h */,
-				2484498B6E3237B8B65BFCF0DB8C61E7 /* PhotoPermissionStrategy.m */,
-				4A98782FAA8CCF946128C593BB924AD1 /* SensorPermissionStrategy.h */,
-				DC2AEC4191B8033DE0F2BB0990B2CA05 /* SensorPermissionStrategy.m */,
-				260116551F24D1D4E7AA5569FBBE71D4 /* SpeechPermissionStrategy.h */,
-				E036109B4996B1AA2AC35281984CF2AA /* SpeechPermissionStrategy.m */,
-				00C9E3DFAD6D3B1B297DD0C888F4CEA3 /* StoragePermissionStrategy.h */,
-				5B199DBC746B6F4B35FF1F036BCE01DD /* StoragePermissionStrategy.m */,
-				1F550B32BC6D9837A4466C601E095F00 /* UnknownPermissionStrategy.h */,
-				829718D1092B1BB52C990BF95E4792CC /* UnknownPermissionStrategy.m */,
-			);
-			name = strategies;
-			path = strategies;
-			sourceTree = "<group>";
-		};
-		9530ACC212E86759DC6FAB9E0B004893 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1A5856A73AB7F2C0F638DD6FC12A2D47 /* replay_kit_launcher.modulemap */,
-				801343865F773FC7C23F01F4DEB341D9 /* replay_kit_launcher-dummy.m */,
-				27324E6E376477F44BE1D84951B8F339 /* replay_kit_launcher-Info.plist */,
-				2C162A667DDC81ACCB775CA8B7ACB2AA /* replay_kit_launcher-prefix.pch */,
-				4F9AF67972591186C38E474B1002E5CF /* replay_kit_launcher-umbrella.h */,
-				8F060ED0BD82BFD1A3F4578695572170 /* replay_kit_launcher.debug.xcconfig */,
-				BD206429164CDF60F5E75B09E0441011 /* replay_kit_launcher.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../../../Pods/Target Support Files/replay_kit_launcher";
-			sourceTree = "<group>";
-		};
-		9579FA2C93EF7BA107E3DE0922C6D55B /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				3CB2E4AE5AF0E08EEFA8C6BA418E3BA5 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		96F175188E2BABF0FDC3FD37A21334B2 /* plugins */ = {
-			isa = PBXGroup;
-			children = (
-				5619F69C736068CC5EFE441E2699CCC1 /* permission_handler */,
-			);
-			name = plugins;
-			path = plugins;
-			sourceTree = "<group>";
-		};
-		995E647D2EB388B8FE49853CC7FCFDF7 /* enums */ = {
-			isa = PBXGroup;
-			children = (
-				1B3BB1213B8C593C7F442DC2211D96FB /* ListenerType.swift */,
-			);
-			name = enums;
-			path = enums;
-			sourceTree = "<group>";
-		};
-		997F2C373D73542EECCE1BE10C870294 /* plugins */ = {
-			isa = PBXGroup;
-			children = (
-				A6EDDAE36997948ACF66A702B9C1C969 /* replay_kit_launcher */,
-			);
-			name = plugins;
-			path = plugins;
+			name = GitHub;
+			path = GitHub;
 			sourceTree = "<group>";
 		};
 		9CD10CA9DF85E969AE54724A8A5B59E3 /* Support Files */ = {
@@ -1050,109 +927,114 @@
 			path = "../Target Support Files/TXLiteAVSDK_TRTC";
 			sourceTree = "<group>";
 		};
-		9CEB9D911F3080F5092E3985835A5007 /* .symlinks */ = {
+		9D9427D60677E56CFE0651A8E2BD799E /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				7FA3C77C9CECDFDD00B5535761F3F9FB /* plugins */,
-			);
-			name = .symlinks;
-			path = .symlinks;
-			sourceTree = "<group>";
-		};
-		9F41D55DD9C8890D9386764C819EC10C /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				4DCB43291EED8FDA23DA4F330380263B /* Classes */,
+				7BB000288E25B8BEF2EBB45AD4DD1A62 /* Classes */,
 			);
 			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
-		A015C42D7C8F561D024C5A3944F0367D /* ios */ = {
+		9EEFD11E81D9AFA9857F30E6868B5EB3 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				EC55EEE6F3C29E4A40D39CBE30F5F1E3 /* Classes */,
+				FE78A1BB504521D3A77D71EC1435DF46 /* Classes */,
 			);
 			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
-		A15A2B40FD5A0C563CE195A098843F6F /* .. */ = {
+		9FAE45967FCA347CC4135F14BF08C467 /* replay_kit_launcher */ = {
 			isa = PBXGroup;
 			children = (
-				DFCEDF1F4F8EB782CB801A0D64914736 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		A21A374185E67B629C2E47E197B245BB /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				9CEB9D911F3080F5092E3985835A5007 /* .symlinks */,
-			);
-			name = ios;
-			path = ios;
-			sourceTree = "<group>";
-		};
-		A6EDDAE36997948ACF66A702B9C1C969 /* replay_kit_launcher */ = {
-			isa = PBXGroup;
-			children = (
-				9F41D55DD9C8890D9386764C819EC10C /* ios */,
+				9AD95189A533E62F7A192506CF21D366 /* .. */,
+				7853483374B45B2717C5E9FB9F238E1F /* Pod */,
+				CA046DF2D629DB0F81B80562CBF1F9B7 /* Support Files */,
 			);
 			name = replay_kit_launcher;
-			path = replay_kit_launcher;
+			path = ../.symlinks/plugins/replay_kit_launcher/ios;
 			sourceTree = "<group>";
 		};
-		A9ABCEEDF61C759F08BBAACB7772F712 /* .. */ = {
+		A005858B80ECB6EC87ED6503AE35D665 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				9579FA2C93EF7BA107E3DE0922C6D55B /* .. */,
+				D5B80ACB42AFAF0719480A7081BD9FA5 /* .. */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		AE47F63AC370308D86635DE221E38809 /* utils */ = {
+		A4A122AE9C7873B7644EF5B49E84CF12 /* manager */ = {
 			isa = PBXGroup;
 			children = (
-				2B5CF748CCDCCDAFE33414C28ED99692 /* CommonUtils.swift */,
-				95C6D56C7CF7844EE1D6F76D55F0EA03 /* JsonUtil.swift */,
-				C6628791BD8CC5B82C3F0C8EA842E804 /* txg_log.c */,
-				7D5C49C8BB031C421A50024A00255678 /* txg_log.h */,
-				738BD3CC6F1660E263067BBA6A545CC7 /* txg_log.m */,
+				03178917D1F354DECB4B683E61080EAD /* AudioEffectManager.swift */,
+				282528CA3FF7A996C737272BA47DC337 /* BeautyManager.swift */,
+				B29DB92D751C5329027B28C1BBFE6F81 /* CloudManager.swift */,
+				ABE3ABF8F7140E9DAD9CDE2D76D2B071 /* DeviceManager.swift */,
 			);
-			name = utils;
-			path = utils;
+			name = manager;
+			path = manager;
 			sourceTree = "<group>";
 		};
-		AE6AE6C39CD2B1C3E5B960C447513100 /* .. */ = {
+		A7947AE2A5C2CA970658E249367B9790 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				B3B8ADDE941270DAEC83BF88ECE7A5FE /* github */,
+				8C5023A1D06554630DD254E0AD692DF1 /* .. */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		B30EF8208119C1E6492983DC9763427D /* tencent_trtc_cloud */ = {
+		A802AC6B3782B3218C22FB7250F0F884 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				8C9581238EEE43F3C70FA7F7FBCEADD6 /* .. */,
-				3EB07F8A7FABFBCFA766CB38C75122B7 /* Pod */,
-				7FEEF776CDF084F2B885C146A6900956 /* Support Files */,
+				871F8057604E86F9229D7057D2C93997 /* path_provider.modulemap */,
+				F1E4CFD9EE325526F5935F307AEC393E /* path_provider-dummy.m */,
+				160596FAFBA552A328949D9B404D4E8D /* path_provider-Info.plist */,
+				6EABCD3CF8A5E8EF544036C76976226B /* path_provider-prefix.pch */,
+				E73332A06A1E2F5D932E543135415218 /* path_provider-umbrella.h */,
+				8A91E7E24A9D7034EF3E8EE5F1E88024 /* path_provider.debug.xcconfig */,
+				2AE0EB50B65D62BDBE4EFB6A6BC63789 /* path_provider.release.xcconfig */,
 			);
-			name = tencent_trtc_cloud;
-			path = ../.symlinks/plugins/tencent_trtc_cloud/ios;
+			name = "Support Files";
+			path = "../../../../Pods/Target Support Files/path_provider";
 			sourceTree = "<group>";
 		};
-		B3B8ADDE941270DAEC83BF88ECE7A5FE /* github */ = {
+		ABEAA3E13EBBC3E8A4741AAD2407A01E /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				220CB6FBAB275479F7A78C35AC8DCC7D /* TRTCSimpleDemo */,
+				4662706B67900019F41AEF9F804FAAD4 /* .. */,
 			);
-			name = github;
-			path = github;
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		AD6AED89C0080F9C6A628AE96939F4CD /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				D94960BC9C70AF5929ECA1A879E1B5AD /* Classes */,
+			);
+			name = ios;
+			path = ios;
+			sourceTree = "<group>";
+		};
+		AF70978A08B0709813AAD09CC37D2F02 /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				DFAC59BE072D9AAADE6ADE8ADD975C96 /* path_provider */,
+			);
+			name = plugins;
+			path = plugins;
+			sourceTree = "<group>";
+		};
+		B2CBB6EA948B2F637BEE0AA546E63C06 /* TRTCSimpleDemo */ = {
+			isa = PBXGroup;
+			children = (
+				E332826B21381AC5B5B96732768F33CE /* ios */,
+			);
+			name = TRTCSimpleDemo;
+			path = TRTCSimpleDemo;
 			sourceTree = "<group>";
 		};
 		BA6DB0C364785F586BD7AA4102513CE3 /* Frameworks */ = {
@@ -1163,78 +1045,114 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		BAB9E1CCC96B56413AA64EBDC53C93AA /* .. */ = {
+		BB2368A11A7F0D9C43119A3BB8075F5B /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				143D7304D953EF1BC745A38922F29FFC /* .. */,
+				2D834CFAD7144625A477A8D68268ED54 /* .. */,
 			);
 			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
-		BCC13A95AF69CE04F7D3A31B04654426 /* ios */ = {
+		BBF67A1DF1A61707F6CFB66EF8751413 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				5E3757A7F88EA4C1640336007FE1ED95 /* .symlinks */,
+				E7420D8308230CD6D8ED77A1FEE32724 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		BE376218CBEFD3135CDF73B7CE6B9E6B /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				7D0F62A33364777EAB520CDD4C4043B8 /* Classes */,
 			);
 			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
-		C052DD44213AFC49D2BDE42D25ECAE6D /* Support Files */ = {
+		BFE810D267D44D443313BD18BA3B8DF2 /* tencent_trtc_cloud */ = {
 			isa = PBXGroup;
 			children = (
-				41CEE4488594E0DA33F3D6ED10EE415E /* permission_handler.modulemap */,
-				EDDFA042AB06F4BD4583B043B044EFFD /* permission_handler-dummy.m */,
-				A8C6D55AF29C76B8E5449D5662BA963B /* permission_handler-Info.plist */,
-				5BD25126247E58E7FDDB8A29E3D25681 /* permission_handler-prefix.pch */,
-				9724D26D38E481EC91D9B462BD7502B1 /* permission_handler-umbrella.h */,
-				B28589DDB32A11B613559346BCCC25C7 /* permission_handler.debug.xcconfig */,
-				D88F13A468E4CE304C93D9CF7ED07802 /* permission_handler.release.xcconfig */,
+				770556795A0A72B45E0325EA06BDD9C5 /* .. */,
+				0AF8E79616537F06D378FEC816E5D4CA /* Pod */,
+				963999FA46F8B7841E026F8AAE8ABF35 /* Support Files */,
 			);
-			name = "Support Files";
-			path = "../../../../Pods/Target Support Files/permission_handler";
+			name = tencent_trtc_cloud;
+			path = ../.symlinks/plugins/tencent_trtc_cloud/ios;
 			sourceTree = "<group>";
 		};
-		C1F971658009BEFBF61357E75845FF7F /* view */ = {
+		C4DE36387CF46BB5490687B241720363 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				5488E54A2B880A4BF80B2068933E5013 /* TencentVideoTextureRender.h */,
-				B626228DB95F17308EECED3BF7C5B509 /* TencentVideoTextureRender.mm */,
-				3623A0108A96F0F21AFB2D910790727B /* TRTCCloudVideoPlatformView.swift */,
+				5F121527EF7F9E5C3DFEB11A75F121FA /* tencent_trtc_cloud */,
 			);
-			name = view;
-			path = view;
+			name = plugins;
+			path = plugins;
 			sourceTree = "<group>";
 		};
-		C222F6204F28C0A6D941561F38A39989 /* .. */ = {
+		C5288D065473D1F634E717B60909217F /* TRTCSimpleDemo */ = {
 			isa = PBXGroup;
 			children = (
-				59D7F480A3895A8720DBD42DA21D46F3 /* github */,
+				7FBE179D99C87C07B3F6C421A3266FFB /* ios */,
+			);
+			name = TRTCSimpleDemo;
+			path = TRTCSimpleDemo;
+			sourceTree = "<group>";
+		};
+		C54373ED632D9CCA057C9F1AE61AC9C6 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				D60DC47086070C937D40281A23A8B47F /* .. */,
 			);
 			name = ..;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		C74C03AC68FFE107AC3710D59A4F5859 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				BBF67A1DF1A61707F6CFB66EF8751413 /* .. */,
+			);
+			name = ..;
+			path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/ios";
+			sourceTree = "<group>";
+		};
+		CA046DF2D629DB0F81B80562CBF1F9B7 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				900CEC4DFEA691F835F86DA19ED5306E /* replay_kit_launcher.modulemap */,
+				95574C9603666046F113557AB471ED6C /* replay_kit_launcher-dummy.m */,
+				ADBD35B232B90B3F02F1E1788D8915BD /* replay_kit_launcher-Info.plist */,
+				137B7D377E28DFFC734B87CBC59BA6DC /* replay_kit_launcher-prefix.pch */,
+				DD89F2B8BFE4B21C48915BC031A8A622 /* replay_kit_launcher-umbrella.h */,
+				415C7A0CCCCD35085475954106B55E26 /* replay_kit_launcher.debug.xcconfig */,
+				F81BEFEC6AA39E26D6BF8B41E702332E /* replay_kit_launcher.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../../../Pods/Target Support Files/replay_kit_launcher";
 			sourceTree = "<group>";
 		};
 		CB98D7E6BBBA57E924E937365D4DE375 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
 				73A4AA2CF82ACD547D004D828970FA15 /* Flutter */,
-				E686A901C75B40A82EF0B646DE04D683 /* path_provider */,
-				8886838E4A3835655C746A93480BA9BE /* permission_handler */,
-				47FE51E366FADD4B6740D2C18A211C22 /* replay_kit_launcher */,
-				B30EF8208119C1E6492983DC9763427D /* tencent_trtc_cloud */,
+				6800426F9262B8BA70B9AA3E422A5870 /* path_provider */,
+				2B4A82ACFB165EC51B680FDE788388CD /* permission_handler */,
+				9FAE45967FCA347CC4135F14BF08C467 /* replay_kit_launcher */,
+				BFE810D267D44D443313BD18BA3B8DF2 /* tencent_trtc_cloud */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		CBA164C31873927BB19BC534184F750E /* .. */ = {
+		CC55054BCDE7F99ACA680221DC8BF5B2 /* TRTCSimpleDemo */ = {
 			isa = PBXGroup;
 			children = (
-				DC892537C776C1A0C436B72A6B6665B4 /* .. */,
+				9A4776F993E9D0F14E93011A12B50EEF /* ios */,
 			);
-			name = ..;
-			path = ..;
+			name = TRTCSimpleDemo;
+			path = TRTCSimpleDemo;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -1257,60 +1175,95 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D8022EE8170AC290238707C948A6D5AF /* ios */ = {
+		D5B80ACB42AFAF0719480A7081BD9FA5 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				376F421F439B0C2090CE0740843EE8B5 /* Classes */,
+				1893496779CA2D0715F8B49B3A0AC6BB /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D60DC47086070C937D40281A23A8B47F /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				BB2368A11A7F0D9C43119A3BB8075F5B /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D94960BC9C70AF5929ECA1A879E1B5AD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F2374329DE4311DD543F704147195D38 /* ReplayKitLauncherPlugin.h */,
+				6041D4C2B16486E7D1AC961329129644 /* ReplayKitLauncherPlugin.m */,
+			);
+			name = Classes;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DAFE965DBDA88F5957825E9EC11B2E71 /* .symlinks */ = {
+			isa = PBXGroup;
+			children = (
+				C4DE36387CF46BB5490687B241720363 /* plugins */,
+			);
+			name = .symlinks;
+			path = .symlinks;
+			sourceTree = "<group>";
+		};
+		DC64BA9C22AEB4F45AF3151EE8587F54 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				EE4D3DDCE7C67248A9F13611F4985D9F /* LICENSE */,
+				1927C2163436BEF9957F8B0EB0CA9F8F /* path_provider.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		DF75CC0208DBCDFC40EE4C7E649AB40F /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				7397DCFC3BE2558E1B2DF31B65BA1523 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		DFAC59BE072D9AAADE6ADE8ADD975C96 /* path_provider */ = {
+			isa = PBXGroup;
+			children = (
+				BE376218CBEFD3135CDF73B7CE6B9E6B /* ios */,
+			);
+			name = path_provider;
+			path = path_provider;
+			sourceTree = "<group>";
+		};
+		E332826B21381AC5B5B96732768F33CE /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				8E546C5164BDF52A41E05BE6E4B7D16F /* .symlinks */,
 			);
 			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
-		D8EC01A7F639C13EFE99D4C9A28ED7ED /* github */ = {
+		E73EC2A5B370AA5B98FA7C5627FA9FD8 /* GitHub */ = {
 			isa = PBXGroup;
 			children = (
-				0C94B95168BBCD00D3A6B75877CABA6C /* TRTCSimpleDemo */,
+				F23D2A5CAE616881127A5D009ACEFB7F /* c1avie */,
 			);
-			name = github;
-			path = github;
+			name = GitHub;
+			path = GitHub;
 			sourceTree = "<group>";
 		};
-		DC892537C776C1A0C436B72A6B6665B4 /* .. */ = {
+		E7420D8308230CD6D8ED77A1FEE32724 /* .. */ = {
 			isa = PBXGroup;
 			children = (
-				092672E47C487E296E7B47F71ACFAE26 /* .. */,
+				A005858B80ECB6EC87ED6503AE35D665 /* .. */,
 			);
 			name = ..;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		DFCEDF1F4F8EB782CB801A0D64914736 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				E0BBB6017CB52FD33B457CFCA4CD8C71 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		E0BBB6017CB52FD33B457CFCA4CD8C71 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				AE6AE6C39CD2B1C3E5B960C447513100 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		E686A901C75B40A82EF0B646DE04D683 /* path_provider */ = {
-			isa = PBXGroup;
-			children = (
-				08D154DA27145E4DFFDC4E40864CE036 /* .. */,
-				80A7EA123569889B84749E3B577DEDF2 /* Pod */,
-				239F26B5357A026CA911E18F73C1F1A5 /* Support Files */,
-			);
-			name = path_provider;
-			path = ../.symlinks/plugins/path_provider/ios;
 			sourceTree = "<group>";
 		};
 		E8232D2881153E44C3219B9985567721 /* Products */ = {
@@ -1325,35 +1278,39 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EC55EEE6F3C29E4A40D39CBE30F5F1E3 /* Classes */ = {
+		EE51E80F057CFBD20A33ADAA9B903B1C /* GitHub */ = {
 			isa = PBXGroup;
 			children = (
-				0B33014AC08336592B1DAF5CF9981509 /* TencentRtcPlugin.h */,
-				E22E9EBADDDFB76DD940CA1B920D433A /* TencentRtcPlugin.m */,
-				76796702E6C8887081A78AF47A007FB0 /* TencentTRTCCloud.swift */,
-				995E647D2EB388B8FE49853CC7FCFDF7 /* enums */,
-				70C4F4550365DA1A84916A8841ABBE62 /* listener */,
-				48282637BE0A78FB44A377BBEDCF5F52 /* manager */,
-				AE47F63AC370308D86635DE221E38809 /* utils */,
-				C1F971658009BEFBF61357E75845FF7F /* view */,
+				8C7DC217001D40BE59874E0F60C8B6CE /* c1avie */,
 			);
-			name = Classes;
-			path = Classes;
+			name = GitHub;
+			path = GitHub;
 			sourceTree = "<group>";
 		};
-		F672E04B0838C64EDA969A25A74B3864 /* github */ = {
+		F11533201C3B3A524C4C59C8312D6C38 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				018B33892CAF9B4331E92173D9F1B732 /* TRTCSimpleDemo */,
+				ED1E8AE76047B84BC15325BC34368DD6 /* TencentVideoTextureRender.h */,
+				483479BE4A19292901FBB044F1D80936 /* TencentVideoTextureRender.mm */,
+				B2D76AC14C17D1225C887A12BDF16050 /* TRTCCloudVideoPlatformView.swift */,
 			);
-			name = github;
-			path = github;
+			name = view;
+			path = view;
 			sourceTree = "<group>";
 		};
-		F72BCB9FAF63C4E5A03D69766A2B9EE0 /* .. */ = {
+		F23D2A5CAE616881127A5D009ACEFB7F /* c1avie */ = {
 			isa = PBXGroup;
 			children = (
-				7C183EDA0213A320ED5929EDB7440800 /* .. */,
+				778F1A9284BD57F0AFF759D2B83FD6BF /* TRTCSimpleDemo */,
+			);
+			name = c1avie;
+			path = c1avie;
+			sourceTree = "<group>";
+		};
+		F5D19D98561418E832B24C01EDA78513 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				DF75CC0208DBCDFC40EE4C7E649AB40F /* .. */,
 			);
 			name = ..;
 			path = ..;
@@ -1369,6 +1326,15 @@
 			path = "../Pods/Target Support Files/Flutter";
 			sourceTree = "<group>";
 		};
+		F8C28E6826A60EF3A95AB10DBF980476 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				F5D19D98561418E832B24C01EDA78513 /* .. */,
+			);
+			name = ..;
+			path = "../../../../../../../../flutter2x/.pub-cache/hosted/pub.dartlang.org/permission_handler-6.1.3/ios";
+			sourceTree = "<group>";
+		};
 		FA12D4EFDE932028BAAB7663A970F3AB /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -1377,22 +1343,20 @@
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		FD97CA9326F2EF3984E8EEF5DBE3BE10 /* .. */ = {
+		FE78A1BB504521D3A77D71EC1435DF46 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				BAB9E1CCC96B56413AA64EBDC53C93AA /* .. */,
+				702D1D1323C50C7AE2C80F451E292143 /* TencentRtcPlugin.h */,
+				375212AD8AA2E56828CA662A794BDD37 /* TencentRtcPlugin.m */,
+				867AC437ADCB59FE8F7B3303F91B934E /* TencentTRTCCloud.swift */,
+				39D597FA86E30ABEEBEA7B1A92807D29 /* enums */,
+				19C85327EC8163DD3F082FA66AB50B23 /* listener */,
+				A4A122AE9C7873B7644EF5B49E84CF12 /* manager */,
+				5730A7F60078E1E2173EEF4574E8A9D3 /* utils */,
+				F11533201C3B3A524C4C59C8312D6C38 /* view */,
 			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		FFB3508BDF907F1AF5E8D2B2FF718B7C /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				48D10468CE56ABDA3F949B75F20922C3 /* .. */,
-			);
-			name = ..;
-			path = ..;
+			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1403,9 +1367,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE45CF86BC31D1DE8A33D0E126BA6B0F /* tencent_trtc_cloud-umbrella.h in Headers */,
-				08A55CFC17A0BD9AADAA9D52B097604F /* TencentRtcPlugin.h in Headers */,
-				8F91842C7ED23A4180ABAF7217051652 /* TencentVideoTextureRender.h in Headers */,
-				6873EE954FEF8D2891DEDC1D4E9885B8 /* txg_log.h in Headers */,
+				485C0253679D4CED49B9CDCA275F0D94 /* TencentRtcPlugin.h in Headers */,
+				F7090EF78580E6F79A42E244E34A3425 /* TencentVideoTextureRender.h in Headers */,
+				AAFDC3BDE1B8BF3ADEBAD51F18223C05 /* txg_log.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1414,7 +1378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCC0C30D33FC83FC89D0FDBFA93DE5ED /* replay_kit_launcher-umbrella.h in Headers */,
-				30D14953AD96BC7462D01E295A1BCA0B /* ReplayKitLauncherPlugin.h in Headers */,
+				14244A3597FC6A4D16229FD0AB66939D /* ReplayKitLauncherPlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1422,7 +1386,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1183E5069780FE25FF2ED7F059A67F57 /* FLTPathProviderPlugin.h in Headers */,
+				9A8A13AB28A15C66D064C43953EE806C /* FLTPathProviderPlugin.h in Headers */,
 				F96FFDF9BF7F14A2DE29CB1F2DB9B45D /* path_provider-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1431,25 +1395,25 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347CAA592A15C507C81A59602DE77EBF /* AudioVideoPermissionStrategy.h in Headers */,
-				DF87352AB14AAC1B357D502CC7E1E0DB /* BluetoothPermissionStrategy.h in Headers */,
-				79C7348957FB66A7AD44C129303AB66C /* Codec.h in Headers */,
-				5D5855BFA8F8DACBD0E66165917FE256 /* ContactPermissionStrategy.h in Headers */,
-				25BB6C16D2457ECED710DE11210240D8 /* EventPermissionStrategy.h in Headers */,
-				112B4AA3C275E6C32112BB20AF477BBA /* LocationPermissionStrategy.h in Headers */,
-				35DD2E5CCA82D383A4045A66811942C8 /* MediaLibraryPermissionStrategy.h in Headers */,
-				54D2231FB20B58A68AC613D54D61FBD2 /* NotificationPermissionStrategy.h in Headers */,
+				000D861B74CEF637A04C95D42B241209 /* AudioVideoPermissionStrategy.h in Headers */,
+				15EB531A0AA6A81DB0BDC4D4D23D5C49 /* BluetoothPermissionStrategy.h in Headers */,
+				4CF78FA4A3E4165C7889D73FDF6E2E34 /* Codec.h in Headers */,
+				E1EFF7293BA4EE66DB8C76834B3C6DC3 /* ContactPermissionStrategy.h in Headers */,
+				94E20C8673079558459E0E6F4835D27D /* EventPermissionStrategy.h in Headers */,
+				29BF62DD00923FCAF08DCCF466C4A1C9 /* LocationPermissionStrategy.h in Headers */,
+				8454C753279EEF19855D0EAEA298899C /* MediaLibraryPermissionStrategy.h in Headers */,
+				7CFF675817358F806865D46D76C4E1CC /* NotificationPermissionStrategy.h in Headers */,
 				C26C62210E77917300FB47C76FC55A45 /* permission_handler-umbrella.h in Headers */,
-				3B4C7345C9CE78D7F68EB7C7AC21DC6A /* PermissionHandlerEnums.h in Headers */,
-				0DB42E77227630DA93D2CCD2508F2314 /* PermissionHandlerPlugin.h in Headers */,
-				653C0352E810B733677C1408174C6649 /* PermissionManager.h in Headers */,
-				1D787F1243C2781D685F73DC491986D6 /* PermissionStrategy.h in Headers */,
-				39BDA6A2B5F5EA1A8350829480BD87B6 /* PhonePermissionStrategy.h in Headers */,
-				61F3111A8CEE359D179EBD40830B2AA3 /* PhotoPermissionStrategy.h in Headers */,
-				7540EE81C5DB10283B7EFC8458237AE8 /* SensorPermissionStrategy.h in Headers */,
-				27CF3239C87039D95AB2C33E7F97915A /* SpeechPermissionStrategy.h in Headers */,
-				6B006A7926230542B2FDD396900FE2C4 /* StoragePermissionStrategy.h in Headers */,
-				CD6E145873DDA37C0B416A086A525421 /* UnknownPermissionStrategy.h in Headers */,
+				B1E8E63ED1DB917471C71292D1831F9A /* PermissionHandlerEnums.h in Headers */,
+				4060E30BD484B72DB3894751DAA23FAB /* PermissionHandlerPlugin.h in Headers */,
+				91180B453890189C4DB99A9C03B63496 /* PermissionManager.h in Headers */,
+				C58D9B878EF86596A3D4D985E6384999 /* PermissionStrategy.h in Headers */,
+				C398DD021EDCC5CBC88D1443CB90F489 /* PhonePermissionStrategy.h in Headers */,
+				B2B17358057918D4BB5C281C87955D1D /* PhotoPermissionStrategy.h in Headers */,
+				822335CDBDB3D4958F3B8E9AFB9FD7BD /* SensorPermissionStrategy.h in Headers */,
+				5CAF87AD8B3B9D77CD069324C48FF1BE /* SpeechPermissionStrategy.h in Headers */,
+				3D26B34BAB10F995BAB9991CBB7C3365 /* StoragePermissionStrategy.h in Headers */,
+				C712F82E8F21FC6C3BA0FE61E538E227 /* UnknownPermissionStrategy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1476,8 +1440,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				942B5E4ADD68C4A63C55D6F34461DE5E /* PBXTargetDependency */,
-				BC9F375F4AD61E45104C02A6231A1559 /* PBXTargetDependency */,
+				750E8E0435D6634E57A81C7103796C6E /* PBXTargetDependency */,
+				CF681808EEE39A6CD06F0F181246B981 /* PBXTargetDependency */,
 			);
 			name = tencent_trtc_cloud;
 			productName = tencent_trtc_cloud;
@@ -1496,7 +1460,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				392B05EE1A120A3292E6403DFF3E4098 /* PBXTargetDependency */,
+				A199B15D0DB065CA7E03972EB4CD50C1 /* PBXTargetDependency */,
 			);
 			name = replay_kit_launcher;
 			productName = replay_kit_launcher;
@@ -1515,7 +1479,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				1FDE66E78F2984571768B06939E139AE /* PBXTargetDependency */,
+				ECD2FD0E61F0A2181A39CA65645F4CB9 /* PBXTargetDependency */,
 			);
 			name = permission_handler;
 			productName = permission_handler;
@@ -1534,12 +1498,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				AEEFD504B28956EE01C8E8785027BF74 /* PBXTargetDependency */,
-				F989B16AEC61141F169A98DB289817EE /* PBXTargetDependency */,
-				9C9CE5ED9E0EA64F3A54480608F9A8F9 /* PBXTargetDependency */,
-				54F206CACFD97672EBD248C2C906AF5C /* PBXTargetDependency */,
-				0F0E398D903AD72AB8A78DCAE8AD90AE /* PBXTargetDependency */,
-				D390C68EE0CE04C522FEB6B7C36401C9 /* PBXTargetDependency */,
+				6AEBCC2359F68B22A96EFBC6F892BFC3 /* PBXTargetDependency */,
+				046183E563C27335D30873D234ACEDF9 /* PBXTargetDependency */,
+				9732DFB4AF412999202705BB0013AB8C /* PBXTargetDependency */,
+				55A862B2FFFEE2C7802C3ADA151102FD /* PBXTargetDependency */,
+				1253F642D5FED5D2C6E747E22FA3ACD4 /* PBXTargetDependency */,
+				4CEE19DC930436E7FA013433D6FA6CFC /* PBXTargetDependency */,
 			);
 			name = "Pods-Runner";
 			productName = "Pods-Runner";
@@ -1558,7 +1522,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D52B731201DEC2B64BEDAD586D03800A /* PBXTargetDependency */,
+				DB3CA53CBD276F09A59BD265C6A70C86 /* PBXTargetDependency */,
 			);
 			name = path_provider;
 			productName = path_provider;
@@ -1641,7 +1605,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AEE0F3BE0E2911B575D95E7FF717CEE /* FLTPathProviderPlugin.m in Sources */,
+				6FD784C0D8261DCB0FF4EB291378CBBB /* FLTPathProviderPlugin.m in Sources */,
 				ABFF9E96E57BC7D996200183AA718C3A /* path_provider-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1650,23 +1614,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9507C7933F722105D09A14BE969EB5B /* AudioVideoPermissionStrategy.m in Sources */,
-				5342755D12F38952365E71EE97F4072D /* BluetoothPermissionStrategy.m in Sources */,
-				E8AA85E447BBF206EC15EA0B2E908E3D /* Codec.m in Sources */,
-				C790ABAE2F86C6C53446CD124D649348 /* ContactPermissionStrategy.m in Sources */,
-				C2D59D40AF07349180F2C4939D1E28BC /* EventPermissionStrategy.m in Sources */,
-				B09CA5ABCA800090CBADBAB8919BD2B6 /* LocationPermissionStrategy.m in Sources */,
-				E44A91269FABFC926FF55606D4CEA399 /* MediaLibraryPermissionStrategy.m in Sources */,
-				A816587E6AF716CB14CD891C420E17AB /* NotificationPermissionStrategy.m in Sources */,
+				94029603A587C6BCCBE352645D0880B4 /* AudioVideoPermissionStrategy.m in Sources */,
+				DB8304E97CBCD397BFBB00BD60781FA7 /* BluetoothPermissionStrategy.m in Sources */,
+				3F136E5207A822D36B9E2C0F8758D86F /* Codec.m in Sources */,
+				561BB43EDCD2CD1BD05908500D688B20 /* ContactPermissionStrategy.m in Sources */,
+				CC5064DBFCE9D919BC07EF3E62AEB658 /* EventPermissionStrategy.m in Sources */,
+				E3785A6DDE2F5D0B9EF3FF7C4C088395 /* LocationPermissionStrategy.m in Sources */,
+				689CF3566C58D4E3B57A6CDFA21635BC /* MediaLibraryPermissionStrategy.m in Sources */,
+				58D93788192D97996EEE28AF83969C1F /* NotificationPermissionStrategy.m in Sources */,
 				07912914787E88526299AA999E398829 /* permission_handler-dummy.m in Sources */,
-				E22E6C53570B055C1321B65D3E79CBC3 /* PermissionHandlerPlugin.m in Sources */,
-				EC9CF016618C5D50FFFCD71F0F987D76 /* PermissionManager.m in Sources */,
-				92AAFA18CBDA0E6AB5A7CC21313B58AF /* PhonePermissionStrategy.m in Sources */,
-				7224A9874B7454D9AEB6CB248936E8D5 /* PhotoPermissionStrategy.m in Sources */,
-				FEF7A605A9B5527F3ACC99035D0AD1AB /* SensorPermissionStrategy.m in Sources */,
-				4607846471B7BB178E0CE8B93ACF7AE7 /* SpeechPermissionStrategy.m in Sources */,
-				E58125698FA42A502628F072F7531A5F /* StoragePermissionStrategy.m in Sources */,
-				35219EB166EB557370F2336349736113 /* UnknownPermissionStrategy.m in Sources */,
+				E47A69F1E213E45A9B1D78A57F56CF7B /* PermissionHandlerPlugin.m in Sources */,
+				F7DD4F64573AE9D655AEA1E921BFC0F4 /* PermissionManager.m in Sources */,
+				9CB38B329A80A39F86E19575D5743802 /* PhonePermissionStrategy.m in Sources */,
+				2FDB02D11E1604A92EC110C2BD062F16 /* PhotoPermissionStrategy.m in Sources */,
+				73F0E993CE23365E34EF5DD605F9F3CF /* SensorPermissionStrategy.m in Sources */,
+				49A3F1B53A5335835E24C282C3F26A2B /* SpeechPermissionStrategy.m in Sources */,
+				B17D5107B009FEBC4FB836E9AB8AC5F7 /* StoragePermissionStrategy.m in Sources */,
+				15CA3ABDFAF38676065F344043095903 /* UnknownPermissionStrategy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1683,7 +1647,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				866E7A2597893B3570C5AB0A5C989D5C /* replay_kit_launcher-dummy.m in Sources */,
-				0010B2C2D3A5CE4828B72AEBC3E2F12A /* ReplayKitLauncherPlugin.m in Sources */,
+				35376F6593D98EF0C9DDED92C03F003F /* ReplayKitLauncherPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1691,92 +1655,92 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76D64CEEF5CED81EAA0CF94E5A1E20CD /* AudioEffectManager.swift in Sources */,
-				FB650BF7EB373939AB4B7D5B056D8981 /* BeautyManager.swift in Sources */,
-				38BE269FC438A27670A3E97BABC1B774 /* CloudManager.swift in Sources */,
-				521F0EF858F6A0C1D54158F59837EF9D /* CommonUtils.swift in Sources */,
-				21AE68C6B51C61F90FB5FD7DFAD1AE2A /* DeviceManager.swift in Sources */,
-				DD4EA8A35616A3D806057EB5FE4C16AA /* JsonUtil.swift in Sources */,
-				F965B06CD8A4BB9A252DA20E04830DE6 /* Listener.swift in Sources */,
-				9CB416A2713B5313F7A6A3192484BAEE /* ListenerType.swift in Sources */,
+				B84BF83A656D7878A97E20394BB613DA /* AudioEffectManager.swift in Sources */,
+				090623A9B8E9FDD4DE5D7707B36F015D /* BeautyManager.swift in Sources */,
+				BD3A24BE3174398D7EAA9DD5FF6E9237 /* CloudManager.swift in Sources */,
+				98E6428827A21F7F228522DB044492F0 /* CommonUtils.swift in Sources */,
+				8F28BFAE157020B598DF070E17230714 /* DeviceManager.swift in Sources */,
+				B14C4210E7E98AA09DCB862F65725FA1 /* JsonUtil.swift in Sources */,
+				8B7D3980B41444EA12C4C417099D00B5 /* Listener.swift in Sources */,
+				E7200EB5652CA168DE68F9B11141A0B8 /* ListenerType.swift in Sources */,
 				CD63A4896E8523E5A671D46659422E74 /* tencent_trtc_cloud-dummy.m in Sources */,
-				F62B7230E52203D6CA0F853E8F4121DD /* TencentRtcPlugin.m in Sources */,
-				7C3946B22078537097AC05018DEBFD95 /* TencentTRTCCloud.swift in Sources */,
-				DE508550A25631347C14EB2E5611E796 /* TencentVideoTextureRender.mm in Sources */,
-				E2E696CCF9E09B68EA478D482E31B0A5 /* TRTCCloudVideoPlatformView.swift in Sources */,
-				5F865D2D2D17145844436D2397F9BE5F /* txg_log.c in Sources */,
-				B59F3975F8AD876BBA868C40B6D377E0 /* txg_log.m in Sources */,
+				2D4940BEB43DF3E0E611CC721F1AB699 /* TencentRtcPlugin.m in Sources */,
+				21FD7AC89BDF0C5D150D27426AA9481F /* TencentTRTCCloud.swift in Sources */,
+				6B54A84A67FE0DC7C4571FC6F80C0602 /* TencentVideoTextureRender.mm in Sources */,
+				4564146A1891387934173EF102D0B17B /* TRTCCloudVideoPlatformView.swift in Sources */,
+				3A445B60506C5E7BFA484EBAA6EFE839 /* txg_log.c in Sources */,
+				0BF86FA3E17FA03C67222500557FD569 /* txg_log.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0F0E398D903AD72AB8A78DCAE8AD90AE /* PBXTargetDependency */ = {
+		046183E563C27335D30873D234ACEDF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TXLiteAVSDK_TRTC;
+			target = F7FA33F6627F67543E21479491D5E3DD /* TXLiteAVSDK_TRTC */;
+			targetProxy = 7B7226D3CE2B7E065C752D8B73045791 /* PBXContainerItemProxy */;
+		};
+		1253F642D5FED5D2C6E747E22FA3ACD4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = replay_kit_launcher;
 			target = 1E04911DB764264DDC82F2884A71EB04 /* replay_kit_launcher */;
-			targetProxy = 9FD67995B1D35984A9B6785336FD2EFC /* PBXContainerItemProxy */;
+			targetProxy = 78ADB23E8E414C60467CF933362BBACE /* PBXContainerItemProxy */;
 		};
-		1FDE66E78F2984571768B06939E139AE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = DAB7FCE402DE8124EB7FED9B38B92A28 /* PBXContainerItemProxy */;
-		};
-		392B05EE1A120A3292E6403DFF3E4098 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = E29F8DE8695CDDC8C67A93DD893D13D3 /* PBXContainerItemProxy */;
-		};
-		54F206CACFD97672EBD248C2C906AF5C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = permission_handler;
-			target = 829F2751587AAC5B031CFBFF4DFF38AF /* permission_handler */;
-			targetProxy = A07265DE2F8C1643CD8AC89523DECD32 /* PBXContainerItemProxy */;
-		};
-		942B5E4ADD68C4A63C55D6F34461DE5E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = 0B660DE78F45F0C4A9300DF8C5E31ED9 /* PBXContainerItemProxy */;
-		};
-		9C9CE5ED9E0EA64F3A54480608F9A8F9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = path_provider;
-			target = B52BACC7A506ACAE698D47A26EBD7CFB /* path_provider */;
-			targetProxy = F181AD2544363CBF4965F0D2DE447E4F /* PBXContainerItemProxy */;
-		};
-		AEEFD504B28956EE01C8E8785027BF74 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Flutter;
-			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = 65D38D2046591C1D048FA7634F7FA8DE /* PBXContainerItemProxy */;
-		};
-		BC9F375F4AD61E45104C02A6231A1559 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TXLiteAVSDK_TRTC;
-			target = F7FA33F6627F67543E21479491D5E3DD /* TXLiteAVSDK_TRTC */;
-			targetProxy = 72BBD21AB5C0245EB0C14D9A09E91201 /* PBXContainerItemProxy */;
-		};
-		D390C68EE0CE04C522FEB6B7C36401C9 /* PBXTargetDependency */ = {
+		4CEE19DC930436E7FA013433D6FA6CFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = tencent_trtc_cloud;
 			target = 12B859C8AB1E1F60F394E9FE420C97D1 /* tencent_trtc_cloud */;
-			targetProxy = 7A18ACC2221A9A7D556542993B2A6695 /* PBXContainerItemProxy */;
+			targetProxy = 1AB9EEBA06A19108F00BD907803C6D98 /* PBXContainerItemProxy */;
 		};
-		D52B731201DEC2B64BEDAD586D03800A /* PBXTargetDependency */ = {
+		55A862B2FFFEE2C7802C3ADA151102FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = permission_handler;
+			target = 829F2751587AAC5B031CFBFF4DFF38AF /* permission_handler */;
+			targetProxy = 0E737547B9D759F8D11F631EED243876 /* PBXContainerItemProxy */;
+		};
+		6AEBCC2359F68B22A96EFBC6F892BFC3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Flutter;
 			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
-			targetProxy = 61A408041168D515669079CD86DF5DEC /* PBXContainerItemProxy */;
+			targetProxy = D1B6E24C903797DD80867A634D1D7AB2 /* PBXContainerItemProxy */;
 		};
-		F989B16AEC61141F169A98DB289817EE /* PBXTargetDependency */ = {
+		750E8E0435D6634E57A81C7103796C6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 7CC2DC699CCA0AC82D6FCC6134DF6804 /* PBXContainerItemProxy */;
+		};
+		9732DFB4AF412999202705BB0013AB8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = path_provider;
+			target = B52BACC7A506ACAE698D47A26EBD7CFB /* path_provider */;
+			targetProxy = E4CAD3D9EE8AAC5071854110F340AF26 /* PBXContainerItemProxy */;
+		};
+		A199B15D0DB065CA7E03972EB4CD50C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = E03A4004F0E25A4E111796D4C9969CB7 /* PBXContainerItemProxy */;
+		};
+		CF681808EEE39A6CD06F0F181246B981 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TXLiteAVSDK_TRTC;
 			target = F7FA33F6627F67543E21479491D5E3DD /* TXLiteAVSDK_TRTC */;
-			targetProxy = F1839408242DEAE1E4ECAE4DB62A5B08 /* PBXContainerItemProxy */;
+			targetProxy = 28665EDECB1210D9F00ACF402F5F5AAD /* PBXContainerItemProxy */;
+		};
+		DB3CA53CBD276F09A59BD265C6A70C86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = 692C833E98E4BAA98079D9D9CF07206D /* PBXContainerItemProxy */;
+		};
+		ECD2FD0E61F0A2181A39CA65645F4CB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Flutter;
+			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
+			targetProxy = B47F575FF01FEECD96A8CCD5C09701A2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1797,7 +1761,7 @@
 		};
 		0C7E86FCC104E70664C6FB5777F20FB3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86FDB2DF96D39E3E06E1F99E106B8B62 /* tencent_trtc_cloud.debug.xcconfig */;
+			baseConfigurationReference = A406C73E3267FC1D98D5E08E396E419E /* tencent_trtc_cloud.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1809,11 +1773,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/tencent_trtc_cloud/tencent_trtc_cloud-prefix.pch";
@@ -1856,7 +1820,7 @@
 		};
 		16871FA711A10F5F24A2C2FACA6E66EE /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 424FE82A1D13D3F7CB277180B02B4BAA /* path_provider.release.xcconfig */;
+			baseConfigurationReference = 2AE0EB50B65D62BDBE4EFB6A6BC63789 /* path_provider.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1868,11 +1832,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider/path_provider-prefix.pch";
@@ -1914,7 +1878,7 @@
 		};
 		180B3EE6C03A6862AB3EEE6FEEC2A803 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7ABE7A86AA50FC2F9F4FB930166A8F0 /* tencent_trtc_cloud.release.xcconfig */;
+			baseConfigurationReference = D60FCC6E8474C9FFFE591C0A32C1786F /* tencent_trtc_cloud.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1926,11 +1890,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/tencent_trtc_cloud/tencent_trtc_cloud-prefix.pch";
@@ -2039,7 +2003,7 @@
 		};
 		4754C7CCD32FD6E65F7E4CDE9B040F3B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD206429164CDF60F5E75B09E0441011 /* replay_kit_launcher.release.xcconfig */;
+			baseConfigurationReference = F81BEFEC6AA39E26D6BF8B41E702332E /* replay_kit_launcher.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2051,11 +2015,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/replay_kit_launcher/replay_kit_launcher-prefix.pch";
@@ -2160,11 +2124,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Target Support Files/Pods-Runner/Pods-Runner-Info.plist";
@@ -2193,7 +2157,7 @@
 		};
 		638F9B37100FDAF0C93BE9D73F9B184B /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7ABE7A86AA50FC2F9F4FB930166A8F0 /* tencent_trtc_cloud.release.xcconfig */;
+			baseConfigurationReference = D60FCC6E8474C9FFFE591C0A32C1786F /* tencent_trtc_cloud.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2205,11 +2169,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/tencent_trtc_cloud/tencent_trtc_cloud-prefix.pch";
@@ -2253,11 +2217,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Target Support Files/Pods-Runner/Pods-Runner-Info.plist";
@@ -2285,7 +2249,7 @@
 		};
 		74A87A35FEBEFAF83F9A9F2D6EFCC93D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 424FE82A1D13D3F7CB277180B02B4BAA /* path_provider.release.xcconfig */;
+			baseConfigurationReference = 2AE0EB50B65D62BDBE4EFB6A6BC63789 /* path_provider.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2297,11 +2261,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider/path_provider-prefix.pch";
@@ -2329,7 +2293,7 @@
 		};
 		860E419D68A1008E2F0F084D5CDB6E8C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E12AFAF41CBE49A6E7C190718DCE42D4 /* path_provider.debug.xcconfig */;
+			baseConfigurationReference = 8A91E7E24A9D7034EF3E8EE5F1E88024 /* path_provider.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2341,11 +2305,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/path_provider/path_provider-prefix.pch";
@@ -2372,7 +2336,7 @@
 		};
 		905C690432E52A5B6786188179075FAA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F060ED0BD82BFD1A3F4578695572170 /* replay_kit_launcher.debug.xcconfig */;
+			baseConfigurationReference = 415C7A0CCCCD35085475954106B55E26 /* replay_kit_launcher.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2384,11 +2348,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/replay_kit_launcher/replay_kit_launcher-prefix.pch";
@@ -2416,7 +2380,7 @@
 		};
 		A0D5DC2B724CFB36DCF180AFBA5E0315 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD206429164CDF60F5E75B09E0441011 /* replay_kit_launcher.release.xcconfig */;
+			baseConfigurationReference = F81BEFEC6AA39E26D6BF8B41E702332E /* replay_kit_launcher.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2428,11 +2392,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/replay_kit_launcher/replay_kit_launcher-prefix.pch";
@@ -2475,7 +2439,7 @@
 		};
 		C211DE8B4D5B659D73EEEFD13040C8CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D88F13A468E4CE304C93D9CF7ED07802 /* permission_handler.release.xcconfig */;
+			baseConfigurationReference = 8726237D3908177575DE375DB22A90C7 /* permission_handler.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2488,11 +2452,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/permission_handler/permission_handler-prefix.pch";
@@ -2535,11 +2499,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Target Support Files/Pods-Runner/Pods-Runner-Info.plist";
@@ -2630,7 +2594,7 @@
 		};
 		DAFB5361715129D088DCF2B628C17099 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D88F13A468E4CE304C93D9CF7ED07802 /* permission_handler.release.xcconfig */;
+			baseConfigurationReference = 8726237D3908177575DE375DB22A90C7 /* permission_handler.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2643,11 +2607,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/permission_handler/permission_handler-prefix.pch";
@@ -2676,7 +2640,7 @@
 		};
 		E2772D9F267F94D540421D514CD52AA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B28589DDB32A11B613559346BCCC25C7 /* permission_handler.debug.xcconfig */;
+			baseConfigurationReference = D23FDE39CCC3B6E02A163018677548DD /* permission_handler.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2689,11 +2653,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/wendy/Desktop/code/yun/flutterProject/flutter2.2.1/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/gavinwjwang/work/flutter2x/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/permission_handler/permission_handler-prefix.pch";
