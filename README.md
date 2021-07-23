@@ -1,3 +1,5 @@
+pub官方插件地址：https://pub.dev/packages/tencent_trtc_cloud
+
 # 跑通Demo(Flutter)
 
 [English document](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [日本語の文書](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
