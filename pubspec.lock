@@ -272,7 +272,7 @@ packages:
       name: tencent_trtc_cloud
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   term_glyph:
     dependency: transitive
     description:

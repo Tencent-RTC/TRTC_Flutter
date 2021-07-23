@@ -189,6 +189,27 @@ class TextureRenderState extends State<TextureRenderPage>
         showToastText('退房成功');
       }
     }
+    //辅流监听
+    if (type == TRTCCloudListener.onUserSubStreamAvailable) {
+      String userId = param["userId"]; // + '_sub';
+      //视频可用
+      if (param["available"]) {
+        int? textureId =
+            await trtcCloud.setRemoteVideoRenderListener(CustomRemoteRender(
+          userId: userId,
+          streamType: TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+          width: 360,
+          height: 480,
+        ));
+        if (textureId != null) {
+          setState(() {
+            screenUserList[userId] = textureId;
+          });
+        }
+      } else {
+        removeViedo(userId);
+      }
+    }
     if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
       String userId = param['userId'];
       removeViedo(userId);
