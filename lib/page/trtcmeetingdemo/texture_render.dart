@@ -207,11 +207,15 @@ class TextureRenderState extends State<TextureRenderPage>
           });
         }
       } else {
+        await trtcCloud.stopRemoteView(
+            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
         removeViedo(userId);
       }
     }
     if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
       String userId = param['userId'];
+      await trtcCloud.stopRemoteView(
+            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
       removeViedo(userId);
     }
     if (type == TRTCCloudListener.onUserVideoAvailable) {
@@ -232,6 +236,8 @@ class TextureRenderState extends State<TextureRenderPage>
           });
         }
       } else {
+        await trtcCloud.stopRemoteView(
+            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
         removeViedo(userId);
       }
     }
