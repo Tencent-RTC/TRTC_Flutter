@@ -19,6 +19,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
+import 'JsGenerateTestUserSig.dart';
 
 class GenerateTestUserSig {
   /*
@@ -51,6 +53,10 @@ class GenerateTestUserSig {
 
   ///生成UserSig
   static genTestSig(String userId) {
+    if (kIsWeb) {
+      return JsGenerateTestUserSig()
+          .jsGenTestUserSig(sdkAppId, secretKey, userId, expireTime);
+    }
     int currTime = _getCurrentTime();
     String sig = '';
     Map<String, dynamic> sigDoc = new Map<String, dynamic>();

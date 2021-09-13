@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
@@ -67,7 +68,7 @@ class TextureRenderState extends State<TextureRenderPage>
 
     initData();
     // macos 美颜设置之后本地摄像头只显示四分之一画面
-    if (!Platform.isMacOS) {
+    if (!kIsWeb && !Platform.isMacOS) {
       //设置美颜效果
       txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
       txBeautyManager.setBeautyLevel(6);
@@ -208,14 +209,12 @@ class TextureRenderState extends State<TextureRenderPage>
         }
       } else {
         await trtcCloud.stopRemoteView(
-            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
         removeViedo(userId);
       }
     }
     if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
       String userId = param['userId'];
-      await trtcCloud.stopRemoteView(
-            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
       removeViedo(userId);
     }
     if (type == TRTCCloudListener.onUserVideoAvailable) {

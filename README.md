@@ -1,5 +1,3 @@
-pub官方插件地址：https://pub.dev/packages/tencent_trtc_cloud
-
 # 跑通Demo(Flutter)
 
 [English document](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [日本語の文書](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
@@ -21,6 +19,10 @@ pub官方插件地址：https://pub.dev/packages/tencent_trtc_cloud
 	- 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
 	- 安装 Visual Studio 2019[https://visualstudio.microsoft.com/zh-hans/downloads/]
+- Flutter Web 开发
+	- Chrome72及以上版本
+	- Safari13及以上版本
+	- flutter 2.0及以上版本
 
 ## 前提条件
 
@@ -69,6 +71,10 @@ pub官方插件地址：https://pub.dev/packages/tencent_trtc_cloud
 4.macOS调试
 * （1）启用macOS支持：flutter config --enable-macos-desktop
 * （2）执行`flutter run -d macos`
+
+4.web调试
+* （1）启用web支持：flutter config --enable-web
+* （2）执行`flutter run -d chrome`
 
 #### 如何查看 TRTC 日志？
 TRTC 的日志默认压缩加密，后缀为 .xlog。

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
@@ -307,7 +308,7 @@ class TestPageState extends State<TestPage> {
                       },
                       child: Text('enableAudioVolumeEvaluation-0'),
                     ),
-                    Platform.isAndroid
+                    !kIsWeb && Platform.isAndroid
                         ? TextButton(
                             onPressed: () async {
                               int? result = await trtcCloud.startAudioRecording(
@@ -482,8 +483,9 @@ class TestPageState extends State<TestPage> {
                             AudioMusicParam(
                                 id: 223,
                                 publish: true,
-                                path:
-                                    'https://imgcache.qq.com/operation/dianshi/other/daoxiang.72c46ee085f15dc72603b0ba154409879cbeb15e.mp3'));
+                                path: kIsWeb
+                                    ? './media/daoxiang.mp3'
+                                    : 'https://imgcache.qq.com/operation/dianshi/other/daoxiang.72c46ee085f15dc72603b0ba154409879cbeb15e.mp3'));
                         MeetingTool.toast(musidTrue.toString(), context);
                       },
                       child: Text('startPlayMusic-需要等10s'),
@@ -598,6 +600,12 @@ class TestPageState extends State<TestPage> {
                       MeetingTool.toast(value.toString(), context);
                     },
                     child: Text('sendSEIMsg'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      trtcCloud.stopLocalPreview();
+                    },
+                    child: Text('stopLocalPreview-stop本地视频'),
                   ),
                   TextButton(
                     onPressed: () async {

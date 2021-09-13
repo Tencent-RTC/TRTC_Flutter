@@ -7,6 +7,7 @@ import 'package:trtc_demo/page/trtcmeetingdemo/member_list.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/test_api.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/texture_render.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/test_web.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyApp> {
           "/textureRender": (context) => TextureRenderPage(),
           "/memberList": (context) => MemberListPage(),
           "/test": (context) => TestPage(),
+          "/testweb": (context) => TestWebPage()
         },
       ),
     );

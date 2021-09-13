@@ -15,6 +15,10 @@
 	- 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
     - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
 	- 安装 Visual Studio 2019[https://visualstudio.microsoft.com/zh-hans/downloads/]
+- Flutter Web 开发
+	- Chrome72及以上版本
+	- Safari13及以上版本
+	- flutter 2.0及以上版本
 
 ## 集成 SDK
 
@@ -69,6 +73,11 @@ dependencies:
 ::: windows端
 1.启用windows支持：flutter config --enable-windows-desktop
 2.flutter run -d windows
+:::
+
+::: web端
+1.启用web支持：flutter config --enable-web
+2.flutter run -d chrome
 :::
 </dx-tabs>
 

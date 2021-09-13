@@ -10,7 +10,7 @@
 #endif
 #endif
 
-#import "TencentRtcPlugin.h"
+#import "TRTCCloudPlugin.h"
 #import "txg_log.h"
 #import "TencentVideoTextureRender.h"
 

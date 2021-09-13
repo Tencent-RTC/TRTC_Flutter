@@ -6,7 +6,7 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  tencent_trtc_cloud: ^1.1.2
+  tencent_trtc_cloud: ^2.0.0-dev.0.0.1
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
   crypto: ^3.0.1
@@ -26,6 +26,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: '>=1.6.2 <3.0.0'
+  build_web_compilers: '>=2.12.0 <4.0.0'
 
 flutter:
   # The following line ensures that the Material Icons font is
@@ -38,3 +40,5 @@ flutter:
    - images/watermark_img.png
    - images/bg_main_title.png
    - images/magic-line.png
+   - media/daoxiang.mp3
+   - images/avatar3_100.20191230.png

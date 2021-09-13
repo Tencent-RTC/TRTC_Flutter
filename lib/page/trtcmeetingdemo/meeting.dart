@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 import './setting.dart';
@@ -103,7 +104,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
         print("==resumed video=" + localViewId.toString());
-        if (Platform.isAndroid) {
+        if (!kIsWeb && Platform.isAndroid) {
           userListLast = jsonDecode(jsonEncode(userList));
           userList = [];
           screenUserList = MeetingTool.getScreenList(userList);
@@ -115,7 +116,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             screenUserList = MeetingTool.getScreenList(userList);
             this.setState(() {});
           });
-        } else if (Platform.isIOS && isOpenCamera) {
+        } else if (!kIsWeb && Platform.isIOS && isOpenCamera) {
           //在ios下如果localViewId和上次的不一样时候需要调用updateLocalView，一样的话就不需要调用
           //trtcCloud.updateLocalView(localViewId);
         }
@@ -129,11 +130,17 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   // 进入房间
-  enterRoom() async {    
-    userInfo['userSig'] =
-        await GenerateTestUserSig.genTestSig(userInfo['userId']);
-    meetModel.setUserInfo(userInfo);
-    trtcCloud.enterRoom(
+  enterRoom() async {
+    try {
+      userInfo['userSig'] =
+          await GenerateTestUserSig.genTestSig(userInfo['userId']);
+      meetModel.setUserInfo(userInfo);
+    } catch (err) {
+      userInfo['userSig'] = '';
+      print(err);
+    }
+
+    await trtcCloud.enterRoom(
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
             userId: userInfo['userId'], // 用户Id
@@ -162,7 +169,13 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
     if (isOpenMic) {
       //开启麦克风
-      await trtcCloud.startLocalAudio(quality);
+      if (kIsWeb) {
+        Future.delayed(Duration(seconds: 2), () {
+          trtcCloud.startLocalAudio(quality);
+        });
+      } else {
+        await trtcCloud.startLocalAudio(quality);
+      }
     }
 
     screenUserList = MeetingTool.getScreenList(userList);
@@ -197,34 +210,66 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         isShowingWindow = false;
         this.setState(() {});
         // SystemAlertWindow.closeSystemWindow();
-        trtcCloud.startLocalPreview(true, localViewId);
+        await trtcCloud.startLocalPreview(true, localViewId);
       } else {
         showErrordDialog(param['errMsg']);
       }
     }
-    if(type == TRTCCloudListener.onSpeedTest) {
-      MeetingTool.toast('onSpeedTest=' + param['finishedCount'].toString(), context);
+    if (type == TRTCCloudListener.onSpeedTest) {
+      MeetingTool.toast(
+          'onSpeedTest=' + param['finishedCount'].toString(), context);
     }
-    if(type == TRTCCloudListener.onStartPublishing) {
-      MeetingTool.toast('onStartPublishing：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+    if (type == TRTCCloudListener.onStartPublishing) {
+      MeetingTool.toast(
+          'onStartPublishing：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
-    if(type == TRTCCloudListener.onStopPublishing) {
-      MeetingTool.toast('onStopPublishing：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+    if (type == TRTCCloudListener.onStopPublishing) {
+      MeetingTool.toast(
+          'onStopPublishing：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
-    if(type == TRTCCloudListener.onStartPublishCDNStream) {
-      MeetingTool.toast('onStartPublishCDNStream：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+    if (type == TRTCCloudListener.onStartPublishCDNStream) {
+      MeetingTool.toast(
+          'onStartPublishCDNStream：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
-    if(type == TRTCCloudListener.onStopPublishCDNStream) {
-      MeetingTool.toast('onStopPublishCDNStream：errCode=' + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+    if (type == TRTCCloudListener.onStopPublishCDNStream) {
+      MeetingTool.toast(
+          'onStopPublishCDNStream：errCode=' +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
-    if(type == TRTCCloudListener.onUserVoiceVolume) {
-       MeetingTool.toast('onUserVoiceVolume=' + param['totalVolume'].toString(), context);
+    if (type == TRTCCloudListener.onUserVoiceVolume) {
+      MeetingTool.toast(
+          'onUserVoiceVolume=' + param['totalVolume'].toString(), context);
     }
     if (type == TRTCCloudListener.onSwitchRoom) {
-      MeetingTool.toast("switchRoom code=" + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+      MeetingTool.toast(
+          "switchRoom code=" +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
     if (type == TRTCCloudListener.onSwitchRole) {
-      MeetingTool.toast("switchRoom code=" + param['errCode'].toString() + ', errMsg=' + param['errMsg'], context);
+      MeetingTool.toast(
+          "switchRoom code=" +
+              param['errCode'].toString() +
+              ', errMsg=' +
+              param['errMsg'],
+          context);
     }
     if (type == TRTCCloudListener.onScreenCaptureStarted) {
       MeetingTool.toast('屏幕分享开始', context);
@@ -451,7 +496,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     if (item['userId'] == userInfo['userId']) {
       userList.insert(0, item);
       // ios视频重新渲染必须先stopLocalPreview
-      if (Platform.isIOS) {
+      if (!kIsWeb && Platform.isIOS) {
         await trtcCloud.stopLocalPreview();
       }
     } else {
@@ -467,7 +512,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       if (isDoubleTap) {
         userList[0]['visible'] = false;
       } else {
-        if (Platform.isIOS) {
+        if (!kIsWeb && Platform.isIOS) {
           await trtcCloud.stopLocalPreview();
         }
         //手动关闭摄像头，放大缩小后状态不更新
@@ -480,8 +525,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     this.setState(() {});
   }
 
-  startShare() async {
-    await trtcCloud.stopLocalPreview();
+  startShare({String shareUserId = '', String shareUserSig = ''}) async {
+    if (shareUserId == '') await trtcCloud.stopLocalPreview();
     trtcCloud.startScreenCapture(
       TRTCVideoEncParam(
         videoFps: 10,
@@ -489,12 +534,18 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         videoBitrate: 1600,
         videoResolutionMode: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT,
       ),
-      iosAppGroup,
+      appGroup: iosAppGroup,
+      shareUserId: shareUserId,
+      shareUserSig: shareUserSig,
     );
   }
 
   onShareClick() async {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      String shareUserId = 'share-' + userInfo['userId'];
+      String shareUserSig = await GenerateTestUserSig.genTestSig(shareUserId);
+      await startShare(shareUserId: shareUserId, shareUserSig: shareUserSig);
+    } else if (Platform.isAndroid) {
       if (!isShowingWindow) {
         await startShare();
         userList[0]['visible'] = false;
@@ -505,7 +556,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       } else {
         await trtcCloud.stopScreenCapture();
         userList[0]['visible'] = true;
-        trtcCloud.startLocalPreview(true, localViewId);
+        await trtcCloud.startLocalPreview(true, localViewId);
         this.setState(() {
           isShowingWindow = false;
           isOpenCamera = true;
@@ -531,9 +582,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: TRTCCloudVideoView(
               key: valueKey,
               viewType: TRTCCloudDef.TRTC_VideoView_SurfaceView,
-              onViewCreated: (viewId) {
+              onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
-                  trtcCloud.startLocalPreview(true, viewId);
+                  await trtcCloud.startLocalPreview(true, viewId);
                   setState(() {
                     localViewId = viewId;
                   });
@@ -551,9 +602,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       return Container(
         alignment: Alignment.center,
         child: ClipOval(
-          child: Image.network(
-              'https://imgcache.qq.com/qcloud/public/static//avatar3_100.20191230.png',
-              scale: 3.5),
+          child: Image.asset('images/avatar3_100.20191230.png', scale: 3.5),
         ),
       );
     }
