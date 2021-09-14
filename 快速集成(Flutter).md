@@ -77,7 +77,16 @@ dependencies:
 
 ::: web端
 1.启用web支持：flutter config --enable-web
-2.flutter run -d chrome
+2.需要在您的 `index.html` 中添加引用，可以参考 [web/index.html](web/index.html) 。
+
+```html
+<script src="TrtcWrapper.[version].bundle.js" type="application/javascript"></script>
+<!-- 如没有用到美颜相关功能，可不引入该js -->
+<script src="BeautyManagerWrapper.[version].bundle.js" type="application/javascript"></script>
+<!-- 如没有用到本地计算加密密钥，可不引入该js -->
+<script src="JSGenerateTestUserSig.[version].bundle.js" type="application/javascript"></script>
+```
+3.flutter run -d chrome
 :::
 </dx-tabs>
 

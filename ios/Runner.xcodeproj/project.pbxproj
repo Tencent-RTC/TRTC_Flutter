@@ -15,6 +15,9 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		D2036D9425676B82006B0084 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2036D9325676B82006B0084 /* ReplayKit.framework */; };
+		E13709A426F0432200380383 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A326F0432200380383 /* libz.tbd */; };
+		E13709A626F0433400380383 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A526F0433400380383 /* libc++.tbd */; };
+		E13709A826F0434C00380383 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A726F0434C00380383 /* Accelerate.framework */; };
 		E144EF312600B41100CDA725 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2036D9325676B82006B0084 /* ReplayKit.framework */; };
 		E144EF382600B41100CDA725 /* TRTC Demo Screen.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E144EF4A2600B9EB00CDA725 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E144EF492600B9EB00CDA725 /* SampleHandler.swift */; };
@@ -44,7 +47,6 @@
 		};
 		E144EF392600B41100CDA725 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
@@ -74,6 +76,9 @@
 		AA9771795B45F69477785C11 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		D2036D9325676B82006B0084 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		DAD3A0908C06832831125739 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		E13709A326F0432200380383 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		E13709A526F0433400380383 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		E13709A726F0434C00380383 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TRTC Demo Screen.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E144EF352600B41100CDA725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E144EF402600B4ED00CDA725 /* Broadcast.UploadDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Broadcast.UploadDebug.entitlements; sourceTree = "<group>"; };
@@ -98,6 +103,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13709A826F0434C00380383 /* Accelerate.framework in Frameworks */,
+				E13709A626F0433400380383 /* libc++.tbd in Frameworks */,
+				E13709A426F0432200380383 /* libz.tbd in Frameworks */,
 				E144EF512600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				E144EF312600B41100CDA725 /* ReplayKit.framework in Frameworks */,
 			);
@@ -175,6 +183,9 @@
 		BE34F8A1C753EC8F3DB38AE0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E13709A726F0434C00380383 /* Accelerate.framework */,
+				E13709A526F0433400380383 /* libc++.tbd */,
+				E13709A326F0432200380383 /* libz.tbd */,
 				D2036D9325676B82006B0084 /* ReplayKit.framework */,
 				E144EF502600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework */,
 				6D5A94714830F8743BE5A46E /* Pods_Runner.framework */,
@@ -317,20 +328,6 @@
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
-		};
-		CC05010D59A1225C936CA8C5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
