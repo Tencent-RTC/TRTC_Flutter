@@ -229,7 +229,7 @@ class IndexPageState extends State<IndexPage> {
                             MeetingTool.toast('web 不支持纹理渲染', context);
                             return;
                           }
-                          if (!kIsWeb ||
+                          if (!kIsWeb &&
                               (Platform.isMacOS || Platform.isWindows)) {
                             MeetingTool.toast('PC 只支持纹理渲染', context);
                             return;
