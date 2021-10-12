@@ -72,7 +72,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     isOpenCamera = userSetting["enabledCamera"];
     isOpenMic = userSetting["enabledMicrophone"];
     iniRoom();
-    initScrollListener();
+    //initScrollListener();
   }
 
   iniRoom() async {
@@ -194,7 +194,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   dispose() {
     WidgetsBinding.instance!.removeObserver(this);
     destoryRoom();
-    scrollControl.dispose();
+    //scrollControl.dispose();
     super.dispose();
   }
 
@@ -210,7 +210,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         isShowingWindow = false;
         this.setState(() {});
         // SystemAlertWindow.closeSystemWindow();
-        await trtcCloud.startLocalPreview(true, localViewId);
+        trtcCloud.startLocalPreview(isFrontCamera, localViewId);
       } else {
         showErrordDialog(param['errMsg']);
       }
@@ -351,7 +351,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
               doubleTap(userList[i]);
             }
             trtcCloud.stopRemoteView(
-                userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
+                userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
             userList[i]['visible'] = false;
           }
         }
@@ -397,24 +397,27 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   // 屏幕左右滚动事件监听
   initScrollListener() {
     scrollControl = ScrollController();
-    scrollControl.addListener(() {
+    scrollControl.addListener(() async {
       var firstScreen = screenUserList[0];
       if (scrollControl.offset >= scrollControl.position.maxScrollExtent &&
           !scrollControl.position.outOfRange) {
         for (var i = 1; i < firstScreen.length; i++) {
-          if (i != 0) {
-            trtcCloud.stopRemoteView(firstScreen[i]['userId'],
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
-          }
+          await trtcCloud.stopRemoteView(
+              firstScreen[i]['userId'],
+              firstScreen[i]['type'] == "video"
+                  ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                  : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
         }
       } else if (scrollControl.offset <=
               scrollControl.position.minScrollExtent &&
           !scrollControl.position.outOfRange) {
         for (var i = 1; i < firstScreen.length; i++) {
-          if (i != 0) {
-            trtcCloud.startRemoteView(firstScreen[i]['userId'],
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewArr[i]);
-          }
+          await trtcCloud.startRemoteView(
+              firstScreen[i]['userId'],
+              firstScreen[i]['type'] == "video"
+                  ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                  : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+              viewArr[i]);
         }
       } else {
         // 滑动中
@@ -556,7 +559,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       } else {
         await trtcCloud.stopScreenCapture();
         userList[0]['visible'] = true;
-        await trtcCloud.startLocalPreview(true, localViewId);
+        trtcCloud.startLocalPreview(isFrontCamera, localViewId);
         this.setState(() {
           isShowingWindow = false;
           isOpenCamera = true;
@@ -584,7 +587,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
               viewType: TRTCCloudDef.TRTC_VideoView_SurfaceView,
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
-                  await trtcCloud.startLocalPreview(true, viewId);
+                  await trtcCloud.startLocalPreview(isFrontCamera, viewId);
+                  if (!kIsWeb && Platform.isIOS)
+                    await trtcCloud.updateLocalView(viewId);
                   setState(() {
                     localViewId = viewId;
                   });
@@ -965,7 +970,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 scrollDirection: Axis.horizontal,
                 itemCount: screenUserList.length,
                 cacheExtent: 0,
-                controller: scrollControl,
+                //controller: scrollControl,
                 itemBuilder: (BuildContext context, index) {
                   var item = screenUserList[index];
                   return Container(
