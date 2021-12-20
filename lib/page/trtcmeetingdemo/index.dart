@@ -106,7 +106,7 @@ class IndexPageState extends State<IndexPage> {
     }
     unFocus();
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-      if (!(await Permission.camera.request().isGranted) &&
+      if (!(await Permission.camera.request().isGranted) ||
           !(await Permission.microphone.request().isGranted)) {
         MeetingTool.toast('需要获取音视频权限才能进入', context);
         return;
