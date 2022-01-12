@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -43,11 +44,7 @@ class IndexPageState extends State<IndexPage> {
   initState() {
     super.initState();
     Future.delayed(Duration(microseconds: 500), () {
-      if (kIsWeb) {
-        setState(() {
-          enableTextureRendering = false;
-        });
-      } else if (Platform.isMacOS || Platform.isWindows) {
+      if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
         setState(() {
           enableTextureRendering = true;
         });
@@ -121,9 +118,6 @@ class IndexPageState extends State<IndexPage> {
       "quality": quality
     });
     if (enableTextureRendering) {
-      if (!kIsWeb && Platform.isWindows) {
-        MeetingTool.toast('windows 的本地纹理渲染还不支持', context);
-      }
       Navigator.pushNamed(context, "/textureRender");
     } else {
       Navigator.pushNamed(context, "/video");
@@ -220,18 +214,13 @@ class IndexPageState extends State<IndexPage> {
                     ),
                     ListTile(
                       contentPadding: EdgeInsets.all(0),
-                      title: Text("纹理渲染（内测阶段）",
-                          style: TextStyle(color: Colors.white)),
+                      title:
+                          Text("纹理渲染", style: TextStyle(color: Colors.white)),
                       trailing: Switch(
                         value: enableTextureRendering,
                         onChanged: (value) {
-                          if (kIsWeb) {
+                          if (kIsWeb && value) {
                             MeetingTool.toast('web 不支持纹理渲染', context);
-                            return;
-                          }
-                          if (!kIsWeb &&
-                              (Platform.isMacOS || Platform.isWindows)) {
-                            MeetingTool.toast('PC 只支持纹理渲染', context);
                             return;
                           }
                           this.setState(() => enableTextureRendering = value);

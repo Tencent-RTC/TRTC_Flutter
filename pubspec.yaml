@@ -6,7 +6,7 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  tencent_trtc_cloud: ^2.0.0-dev.0.0.2
+  tencent_trtc_cloud: ^2.0.7
   cupertino_icons: ^1.0.2
   provider: ^5.0.0
   crypto: ^3.0.1

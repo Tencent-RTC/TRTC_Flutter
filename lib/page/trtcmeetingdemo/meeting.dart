@@ -60,7 +60,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   int quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
 
   late ScrollController scrollControl;
-  List viewArr = [];
   @override
   initState() {
     super.initState();
@@ -72,7 +71,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     isOpenCamera = userSetting["enabledCamera"];
     isOpenMic = userSetting["enabledMicrophone"];
     iniRoom();
-    //initScrollListener();
+    initScrollListener();
   }
 
   iniRoom() async {
@@ -116,9 +115,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             screenUserList = MeetingTool.getScreenList(userList);
             this.setState(() {});
           });
-        } else if (!kIsWeb && Platform.isIOS && isOpenCamera) {
-          //在ios下如果localViewId和上次的不一样时候需要调用updateLocalView，一样的话就不需要调用
-          //trtcCloud.updateLocalView(localViewId);
         }
         break;
       case AppLifecycleState.paused: // 界面不可见，后台
@@ -194,7 +190,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   dispose() {
     WidgetsBinding.instance!.removeObserver(this);
     destoryRoom();
-    //scrollControl.dispose();
+    scrollControl.dispose();
     super.dispose();
   }
 
@@ -209,7 +205,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         userList[0]['visible'] = true;
         isShowingWindow = false;
         this.setState(() {});
-        // SystemAlertWindow.closeSystemWindow();
         trtcCloud.startLocalPreview(isFrontCamera, localViewId);
       } else {
         showErrordDialog(param['errMsg']);
@@ -397,31 +392,44 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   // 屏幕左右滚动事件监听
   initScrollListener() {
     scrollControl = ScrollController();
+    double lastOffset = 0;
     scrollControl.addListener(() async {
-      var firstScreen = screenUserList[0];
-      if (scrollControl.offset >= scrollControl.position.maxScrollExtent &&
-          !scrollControl.position.outOfRange) {
-        for (var i = 1; i < firstScreen.length; i++) {
-          await trtcCloud.stopRemoteView(
-              firstScreen[i]['userId'],
-              firstScreen[i]['type'] == "video"
-                  ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-                  : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
-        }
-      } else if (scrollControl.offset <=
-              scrollControl.position.minScrollExtent &&
-          !scrollControl.position.outOfRange) {
-        for (var i = 1; i < firstScreen.length; i++) {
-          await trtcCloud.startRemoteView(
-              firstScreen[i]['userId'],
-              firstScreen[i]['type'] == "video"
-                  ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-                  : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-              viewArr[i]);
+      double screenWidth = MediaQuery.of(context).size.width;
+      int pageSize = (scrollControl.offset / screenWidth).ceil();
+
+      if (lastOffset < scrollControl.offset) {
+        scrollControl.animateTo(pageSize * screenWidth,
+            duration: Duration(milliseconds: 100), curve: Curves.ease);
+        if (scrollControl.offset == pageSize * screenWidth) {
+          //从左向右滑动
+          for (var i = 1; i < pageSize * MeetingTool.screenLen; i++) {
+            await trtcCloud.stopRemoteView(
+                userList[i]['userId'],
+                userList[i]['type'] == "video"
+                    ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                    : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+          }
         }
       } else {
-        // 滑动中
+        scrollControl.animateTo((pageSize - 1) * screenWidth,
+            duration: Duration(milliseconds: 100), curve: Curves.ease);
+        if (scrollControl.offset == pageSize * screenWidth) {
+          var pageScreen = screenUserList[pageSize];
+          int initI = 0;
+          if (pageSize == 0) {
+            initI = 1;
+          }
+          for (var i = initI; i < pageScreen.length; i++) {
+            await trtcCloud.startRemoteView(
+                pageScreen[i]['userId'],
+                pageScreen[i]['type'] == "video"
+                    ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                    : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+                pageScreen[i]['viewId']);
+          }
+        }
       }
+      lastOffset = scrollControl.offset;
     });
   }
 
@@ -531,6 +539,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   startShare({String shareUserId = '', String shareUserSig = ''}) async {
     if (shareUserId == '') await trtcCloud.stopLocalPreview();
     trtcCloud.startScreenCapture(
+      TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
       TRTCVideoEncParam(
         videoFps: 10,
         videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720,
@@ -548,7 +557,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       String shareUserId = 'share-' + userInfo['userId'];
       String shareUserSig = await GenerateTestUserSig.genTestSig(shareUserId);
       await startShare(shareUserId: shareUserId, shareUserSig: shareUserSig);
-    } else if (Platform.isAndroid) {
+    } else if (!kIsWeb && Platform.isAndroid) {
       if (!isShowingWindow) {
         await startShare();
         userList[0]['visible'] = false;
@@ -575,7 +584,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
   }
 
-  Widget renderView(item, valueKey) {
+  Widget renderView(item, valueKey, width, height) {
     if (item['visible']) {
       return GestureDetector(
           key: valueKey,
@@ -584,12 +593,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           },
           child: TRTCCloudVideoView(
               key: valueKey,
-              viewType: TRTCCloudDef.TRTC_VideoView_SurfaceView,
+              viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
                   await trtcCloud.startLocalPreview(isFrontCamera, viewId);
-                  if (!kIsWeb && Platform.isIOS)
-                    await trtcCloud.updateLocalView(viewId);
                   setState(() {
                     localViewId = viewId;
                   });
@@ -601,7 +608,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                           : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
                       viewId);
                 }
-                viewArr.add(viewId);
+                item['viewId'] = viewId;
               }));
     } else {
       return Container(
@@ -691,7 +698,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   //弹出对话框并等待其关闭
                   bool? delete = await showExitMeetingConfirmDialog();
                   if (delete != null) {
-                    trtcCloud.exitRoom();
                     Navigator.pop(context);
                   }
                 },
@@ -937,16 +943,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   this.onShareClick();
                 },
               ),
-              SettingPage(),
-              IconButton(
-                  icon: Icon(
-                    Icons.info,
-                    color: Colors.white,
-                    size: 36.0,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/test');
-                  }),
+              SettingPage()
             ],
           ),
           height: 70.0,
@@ -968,9 +965,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           children: <Widget>[
             ListView.builder(
                 scrollDirection: Axis.horizontal,
+                physics: new ClampingScrollPhysics(),
                 itemCount: screenUserList.length,
                 cacheExtent: 0,
-                //controller: scrollControl,
+                controller: scrollControl,
                 itemBuilder: (BuildContext context, index) {
                   var item = screenUserList[index];
                   return Container(
@@ -1018,7 +1016,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               child: Stack(
                                 key: valueKey,
                                 children: <Widget>[
-                                  renderView(item[index], valueKey),
+                                  renderView(
+                                      item[index], valueKey, width, height),
                                   videoVoice(item[index])
                                 ],
                               ),

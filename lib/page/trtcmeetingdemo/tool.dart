@@ -7,9 +7,11 @@ class MeetingTool {
   static toast(text, context) {
     showToast(text, context: context, position: StyledToastPosition.center);
   }
+
   // 每4个一屏，得到一个二维数组
+  static int screenLen = 4;
   static getScreenList(list) {
-    int len = 4; //4个一屏
+    int len = screenLen; //4个一屏
     List<List> result = [];
     int index = 1;
     while (true) {

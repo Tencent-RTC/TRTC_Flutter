@@ -133,6 +133,7 @@ class TextureRenderState extends State<TextureRenderPage>
               width: 360,
               height: 480,
             ));
+
             if (textureId != null) {
               setState(() {
                 screenUserList[userInfo['userId']] = textureId;
@@ -192,7 +193,8 @@ class TextureRenderState extends State<TextureRenderPage>
     }
     //辅流监听
     if (type == TRTCCloudListener.onUserSubStreamAvailable) {
-      String userId = param["userId"]; // + '_sub';
+      print("==onUserSubStreamAvailable=" + param.toString());
+      String userId = param["userId"];
       //视频可用
       if (param["available"]) {
         int? textureId =
@@ -203,14 +205,15 @@ class TextureRenderState extends State<TextureRenderPage>
           height: 480,
         ));
         if (textureId != null) {
+          String userIdSub = userId + '_sub';
           setState(() {
-            screenUserList[userId] = textureId;
+            screenUserList[userIdSub] = textureId;
           });
         }
       } else {
         await trtcCloud.stopRemoteView(
-            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
-        removeViedo(userId);
+            userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+        removeViedo(userId + '_sub');
       }
     }
     if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
@@ -254,6 +257,7 @@ class TextureRenderState extends State<TextureRenderPage>
 
   Widget itemBuilder(BuildContext context, index) {
     int screenItem = screenUserList.values.toList()[index];
+    print("==screenItem," + screenItem.toString());
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -351,6 +355,15 @@ class TextureRenderState extends State<TextureRenderPage>
                 });
               },
             ),
+            IconButton(
+                icon: Icon(
+                  Icons.info,
+                  color: Colors.white,
+                  size: 36.0,
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/test');
+                }),
           ],
         ),
       ),
