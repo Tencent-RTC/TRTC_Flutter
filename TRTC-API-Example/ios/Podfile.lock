@@ -1,0 +1,53 @@
+PODS:
+  - Flutter (1.0.0)
+  - image_gallery_saver (1.5.0):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
+  - replay_kit_launcher (1.0.0):
+    - Flutter
+  - tencent_trtc_cloud (0.0.7):
+    - Flutter
+    - TXLiteAVSDK_TRTC (= 9.5.11004)
+  - TXLiteAVSDK_TRTC (9.5.11004)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - replay_kit_launcher (from `.symlinks/plugins/replay_kit_launcher/ios`)
+  - tencent_trtc_cloud (from `.symlinks/plugins/tencent_trtc_cloud/ios`)
+
+SPEC REPOS:
+  trunk:
+    - TXLiteAVSDK_TRTC
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  replay_kit_launcher:
+    :path: ".symlinks/plugins/replay_kit_launcher/ios"
+  tencent_trtc_cloud:
+    :path: ".symlinks/plugins/tencent_trtc_cloud/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  replay_kit_launcher: 828739da18c9785d5e9aafd4f075ea11d6b61499
+  tencent_trtc_cloud: f522eb10ddd74baecc7a5e644478ff08dd018a07
+  TXLiteAVSDK_TRTC: 49d2f320fbb99c040a3d7287fe983cbbcc94f28b
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.1

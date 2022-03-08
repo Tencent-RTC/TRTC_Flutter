@@ -1,0 +1,23 @@
+{
+    "name": "trtc_api_example",
+    "short_name": "trtc_api_example",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "TRTC API Example帮助开发者可以更好的理解 TRTC 实时音视频 SDK 的API，从而快速实现一些音视频场景的基本功能。",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
