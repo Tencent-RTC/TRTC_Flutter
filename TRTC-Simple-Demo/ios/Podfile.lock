@@ -1,0 +1,47 @@
+PODS:
+  - Flutter (1.0.0)
+  - path_provider (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
+  - replay_kit_launcher (0.3.0):
+    - Flutter
+  - tencent_trtc_cloud (0.0.7):
+    - Flutter
+    - TXLiteAVSDK_TRTC (= 8.8.10260)
+  - TXLiteAVSDK_TRTC (8.8.10260)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - replay_kit_launcher (from `.symlinks/plugins/replay_kit_launcher/ios`)
+  - tencent_trtc_cloud (from `.symlinks/plugins/tencent_trtc_cloud/ios`)
+
+SPEC REPOS:
+  trunk:
+    - TXLiteAVSDK_TRTC
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  replay_kit_launcher:
+    :path: ".symlinks/plugins/replay_kit_launcher/ios"
+  tencent_trtc_cloud:
+    :path: ".symlinks/plugins/tencent_trtc_cloud/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  replay_kit_launcher: 9c6874fe17ce278a6f0e99e3698acf194480e9a2
+  tencent_trtc_cloud: 4f74665a844dea0b89f7dba16d41c9fb6c7dbb94
+  TXLiteAVSDK_TRTC: a3d3f21288b27dc3ef654e34c58fb4536fcfdad3
+
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
+
+COCOAPODS: 1.10.1
