@@ -4,7 +4,7 @@
 
 [API 概览](https://cloud.tencent.com/document/product/647/51530)，[API 详细文档](https://pub.dev/documentation/tencent_trtc_cloud/latest/index.html)
 
-[Flutter API 示例](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-API-Example)
+[Flutter API 示例Demo](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-API-Example)
 
 多人视频会议DEMO地址 [Github](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo)
 
