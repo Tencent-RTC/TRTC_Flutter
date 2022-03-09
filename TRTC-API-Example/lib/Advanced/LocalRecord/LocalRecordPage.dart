@@ -13,13 +13,11 @@ import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
 
 ///  LocalRecordPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class LocalRecordPage extends StatefulWidget {
   const LocalRecordPage({Key? key}) : super(key: key);
 
@@ -65,7 +63,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
   startPushStream() async {
     trtcCloud.startLocalPreview(true, localViewId);
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;

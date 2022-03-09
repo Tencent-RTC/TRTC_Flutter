@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  VoiceChatRoomAudiencePage.dart
@@ -34,7 +33,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
   startPushStream() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAudience;

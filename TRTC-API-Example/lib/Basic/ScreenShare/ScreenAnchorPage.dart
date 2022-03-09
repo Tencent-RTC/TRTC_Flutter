@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
 
@@ -46,7 +45,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
   startPushStream() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;
