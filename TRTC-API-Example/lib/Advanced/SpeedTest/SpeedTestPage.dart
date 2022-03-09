@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  SpeedTestPage.dart
@@ -177,7 +176,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
 
   beginSpeedTest() async {
     btnTitle = "0%";
-    int sdkAppId = Config.sdkAppId;
+    int sdkAppId = GenerateTestUserSig.sdkAppId;
     String userSig = await GenerateTestUserSig.genTestSig(userId);
     trtcCloud.startSpeedTest(sdkAppId, userId, userSig);
     trtcCloud.registerListener(onTrtcListener);

@@ -6,7 +6,6 @@ import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  SwitchRoomPage.dart
@@ -41,7 +40,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
   startPushStream() async {
     trtcCloud.startLocalPreview(true, localViewId);
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;

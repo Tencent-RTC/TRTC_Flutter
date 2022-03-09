@@ -5,7 +5,6 @@ import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/tx_device_manager.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  LiveAnchorPage.dart
@@ -37,7 +36,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
   startPushStream() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;

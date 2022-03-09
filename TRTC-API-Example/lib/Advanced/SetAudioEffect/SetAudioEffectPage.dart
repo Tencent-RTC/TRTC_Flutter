@@ -7,7 +7,6 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  SetAudioEffectPage.dart
@@ -44,7 +43,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
   startPushStream() async {
     trtcCloud.startLocalPreview(true, localViewId);
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;

@@ -5,7 +5,6 @@ import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/tx_device_manager.dart';
-import 'package:trtc_api_example/Debug/Config.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 ///  VideoCallingPage.dart
@@ -38,7 +37,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
   startPushStream() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
     TRTCParams params = new TRTCParams();
-    params.sdkAppId = Config.sdkAppId;
+    params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
