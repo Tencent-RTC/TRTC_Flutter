@@ -1,73 +1,68 @@
 # TRTC Flutter API-Example 
-_中文 | [English](README.en.md)_
+[中文](README_zh-CN.md) | English
 
-## 前言
-这个开源示例Demo主要演示了 [TRTC 实时音视频 Flutter SDK](https://cloud.tencent.com/document/product/647/32689) 部分API的使用示例，帮助开发者可以更好的理解 TRTC 实时音视频 Flutter SDK 的API，从而快速实现一些音视频场景的基本功能。 
+## Background
+This open-source demo shows how to use some APIs of the [TRTC Flutter SDK](https://intl.cloud.tencent.com/products/trtc) to help you better understand the APIs and use them to implement some basic TRTC features. 
 
-## 结构说明
-在这个示例项目中包含了以下场景:（带上对应的跳转目录，方便用户快速浏览感兴趣的功能）
+## Contents
+This demo covers the following features (click to view the details of a feature):
 
-- 基础功能
-  - [语音通话](./lib/Basic/AudioCall)
-  - [视频通话](./lib/Basic/VideoCall)
-  - [视频互动直播](./lib/Basic/Live)
-  - [语音互动直播](./lib/Basic/VoiceChatRoom)
-  - [录屏直播](./lib/Basic/ScreenShare)
-- 进阶功能
-  - [字符串房间号](./lib/Advanced/StringRoomId)
-  - [画质设定](./lib/Advanced/SetVideoQuality)
-  - [音质设定](./lib/Advanced/SetAudioQuality)
-  - [渲染控制](./lib/Advanced/SetRenderParams)
-  - [网络测速](./lib/Advanced/SpeedTest)
-  - [CDN发布](./lib/Advanced/PushCDN)
-  - [设置音效](./lib/Advanced/SetAudioEffect)
-  - [设置背景音乐](./lib/Advanced/SetBackgroundMusic)
-  - [本地视频录制](./lib/Advanced/LocalRecord)
-  - [收发SEI消息](./lib/Advanced/SEIMessage)
-  - [快速切换房间](./lib/Advanced/SwitchRoom)
-  - [跨房PK](./lib/Advanced/RoomPk)
-  
+- Basic Features
+  - [Audio Call](./lib/Basic/AudioCall)
+  - [Video Call](./lib/Basic/VideoCall)
+  - [Interactive Live Video Streaming](./lib/Basic/Live)
+  - [Interactive Live Audio Streaming](./lib/Basic/VoiceChatRoom)
+  - [Screen Sharing Live Streaming](./lib/Basic/ScreenShare)
+- Advanced Features
+  - [String-type Room IDs](./lib/Advanced/StringRoomId)
+  - [Video Quality Setting](./lib/Advanced/SetVideoQuality)
+  - [Audio Quality Setting](./lib/Advanced/SetAudioQuality)
+  - [Rendering Control](./lib/Advanced/SetRenderParams)
+  - [Network Speed Testing](./lib/Advanced/SpeedTest)
+  - [Audio Effect Setting](./lib/Advanced/SetAudioEffect)
+  - [Background Music Setting](./lib/Advanced/SetBackgroundMusic)
+  - [Local Video Recording](./lib/Advanced/LocalRecord)
+  - [SEI Message Receiving/Sending](./lib/Advanced/SEIMessage)
+  - [Room Switching](./lib/Advanced/SwitchRoom)
+  - [Cross-Room Competition](./lib/Advanced/RoomPk)
 
-## 环境准备
-- Flutter 2.0 及以上版本。
-- **Android 端开发：**
-  - Android Studio 3.5及以上版本。
-  - App 要求 Android 4.1及以上版本设备。
-- **iOS & macOS 端开发：**
-  - Xcode 11.0及以上版本。
-  - osx 系统版本要求 10.11 及以上版本
-  - 请确保您的项目已设置有效的开发者签名。
-  
-## 运行示例
+## Environment Requirements
+- Flutter 2.0or above
+- **Developing for Android:**
+  - Android Studio 3.5 or above
+  - Devices with Android 4.1 or above
+- **Developing for iOS:**
+  - Xcode 11.0 or above
+  - Your project has a valid developer signature.
 
-### 前提条件
-您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
+## Demo Run Example
+
+#### Prerequisites
+You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com/document/product/378/17985) and completed [identity verification](https://intl.cloud.tencent.com/document/product/378/3629).
 
 
-### 申请 SDKAPPID 和 SECRETKEY
-1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
-2. 单击【立即开始】，输入您的应用名称，例如`TestTRTC`，单击【创建应用】。
+### Obtaining `SDKAPPID` and `SECRETKEY`
+1. Log in to the TRTC console and select **Development Assistance** > **[Demo Quick Run](https://console.cloud.tencent.com/trtc/quickstart)**.
+2. Enter an application name such as `TestTRTC`, and click **Create**.
 
-![](https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png)
-3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
+![ #900px](https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png)
+3. Click **Next** to view your `SDKAppID` and key.
 
 
-### 配置 Demo 工程文件
-1. 打开 Debug 目录下的 [GenerateTestUserSig.dart](debug/GenerateTestUserSig.dart) 文件。
-2. 配置`GenerateTestUserSig.dart`文件中的两个参数：
-  - SDKAPPID：替换该变量值为上一步骤中在页面上看到的 SDKAppID。
-  - SECRETKEY：替换该变量值为上一步骤中在页面上看到的密钥。
+### Configuring demo project files
+1. Open the [GenerateTestUserSig.dart](debug/GenerateTestUserSig.dart) file in the Debug directory.
+2. Configure two parameters in the `GenerateTestUserSig.dart` file:
+  - `SDKAPPID`: `PLACEHOLDER` by default. Set it to the actual `SDKAppID`.
+  - `SECRETKEY`: left empty by default. Set it to the actual key.
  ![ #900px](https://main.qcloudimg.com/raw/fba60aa9a44a94455fe31b809433cfa4.png)
 
-4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
-5. 单击【关闭指引，进入控制台管理应用】。
+3. Return to the TRTC console and click **Next**.
+4. Click **Return to Overview Page**.
 
->!本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
->正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+>!The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is disclosed, attackers can steal your Tencent Cloud traffic. Therefore, **this method is suitable only for the local execution and debugging of the demo**.
+>The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can make a request to the business server for dynamic `UserSig`. For more information, please see [How to Calculate UserSig](https://intl.cloud.tencent.com/document/product/647/35166).
 
 
-### 编译运行
-- 执行 `flutter pub get`。
-- 编译运行调试 `flutter run`
-> 上述流程并没有解答您的疑问，你可以[点击此处](https://wj.qq.com/s2/8393513/f442/)反馈，我们的**工程师妹子**会尽快处理！
-
+### Compiling and running the project
+- Run `flutter pub get`。
+- Compile, run, and debug the project `flutter run`
