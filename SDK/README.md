@@ -8,6 +8,9 @@
 
 Note: Demo does not support simulator operation. Please use real machine development and debugging.
 
+#### SDK Pub
+[SDK Pub](https://pub.dev/packages/tencent_trtc_cloud)
+
 #### Demo quick start
 
 Please see [Demo Quick Start(Flutter)](https://intl.cloud.tencent.com/document/product/647/39243)
