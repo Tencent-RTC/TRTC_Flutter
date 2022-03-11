@@ -24,7 +24,7 @@ import 'tool.dart';
 const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
 const iosExtensionName = 'TRTC Demo Screen';
 
-/// 视频页面
+/// Meeting Page
 class MeetingPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => MeetingPageState();
@@ -33,20 +33,20 @@ class MeetingPage extends StatefulWidget {
 class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var meetModel;
-  var userInfo = {}; //多人视频用户列表
+  var userInfo = {}; //Multiplayer video user list
 
-  bool isOpenMic = true; //是否开启麦克风
-  bool isOpenCamera = true; //是否开启摄像头
-  bool isFrontCamera = true; //是否是前置摄像头
-  bool isSpeak = true; //是否是扬声器
-  bool isDoubleTap = false; //是否是双击放大
-  bool isShowingWindow = false; //是否展示悬浮窗
+  bool isOpenMic = true; //whether turn on the microphone
+  bool isOpenCamera = true; //whether turn on the video
+  bool isFrontCamera = true; //front camera
+  bool isSpeak = true;
+  bool isDoubleTap = false;
+  bool isShowingWindow = false;
   int? localViewId;
-  bool isShowBeauty = true; //是否开启美颜设置
-  String curBeauty = 'pitu'; //默认为P图
-  double curBeautyValue = 6; // 美颜值默认为6
-  String doubleUserId = ""; //双击放大的用户id
-  String doubleUserIdType = ""; //双击放大用户id的类型，视频or屏幕分享
+  bool isShowBeauty = true; //whether enable beauty settings
+  String curBeauty = 'pitu';
+  double curBeautyValue = 6; //The default beauty value is 6
+  String doubleUserId = "";
+  String doubleUserIdType = "";
 
   late TRTCCloud trtcCloud;
   late TXDeviceManager txDeviceManager;
@@ -54,7 +54,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   late TXAudioEffectManager txAudioManager;
 
   List userList = [];
-  List userListLast = []; //切后台时的备份
+  List userListLast = [];
   List screenUserList = [];
   int? meetId;
   int quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
@@ -75,23 +75,23 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   }
 
   iniRoom() async {
-    // 创建 TRTCCloud 单例
+    // Create TRTCCloud singleton
     trtcCloud = (await TRTCCloud.sharedInstance())!;
-    // 获取设备管理模块
+    // Tencent Cloud Audio Effect Management Module
     txDeviceManager = trtcCloud.getDeviceManager();
-    // 获取美颜管理对象
+    // Beauty filter and animated effect parameter management
     txBeautyManager = trtcCloud.getBeautyManager();
-    // 获取音效管理类 TXAudioEffectManager
+    // Tencent Cloud Audio Effect Management Module
     txAudioManager = trtcCloud.getAudioEffectManager();
-    // 注册事件回调
+    // Register event callback
     trtcCloud.registerListener(onRtcListener);
 
-    // 进房
+    // Enter the room
     enterRoom();
 
     initData();
 
-    //设置美颜效果
+    //Set beauty effect
     txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_NATURE);
     txBeautyManager.setBeautyLevel(6);
   }
@@ -99,10 +99,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
-      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+      case AppLifecycleState.inactive:
         break;
-      case AppLifecycleState.resumed: //从后台切换前台，界面可见
-        print("==resumed video=" + localViewId.toString());
+      case AppLifecycleState
+          .resumed: //Switch from the background to the foreground, and the interface is visible
         if (!kIsWeb && Platform.isAndroid) {
           userListLast = jsonDecode(jsonEncode(userList));
           userList = [];
@@ -117,15 +117,14 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           });
         }
         break;
-      case AppLifecycleState.paused: // 界面不可见，后台
-        print("==paused video");
+      case AppLifecycleState.paused: // Interface invisible, background
         break;
-      case AppLifecycleState.detached: // APP结束时调用
+      case AppLifecycleState.detached:
         break;
     }
   }
 
-  // 进入房间
+  // Enter the trtc room
   enterRoom() async {
     try {
       userInfo['userSig'] =
@@ -138,17 +137,16 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
     await trtcCloud.enterRoom(
         TRTCParams(
-            sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
-            userId: userInfo['userId'], // 用户Id
-            userSig: userInfo['userSig'], // 用户签名
+            sdkAppId: GenerateTestUserSig.sdkAppId,
+            userId: userInfo['userId'],
+            userSig: userInfo['userSig'],
             role: TRTCCloudDef.TRTCRoleAnchor,
-            roomId: meetId!), //房间Id
+            roomId: meetId!),
         TRTCCloudDef.TRTC_APP_SCENE_LIVE);
   }
 
   initData() async {
     if (isOpenCamera) {
-      //打开摄像头
       userList.add({
         'userId': userInfo['userId'],
         'type': 'video',
@@ -164,7 +162,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       });
     }
     if (isOpenMic) {
-      //开启麦克风
       if (kIsWeb) {
         Future.delayed(Duration(seconds: 2), () {
           trtcCloud.startLocalAudio(quality);
@@ -179,7 +176,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     this.setState(() {});
   }
 
-  // 销毁房间的一些信息
   destoryRoom() {
     trtcCloud.unRegisterListener(onRtcListener);
     trtcCloud.exitRoom();
@@ -194,13 +190,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  /// 事件回调
+  /// Event callbacks
   onRtcListener(type, param) async {
-    print("==rtc listener type=" + type.toString());
-    print("==rtc listener param=" + param.toString());
     if (type == TRTCCloudListener.onError) {
       if (param['errCode'] == -1308) {
-        MeetingTool.toast('启动录屏失败', context);
+        MeetingTool.toast('Failed to start screen recording', context);
         await trtcCloud.stopScreenCapture();
         userList[0]['visible'] = true;
         isShowingWindow = false;
@@ -210,93 +204,18 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         showErrordDialog(param['errMsg']);
       }
     }
-    if (type == TRTCCloudListener.onSpeedTest) {
-      MeetingTool.toast(
-          'onSpeedTest=' + param['finishedCount'].toString(), context);
-    }
-    if (type == TRTCCloudListener.onStartPublishing) {
-      MeetingTool.toast(
-          'onStartPublishing：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onStopPublishing) {
-      MeetingTool.toast(
-          'onStopPublishing：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onStartPublishCDNStream) {
-      MeetingTool.toast(
-          'onStartPublishCDNStream：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onStopPublishCDNStream) {
-      MeetingTool.toast(
-          'onStopPublishCDNStream：errCode=' +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onUserVoiceVolume) {
-      MeetingTool.toast(
-          'onUserVoiceVolume=' + param['totalVolume'].toString(), context);
-    }
-    if (type == TRTCCloudListener.onSwitchRoom) {
-      MeetingTool.toast(
-          "switchRoom code=" +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onSwitchRole) {
-      MeetingTool.toast(
-          "switchRoom code=" +
-              param['errCode'].toString() +
-              ', errMsg=' +
-              param['errMsg'],
-          context);
-    }
-    if (type == TRTCCloudListener.onScreenCaptureStarted) {
-      MeetingTool.toast('屏幕分享开始', context);
-    }
-    if (type == TRTCCloudListener.onScreenCapturePaused) {
-      MeetingTool.toast('屏幕分享暂停', context);
-    }
-    if (type == TRTCCloudListener.onScreenCaptureResumed) {
-      MeetingTool.toast('屏幕分享恢复', context);
-    }
-    if (type == TRTCCloudListener.onScreenCaptureStoped) {
-      MeetingTool.toast('屏幕分享停止', context);
-    }
-    if (type == TRTCCloudListener.onMusicObserverStart) {
-      MeetingTool.toast('背景音乐开始播放', context);
-    }
-    if (type == TRTCCloudListener.onMusicObserverComplete) {
-      MeetingTool.toast('背景音乐结束播放', context);
-    }
     if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
-        MeetingTool.toast('进房成功', context);
+        MeetingTool.toast('Enter room success', context);
       }
     }
     if (type == TRTCCloudListener.onExitRoom) {
       if (param > 0) {
-        MeetingTool.toast('退房成功', context);
+        MeetingTool.toast('Exit room success', context);
       }
     }
-    // 远端用户进房
+    // Remote user entry
     if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
-      print("==onRemoteUserEnterRoom=" + param.toString());
       userList.add({
         'userId': param,
         'type': 'video',
@@ -307,7 +226,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       this.setState(() {});
       meetModel.setList(userList);
     }
-    // 远端用户离开房间
+    // Remote user leaves room
     if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
       String userId = param['userId'];
       for (var i = 0; i < userList.length; i++) {
@@ -315,7 +234,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           userList.removeAt(i);
         }
       }
-      //正在放大的视频用户退房了
+      //The user who is amplifying the video exit room
       if (doubleUserId == userId) {
         isDoubleTap = false;
       }
@@ -323,12 +242,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       this.setState(() {});
       meetModel.setList(userList);
     }
-    //远端用户是否存在可播放的主路画面（一般用于摄像头）
     if (type == TRTCCloudListener.onUserVideoAvailable) {
-      print("==onUserVideoAvailable=" + param.toString());
       String userId = param['userId'];
 
-      // 根据状态对视频进行开启和关闭
       if (param['available']) {
         for (var i = 0; i < userList.length; i++) {
           if (userList[i]['userId'] == userId &&
@@ -357,10 +273,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       meetModel.setList(userList);
     }
 
-    //辅流监听
     if (type == TRTCCloudListener.onUserSubStreamAvailable) {
       String userId = param["userId"];
-      //视频可用
       if (param["available"]) {
         userList.add({
           'userId': userId,
@@ -389,7 +303,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
   }
 
-  // 屏幕左右滚动事件监听
+  // Screen scrolling left and right event
   initScrollListener() {
     scrollControl = ScrollController();
     double lastOffset = 0;
@@ -401,7 +315,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         scrollControl.animateTo(pageSize * screenWidth,
             duration: Duration(milliseconds: 100), curve: Curves.ease);
         if (scrollControl.offset == pageSize * screenWidth) {
-          //从左向右滑动
+          //Slide from left to right
           for (var i = 1; i < pageSize * MeetingTool.screenLen; i++) {
             await trtcCloud.stopRemoteView(
                 userList[i]['userId'],
@@ -433,20 +347,18 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     });
   }
 
-  // sdk出错信查看
   Future<bool?> showErrordDialog(errorMsg) {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text("提示"),
+          title: Text("Tips"),
           content: Text(errorMsg),
           actions: <Widget>[
             TextButton(
-              child: Text("确定"),
+              child: Text("Confirm"),
               onPressed: () {
-                //关闭对话框并返回true
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -461,23 +373,21 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
-  // 弹出退房确认对话框
   Future<bool?> showExitMeetingConfirmDialog() {
     return showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("提示"),
-          content: Text("确定退出会议?"),
+          title: Text("Tips"),
+          content: Text("Are you sure to exit the meeting?"),
           actions: <Widget>[
             TextButton(
-              child: Text("取消"),
-              onPressed: () => Navigator.of(context).pop(), // 关闭对话框
+              child: Text("Cancel"),
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text("确定"),
+              child: Text("Confirm"),
               onPressed: () {
-                //关闭对话框并返回true
                 Navigator.of(context).pop(true);
               },
             ),
@@ -487,7 +397,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
-  // 双击放大缩小功能
+  // Double click zoom in and zoom out
   doubleTap(item) async {
     Size screenSize = MediaQuery.of(context).size;
     if (isDoubleTap) {
@@ -503,10 +413,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       doubleUserIdType = item['type'];
       item['size'] = {'width': screenSize.width, 'height': screenSize.height};
     }
-    // 用户自己
+    // userself
     if (item['userId'] == userInfo['userId']) {
       userList.insert(0, item);
-      // ios视频重新渲染必须先stopLocalPreview
       if (!kIsWeb && Platform.isIOS) {
         await trtcCloud.stopLocalPreview();
       }
@@ -519,14 +428,12 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         await trtcCloud.stopRemoteView(
             item['userId'], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
       }
-      //修复切换远端视频时本地视频不渲染的问题
       if (isDoubleTap) {
         userList[0]['visible'] = false;
       } else {
         if (!kIsWeb && Platform.isIOS) {
           await trtcCloud.stopLocalPreview();
         }
-        //手动关闭摄像头，放大缩小后状态不更新
         if (isOpenCamera) {
           userList[0]['visible'] = true;
         }
@@ -576,7 +483,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       }
     } else {
       await startShare();
-      //屏幕分享功能只能在真机测试
+      //The screen sharing function can only be tested on the real machine
       ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
       this.setState(() {
         isOpenCamera = false;
@@ -594,6 +501,15 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: TRTCCloudVideoView(
               key: valueKey,
               viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
+              // textureParam: CustomRender(
+              //   userId: item['userId'],
+              //   isLocal: item['userId'] == userInfo['userId'] ? true : false,
+              //   streamType: item['type'] == 'video'
+              //       ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+              //       : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+              //   width: width.round(),
+              //   height: height.round(),
+              // ),
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
                   await trtcCloud.startLocalPreview(isFrontCamera, viewId);
@@ -620,10 +536,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
   }
 
-  /// 用户名、声音显示在视频层上面
+  /// The user name and sound are displayed on the video layer
   Widget videoVoice(item) {
     return Positioned(
-      // red box
       child: new Container(
           child: Row(children: <Widget>[
         Text(
@@ -646,12 +561,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
-  /// 顶部设置浮层
   Widget topSetting() {
     return new Align(
         child: new Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          // grey box
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -695,14 +608,13 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 color: Colors.red,
                 textColor: Colors.white,
                 onPressed: () async {
-                  //弹出对话框并等待其关闭
                   bool? delete = await showExitMeetingConfirmDialog();
                   if (delete != null) {
                     Navigator.pop(context);
                   }
                 },
                 child: Text(
-                  "退出会议",
+                  "Exit Meeting",
                   style: TextStyle(fontSize: 16.0),
                 ),
               )
@@ -714,7 +626,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         alignment: Alignment.topCenter);
   }
 
-  ///美颜设置浮层
+  ///Beauty setting floating layer
   Widget beautySetting() {
     return Positioned(
       bottom: 80,
@@ -764,7 +676,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                         alignment: Alignment.centerLeft,
                         width: 80.0,
                         child: Text(
-                          '美颜(光滑)',
+                          'Smooth',
                           style: TextStyle(
                               color: curBeauty == 'smooth'
                                   ? Color.fromRGBO(64, 158, 255, 1)
@@ -783,7 +695,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                         alignment: Alignment.centerLeft,
                         width: 80.0,
                         child: Text(
-                          '美颜(自然)',
+                          'Nature',
                           style: TextStyle(
                               color: curBeauty == 'nature'
                                   ? Color.fromRGBO(64, 158, 255, 1)
@@ -802,7 +714,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                         alignment: Alignment.centerLeft,
                         width: 80.0,
                         child: Text(
-                          '美颜(P图)',
+                          'Pitu',
                           style: TextStyle(
                               color: curBeauty == 'pitu'
                                   ? Color.fromRGBO(64, 158, 255, 1)
@@ -821,25 +733,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                         alignment: Alignment.centerLeft,
                         width: 50.0,
                         child: Text(
-                          '美白',
-                          style: TextStyle(
-                              color: curBeauty == 'whitening'
-                                  ? Color.fromRGBO(64, 158, 255, 1)
-                                  : Colors.white),
-                        ),
-                      ),
-                      onTap: () => this.setState(() {
-                        txBeautyManager.setWhitenessLevel(0);
-                        curBeauty = 'whitening';
-                        curBeautyValue = 0;
-                      }),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        width: 50.0,
-                        child: Text(
-                          '红润',
+                          'Ruddy',
                           style: TextStyle(
                               color: curBeauty == 'ruddy'
                                   ? Color.fromRGBO(64, 158, 255, 1)
@@ -862,12 +756,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
-  /// 底部设置浮层
   Widget bottomSetting() {
     return new Align(
         child: new Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-          // grey box
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -899,7 +791,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                       trtcCloud.stopLocalPreview();
                       if (isDoubleTap &&
                           doubleUserId == userList[0]['userId']) {
-                        // 如果处在放大功能下，取消掉放大功能
                         doubleTap(userList[0]);
                       }
                     } else {
@@ -943,7 +834,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   this.onShareClick();
                 },
               ),
-              SettingPage()
+              SettingPage(),
             ],
           ),
           height: 70.0,
@@ -991,9 +882,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                                 item.length);
                             double width = size.width;
                             double height = size.height;
-                            //双击放大后
                             if (isDoubleTap) {
-                              //其他视频渲染宽高设置为1，否则视频不推流
+                              //Set the width and height of other video rendering to 1, otherwise the video will not be streamed
                               if (item[index]['size']['width'] == 0) {
                                 width = 1;
                                 height = 1;
@@ -1008,7 +898,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               height = double.parse(
                                   item[index]['size']['height'].toString());
                             }
-                            print("==valueKey=" + valueKey.toString());
                             return Container(
                               key: valueKey,
                               height: height,

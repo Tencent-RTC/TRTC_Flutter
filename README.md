@@ -29,7 +29,6 @@
 |  |  ├─ SwitchRoom                // 演示 TRTC 快速切换房间示例代码
 |  |  ├─ RoomPk                    // 演示 TRTC 跨房PK示例代码
 |  
-|  
 ├─ TRTC-Simple-Demo // 多人音视频会议Demo
 ├─ SDK 
 │  ├─README.md     // 提供有TRTC SDK最新版本的下载地址

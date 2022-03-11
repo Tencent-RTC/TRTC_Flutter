@@ -8,8 +8,8 @@ PODS:
     - Flutter
   - tencent_trtc_cloud (0.0.7):
     - Flutter
-    - TXLiteAVSDK_TRTC (= 8.8.10260)
-  - TXLiteAVSDK_TRTC (8.8.10260)
+    - TXLiteAVSDK_TRTC (= 9.5.11234)
+  - TXLiteAVSDK_TRTC (9.5.11234)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -35,13 +35,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/tencent_trtc_cloud/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 9c6874fe17ce278a6f0e99e3698acf194480e9a2
-  tencent_trtc_cloud: 4f74665a844dea0b89f7dba16d41c9fb6c7dbb94
-  TXLiteAVSDK_TRTC: a3d3f21288b27dc3ef654e34c58fb4536fcfdad3
+  tencent_trtc_cloud: 6404ebb25ea04a98cdbc270fd62c0d9e72f05213
+  TXLiteAVSDK_TRTC: e12727c50a7077896cf02b2cf22601b97c53ac33
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

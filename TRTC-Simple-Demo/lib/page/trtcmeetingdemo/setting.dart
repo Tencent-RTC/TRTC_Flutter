@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 
-/// 设置视频分辨率底部浮层
+/// Set video resolution
 class SettingPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => SettingPageState();
@@ -15,10 +15,10 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
 
   bool isShowSetDialog = false;
   bool isAPPPausedToClosed = false;
-  double currentCaptureValue = 100; //默认采集音量
-  double currentPlayValue = 100; //默认播放音量
+  double currentCaptureValue = 100; //Default acquisition volume
+  double currentPlayValue = 100; //Default playback volume
   bool enabledMirror = true;
-  String currentResolution = "360 * 640"; // 默认分辨率
+  String currentResolution = "360 * 640"; // Default resolution
   int currentResValue = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360;
   List resolutionList = [
     {
@@ -85,11 +85,11 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
       "curBitrate": 1900
     },
   ];
-  int currentVideoFps = 15; //默认视频采集帧率
+  int currentVideoFps = 15; //Default video capture frame rate
   List videoFpsList = [15, 20];
   double minBitrate = 200;
   double maxBitrate = 1000;
-  double currentBitrate = 900; //默认码率
+  double currentBitrate = 900; //Default bit rate
 
   @override
   initState() {
@@ -115,7 +115,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
     }
   }
 
-  // 显示分辨率选择控件
+  // Resolution selection control
   showResolution(morePageState) {
     showModalBottomSheet(
         builder: (BuildContext context) {
@@ -152,7 +152,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
         context: context);
   }
 
-  // 显示帧率选择控件
+  // Frame rate selection control
   showVideoFps(fpsState) {
     showModalBottomSheet(
         builder: (BuildContext context) {
@@ -180,7 +180,6 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
         context: context);
   }
 
-  /// 用户列表点击事件
   showSetDialog() {
     isShowSetDialog = true;
     Future<void> future = showModalBottomSheet(
@@ -198,11 +197,11 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                       backgroundColor: Color.fromRGBO(19, 41, 75, 1),
                       bottom: TabBar(
                         tabs: [
-                          Tab(text: '视频'),
-                          Tab(text: '音频'),
+                          Tab(text: 'Video'),
+                          Tab(text: 'Audio'),
                         ],
                       ),
-                      title: Text('设置', textAlign: TextAlign.center)),
+                      title: Text('Set up', textAlign: TextAlign.center)),
                   body: TabBarView(
                     children: [
                       Container(
@@ -213,7 +212,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                               Container(
                                   width: 110,
                                   alignment: Alignment.centerLeft,
-                                  child: Text('分辨率',
+                                  child: Text('Resolution',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                               GestureDetector(
@@ -235,7 +234,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                               Container(
                                   width: 110,
                                   alignment: Alignment.centerLeft,
-                                  child: Text('帧率',
+                                  child: Text('FPS',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                               GestureDetector(
@@ -257,7 +256,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                               Container(
                                   width: 85,
                                   alignment: Alignment.centerLeft,
-                                  child: Text('码率',
+                                  child: Text('Bit Rate',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                               Expanded(
@@ -290,7 +289,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                               Container(
                                   width: 95,
                                   alignment: Alignment.centerLeft,
-                                  child: Text('本地镜像',
+                                  child: Text('Local Mirror',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                               Container(
@@ -310,7 +309,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                           child: Column(children: [
                             Row(
                               children: <Widget>[
-                                Text('采集音量',
+                                Text('Capture Volume',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white)),
                                 Slider(
@@ -334,7 +333,7 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
                             ),
                             Row(
                               children: <Widget>[
-                                Text('播放音量',
+                                Text('Play Volume',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white)),
                                 Slider(
@@ -381,18 +380,16 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
 
       case AppLifecycleState.inactive:
         break;
-      case AppLifecycleState.resumed: ////从后台切换前台，界面可见
+      case AppLifecycleState.resumed:
         {
-          //当因为进入后台关闭设置界面的时候，再重新打开一下即可
           if (isAPPPausedToClosed) {
             isAPPPausedToClosed = false;
             showSetDialog();
           }
         }
         break;
-      case AppLifecycleState.paused: // // 界面不可见，后台
+      case AppLifecycleState.paused:
         {
-          //当设置打开了的时候进入后台，设置界面设置为不可见。用户必须重新点击打开设置界面。
           if (isShowSetDialog) {
             Navigator.pop(context);
             isAPPPausedToClosed = true;
@@ -411,7 +408,6 @@ class SettingPageState extends State<SettingPage> with WidgetsBindingObserver {
           size: 36.0,
         ),
         onPressed: () {
-          print('==showSetDialog');
           showSetDialog();
         });
   }

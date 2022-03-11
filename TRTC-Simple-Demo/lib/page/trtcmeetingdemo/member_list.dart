@@ -1,13 +1,10 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:trtc_demo/models/meeting.dart';
 import 'package:provider/provider.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 
-/// 成员列表页面
+/// Member list page
 class MemberListPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => MemberListPageState();
@@ -43,7 +40,7 @@ class MemberListPageState extends State<MemberListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('成员列表'),
+        title: const Text('Member List'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Color.fromRGBO(14, 25, 44, 1),
@@ -123,25 +120,25 @@ class MemberListPageState extends State<MemberListPage> {
                         color: Color.fromRGBO(245, 108, 108, 1),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(true);
-                          MeetingTool.toast('全体禁音', context);
+                          MeetingTool.toast('Total silence', context);
                           for (var i = 0; i < micList.length; i++) {
                             micMap[micList[i]['userId']] = true;
                           }
                           this.setState(() {});
                         },
-                        child:
-                            Text('全体禁音', style: TextStyle(color: Colors.white)),
+                        child: Text('Total silence',
+                            style: TextStyle(color: Colors.white)),
                       ),
                       RaisedButton(
                         color: Color.fromRGBO(64, 158, 255, 1),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(false);
-                          MeetingTool.toast('解除全体禁音', context);
+                          MeetingTool.toast('Lift all bans', context);
                           this.setState(() {
                             micMap = {};
                           });
                         },
-                        child: Text('解除全体禁音',
+                        child: Text('Lift all bans',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ],
