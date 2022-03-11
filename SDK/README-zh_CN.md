@@ -2,7 +2,7 @@
 
 ## TRTC SDK （Flutter）
 
-[API 概览](https://cloud.tencent.com/document/product/647/51530)，[API 详细文档](https://pub.dev/documentation/tencent_trtc_cloud/latest/index.html)
+[API 概览](https://cloud.tencent.com/document/product/647/51530)，[API 详细文档](https://comm.qq.com/trtc/flutter/cn/)
 
 [Flutter API 示例Demo](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-API-Example)
 

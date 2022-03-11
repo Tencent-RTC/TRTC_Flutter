@@ -1,102 +1,85 @@
+[简体中文](./README-zh_CN.md) | English
+
 # 跑通Demo(Flutter)
 
-[English document](https://intl.cloud.tencent.com/document/product/647/39243?lang=en&pg=) [日本語の文書](https://intl.cloud.tencent.com/jp/document/product/647/39243?lang=jp&pg=)
+This document describes how to quickly run the TRTC demo for Flutter.
 
-本文主要介绍如何快速运行腾讯云 TRTC Demo（Flutter）。
+Note: The international version only supports Android and IOS.
 
-注意：目前Windows/MacOs端仅支持音频，视频接口暂不支持；安卓/iOS端支持视频通话
+## Environment Requirements
+- Flutter 2.0 or above
+- **Developing for Android:**
+  - Android Studio 3.5 or above
+  - Devices with Android 4.1 or above
+- **Developing for iOS:**
+  - Xcode 11.0 or above
+  - OS X 10.11 or above
+  - A valid developer signature for your project
 
-## 环境要求
-- Flutter 版本 2.0及以上
-- Android开发 
-	-  Android Studio 3.5及以上版本
-	-  App 要求 Android 4.1及以上设备
-- iOS & macOS 开发
-	- Xcode 11.0及以上版本
-	- macOS 系统版本要求 10.11 及以上
-	- 请确保您的项目已设置有效的开发者签名
-- Windows 开发
-	- 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
-    - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
-	- 安装 Visual Studio 2019[https://visualstudio.microsoft.com/zh-hans/downloads/]
-- Flutter Web 开发
-	- Chrome72及以上版本
-	- Safari13及以上版本
-	- flutter 2.0及以上版本
+## Prerequisites
+You have [signed up](https://intl.cloud.tencent.com) for a Tencent Cloud account and completed identity verification.
 
-## 前提条件
+## Directions
+[](id:step1)
+### Step 1. Create an application
+1. Log in to the TRTC console and select **Development Assistance** > **[Demo Quick Run](https://console.intl.cloud.tencent.com/trtc/quickstart)**.
+2. Click **Create Application** and enter the application name such as `TestTRTC`. If you have already created an application, click **Select Existing Application**.
+3. Add or edit tags according to your actual business needs and click **Create**.
+![](https://main.qcloudimg.com/raw/8dc52b5fa66ec4a5a4317719f9d442b9.png)
+>?
+>- An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
+>- Tags are used to identify and organize your Tencent Cloud resources. For example, an enterprise may have multiple business units, each of which has one or more TRTC applications. In this case, the enterprise can tag TRTC applications to mark out the unit information. Tags are optional and can be added or edited according to your actual business needs.
 
-您已[注册腾讯云](https://cloud.tencent.com)账号，并完成实名认证。
+[](id:step2)
+### Step 2. Download the SDK and demo source code
+1. Download the SDK and [demo source code](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo) for your platform.
+2. Click **Next**.
+![](https://main.qcloudimg.com/raw/9f4c878c0a150d496786574cae2e89f9.png)
 
-## 操作步骤
-<span id="step1"></span>
-### 步骤1：创建新的应用
-1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
-2. 单击【立即开始】，输入应用名称，例如`TestTRTC`，单击【创建应用】。
 
-<span id="step2"></span>
-### 步骤2：下载 SDK 和 Demo 源码
-1. 鼠标移动至对应卡片，单击【[Github](https://github.com/c1avie/trtc_demo)】跳转至 Github，下载相关 SDK 及配套的 Demo 源码。
-<img src="https://imgcache.qq.com/operation/dianshi/other/flutterCard.e9d6e205d0e0a8903aa437602acafecb3958e0cb.png" height="400" />
+[](id:step3)
+### Step 3. Configure demo project files
+1. In the **Modify Configuration** step, select the development platform in line with the source package downloaded.
+2. Find and open `/example/lib/debug/GenerateTestUserSig.dart`.
+3. Set parameters in `GenerateTestUserSig.dart` as follows.
+<ul><li/>SDKAPPID: a placeholder by default. Set it to the actual `SDKAppID`.
+	<li/>`SECRETKEY`: a placeholder by default. Set it to the actual key.</ul>
+<img src="https://main.qcloudimg.com/raw/87dc814a675692e76145d76aab91b414.png">
 
-2. 下载完成后，返回实时音视频控制台，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
-<span id="step3"></span>
-### 步骤3：配置 Demo 工程文件
-1. 解压 [步骤2](#step2) 中下载的源码包。
-2. 找到并打开`/lib/debug/GenerateTestUserSig.dart`文件。
-3. 设置`GenerateTestUserSig.dart`文件中的相关参数：
-  <ul><li>SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。</li>
-  <li>SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。</li></ul> 
-<img src="https://imgcache.qq.com/operation/dianshi/other/flutterSercet.abb0c77a30a50a27bb36058bdabe1f051484c058.png" height="400" /> 
-4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
+4. Click **Next** to complete the creation.
+5. After compilation, click **Return to Overview Page**.
 
-5. 单击【关闭指引，进入控制台管理应用】。
+>?
+>- The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is leaked, attackers can steal your Tencent Cloud traffic. Therefore, **this method is only suitable for the local execution and debugging of the demo**.
+>- The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can send a request to the business server for a dynamic `UserSig`. For more information, please see [How do I calculate UserSig on the server?](https://intl.cloud.tencent.com/document/product/647/35166).
 
->本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
->正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见[服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+[](id:step4)
+### Step 4. Compile and run
+1. Run `flutter pub get`.
+2. Compile, run, and debug the project.
 
-### 步骤4：编译运行
-1.执行`flutter pub get`
+####  Android
+1. Run `flutter run`.
+2. Open the demo project with Android Studio (3.5 or above), and click **Run**.
 
-2.Android调试：
-* （1）可以执行`flutter run`
-* （2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
-  
-3.iOS调试：使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
+#### iOS
+Open the `/ios` demo project in the source code directory with Xcode (11.0 or above) and compile and run the demo project.
 
-4.windows调试：
-* （1）启用windows支持：flutter config --enable-windows-desktop
-* （2）flutter run -d windows
+## FAQs
+### How do I view TRTC logs?
+TRTC logs are compressed and encrypted by default with the `.xlog` extension at the following address:
+- **iOS**: `Documents/log` in the sandbox.
+- **Android**:
+	- 6.7 or below: `/sdcard/log/tencent/liteav`.
+	- 6.8 or above: `/sdcard/Android/data/package name/files/log/tencent/liteav/`.
 
-4.macOS调试
-* （1）启用macOS支持：flutter config --enable-macos-desktop
-* （2）执行`flutter run -d macos`
+### What should I do if videos do not show on iOS but do on Android?
+Please check whether `io.flutter.embedded_views_preview` is `YES` in your `info.plist`. 
 
-4.web调试
-* （1）启用web支持：flutter config --enable-web
-* （2）执行`flutter run -d chrome`
+### What should I do if Android Studio fails to build my project with the error "Manifest merge failed"?
+Open `/example/android/app/src/main/AndroidManifest.xml`.
+    1. Add `xmlns:tools="http://schemas.android.com/tools"` to `manifest`.
+    2. Add `tools:replace="android:label"` to `application`.
+![Illustration](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
 
-#### 如何查看 TRTC 日志？
-TRTC 的日志默认压缩加密，后缀为 .xlog。
-* iOS：sandbox的Documents/log
-* Android
-  * 6.7及之前的版本：/sdcard/log/tencent/liteav
-  * 6.8之后的版本：/sdcard/Android/data/包名/files/log/tencent/liteav/
-
-#### 常见问题
-
-更多常见问题参考[文档](https://cloud.tencent.com/document/product/647/51623)
-
-##### iOS无法显示视频（Android是好的）
-
-请确认 io.flutter.embedded_views_preview为`YES`在你的info.plist中
-
-##### Android Manifest merge failed编译失败
-
-请打开/example/android/app/src/main/AndroidManifest.xml文件。
-
-1.将xmlns:tools="http://schemas.android.com/tools" 加入到manifest中
-
-2.将tools:replace="android:label"加入到application中。
-
-![图示](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
+>? For more FAQs, please see [Flutter](https://intl.cloud.tencent.com/document/product/647/39242).

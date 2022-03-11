@@ -6,6 +6,8 @@
 
 [Flutter API Example](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-API-Example)
 
+Multiplayer video conference Demo [Github](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo)
+
 Note: Demo does not support simulator operation. Please use real machine development and debugging.
 
 #### SDK Pub

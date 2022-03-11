@@ -24,10 +24,10 @@ class TextureRenderState extends State<TextureRenderPage>
 
   int? meetId;
   var meetModel;
-  var userInfo = {}; //多人视频用户列表
-  bool isOpenMic = true; //是否开启麦克风
-  bool isOpenCamera = true; //是否开启摄像头
-  bool isFrontCamera = true; //是否是前置摄像头
+  var userInfo = {};
+  bool isOpenMic = true;
+  bool isOpenCamera = true;
+  bool isFrontCamera = true;
   int quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
 
   @override
@@ -57,36 +57,30 @@ class TextureRenderState extends State<TextureRenderPage>
   }
 
   iniRoom() async {
-    // 创建 TRTCCloud 单例
     trtcCloud = (await TRTCCloud.sharedInstance())!;
     trtcCloud.registerListener(onRtcListener);
-    // 获取美颜管理对象
     txBeautyManager = trtcCloud.getBeautyManager();
 
-    // 进房
     enterRoom();
 
     initData();
-    // macos 美颜设置之后本地摄像头只显示四分之一画面
     if (!kIsWeb && !Platform.isMacOS) {
-      //设置美颜效果
       txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
       txBeautyManager.setBeautyLevel(6);
     }
   }
 
-  // 进入房间
   enterRoom() async {
     userInfo['userSig'] =
         await GenerateTestUserSig.genTestSig(userInfo['userId']);
     meetModel.setUserInfo(userInfo);
     await trtcCloud.enterRoom(
         TRTCParams(
-            sdkAppId: GenerateTestUserSig.sdkAppId, //应用Id
-            userId: userInfo['userId'], // 用户Id
-            userSig: userInfo['userSig'], // 用户签名
+            sdkAppId: GenerateTestUserSig.sdkAppId,
+            userId: userInfo['userId'],
+            userSig: userInfo['userSig'],
             role: TRTCCloudDef.TRTCRoleAnchor,
-            roomId: meetId!), //房间Id
+            roomId: meetId!),
         TRTCCloudDef.TRTC_APP_SCENE_LIVE);
     trtcCloud.setVideoEncoderParam(TRTCVideoEncParam(
         videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_360,
@@ -110,7 +104,6 @@ class TextureRenderState extends State<TextureRenderPage>
       }
     }
     if (isOpenMic) {
-      //开启麦克风
       await trtcCloud.startLocalAudio(quality);
     }
 
@@ -120,9 +113,9 @@ class TextureRenderState extends State<TextureRenderPage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
-      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+      case AppLifecycleState.inactive:
         break;
-      case AppLifecycleState.resumed: //从后台切换前台，界面可见
+      case AppLifecycleState.resumed:
         {
           if (isOpenCamera) {
             int? textureId =
@@ -142,9 +135,7 @@ class TextureRenderState extends State<TextureRenderPage>
           }
         }
         break;
-      case AppLifecycleState.paused: // 界面不可见，后台
-        print("==paused video");
-        //解决本地视频不close 会crash的问题
+      case AppLifecycleState.paused:
         if (isOpenCamera) {
           trtcCloud.stopLocalPreview();
           if (screenUserList.containsKey(userInfo['userId'])) {
@@ -153,7 +144,7 @@ class TextureRenderState extends State<TextureRenderPage>
         }
 
         break;
-      case AppLifecycleState.detached: // APP结束时调用
+      case AppLifecycleState.detached:
         break;
     }
   }
@@ -169,33 +160,18 @@ class TextureRenderState extends State<TextureRenderPage>
   }
 
   onRtcListener(type, param) async {
-    if (type == TRTCCloudListener.onScreenCaptureStarted) {
-      showToastText('屏幕分享开始');
-    }
-    if (type == TRTCCloudListener.onScreenCapturePaused) {
-      showToastText('屏幕分享暂停');
-    }
-    if (type == TRTCCloudListener.onScreenCaptureResumed) {
-      showToastText('屏幕分享恢复');
-    }
-    if (type == TRTCCloudListener.onScreenCaptureStoped) {
-      showToastText('屏幕分享停止');
-    }
     if (type == TRTCCloudListener.onEnterRoom) {
       if (param > 0) {
-        showToastText('进房成功');
+        showToastText('enter room success');
       }
     }
     if (type == TRTCCloudListener.onExitRoom) {
       if (param > 0) {
-        showToastText('退房成功');
+        showToastText('exit room success');
       }
     }
-    //辅流监听
     if (type == TRTCCloudListener.onUserSubStreamAvailable) {
-      print("==onUserSubStreamAvailable=" + param.toString());
       String userId = param["userId"];
-      //视频可用
       if (param["available"]) {
         int? textureId =
             await trtcCloud.setRemoteVideoRenderListener(CustomRemoteRender(
@@ -221,9 +197,7 @@ class TextureRenderState extends State<TextureRenderPage>
       removeViedo(userId);
     }
     if (type == TRTCCloudListener.onUserVideoAvailable) {
-      print("==onUserVideoAvailable=" + param.toString());
       String userId = param['userId'];
-      // 根据状态对视频进行开启和关闭
       if (param['available']) {
         int? textureId =
             await trtcCloud.setRemoteVideoRenderListener(CustomRemoteRender(
@@ -245,19 +219,16 @@ class TextureRenderState extends State<TextureRenderPage>
     }
   }
 
-  // 提示浮层
   showToastText(text) {
     showToast(
       text,
       context: context,
       duration: Duration(seconds: 3),
-      // gravity: Toast.CENTER,
     );
   }
 
   Widget itemBuilder(BuildContext context, index) {
     int screenItem = screenUserList.values.toList()[index];
-    print("==screenItem," + screenItem.toString());
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -289,7 +260,6 @@ class TextureRenderState extends State<TextureRenderPage>
         title: Text(meetId.toString()),
         centerTitle: true,
         elevation: 0,
-        // automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(14, 25, 44, 1),
       ),
       body: GridView.builder(
@@ -355,15 +325,6 @@ class TextureRenderState extends State<TextureRenderPage>
                 });
               },
             ),
-            IconButton(
-                icon: Icon(
-                  Icons.info,
-                  color: Colors.white,
-                  size: 36.0,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/test');
-                }),
           ],
         ),
       ),
