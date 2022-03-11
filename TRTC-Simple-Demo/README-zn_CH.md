@@ -62,7 +62,10 @@
 * （1）可以执行`flutter run`
 * （2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
   
-3.iOS调试：使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
+3.iOS调试：
+*  (1) cd ios
+*  (2) pod install
+*  (3) 使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
 
 4.windows调试：
 * （1）启用windows支持：flutter config --enable-windows-desktop
@@ -70,7 +73,9 @@
 
 4.macOS调试
 * （1）启用macOS支持：flutter config --enable-macos-desktop
-* （2）执行`flutter run -d macos`
+* （2）cd macos
+*  (3) pod install
+*  (4) 执行`flutter run -d macos`
 
 4.web调试
 * （1）启用web支持：flutter config --enable-web
@@ -100,3 +105,9 @@ TRTC 的日志默认压缩加密，后缀为 .xlog。
 2.将tools:replace="android:label"加入到application中。
 
 ![图示](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
+
+##### 更新 SDK 版本后，iOS CocoaPods 运行报错？
+1. 删除 iOS 目录下 `Podfile.lock` 文件。
+2. 执行 `pod repo update`。
+3. 执行 `pod install`。
+4. 重新运行。
