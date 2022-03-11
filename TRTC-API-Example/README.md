@@ -64,5 +64,14 @@ You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com/
 
 
 ### Compiling and running the project
-- Run `flutter pub get`。
-- Compile, run, and debug the project `flutter run`
+1. Run `flutter pub get`.
+2. Compile, run, and debug the project.
+
+####  Android
+1. Run `flutter run`.
+2. Open the demo project with Android Studio (3.5 or above), and click **Run**.
+
+#### iOS
+1. Run `pod install`.
+2. Open the `/ios` demo project in the source code directory with Xcode (11.0 or above) and compile and run the demo project.
+

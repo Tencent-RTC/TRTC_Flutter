@@ -67,7 +67,38 @@
 
 
 ### 编译运行
-- 执行 `flutter pub get`。
-- 编译运行调试 `flutter run`
-> 上述流程并没有解答您的疑问，你可以[点击此处](https://wj.qq.com/s2/8393513/f442/)反馈，我们的**工程师妹子**会尽快处理！
+1.执行`flutter pub get`
 
+2.Android调试：
+* （1）可以执行`flutter run`
+* （2）可以使用 Android Studio（3.5及以上的版本）打开源码工程，单击【运行】即可。
+  
+3.iOS调试：
+*  (1) cd ios
+*  (2) pod install
+*  (3) 使用 XCode（11.0及以上的版本）打开源码目录下的 /ios工程，编译并运行 Demo 工程即可。
+
+
+### 常见问题
+
+更多常见问题参考[文档](https://cloud.tencent.com/document/product/647/51623)
+
+##### iOS无法显示视频（Android是好的）
+
+请确认 io.flutter.embedded_views_preview为`YES`在你的info.plist中
+
+##### Android Manifest merge failed编译失败
+
+请打开/example/android/app/src/main/AndroidManifest.xml文件。
+
+1.将xmlns:tools="http://schemas.android.com/tools" 加入到manifest中
+
+2.将tools:replace="android:label"加入到application中。
+
+![图示](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
+
+##### 更新 SDK 版本后，iOS CocoaPods 运行报错？
+1. 删除 iOS 目录下 `Podfile.lock` 文件。
+2. 执行 `pod repo update`。
+3. 执行 `pod install`。
+4. 重新运行。
