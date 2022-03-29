@@ -45,16 +45,16 @@ You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com/
 1. Log in to the TRTC console and select **Development Assistance** > **[Demo Quick Run](https://console.cloud.tencent.com/trtc/quickstart)**.
 2. Enter an application name such as `TestTRTC`, and click **Create**.
 
-![ #900px](https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png)
+![ #900px](https://main.qcloudimg.com/raw/8dc52b5fa66ec4a5a4317719f9d442b9.png)
 3. Click **Next** to view your `SDKAppID` and key.
 
 
 ### Configuring demo project files
-1. Open the [GenerateTestUserSig.dart](debug/GenerateTestUserSig.dart) file in the Debug directory.
+1. Find and open `/lib/Debug/GenerateTestUserSig.dart`.
 2. Configure two parameters in the `GenerateTestUserSig.dart` file:
   - `SDKAPPID`: `PLACEHOLDER` by default. Set it to the actual `SDKAppID`.
   - `SECRETKEY`: left empty by default. Set it to the actual key.
- ![ #900px](https://main.qcloudimg.com/raw/fba60aa9a44a94455fe31b809433cfa4.png)
+ ![ #900px](https://imgcache.qq.com/operation/dianshi/other/flutter_sig.237b3ce20dde2fa6cac972f49169e7e539d691fd.png)
 
 3. Return to the TRTC console and click **Next**.
 4. Click **Return to Overview Page**.
