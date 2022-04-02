@@ -1,4 +1,4 @@
-package com.example.trtc_api_example;
+package com.tencent.trtc_demo;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,9 +13,9 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
 public class MediaService extends Service {
-    private final String NOTIFICATION_CHANNEL_ID="com.example.trtc_api_example.MediaService";
-    private final String NOTIFICATION_CHANNEL_NAME="com.example.trtc_api_example.channel_name";
-    private final String NOTIFICATION_CHANNEL_DESC="com.example.trtc_api_example.channel_desc";
+    private final String NOTIFICATION_CHANNEL_ID="com.tencent.trtc_demo.MediaService";
+    private final String NOTIFICATION_CHANNEL_NAME="com.tencent.trtc_demo.channel_name";
+    private final String NOTIFICATION_CHANNEL_DESC="com.tencent.trtc_demo.channel_desc";
     public MediaService() {
     }
 

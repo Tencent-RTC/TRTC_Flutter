@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import TXLiteAVSDK_TRTC
+import TXLiteAVSDK_Live
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

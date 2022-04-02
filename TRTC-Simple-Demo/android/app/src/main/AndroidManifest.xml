@@ -19,14 +19,20 @@
     <uses-feature android:name="android.hardware.Camera"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
-        android:name="io.flutter.app.FlutterApplication"
         android:label="trtc_demo"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"
     >
+        <service
+        android:name=".MediaService"
+        android:enabled="true"
+        android:foregroundServiceType="mediaProjection"
+        android:exported="true"/>
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

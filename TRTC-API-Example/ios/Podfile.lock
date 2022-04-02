@@ -8,10 +8,10 @@ PODS:
     - Flutter
   - replay_kit_launcher (1.0.0):
     - Flutter
-  - tencent_trtc_cloud (0.0.7):
+  - tencent_trtc_cloud (9.5.11234):
     - Flutter
-    - TXLiteAVSDK_TRTC (= 9.5.11004)
-  - TXLiteAVSDK_TRTC (9.5.11004)
+    - TXLiteAVSDK_Live
+  - TXLiteAVSDK_Live (9.5.11344)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -23,7 +23,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - TXLiteAVSDK_TRTC
+    - TXLiteAVSDK_Live
 
 EXTERNAL SOURCES:
   Flutter:
@@ -40,14 +40,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/tencent_trtc_cloud/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 828739da18c9785d5e9aafd4f075ea11d6b61499
-  tencent_trtc_cloud: f522eb10ddd74baecc7a5e644478ff08dd018a07
-  TXLiteAVSDK_TRTC: 49d2f320fbb99c040a3d7287fe983cbbcc94f28b
+  tencent_trtc_cloud: c503175ea9e5455667bca8b0f8391559efb5ab79
+  TXLiteAVSDK_Live: f6cd001826ad1dce7c931a556b7c79f581c0425e
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3
