@@ -9,7 +9,9 @@ PODS:
   - tencent_trtc_cloud (9.5.11234):
     - Flutter
     - TXLiteAVSDK_Live
-  - TXLiteAVSDK_Live (9.5.11344)
+  - TXLiteAVSDK_Live (9.5.11346):
+    - TXLiteAVSDK_Live/Live (= 9.5.11346)
+  - TXLiteAVSDK_Live/Live (9.5.11346)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -40,7 +42,7 @@ SPEC CHECKSUMS:
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 9c6874fe17ce278a6f0e99e3698acf194480e9a2
   tencent_trtc_cloud: c503175ea9e5455667bca8b0f8391559efb5ab79
-  TXLiteAVSDK_Live: f6cd001826ad1dce7c931a556b7c79f581c0425e
+  TXLiteAVSDK_Live: cae30145d70254bdd35838569fcdfefd3a369aa0
 
 PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
