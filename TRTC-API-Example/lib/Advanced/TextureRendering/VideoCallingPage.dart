@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -44,7 +43,6 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
     trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
-    
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360;
     encParams.videoBitrate = 550;
@@ -190,6 +188,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
   @override
   Widget build(BuildContext context) {
     List<String> remoteUidList = remoteUidSet.values.toList();
+    Size size = MediaQuery.of(context).size;
     return Stack(
       alignment: Alignment.topLeft,
       fit: StackFit.expand,
@@ -197,7 +196,14 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
         Container(
           child: TRTCCloudVideoView(
             key: ValueKey("LocalView"),
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
+            viewType: TRTCCloudDef.TRTC_VideoView_Texture,
+            textureParam: CustomRender(
+              userId: this.widget.userId,
+              isLocal: true,
+              streamType: TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
+              width: size.width.round(),
+              height: size.height.round(),
+            ),
             onViewCreated: (viewId) async {
               setState(() {
                 localViewId = viewId;
@@ -230,7 +236,14 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                   ),
                   child: TRTCCloudVideoView(
                     key: ValueKey('RemoteView_$userId'),
-                    viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
+                    viewType: TRTCCloudDef.TRTC_VideoView_Texture,
+                    textureParam: CustomRender(
+                      userId: userId,
+                      isLocal: false,
+                      streamType: TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
+                      width: 72,
+                      height: 120,
+                    ),
                     onViewCreated: (viewId) async {
                       trtcCloud.startRemoteView(userId,
                           TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewId);
@@ -276,23 +289,6 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                   ),
                   SizedBox(
                     width: 30,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                    ),
-                    onPressed: () {
-                      bool newIsOpenCamera = !isOpenCamera;
-                      if (newIsOpenCamera) {
-                        trtcCloud.startLocalPreview(isFrontCamera, localViewId);
-                      } else {
-                        trtcCloud.stopLocalPreview();
-                      }
-                      setState(() {
-                        isOpenCamera = newIsOpenCamera;
-                      });
-                    },
-                    child: Text(isOpenCamera ? '关闭摄像头' : '打开摄像头'),
                   ),
                 ],
               ),

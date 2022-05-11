@@ -45,9 +45,9 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_AUDIOCALL);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
+    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_AUDIOCALL);
     trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
     trtcCloud.enableAudioVolumeEvaluation(1000);
 

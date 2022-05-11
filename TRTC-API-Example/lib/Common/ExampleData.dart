@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:trtc_api_example/Advanced/CustomCamera/CustomCapturePage.dart';
+import 'package:trtc_api_example/Advanced/TextureRendering/TextureEnterPage.dart';
 import 'package:trtc_api_example/Advanced/JoinMultipleRoom/JoinMultipleRoomPage.dart';
 import 'package:trtc_api_example/Advanced/LocalRecord/LocalRecordPage.dart';
 import 'package:trtc_api_example/Advanced/LocalVideoShare/LocalVideoSharePage.dart';
@@ -68,15 +68,14 @@ class ExampleData {
         title: "网络测速",
         detailPage: SpeedTestPage(),
       ),
-      // ExamplePageItem(
-      //   title: "CDN发布（flutter已支持）",
-      //   detailPage: PushCDNSelectRolePage(),
-      // ),
-      // ExamplePageItem(
-      //   title: "自定义视频采集&渲染(later)",
-      //   subTitle: "对应在flutter为纹理渲染",
-      //   detailPage: CustomCapturePage(),
-      // ),
+      ExamplePageItem(
+        title: "CDN发布",
+        detailPage: PushCDNSelectRolePage(),
+      ),
+      ExamplePageItem(
+        title: "纹理渲染",
+        detailPage: TextureEnterPage(),
+      ),
       ExamplePageItem(
         title: "设置音效",
         detailPage: SetAudioEffectPage(),

@@ -50,9 +50,10 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
+    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+    
     trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
     trtcCloud.registerListener(onTrtcListener);
   }

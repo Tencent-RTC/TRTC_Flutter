@@ -41,9 +41,10 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAnchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
+    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+    
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
     encParams.videoFps = 24;

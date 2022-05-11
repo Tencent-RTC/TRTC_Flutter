@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 ///  PushCDNAudiencePage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class PushCDNAudiencePage extends StatefulWidget {
   const PushCDNAudiencePage({Key? key}) : super(key: key);
 
@@ -14,7 +13,7 @@ class _PushCDNAudiencePageState extends State<PushCDNAudiencePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('PushCDNAudiencePage - 暂时未实现'),
+      child: Text('CDN观看可集成pub插件"live_flutter_plugin"使用V2TXLivePlayer播放cdn url'),
     );
   }
 }

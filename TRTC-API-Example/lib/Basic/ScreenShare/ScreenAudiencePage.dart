@@ -37,9 +37,9 @@ class _ScreenAudiencePageState extends State<ScreenAudiencePage> {
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAudience;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
+    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
     trtcCloud.registerListener(onTrtcListener);
   }
@@ -50,110 +50,28 @@ class _ScreenAudiencePageState extends State<ScreenAudiencePage> {
         break;
       case TRTCCloudListener.onWarning:
         break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
       case TRTCCloudListener.onSwitchRoom:
         break;
       case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
         break;
       case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
+        onUserSubAvailable(params["userId"], params['available']);
         break;
     }
   }
 
-  onUserVideoAvailable(String userId, bool available) {
+  onUserSubAvailable(String userId, bool available) {
     if (available && remoteViewId != null) {
       trtcCloud.startRemoteView(
-          userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, remoteViewId);
+          userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, remoteViewId);
     }
     if (!available) {
-      // 需要解决最后一帧
-      trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+      trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
     }
   }
 
   destroyRoom() async {
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.exitRoom();
+    trtcCloud.exitRoom();
     trtcCloud.unRegisterListener(onTrtcListener);
     await TRTCCloud.destroySharedInstance();
   }

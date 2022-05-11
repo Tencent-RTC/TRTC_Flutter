@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -38,9 +37,9 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
     params.userId = this.widget.userId;
     params.role = TRTCCloudDef.TRTCRoleAudience;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
+    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
     trtcCloud.registerListener(onTrtcListener);
   }
 

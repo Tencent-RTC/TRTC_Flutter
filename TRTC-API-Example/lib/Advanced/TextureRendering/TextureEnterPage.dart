@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
-import 'AudioCallingPage.dart';
+import 'VideoCallingPage.dart';
 
-///  AudioCallingEnterPage.dart
+///  TextureEnterPage.dart
 ///  TRTC-API-Example-Dart
-class AudioCallingEnterPage extends StatefulWidget {
-  const AudioCallingEnterPage({Key? key}) : super(key: key);
+class TextureEnterPage extends StatefulWidget {
+  const TextureEnterPage({Key? key}) : super(key: key);
 
   @override
-  _AudioCallingEnterPageState createState() => _AudioCallingEnterPageState();
+  _TextureEnterPageState createState() => _TextureEnterPageState();
 }
 
-class _AudioCallingEnterPageState extends State<AudioCallingEnterPage> {
+class _TextureEnterPageState extends State<TextureEnterPage> {
   String roomId = "1356732";
   String userId = TXHelper.generateRandomUserId();
-  goAudioCallingPage() {
+  goVideoCallingPage() {
     ExamplePageItem item = ExamplePageItem(
       title: '房间号: $roomId',
-      detailPage: AudioCallingPage(roomId: int.parse(roomId), userId: userId),
+      detailPage: VideoCallingPage(roomId: int.parse(roomId), userId: userId),
     );
     Navigator.push(
       context,
@@ -141,7 +141,7 @@ class _AudioCallingEnterPageState extends State<AudioCallingEnterPage> {
                   backgroundColor: MaterialStateProperty.all(Colors.green),
                 ),
                 onPressed: () {
-                  this.goAudioCallingPage();
+                  this.goVideoCallingPage();
                 },
                 child: Text("进入房间"),
               ),
