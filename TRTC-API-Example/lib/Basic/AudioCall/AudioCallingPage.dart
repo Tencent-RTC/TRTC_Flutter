@@ -48,7 +48,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
     trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_AUDIOCALL);
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
+    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH);
     trtcCloud.enableAudioVolumeEvaluation(1000);
 
     trtcCloud.registerListener(onTrtcListener);
@@ -389,7 +389,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     isSpeaker = newIsSpeaker;
                   });
                 },
-                child: Text(isSpeaker ? "使用听筒" : "使用扬声器"),
+                child: Text(isSpeaker ? "使用扬声器" : "使用听筒"),
               ),
               ElevatedButton(
                 style: ButtonStyle(

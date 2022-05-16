@@ -51,7 +51,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
     encParams.videoFps = 15;
     trtcCloud.setVideoEncoderParam(encParams);
 
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
+    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH);
     trtcCloud.registerListener(onTrtcListener);
   }
 
@@ -353,7 +353,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isSpeaker = newIsSpeaker;
                       });
                     },
-                    child: Text(isSpeaker ? '使用听筒' : '使用扬声器'),
+                    child: Text(isSpeaker ? '使用扬声器' : '使用听筒'),
                   ),
                 ],
               ),
