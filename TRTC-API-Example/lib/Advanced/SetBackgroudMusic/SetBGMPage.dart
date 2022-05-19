@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -8,10 +7,10 @@ import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SetBGMPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class SetBGMPage extends StatefulWidget {
   const SetBGMPage({Key? key}) : super(key: key);
 
@@ -39,7 +38,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -220,7 +219,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
   getBGWidgetList() {
     return [
       getButtonItem(
-        tile: "背景音乐1",
+        tile: AppLocalizations.of(context)!.bgm_bgm_1,
         value: bgmURLArray[0],
         onClick: onBgmAClick,
       ),
@@ -228,7 +227,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: "背景音乐2",
+        tile: AppLocalizations.of(context)!.bgm_bgm_2,
         value: bgmURLArray[1],
         onClick: onBgmBClick,
       ),
@@ -236,7 +235,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: "背景音乐3",
+        tile: AppLocalizations.of(context)!.bgm_bgm_3,
         value: bgmURLArray[2],
         onClick: onBgmCClick,
       ),
@@ -394,7 +393,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
               children: [
                 Row(
                   children: [
-                    Text('请选择背景音乐'),
+                    Text(AppLocalizations.of(context)!.bgm_please_select_audio_bgm),
                   ],
                 ),
                 Row(
@@ -404,7 +403,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                 ),
                 Row(
                   children: [
-                    Text('设置背景音乐音量'),
+                    Text(AppLocalizations.of(context)!.bgm_please_set_volumn),
                   ],
                 ),
                 Row(
@@ -450,7 +449,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -467,7 +466,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -477,7 +476,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -508,7 +507,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

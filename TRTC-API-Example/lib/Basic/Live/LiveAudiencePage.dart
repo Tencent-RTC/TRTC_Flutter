@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  LiveAudiencePage.dart
 ///  TRTC-API-Example-Dart
@@ -146,7 +146,6 @@ class _LiveAudiencePageState extends State<LiveAudiencePage> {
           userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, remoteViewId);
     }
     if (!available) {
-      // 需要解决最后一帧
       trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
     }
   }
@@ -200,7 +199,7 @@ class _LiveAudiencePageState extends State<LiveAudiencePage> {
               Row(
                 children: [
                   Text(
-                    '操作',
+                    AppLocalizations.of(context)!.live_operator,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -221,7 +220,7 @@ class _LiveAudiencePageState extends State<LiveAudiencePage> {
                         isMuteAudio = newIsMuteAudio;
                       });
                     },
-                    child: Text(isMuteAudio ? '取消静音' : '静 音'),
+                    child: Text(isMuteAudio ? AppLocalizations.of(context)!.unmute_audio : AppLocalizations.of(context)!.mute_audio),
                   ),
                 ],
               ),

@@ -56,7 +56,7 @@ class GenerateTestUserSig {
   /**
    * `appId` for CDN publishing and stream mixing
    */
-  static int appId = 0;
+  static int appId = 1256635546;
 
   /**
    * CDN发布功能 混流bizId
@@ -65,7 +65,7 @@ class GenerateTestUserSig {
   /**
    * `bizId` for CDN publishing and stream mixing
    */
-  static int bizId = 0;
+  static int bizId = 93434;
 
   static genTestSig(String userId) {
     int currTime = _getCurrentTime();

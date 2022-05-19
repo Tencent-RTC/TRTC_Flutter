@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SpeedTestPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class SpeedTestPage extends StatefulWidget {
   const SpeedTestPage({Key? key}) : super(key: key);
 
@@ -18,7 +17,7 @@ class SpeedTestPage extends StatefulWidget {
 class _SpeedTestPageState extends State<SpeedTestPage> {
   String userId = TXHelper.generateRandomUserId();
   late TRTCCloud trtcCloud;
-  String btnTitle = "开始测试";
+  String btnTitle = "Speed test start";
   List<String> printResultList = [];
   @override
   void initState() {
@@ -43,7 +42,6 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
   }
 
   final userIdFocusNode = FocusNode();
-  // 隐藏底部输入框
   unFocus() {
     if (userIdFocusNode.hasFocus) {
       userIdFocusNode.unfocus();
@@ -168,7 +166,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
     });
     if (finishedCount == totalCount) {
       setState(() {
-        btnTitle = "完成测试";
+        btnTitle = "Speed test finished";
       });
       return;
     }
@@ -184,10 +182,10 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
 
   onStartButtonClick() {
     printResultList.clear();
-    if (btnTitle == "开始测试") {
+    if (btnTitle == "Speed test start") {
       beginSpeedTest();
-    } else if (btnTitle == "完成测试") {
-      btnTitle = "开始测试";
+    } else if (btnTitle == "Speed test finished") {
+      btnTitle = "Speed test start";
       trtcCloud.unRegisterListener(onTrtcListener);
     }
     setState(() {});
@@ -222,8 +220,8 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
                 ),
                 focusNode: userIdFocusNode,
                 decoration: InputDecoration(
-                  labelText: "请输入用户ID（必填项）",
-                  hintText: "请输入用户ID",
+                  labelText: AppLocalizations.of(context)!.please_input_userid_required,
+                  hintText: AppLocalizations.of(context)!.please_input_userid,
                   labelStyle: TextStyle(color: Colors.white),
                   hintStyle:
                       TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -242,7 +240,7 @@ class _SpeedTestPageState extends State<SpeedTestPage> {
             flex: 0,
             child: Padding(
               padding: EdgeInsets.only(top: 30, left: 45, right: 45),
-              child: Text('测试结果'),
+              child: Text('Speed test result'),
             ),
           ),
           Expanded(

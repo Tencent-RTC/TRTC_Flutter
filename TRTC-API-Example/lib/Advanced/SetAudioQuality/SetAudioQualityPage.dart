@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -7,10 +6,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SetAudioQualityPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class SetAudioQualityPage extends StatefulWidget {
   const SetAudioQualityPage({Key? key}) : super(key: key);
 
@@ -31,7 +30,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -300,11 +299,11 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                   children: [
                     SizedBox(
                       width: 195,
-                      child: Text('请选择音质'),
+                      child: Text(AppLocalizations.of(context)!.audioquality_please_select_audio_quality),
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text('请选择采集音量'),
+                      child: Text(AppLocalizations.of(context)!.audioquality_please_set_volumn),
                     ),
                   ],
                 ),
@@ -333,7 +332,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onDefaultButtonClick();
                         },
-                        child: Text('默认模式'),
+                        child: Text(AppLocalizations.of(context)!.audioquality_quality_default),
                       ),
                     ),
                     SizedBox(
@@ -358,7 +357,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onSpeechButtonClick();
                         },
-                        child: Text('语音模式'),
+                        child: Text(AppLocalizations.of(context)!.audioquality_quality_speech),
                       ),
                     ),
                     SizedBox(
@@ -383,7 +382,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onMusicButtonClick();
                         },
-                        child: Text('音乐模式'),
+                        child: Text(AppLocalizations.of(context)!.audioquality_quality_music),
                       ),
                     ),
                     SizedBox(
@@ -434,7 +433,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -451,7 +450,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -461,7 +460,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -492,7 +491,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onStartButtonClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

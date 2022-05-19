@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -15,6 +14,7 @@ import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  LocalRecordPage.dart
 ///  TRTC-API-Example-Dart
@@ -42,7 +42,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
     _requestPermission();
   }
 
@@ -103,7 +103,8 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
   saveImage() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String savePath = appDocDir.path + recordFileName;
-    await ImageGallerySaver.saveFile(savePath);
+    // 如果需要使用image_gallery_saver插件，请把flutter 版本降低到2.10以下
+    // await ImageGallerySaver.saveFile(savePath);
     showToast('已保存到相册中', dismissOtherToast: true);
   }
 
@@ -124,18 +125,6 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
             backgroundColor: Colors.red, dismissOtherToast: true);
       }
     }
-  }
-
-  onLocalRecordBegin(int errCode, String storagePath) {
-    print('flutter 暂时不支持');
-  }
-
-  onLocalRecording(int duration, String storagePath) {
-    print('flutter 暂时不支持');
-  }
-
-  onLocalRecordComplete(int errCode, String storagePath) {
-    print('flutter 暂时不支持');
   }
 
   onTrtcListener(type, params) async {
@@ -376,7 +365,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                   children: [
                     isStartRecord
                         ? Text(
-                            '录制中...',
+                            'Recording...',
                             style: TextStyle(color: Colors.red),
                           )
                         : Text(''),
@@ -394,7 +383,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                           autofocus: false,
                           enabled: !isStartRecord,
                           decoration: InputDecoration(
-                            labelText: "录制文件名称",
+                            labelText: "Recording file name",
                             labelStyle: TextStyle(color: Colors.white),
                           ),
                           controller: TextEditingController.fromValue(
@@ -429,7 +418,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         onPressed: () {
                           onRecordClick();
                         },
-                        child: Text(isStartRecord ? '停止录制' : '开始录制'),
+                        child: Text(isStartRecord ? AppLocalizations.of(context)!.localrecord_stop_record : AppLocalizations.of(context)!.localrecord_start_record),
                       ),
                     ),
                   ],
@@ -446,7 +435,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -463,7 +452,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -473,7 +462,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -504,7 +493,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         onPressed: () {
                           onStartPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

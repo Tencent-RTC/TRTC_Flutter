@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -6,10 +5,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  StringRoomIdPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class StringRoomIdPage extends StatefulWidget {
   const StringRoomIdPage({Key? key}) : super(key: key);
 
@@ -27,7 +26,7 @@ class _StringRoomIdPageState extends State<StringRoomIdPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $strRoomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $strRoomId'));
   }
 
   initTRTCCloud() async {
@@ -124,13 +123,13 @@ class _StringRoomIdPageState extends State<StringRoomIdPage> {
                     SizedBox(
                       width: 100,
                       child: Text(
-                        '房间号',
+                        'Room ID',
                       ),
                     ),
                     SizedBox(
                       width: 100,
                       child: Text(
-                        '用户ID',
+                        'User ID',
                       ),
                     ),
                     SizedBox(
@@ -170,7 +169,7 @@ class _StringRoomIdPageState extends State<StringRoomIdPage> {
                         keyboardType: TextInputType.text,
                         onChanged: (value) {
                           strRoomId = value;
-                          eventBus.fire(TitleUpdateEvent('房间号: $strRoomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $strRoomId'));
                         },
                       ),
                     ),
@@ -216,7 +215,7 @@ class _StringRoomIdPageState extends State<StringRoomIdPage> {
                             isStartPush = newIsStartPush;
                           });
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

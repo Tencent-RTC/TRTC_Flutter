@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -7,10 +6,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SwitchRoomPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class SwitchRoomPage extends StatefulWidget {
   const SwitchRoomPage({Key? key}) : super(key: key);
 
@@ -30,7 +29,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -200,7 +199,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
       roomId: roomId,
     );
 
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
     trtcCloud.switchRoom(config);
     setState(() {
       lastEnterRoomId = roomId;
@@ -305,7 +304,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                         autofocus: false,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -344,7 +343,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                             onChangeRoomClick();
                           }
                         },
-                        child: Text('切换房间'),
+                        child: Text(AppLocalizations.of(context)!.switchroom_switch_room),
                       ),
                     ),
                     SizedBox(
@@ -357,7 +356,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

@@ -4,6 +4,7 @@ import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  AudioCallingPage.dart
 ///  TRTC-API-Example-Dart
@@ -116,40 +117,6 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
         break;
       case TRTCCloudListener.onMissCustomCmdMsg:
         break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
     }
   }
 
@@ -222,7 +189,6 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
   @override
   Widget build(BuildContext context) {
     List<String> remoteUidList = remoteUidSet.values.toList();
-    print("=remoteUidList=" + remoteUidList.toString());
     List<CustomRemoteInfo> remoteInfoList =
         remoteInfoDictionary.values.toList();
     return Column(
@@ -290,20 +256,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        '信息面板',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text('音量信息'),
+                      child: Text(AppLocalizations.of(context)!.audiocall_voice_info),
                     ),
                   ],
                 ),
@@ -321,7 +274,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text('网络信息'),
+                      child: Text(AppLocalizations.of(context)!.audiocall_net_info),
                     ),
                   ],
                 ),
@@ -332,25 +285,25 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     cacheExtent: 0,
                     itemBuilder: (BuildContext context, int index) {
                       CustomRemoteInfo remoteInfo = remoteInfoList[index];
-                      String quality = "未知";
+                      String quality = "unknown";
                       switch (remoteInfo.quality) {
                         case 1:
-                          quality = "最好";
+                          quality = "best";
                           break;
                         case 2:
-                          quality = "好";
+                          quality = "good";
                           break;
                         case 3:
-                          quality = "一般";
+                          quality = "commonly";
                           break;
                         case 4:
-                          quality = "差";
+                          quality = "bad";
                           break;
                         case 5:
-                          quality = "很差";
+                          quality = "very bad";
                           break;
                         case 6:
-                          quality = "不可用";
+                          quality = "not available";
                           break;
                       }
                       return Text('${remoteInfo.userId}:$quality');
@@ -389,7 +342,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     isSpeaker = newIsSpeaker;
                   });
                 },
-                child: Text(isSpeaker ? "使用扬声器" : "使用听筒"),
+                child: Text(isSpeaker ? AppLocalizations.of(context)!.use_speaker : AppLocalizations.of(context)!.use_receiver),
               ),
               ElevatedButton(
                 style: ButtonStyle(
@@ -406,7 +359,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     isMuteLocalAudio = newIsMuteLocalAudio;
                   });
                 },
-                child: Text(isMuteLocalAudio ? "打开麦克风" : "关闭麦克风"),
+                child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
               ),
               ElevatedButton(
                 style: ButtonStyle(
@@ -415,7 +368,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("挂断"),
+                child: Text(AppLocalizations.of(context)!.audiocall_hang_up),
               ),
             ],
           ),

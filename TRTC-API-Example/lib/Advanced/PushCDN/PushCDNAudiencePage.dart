@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  PushCDNAudiencePage.dart
 ///  TRTC-API-Example-Dart
@@ -13,7 +14,7 @@ class _PushCDNAudiencePageState extends State<PushCDNAudiencePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('CDN观看可集成pub插件"live_flutter_plugin"使用V2TXLivePlayer播放cdn url'),
+      child: Text(AppLocalizations.of(context)!.pushcdn_play),
     );
   }
 }

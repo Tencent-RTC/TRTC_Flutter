@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'LiveAnchorPage.dart';
 import 'LiveAudiencePage.dart';
@@ -21,7 +21,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
   String userId = TXHelper.generateRandomUserId();
   goLivePage() {
     ExamplePageItem item = ExamplePageItem(
-      title: '房间号: $roomId',
+      title: 'Room ID: $roomId',
       detailPage: isSelectAnchor
           ? LiveAnchorPage(roomId: int.parse(roomId), userId: userId)
           : LiveAudiencePage(roomId: int.parse(roomId), userId: userId),
@@ -93,8 +93,8 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                     ),
                     focusNode: roomIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: "请输入房间号（必填项）",
-                      hintText: "请输入房间号",
+                      labelText: AppLocalizations.of(context)!.please_input_roomid_required,
+                      hintText: AppLocalizations.of(context)!.please_input_roomid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -123,8 +123,8 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                     ),
                     focusNode: userIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: "请输入用户ID（必填项）",
-                      hintText: "请输入用户ID",
+                      labelText: AppLocalizations.of(context)!.please_input_userid_required,
+                      hintText: AppLocalizations.of(context)!.please_input_userid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -140,7 +140,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                   SizedBox(height: 25),
                   Row(
                     children: [
-                      Text("请选择角色（必选项）"),
+                      Text(AppLocalizations.of(context)!.live_please_select_role),
                     ],
                   ),
                   Row(
@@ -155,7 +155,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                             isSelectAnchor = true;
                           });
                         },
-                        child: Text('主播'),
+                        child: Text('Anchor'),
                       ),
                       SizedBox(width: 25),
                       ElevatedButton(
@@ -168,7 +168,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                             isSelectAnchor = false;
                           });
                         },
-                        child: Text('观众'),
+                        child: Text('Audience'),
                       ),
                     ],
                   ),
@@ -187,7 +187,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                 onPressed: () {
                   this.goLivePage();
                 },
-                child: Text("进入房间"),
+                child: Text(AppLocalizations.of(context)!.enter_room),
               ),
             ),
           ),

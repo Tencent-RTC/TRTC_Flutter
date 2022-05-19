@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -7,10 +6,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SetVideoQualityPage.dart
-///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
+///  TRTC-API-Example-Dart∏
 class BitrateRange {
   int minBitrate;
   int maxBitrate;
@@ -45,7 +44,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -340,7 +339,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('请选择分辨率'),
+                    Text('Resolution ratio'),
                   ],
                 ),
                 Row(
@@ -458,13 +457,13 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                     SizedBox(
                       width: 160,
                       child: Text(
-                        '请选择码率',
+                        'Bitrate',
                       ),
                     ),
                     SizedBox(
                       width: 150,
                       child: Text(
-                        '请选择帧率',
+                        'Frame Rate',
                       ),
                     ),
                   ],
@@ -554,7 +553,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -571,7 +570,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -581,7 +580,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -612,7 +611,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                         onPressed: () {
                           onStartButtonClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'IndexPage.dart';
 
@@ -22,7 +24,18 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         home: const IndexPage(),
+        localizationsDelegates: [
+          AppLocalizations.delegate, // Add this line
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''), // English
+          const Locale('zh', ''), // 中文简体
+        ],
       ),
+      
     );
   }
 }

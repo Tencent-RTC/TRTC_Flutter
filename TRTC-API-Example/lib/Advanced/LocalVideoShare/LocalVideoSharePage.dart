@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ///  LocalVideoSharePage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class LocalVideoSharePage extends StatefulWidget {
   const LocalVideoSharePage({Key? key}) : super(key: key);
 

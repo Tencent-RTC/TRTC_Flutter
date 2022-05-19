@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -8,10 +7,10 @@ import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SetAudioEffectPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class SetAudioEffectPage extends StatefulWidget {
   const SetAudioEffectPage({Key? key}) : super(key: key);
 
@@ -32,7 +31,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -383,7 +382,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
               children: [
                 Row(
                   children: [
-                    Text('请选择变声效果(请在推流后设置)'),
+                    Text(AppLocalizations.of(context)!.audioeffect_please_select_effect),
                   ],
                 ),
                 Row(
@@ -393,7 +392,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                 ),
                 Row(
                   children: [
-                    Text('请选择混响效果(请在推流后设置)'),
+                    Text(AppLocalizations.of(context)!.audioeffect_please_select_reverb),
                   ],
                 ),
                 Row(
@@ -413,7 +412,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -430,7 +429,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -440,7 +439,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -471,7 +470,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                         onPressed: () {
                           onStartButtonClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

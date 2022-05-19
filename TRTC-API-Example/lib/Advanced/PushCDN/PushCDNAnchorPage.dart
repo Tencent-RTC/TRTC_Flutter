@@ -6,6 +6,7 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SetBGMPage.dart
 ///  TRTC-API-Example-Dart
@@ -30,7 +31,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -73,18 +74,15 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
       case TRTCCloudListener.onSwitchRoom:
         break;
       case TRTCCloudListener.onUserVideoAvailable:
-        print("==test onUserVideoAvailable" + params['available'].toString());
         onUserVideoAvailable(params["userId"], params['available']);
         break;
       case TRTCCloudListener.onUserSubStreamAvailable:
         break;
       case TRTCCloudListener.onStartPublishing:
-        print("==test onStartPublishing" + params['errCode'].toString());
         break;
       case TRTCCloudListener.onStopPublishing:
         break;
       case TRTCCloudListener.onSetMixTranscodingConfig:
-        print("==test onSetMixTranscodingConfig" + params['errCode'].toString());
         break;
     }
   }
@@ -291,7 +289,6 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
   }
 
   setMixConfig(value) {
-    print("== setmix");
     setState(() {
       currentMixConfig = value;
     });
@@ -307,7 +304,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
   getBGWidgetList() {
     return [
       getButtonItem(
-        tile: "全手动模式",
+        tile: AppLocalizations.of(context)!.pushcdn_anchor_mixconfig_manual,
         value: "manual",
         onClick: setMixConfig,
       ),
@@ -315,7 +312,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: "预排版左右",
+        tile: AppLocalizations.of(context)!.pushcdn_anchor_mixconfig_left_right,
         value: "leftRight",
         onClick: setMixConfig,
       ),
@@ -323,7 +320,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: "预排版画中画",
+        tile: AppLocalizations.of(context)!.pushcdn_anchor_mixconfig_in_picture,
         value: "picture",
         onClick: setMixConfig,
       ),
@@ -431,7 +428,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
               children: [
                 Row(
                   children: [
-                    Text('多路云端混流(主播数>=2)'),
+                    Text(AppLocalizations.of(context)!.pushcdn_anchor_mixconfig_disabled),
                   ],
                 ),
                 Row(
@@ -452,7 +449,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -469,7 +466,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -479,7 +476,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "user ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -510,7 +507,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

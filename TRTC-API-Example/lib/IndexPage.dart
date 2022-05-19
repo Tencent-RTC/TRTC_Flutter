@@ -15,7 +15,7 @@ class _IndexPageState extends State<IndexPage> {
   List<ExamplePageItem> _exampleList = [];
   Widget getSeparatorBuilder(BuildContext context, index) {
     Divider divider = Divider(
-      thickness: 0, // 分隔线宽度
+      thickness: 0,
       height: 15,
     );
     return divider;
@@ -53,24 +53,27 @@ class _IndexPageState extends State<IndexPage> {
   @override
   void initState() {
     super.initState();
-    ExampleData.exampleDataList.forEach((key, value) {
-      List<ExamplePageItem> ls = value;
-      _exampleList.add(ExamplePageItem(title: key, detailPage: null));
-      _exampleList.addAll(ls);
-    });
+    
     initPermission();
   }
 
   initPermission() async {
     if (!(await Permission.camera.request().isGranted) ||
         !(await Permission.microphone.request().isGranted)) {
-      showToast('需要获取音视频权限才能进入');
+      showToast('You need to obtain audio and video permission to enter');
       return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _exampleList = [];
+    ExampleData.context = context;
+    ExampleData.exampleDataList.forEach((key, value) {
+      List<ExamplePageItem> ls = value;
+      _exampleList.add(ExamplePageItem(title: key, detailPage: null));
+      _exampleList.addAll(ls);
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text('TRTC API Example'),

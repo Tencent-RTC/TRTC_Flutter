@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
@@ -10,10 +9,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  RoomPkPage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class RoomPkPage extends StatefulWidget {
   const RoomPkPage({Key? key}) : super(key: key);
 
@@ -36,7 +35,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -60,7 +59,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
     trtcCloud.setVideoEncoderParam(encParams);
     trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT);
     trtcCloud.registerListener(onTrtcListener);
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   onTrtcListener(type, params) async {
@@ -273,7 +272,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                     child: !isStartPK ||
                             otherUserId == '' ||
                             !remoteUidSet.containsKey(otherUserId)
-                        ? Text('等待PK主播')
+                        ? Text('Waiting for PK anchor')
                         : TRTCCloudVideoView(
                             key: ValueKey("OtherlView"),
                             viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
@@ -314,8 +313,8 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         autofocus: false,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          hintText: "请输入房间号",
-                          labelText: "PK主播的房间号",
+                          hintText: AppLocalizations.of(context)!.please_input_roomid,
+                          labelText: AppLocalizations.of(context)!.connectotherroom_please_input_need_pk_roomid
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -344,8 +343,8 @@ class _RoomPkPageState extends State<RoomPkPage> {
                       child: TextField(
                         autofocus: false,
                         decoration: InputDecoration(
-                          labelText: "PK主播的用户ID",
-                          hintText: "请输入用户ID",
+                          labelText: AppLocalizations.of(context)!.connectotherroom_please_input_need_pk_userid,
+                          hintText: AppLocalizations.of(context)!.please_input_userid,
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -377,7 +376,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         onPressed: () {
                           onStartPkClick();
                         },
-                        child: Text(isStartPK ? '停止PK' : '开始PK'),
+                        child: Text(isStartPK ? AppLocalizations.of(context)!.connectotherroom_stop_pk : AppLocalizations.of(context)!.connectotherroom_start_pk),
                       ),
                     ),
                   ],
@@ -394,7 +393,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -411,7 +410,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -421,7 +420,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -452,7 +451,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

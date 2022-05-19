@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -6,6 +5,7 @@ import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  VideoCallingPage.dart
 ///  TRTC-API-Example-Dart
@@ -251,7 +251,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
               Row(
                 children: [
                   Text(
-                    '视频选项',
+                    AppLocalizations.of(context)!.videocall_video_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -272,7 +272,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isFrontCamera = newIsFrontCamera;
                       });
                     },
-                    child: Text(isFrontCamera ? '使用后置摄像头' : '使用前置摄像头'),
+                    child: Text(isFrontCamera ? AppLocalizations.of(context)!.videocall_user_back_camera : AppLocalizations.of(context)!.videocall_user_front_camera),
                   ),
                   SizedBox(
                     width: 30,
@@ -292,7 +292,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isOpenCamera = newIsOpenCamera;
                       });
                     },
-                    child: Text(isOpenCamera ? '关闭摄像头' : '打开摄像头'),
+                    child: Text(isOpenCamera ? AppLocalizations.of(context)!.videocall_close_camera : AppLocalizations.of(context)!.videocall_open_camera),
                   ),
                 ],
               ),
@@ -310,7 +310,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
               Row(
                 children: [
                   Text(
-                    '音频选项',
+                    AppLocalizations.of(context)!.videocall_audio_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -329,7 +329,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isMuteLocalAudio = newIsMuteLocalAudio;
                       });
                     },
-                    child: Text(isMuteLocalAudio ? '打开麦克风' : '关闭麦克风'),
+                    child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
                   ),
                   SizedBox(
                     width: 30,
@@ -353,7 +353,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isSpeaker = newIsSpeaker;
                       });
                     },
-                    child: Text(isSpeaker ? '使用扬声器' : '使用听筒'),
+                    child: Text(isSpeaker ? AppLocalizations.of(context)!.use_speaker : AppLocalizations.of(context)!.use_receiver),
                   ),
                 ],
               ),

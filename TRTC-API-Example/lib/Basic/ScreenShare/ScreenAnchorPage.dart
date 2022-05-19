@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
@@ -8,6 +7,7 @@ import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  ScreenAnchorPage.dart
 ///  TRTC-API-Example-Dart
@@ -164,7 +164,6 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
           userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, remoteViewId);
     }
     if (!available) {
-      // 需要解决最后一帧
       trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
     }
   }
@@ -235,8 +234,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
         });
         break;
       case ScreenStatus.ScreenWait:
-        if (!kIsWeb && Platform.isIOS) {
-          //屏幕分享功能只能在真机测试
+        if (Platform.isIOS) {
           ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
         }
         break;
@@ -281,7 +279,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '房间号：${this.widget.roomId}',
+                            'Room ID：${this.widget.roomId}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -289,7 +287,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             height: 5,
                           ),
                           Text(
-                            '用户ID：${this.widget.userId}',
+                            'User ID：${this.widget.userId}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -297,7 +295,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             height: 5,
                           ),
                           Text(
-                            '分辨率：1280 * 720',
+                            'Resolution ratio：1280 * 720',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -305,7 +303,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             height: 5,
                           ),
                           Text(
-                            '请在其他设备上使用观众身份进入相同的房间进行观看',
+                            AppLocalizations.of(context)!.screenshare_watch_tips,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -323,10 +321,10 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                   Text(screenStatus == ScreenStatus.ScreenStop
                       ? ''
                       : screenStatus == ScreenStatus.ScreenWait
-                          ? '等待你的屏幕分享操作'
+                          ? AppLocalizations.of(context)!.screenshare_wait_tips
                           : screenStatus == ScreenStatus.ScreenStart
-                              ? "您在分享屏幕"
-                              : "未知状态")
+                              ? AppLocalizations.of(context)!.screenshare_ing_tips
+                              : AppLocalizations.of(context)!.screenshare_unknow_tips)
                 ],
               ),
               SizedBox(
@@ -350,12 +348,12 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                           onScreenCaptureClick();
                         },
                         child: Text(screenStatus == ScreenStatus.ScreenStop
-                            ? '开始屏幕分享'
+                            ? AppLocalizations.of(context)!.screenshare_start
                             : screenStatus == ScreenStatus.ScreenWait
-                                ? '等待屏幕分享'
+                                ? AppLocalizations.of(context)!.screenshare_wait
                                 : screenStatus == ScreenStatus.ScreenStart
-                                    ? "停止屏幕分享"
-                                    : "未知状态"),
+                                    ? AppLocalizations.of(context)!.screenshare_stop
+                                    : AppLocalizations.of(context)!.screenshare_unknow_tips),
                       ),
                     ),
                   ),
@@ -380,7 +378,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                 onPressed: () {
                   onMicCaptureClick();
                 },
-                child: Text(isMuteLocalAudio ? '打开麦克风' : '关闭麦克风'),
+                child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
               ),
             ),
           ),

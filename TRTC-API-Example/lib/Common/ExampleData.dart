@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trtc_api_example/Advanced/TextureRendering/TextureEnterPage.dart';
-import 'package:trtc_api_example/Advanced/JoinMultipleRoom/JoinMultipleRoomPage.dart';
 import 'package:trtc_api_example/Advanced/LocalRecord/LocalRecordPage.dart';
-import 'package:trtc_api_example/Advanced/LocalVideoShare/LocalVideoSharePage.dart';
 import 'package:trtc_api_example/Advanced/PushCDN/PushCDNSelectRolePage.dart';
 import 'package:trtc_api_example/Advanced/RoomPk/RoomPkPage.dart';
 import 'package:trtc_api_example/Advanced/SEIMessage/SendAndReceiveSEIMessagePage.dart';
@@ -19,100 +17,90 @@ import 'package:trtc_api_example/Basic/Live/LiveEnterPage.dart';
 import 'package:trtc_api_example/Basic/ScreenShare/ScreenShareEnterPage.dart';
 import 'package:trtc_api_example/Basic/VideoCall/VideoCallingEnterPage.dart';
 import 'package:trtc_api_example/Basic/VoiceChatRoom/VoiceChatRoomEnterPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ExampleData {
+  static late BuildContext context;
   static final Map<String, List<ExamplePageItem>> exampleDataList = {
-    "基础功能": [
+    AppLocalizations.of(context)!.main_trtc_base_funciton: [
       ExamplePageItem(
-        title: "语音通话",
-        subTitle: "双人/多人语音通话、包含静音/免提等功能",
+        title: AppLocalizations.of(context)!.main_item_aduio_call,
+        subTitle: AppLocalizations.of(context)!.main_item_aduio_call_desc,
         detailPage: AudioCallingEnterPage(),
       ),
       ExamplePageItem(
-        title: "视频通话",
-        subTitle: "双人/多人视频通话、包含静音/免提等功能",
+        title: AppLocalizations.of(context)!.main_item_video_call,
+        subTitle: AppLocalizations.of(context)!.main_item_video_call_desc,
         detailPage: VideoCallingEnterPage(),
       ),
       ExamplePageItem(
-        title: "视频互动直播",
+        title: AppLocalizations.of(context)!.main_item_live,
         detailPage: LiveEnterPage(),
       ),
       ExamplePageItem(
-        title: "语音互动直播",
+        title: AppLocalizations.of(context)!.main_item_voice_chat_room,
         detailPage: VoiceChatRoomEnterPage(),
       ),
       ExamplePageItem(
-        title: "录屏直播",
-        subTitle: "直播过程中分享屏幕，适用于在线教育，游戏直播等场景",
+        title: AppLocalizations.of(context)!.main_item_screen_share,
+        subTitle: AppLocalizations.of(context)!.main_item_screen_share_desc,
         detailPage: ScreenShareEnterPage(),
       ),
     ],
-    "进阶功能": [
+    AppLocalizations.of(context)!.main_trtc_advanced: [
       ExamplePageItem(
-        title: "字符串房间号",
+        title: AppLocalizations.of(context)!.main_item_string_room_id,
         detailPage: StringRoomIdPage(),
       ),
       ExamplePageItem(
-        title: "画质设定",
+        title: AppLocalizations.of(context)!.main_rtrc_set_video_quality,
         detailPage: SetVideoQualityPage(),
       ),
       ExamplePageItem(
-        title: "音质设定",
+        title: AppLocalizations.of(context)!.main_rtrc_set_audio_quality,
         detailPage: SetAudioQualityPage(),
       ),
       ExamplePageItem(
-        title: "渲染控制",
+        title: AppLocalizations.of(context)!.main_rerc_render_params,
         detailPage: SetRenderParamsPage(),
       ),
       ExamplePageItem(
-        title: "网络测速",
+        title: AppLocalizations.of(context)!.main_item_speed_test,
         detailPage: SpeedTestPage(),
       ),
       ExamplePageItem(
-        title: "CDN发布",
+        title: AppLocalizations.of(context)!.main_item_pushcdn,
         detailPage: PushCDNSelectRolePage(),
       ),
       ExamplePageItem(
-        title: "纹理渲染",
+        title: AppLocalizations.of(context)!.texture_render,
         detailPage: TextureEnterPage(),
       ),
       ExamplePageItem(
-        title: "设置音效",
+        title: AppLocalizations.of(context)!.main_rtrc_set_audio_effect,
         detailPage: SetAudioEffectPage(),
       ),
       ExamplePageItem(
-        title: "设置背景音乐",
+        title: AppLocalizations.of(context)!.main_trtc_set_bgm,
         detailPage: SetBGMPage(),
       ),
-      // ExamplePageItem(
-      //   title: "本地视频分享(no support)",
-      //   detailPage: LocalVideoSharePage(),
-      // ),
       ExamplePageItem(
-        title: "本地媒体录制",
+        title: AppLocalizations.of(context)!.main_item_local_record,
         detailPage: LocalRecordPage(),
       ),
-      // ExamplePageItem(
-      //   title: "加入多个房间(no support)",
-      //   subTitle: "专业版才有该功能",
-      //   detailPage: JoinMultipleRoomPage(),
-      // ),
       ExamplePageItem(
-        title: "收发SEI消息",
+        title: AppLocalizations.of(context)!.main_item_sei_message,
         detailPage: SendAndReceiveSEIMessagePage(),
       ),
       ExamplePageItem(
-        title: "快速切换房间",
+        title: AppLocalizations.of(context)!.main_item_switch_room,
         detailPage: SwitchRoomPage(),
       ),
       ExamplePageItem(
-        title: "跨房PK",
+        title: AppLocalizations.of(context)!.main_trtc_connect_other_room_pk,
         detailPage: RoomPkPage(),
       ),
-      // ExampleItem(
-      //   title: "第三方美颜",
-      //   detailPage: ,
-      // ),
     ],
   };
 }

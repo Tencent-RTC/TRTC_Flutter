@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
@@ -8,10 +7,10 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SendAndReceiveSEIMessagePage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 /*
  收发SEI消息功能示例
  TRTC APP 支持收发SEI消息功能
@@ -46,12 +45,12 @@ class _SendAndReceiveSEIMessagePageState
   int roomId = int.parse(TXHelper.generateRandomStrRoomId());
   String userId = TXHelper.generateRandomUserId();
   Map<String, String> remoteUidSet = {};
-  String seiMessage = "TRTC好棒啊";
+  String seiMessage = "TRTC is good";
   @override
   void initState() {
     initTRTCCloud();
     super.initState();
-    eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+    eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
   }
 
   initTRTCCloud() async {
@@ -197,7 +196,7 @@ class _SendAndReceiveSEIMessagePageState
   }
 
   onRecvSEIMsg(String userId, String message) {
-    showToast("接收到:" + message, dismissOtherToast: true);
+    showToast("Received:" + message, dismissOtherToast: true);
   }
 
   destroyRoom() async {
@@ -229,7 +228,7 @@ class _SendAndReceiveSEIMessagePageState
 
   onSendSEIMessageClick() {
     trtcCloud.sendSEIMsg(seiMessage, 1);
-    showToast("已发送：" + seiMessage, dismissOtherToast: true);
+    showToast("Has been sent：" + seiMessage, dismissOtherToast: true);
   }
 
   @override
@@ -330,7 +329,7 @@ class _SendAndReceiveSEIMessagePageState
                         child: TextField(
                           autofocus: false,
                           decoration: InputDecoration(
-                            labelText: "SEI消息",
+                            labelText: "SEI message",
                             labelStyle: TextStyle(color: Colors.white),
                           ),
                           controller: TextEditingController.fromValue(
@@ -364,11 +363,11 @@ class _SendAndReceiveSEIMessagePageState
                         ),
                         onPressed: () {
                           if (isStartPush && seiMessage == "") {
-                            showToast("请输入发送内容", dismissOtherToast: true);
+                            showToast("Please enter the message to send", dismissOtherToast: true);
                           } else if (isStartPush && seiMessage != "")
                             onSendSEIMessageClick();
                         },
-                        child: Text('发送SEI消息'),
+                        child: Text(AppLocalizations.of(context)!.seimessage_send_sei_message),
                       ),
                     ),
                   ],
@@ -385,7 +384,7 @@ class _SendAndReceiveSEIMessagePageState
                         enabled: !isStartPush,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: "房间号",
+                          labelText: "Room ID",
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -402,7 +401,7 @@ class _SendAndReceiveSEIMessagePageState
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           roomId = int.parse(value);
-                          eventBus.fire(TitleUpdateEvent('房间号: $roomId'));
+                          eventBus.fire(TitleUpdateEvent('Room ID: $roomId'));
                         },
                       ),
                     ),
@@ -412,7 +411,7 @@ class _SendAndReceiveSEIMessagePageState
                         autofocus: false,
                         enabled: !isStartPush,
                         decoration: InputDecoration(
-                          labelText: "用户ID",
+                          labelText: "User ID",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -443,7 +442,7 @@ class _SendAndReceiveSEIMessagePageState
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? '停止推流' : '开始推流'),
+                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
                       ),
                     ),
                   ],

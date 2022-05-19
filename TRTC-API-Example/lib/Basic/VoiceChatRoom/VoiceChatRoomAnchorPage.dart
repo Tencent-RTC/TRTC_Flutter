@@ -3,6 +3,7 @@ import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  VoiceChatRoomAnchorPage.dart
 ///  TRTC-API-Example-Dart
@@ -206,7 +207,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
               Row(
                 children: [
                   Text(
-                    '主播操作',
+                    AppLocalizations.of(context)!.voicechatroom_anchor_operator,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -221,7 +222,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
                     onPressed: () {
                       this.onMuteClick();
                     },
-                    child: Text(isAllUserMute ? '取消静音' : '静音'),
+                    child: Text(isAllUserMute ? AppLocalizations.of(context)!.unmute_audio : AppLocalizations.of(context)!.mute_audio),
                   ),
                   SizedBox(
                     width: 20,
@@ -233,7 +234,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
                     onPressed: () {
                       this.onDownMicClick();
                     },
-                    child: Text(isDownMic ? '上麦' : '下麦'),
+                    child: Text(isDownMic ? AppLocalizations.of(context)!.voicechatroom_up_mic : AppLocalizations.of(context)!.voicechatroom_down_mic)
                   ),
                 ],
               ),

@@ -14,7 +14,7 @@ class _CustomCapturePageState extends State<CustomCapturePage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('CustomCapturePage--暂时未实现'),
+      child: Text('CustomCapturePage--Temporarily not realized'),
     );
   }
 }

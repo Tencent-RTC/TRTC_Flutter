@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'VideoCallingPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  VideoCallingEnterPage.dart
 ///  TRTC-API-Example-Dart
@@ -19,7 +19,7 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
   String userId = TXHelper.generateRandomUserId();
   goVideoCallingPage() {
     ExamplePageItem item = ExamplePageItem(
-      title: '房间号: $roomId',
+      title: 'Room ID: $roomId',
       detailPage: VideoCallingPage(roomId: int.parse(roomId), userId: userId),
     );
     Navigator.push(
@@ -43,7 +43,6 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
     super.dispose();
   }
 
-  // 隐藏底部输入框
   unFocus() {
     if (roomIdFocusNode.hasFocus) {
       roomIdFocusNode.unfocus();
@@ -85,8 +84,8 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                     ),
                     focusNode: roomIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: "请输入房间号（必填项）",
-                      hintText: "请输入房间号",
+                      labelText: AppLocalizations.of(context)!.please_input_roomid_required,
+                      hintText: AppLocalizations.of(context)!.please_input_roomid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -115,8 +114,8 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                     ),
                     focusNode: userIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: "请输入用户ID（必填项）",
-                      hintText: "请输入用户ID",
+                      labelText: AppLocalizations.of(context)!.please_input_userid_required,
+                      hintText: AppLocalizations.of(context)!.please_input_userid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -144,7 +143,7 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                 onPressed: () {
                   this.goVideoCallingPage();
                 },
-                child: Text("进入房间"),
+                child: Text(AppLocalizations.of(context)!.enter_room),
               ),
             ),
           ),
