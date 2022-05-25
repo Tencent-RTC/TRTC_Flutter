@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
@@ -31,8 +30,6 @@ class IndexPageState extends State<IndexPage> {
   /// whether turn on the microphone
   bool enabledMicrophone = false;
 
-  bool enableTextureRendering = false;
-
   /// sound quality selection
   int quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH;
 
@@ -42,13 +39,6 @@ class IndexPageState extends State<IndexPage> {
   @override
   initState() {
     super.initState();
-    Future.delayed(Duration(microseconds: 500), () {
-      if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
-        setState(() {
-          enableTextureRendering = true;
-        });
-      }
-    });
   }
 
   unFocus() {
@@ -121,11 +111,7 @@ class IndexPageState extends State<IndexPage> {
       "enabledMicrophone": enabledMicrophone,
       "quality": quality
     });
-    if (enableTextureRendering) {
-      Navigator.pushNamed(context, "/textureRender");
-    } else {
-      Navigator.pushNamed(context, "/video");
-    }
+    Navigator.pushNamed(context, "/video");
   }
 
   @override
@@ -213,23 +199,6 @@ class IndexPageState extends State<IndexPage> {
                         value: enabledMicrophone,
                         onChanged: (value) =>
                             this.setState(() => enabledMicrophone = value),
-                      ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      title: Text("Texture rendering",
-                          style: TextStyle(color: Colors.white)),
-                      trailing: Switch(
-                        value: enableTextureRendering,
-                        onChanged: (value) {
-                          if (kIsWeb && value) {
-                            MeetingTool.toast(
-                                'Texture rendering is not supported on the web',
-                                context);
-                            return;
-                          }
-                          this.setState(() => enableTextureRendering = value);
-                        },
                       ),
                     ),
                   ],

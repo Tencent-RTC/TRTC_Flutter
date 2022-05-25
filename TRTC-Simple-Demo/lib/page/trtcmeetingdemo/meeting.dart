@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
@@ -501,15 +500,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: TRTCCloudVideoView(
               key: valueKey,
               viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
-              // textureParam: CustomRender(
-              //   userId: item['userId'],
-              //   isLocal: item['userId'] == userInfo['userId'] ? true : false,
-              //   streamType: item['type'] == 'video'
-              //       ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-              //       : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-              //   width: width.round(),
-              //   height: height.round(),
-              // ),
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
                   await trtcCloud.startLocalPreview(isFrontCamera, viewId);

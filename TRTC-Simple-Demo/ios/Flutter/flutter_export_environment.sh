@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/clavie/Desktop/tools/flutter2.8.1"
+export "FLUTTER_ROOT=/Users/clavie/Desktop/tools/flutter2.8.0"
 export "FLUTTER_APPLICATION_PATH=/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
