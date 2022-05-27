@@ -10,6 +10,7 @@ import 'package:trtc_api_example/Advanced/SetBackgroudMusic/SetBGMPage.dart';
 import 'package:trtc_api_example/Advanced/SetRenderParams/SetRenderParamsPage.dart';
 import 'package:trtc_api_example/Advanced/SetVideoQuality/SetVideoQualityPage.dart';
 import 'package:trtc_api_example/Advanced/SpeedTest/SpeedTestPage.dart';
+import 'package:trtc_api_example/Advanced/BeautyProcess/BeautyProcessEnterPage.dart';
 import 'package:trtc_api_example/Advanced/StringRoomId/StringRoomIdPage.dart';
 import 'package:trtc_api_example/Advanced/SwitchRoom/SwitchRoomPage.dart';
 import 'package:trtc_api_example/Basic/AudioCall/AudioCallingEnterPage.dart';
@@ -100,6 +101,10 @@ class ExampleData {
       ExamplePageItem(
         title: AppLocalizations.of(context)!.main_trtc_connect_other_room_pk,
         detailPage: RoomPkPage(),
+      ),
+      ExamplePageItem(
+        title: AppLocalizations.of(context)!.beauty_process,
+        detailPage: BeautyProcessEnterPage(),
       ),
     ],
   };

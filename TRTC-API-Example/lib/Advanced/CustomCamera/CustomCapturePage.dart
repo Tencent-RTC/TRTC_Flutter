@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 ///  CustomCapturePage.dart
 ///  TRTC-API-Example-Dart
-///  Created by gavinwjwang on 2022/2/28.
 class CustomCapturePage extends StatefulWidget {
   const CustomCapturePage({Key? key}) : super(key: key);
 

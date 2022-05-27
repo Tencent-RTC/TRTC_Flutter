@@ -8,6 +8,9 @@
     "unmute_audio": "取消静音",
     "stop_push": "停止推流",
     "start_push": "开始推流",
+    "beauty_process": "美颜预处理",
+    "beauty_process_open": "开启美颜",
+    "beauty_process_close": "关闭美颜",
 
     "main_trtc_base_funciton": "基础功能",
     "main_item_aduio_call": "语音通话",
