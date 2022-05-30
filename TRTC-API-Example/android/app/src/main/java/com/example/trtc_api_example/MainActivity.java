@@ -23,7 +23,15 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startService(new Intent(this, MediaService.class));
+        TUICallService.start(this);
+
         TRTCCloudPlugin.register(new TXThirdBeauty());
+    }
+
+    @Override
+    protected  void onDestroy() {
+        super.onDestroy();
+        TUICallService.stop(this);
     }
 }
 
