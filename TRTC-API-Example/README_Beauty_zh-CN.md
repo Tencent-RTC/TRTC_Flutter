@@ -3,6 +3,8 @@
 为了保证美颜实现的性能及通用性，我们设计实现了美颜数据预处理插件，视频帧数据会抛到这个插件里面，用户只需要实现ITXCustomBeautyProcesser方法，在onProcessVideoFrame里面处理美颜数据即可。
 ![](https://upload-dianshi-1255598498.file.myqcloud.com/beauty-d54f6ba86fc1437e37dd50975782e912828f751b.png)
 
+pub地址: tencent_trtc_cloud: ^2.2.5-beta1.0
+
 Demo可参考'进阶功能-美颜预处理'
 
 ## Android集成方式
