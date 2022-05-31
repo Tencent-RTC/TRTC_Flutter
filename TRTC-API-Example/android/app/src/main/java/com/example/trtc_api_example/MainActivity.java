@@ -24,7 +24,6 @@ public class MainActivity extends FlutterActivity {
         super.onCreate(savedInstanceState);
         startService(new Intent(this, MediaService.class));
         TUICallService.start(this);
-
         TRTCCloudPlugin.register(new TXThirdBeauty());
     }
 
