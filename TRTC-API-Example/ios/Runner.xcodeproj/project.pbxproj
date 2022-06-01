@@ -13,6 +13,11 @@
 		61703F3F2840D0D500896DDE /* TRTCVideoCustomPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 61703F392840D0D500896DDE /* TRTCVideoCustomPreprocessor.m */; };
 		61703F402840D0D500896DDE /* TRTCShaderCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 61703F3A2840D0D500896DDE /* TRTCShaderCompiler.m */; };
 		61703F412840D0D500896DDE /* vertexShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 61703F3D2840D0D500896DDE /* vertexShader.vsh */; };
+		61703FED28475FE200896DDE /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A1D27CE042E00D17E93 /* TXLiteAVSDK_ReplayKitExt.framework */; };
+		61703FF12847658300896DDE /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61703FF02847658300896DDE /* VideoToolbox.framework */; };
+		61703FF32847658D00896DDE /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61703FF22847658D00896DDE /* MetalKit.framework */; };
+		61703FF52847659800896DDE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61703FF42847659800896DDE /* SystemConfiguration.framework */; };
+		61703FF7284765AC00896DDE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61703FF6284765AC00896DDE /* CoreMedia.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -21,7 +26,6 @@
 		E1245A0D27CE027000D17E93 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A0C27CE027000D17E93 /* ReplayKit.framework */; };
 		E1245A1127CE027000D17E93 /* SampleHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E1245A1027CE027000D17E93 /* SampleHandler.m */; };
 		E1245A1527CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E1245A0B27CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E1245A1E27CE042E00D17E93 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A1D27CE042E00D17E93 /* TXLiteAVSDK_ReplayKitExt.framework */; };
 		E1245A2027CE049D00D17E93 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A1F27CE049D00D17E93 /* libc++.tbd */; };
 		E1245A2227CE04A800D17E93 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A2127CE04A800D17E93 /* Accelerate.framework */; };
 		E1245A2427CE04B100D17E93 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A2327CE04B100D17E93 /* libresolv.tbd */; };
@@ -76,6 +80,10 @@
 		61703F3B2840D0D500896DDE /* TRTCVideoCustomPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCVideoCustomPreprocessor.h; sourceTree = "<group>"; };
 		61703F3C2840D0D500896DDE /* TRTCShaderCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRTCShaderCompiler.h; sourceTree = "<group>"; };
 		61703F3D2840D0D500896DDE /* vertexShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vertexShader.vsh; sourceTree = "<group>"; };
+		61703FF02847658300896DDE /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		61703FF22847658D00896DDE /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		61703FF42847659800896DDE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		61703FF6284765AC00896DDE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -113,11 +121,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61703FF7284765AC00896DDE /* CoreMedia.framework in Frameworks */,
+				E1245A2227CE04A800D17E93 /* Accelerate.framework in Frameworks */,
+				61703FF52847659800896DDE /* SystemConfiguration.framework in Frameworks */,
+				61703FF32847658D00896DDE /* MetalKit.framework in Frameworks */,
+				61703FF12847658300896DDE /* VideoToolbox.framework in Frameworks */,
 				E1245A2627CE04BD00D17E93 /* AVFoundation.framework in Frameworks */,
 				E1245A2427CE04B100D17E93 /* libresolv.tbd in Frameworks */,
-				E1245A2227CE04A800D17E93 /* Accelerate.framework in Frameworks */,
 				E1245A2027CE049D00D17E93 /* libc++.tbd in Frameworks */,
-				E1245A1E27CE042E00D17E93 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
+				61703FED28475FE200896DDE /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
 				E1245A0D27CE027000D17E93 /* ReplayKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,6 +212,10 @@
 		CFE8BAAB4B51E84A1F748005 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				61703FF6284765AC00896DDE /* CoreMedia.framework */,
+				61703FF42847659800896DDE /* SystemConfiguration.framework */,
+				61703FF22847658D00896DDE /* MetalKit.framework */,
+				61703FF02847658300896DDE /* VideoToolbox.framework */,
 				E1245A2527CE04BD00D17E93 /* AVFoundation.framework */,
 				E1245A2327CE04B100D17E93 /* libresolv.tbd */,
 				E1245A2127CE04A800D17E93 /* Accelerate.framework */,
@@ -477,6 +493,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -552,6 +569,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -607,6 +625,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

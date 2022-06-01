@@ -40,3 +40,5 @@ lib/generated_plugin_registrant.dart
 
 ios/.symlinks/
 ios/Pods/
+ios/Runner.xcworkspace/xcuserdata/clavie.xcuserdatad/
+ios/Flutter/Flutter.podspec
