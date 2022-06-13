@@ -29,7 +29,12 @@ public class MediaService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Call Start foreground with notification
             Intent notificationIntent = new Intent(this, MediaService.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+            PendingIntent pendingIntent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+            }
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
 //                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground))
 //                    .setSmallIcon(R.drawable.ic_launcher_foreground)
