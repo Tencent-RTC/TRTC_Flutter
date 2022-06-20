@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>9.9.0.11217</string>
+	<string>10.1.0.11351</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -33,15 +33,15 @@
 	<key>DTPlatformName</key>
 	<string>iphonesimulator</string>
 	<key>DTPlatformVersion</key>
-	<string>14.5</string>
+	<string>15.2</string>
 	<key>DTSDKBuild</key>
-	<string>18E182</string>
+	<string>19C51</string>
 	<key>DTSDKName</key>
-	<string>iphonesimulator14.5</string>
+	<string>iphonesimulator15.2</string>
 	<key>DTXcode</key>
-	<string>1250</string>
+	<string>1321</string>
 	<key>DTXcodeBuild</key>
-	<string>12E262</string>
+	<string>13C100</string>
 	<key>MinimumOSVersion</key>
 	<string>9.0</string>
 	<key>NSPrincipalClass</key>

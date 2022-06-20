@@ -6,15 +6,14 @@ PODS:
     - Flutter
   - replay_kit_launcher (1.0.0):
     - Flutter
-  - tencent_trtc_cloud (9.9.11217):
+  - tencent_trtc_cloud (10.1):
     - Flutter
-    - TXCustomBeautyProcesserPlugin (= 1.0.0)
-    - TXLiteAVSDK_Live (= 9.9.11217)
-  - TXCustomBeautyProcesserPlugin (1.0.0):
-    - TXLiteAVSDK_Live (= 9.9.11217)
-  - TXLiteAVSDK_Live (9.9.11217):
-    - TXLiteAVSDK_Live/Live (= 9.9.11217)
-  - TXLiteAVSDK_Live/Live (9.9.11217)
+    - TXCustomBeautyProcesserPlugin (= 1.0.2)
+    - TXLiteAVSDK_Professional (= 10.1.11351)
+  - TXCustomBeautyProcesserPlugin (1.0.2)
+  - TXLiteAVSDK_Professional (10.1.11351):
+    - TXLiteAVSDK_Professional/Professional (= 10.1.11351)
+  - TXLiteAVSDK_Professional/Professional (10.1.11351)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -26,7 +25,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - TXCustomBeautyProcesserPlugin
-    - TXLiteAVSDK_Live
+    - TXLiteAVSDK_Professional
 
 EXTERNAL SOURCES:
   Flutter:
@@ -45,9 +44,9 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   replay_kit_launcher: 828739da18c9785d5e9aafd4f075ea11d6b61499
-  tencent_trtc_cloud: 52595eaad92667d620677eafd4d6555a7cf1e54e
-  TXCustomBeautyProcesserPlugin: 5b9d79598df690f0ba61f1f3ca046fdcf0028621
-  TXLiteAVSDK_Live: 879881d905aaf2cc8690ef4c08727008147155e6
+  tencent_trtc_cloud: b1da59fa9313ac9175f9c47a04ab84d76f2dafd7
+  TXCustomBeautyProcesserPlugin: 099393b941cb40eda12b3a80bf6c0319957b1cfd
+  TXLiteAVSDK_Professional: 7fdea0ff199f31285e90eea706e510516755798b
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

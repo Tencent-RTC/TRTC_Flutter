@@ -53,7 +53,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
     trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
-    
+
     trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
     trtcCloud.registerListener(onTrtcListener);
   }
@@ -303,7 +303,8 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             height: 5,
                           ),
                           Text(
-                            AppLocalizations.of(context)!.screenshare_watch_tips,
+                            AppLocalizations.of(context)!
+                                .screenshare_watch_tips,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -323,8 +324,10 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                       : screenStatus == ScreenStatus.ScreenWait
                           ? AppLocalizations.of(context)!.screenshare_wait_tips
                           : screenStatus == ScreenStatus.ScreenStart
-                              ? AppLocalizations.of(context)!.screenshare_ing_tips
-                              : AppLocalizations.of(context)!.screenshare_unknow_tips)
+                              ? AppLocalizations.of(context)!
+                                  .screenshare_ing_tips
+                              : AppLocalizations.of(context)!
+                                  .screenshare_unknow_tips)
                 ],
               ),
               SizedBox(
@@ -352,8 +355,10 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             : screenStatus == ScreenStatus.ScreenWait
                                 ? AppLocalizations.of(context)!.screenshare_wait
                                 : screenStatus == ScreenStatus.ScreenStart
-                                    ? AppLocalizations.of(context)!.screenshare_stop
-                                    : AppLocalizations.of(context)!.screenshare_unknow_tips),
+                                    ? AppLocalizations.of(context)!
+                                        .screenshare_stop
+                                    : AppLocalizations.of(context)!
+                                        .screenshare_unknow_tips),
                       ),
                     ),
                   ),
@@ -378,7 +383,9 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                 onPressed: () {
                   onMicCaptureClick();
                 },
-                child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
+                child: Text(isMuteLocalAudio
+                    ? AppLocalizations.of(context)!.open_audio
+                    : AppLocalizations.of(context)!.close_audio),
               ),
             ),
           ),
