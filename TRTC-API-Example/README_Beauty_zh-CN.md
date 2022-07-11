@@ -2,7 +2,7 @@
 ## 第三方美颜接入
 为了保证美颜实现的性能及通用性，我们设计实现了美颜数据预处理插件，视频帧数据会抛到这个插件里面，用户只需要实现ITXCustomBeautyProcesser方法，在onProcessVideoFrame里面处理美颜数据即可。
 
-pub地址: tencent_trtc_cloud: ^2.2.5-beta1.0
+pub地址: tencent_trtc_cloud: ^2.3.1
 
 Demo可参考'进阶功能-美颜预处理'
 
