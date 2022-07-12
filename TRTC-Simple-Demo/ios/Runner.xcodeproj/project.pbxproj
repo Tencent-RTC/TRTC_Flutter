@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -350,11 +350,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/path_provider_ios/path_provider_ios.framework",
 				"${BUILT_PRODUCTS_DIR}/replay_kit_launcher/replay_kit_launcher.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/TXLiteAVSDK_Professional/Professional/TXSoundTouch.framework/TXSoundTouch",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/TXLiteAVSDK_Professional/Professional/TXFFmpeg.framework/TXFFmpeg",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/path_provider_ios.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/replay_kit_launcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TXSoundTouch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TXFFmpeg.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

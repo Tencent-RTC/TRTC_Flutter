@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import TXLiteAVSDK_Live
+import tencent_trtc_cloud
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
