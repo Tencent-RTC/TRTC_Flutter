@@ -65,6 +65,23 @@ You have [signed up](https://intl.cloud.tencent.com) for a Tencent Cloud account
 1. Run `pod install`.
 2. Open the `/ios` demo project in the source code directory with Xcode (11.0 or above) and compile and run the demo project.
 
+#### windows
+* （1）Enable windows support: flutter config --enable-windows-desktop
+* （2）run `flutter run -d windows`
+*  (3) For versions above 2.3.4, you need to download two open source third-party libraries，[Download address](https://dscache.tencent-cloud.cn/upload/uploader/flutter_windows_dll-e4a7352761d504e759dbcf219fe396c71d36b7bb.zip)
+*  (4) Put the downloaded two dlls into "TRTC-Simple-Demo\build\windows\runner\Debug"（Build directory correspondence "TRTC-Simple-Demo\build\windows\runner\Release"）
+
+<img src="https://dscache.tencent-cloud.cn/upload/uploader/windows-6bced3d57fbc8439d4a3a9b60ada97fac8085c5f.png" />
+
+*  (5) Open example.exe directly, or run it again`flutter run -d windows`
+
+
+#### macOS
+* （1）Enable macOS support:flutter config --enable-macos-desktop
+* （2）cd macos
+*  (3) pod install
+*  (4) run `flutter run -d macos`
+
 ## FAQs
 ### How do I view TRTC logs?
 TRTC logs are compressed and encrypted by default with the `.xlog` extension at the following address:

@@ -70,6 +70,13 @@
 4.windows调试：
 * （1）启用windows支持：flutter config --enable-windows-desktop
 * （2）flutter run -d windows
+*  (3) 2.3.4版本以上需要下载两个开源第三方库，[下载地址](https://dscache.tencent-cloud.cn/upload/uploader/flutter_windows_dll-e4a7352761d504e759dbcf219fe396c71d36b7bb.zip)
+*  (4) 将下载的两个dll放入"TRTC-Simple-Demo\build\windows\runner\Debug"目录（build目录对应"TRTC-Simple-Demo\build\windows\runner\Release"）
+
+<img src="https://dscache.tencent-cloud.cn/upload/uploader/windows-6bced3d57fbc8439d4a3a9b60ada97fac8085c5f.png" />
+
+*  (5) 直接打开example.exe，或者重新运行flutter run -d windows即可
+
 
 4.macOS调试
 * （1）启用macOS支持：flutter config --enable-macos-desktop
@@ -91,6 +98,10 @@ TRTC 的日志默认压缩加密，后缀为 .xlog。
 #### 常见问题
 
 更多常见问题参考[文档](https://cloud.tencent.com/document/product/647/51623)
+
+##### windows运行报错
+报错信息"Error waiting for a debug connection: The log reader stopped unexpectedly"
+解决方案：请参照上面windows调试将两个缺失的dll引入进来
 
 ##### iOS无法显示视频（Android是好的）
 
