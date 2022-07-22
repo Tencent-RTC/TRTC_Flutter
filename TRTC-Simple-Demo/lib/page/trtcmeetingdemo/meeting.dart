@@ -175,10 +175,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     this.setState(() {});
   }
 
-  destoryRoom() {
+  destoryRoom() async {
     trtcCloud.unRegisterListener(onRtcListener);
-    trtcCloud.exitRoom();
-    TRTCCloud.destroySharedInstance();
+    await trtcCloud.exitRoom();
+    await TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -500,6 +500,16 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: TRTCCloudVideoView(
               key: valueKey,
               viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
+              // This parameter is required for rendering desktop.(Android/iOS/web no need)
+              textureParam: CustomRender(
+                userId: item['userId'],
+                isLocal: item['userId'] == userInfo['userId'] ? true : false,
+                streamType: item['type'] == 'video'
+                    ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+                    : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+                width: 72,
+                height: 120,
+              ),
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
                   await trtcCloud.startLocalPreview(isFrontCamera, viewId);
