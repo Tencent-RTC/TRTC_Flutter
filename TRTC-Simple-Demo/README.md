@@ -1,6 +1,6 @@
 [简体中文](./README-zh_CN.md) | English
 
-# 跑通Demo(Flutter)
+# Demo(Flutter)
 
 This document describes how to quickly run the TRTC demo for Flutter.
 
