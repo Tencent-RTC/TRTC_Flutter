@@ -11,12 +11,12 @@ Demo可参考'进阶功能-美颜预处理'
 实现第三方美颜关键就是要实现2个接口：ITXCustomBeautyProcesserFactory 和 ITXCustomBeautyProcesser。第三方美颜处理的具体操作在ITXCustomBeautyProcesser的onProcessVideoFrame方法实现。
 代码详情可参考 MainActivity.java的代码
 
-![](https://upload-dianshi-1255598498.file.myqcloud.com/beauty-android1-873332eb0272583a8b04c33802905d7bdee5a0b2.png)
+![](https://dscache.tencent-cloud.cn/upload/uploader/beauty-android1-min2-d490132a69a899a3edfea720db23a6d4b266a41b.png)
 
 ### 注册第三方美颜对象
 根据自己的业务需求在需要的地方调用TRTCCloudPlugin的register(ITXCustomBeautyProcesserFactory beautyProcesserFactory)方法来注册美颜实例
 
-![](https://upload-dianshi-1255598498.file.myqcloud.com/beauty-android2-bc6ccbade4073953d24c1383762609a25a7e1b6e.png)
+![](https://dscache.tencent-cloud.cn/upload/uploader/beauty-android2-d3ccab47c778640d66e8794705b00c90403d0f52.png)
 
 ### 开启美颜
 在Flutter层，调用Future `enableCustomVideoProcess(bool enable)`接口进行开启或关闭自定义美颜接口，安卓这边开启美颜后会有一个灰色的效果。
@@ -26,12 +26,12 @@ Demo可参考'进阶功能-美颜预处理'
 实现第三方美颜关键就是要实现2个接口：ITXCustomBeautyProcesserFactory 和 ITXCustomBeautyProcesser。第三方美颜处理的具体操作在ITXCustomBeautyProcesser的onProcessVideoFrame方法实现。
 代码详情可参考 AppDelegate.swift的代码
 
-![](https://upload-dianshi-1255598498.file.myqcloud.com/beauty-ios1-00c083f6d1b6ae13b2e5bb76b3b3987bee271fd8.png)
+![](https://dscache.tencent-cloud.cn/upload/uploader/beauty-ios1-c4e4afe6ab70fb2ddd86d3ca0f027752f5b50a3d.png)
 
 ### 注册第三方美颜对象
 根据自己的业务需求在需要的地方调用TencentTRTCCloud的register(ITXCustomBeautyProcesserFactory beautyProcesserFactory)方法来注册美颜实例
 
-![](https://upload-dianshi-1255598498.file.myqcloud.com/beauty-ios2-e96a395282c46deafd2d9a831f0e75c6e9503aac.png)
+![](https://dscache.tencent-cloud.cn/upload/uploader/beauty-ios2-61f93a02e5e247788ca7ae947e35c2401da9f633.png)
 
 ### 开启美颜
 在Flutter层，调用Future `enableCustomVideoProcess(bool enable)`接口进行开启或关闭自定义美颜接口，iOS这边开启美颜后会有一个亮色的效果。
