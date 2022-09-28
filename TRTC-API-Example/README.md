@@ -38,14 +38,14 @@ This demo covers the following features (click to view the details of a feature)
 ## Demo Run Example
 
 #### Prerequisites
-You have [signed up for a Tencent Cloud account](https://intl.cloud.tencent.com/document/product/378/17985) and completed [identity verification](https://intl.cloud.tencent.com/document/product/378/3629).
-
+You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account and completed identity verification.
 
 ### Obtaining `SDKAPPID` and `SECRETKEY`
-1. Log in to the TRTC console and select **Development Assistance** > **[Demo Quick Run](https://console.cloud.tencent.com/trtc/quickstart)**.
+1. Log in to the TRTC console and select **Development Assistance** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Enter an application name such as `TestTRTC`, and click **Create**.
 
-![ #900px](https://main.qcloudimg.com/raw/8dc52b5fa66ec4a5a4317719f9d442b9.png)
+![ #900px](https://qcloudimg.tencent-cloud.cn/raw/51c73a617e69a76ed26e6f74b0071ec9.png)
+
 3. Click **Next** to view your `SDKAppID` and key.
 
 

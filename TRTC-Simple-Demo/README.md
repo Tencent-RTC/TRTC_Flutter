@@ -17,15 +17,15 @@ Note: The international version only supports Android and IOS.
   - A valid developer signature for your project
 
 ## Prerequisites
-You have [signed up](https://intl.cloud.tencent.com) for a Tencent Cloud account and completed identity verification.
+You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account and completed identity verification.
 
 ## Directions
 [](id:step1)
 ### Step 1. Create an application
-1. Log in to the TRTC console and select **Development Assistance** > **[Demo Quick Run](https://console.intl.cloud.tencent.com/trtc/quickstart)**.
+1. Log in to the TRTC console and select **Development Assistance** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Click **Create Application** and enter the application name such as `TestTRTC`. If you have already created an application, click **Select Existing Application**.
 3. Add or edit tags according to your actual business needs and click **Create**.
-![](https://main.qcloudimg.com/raw/8dc52b5fa66ec4a5a4317719f9d442b9.png)
+![ #900px](https://qcloudimg.tencent-cloud.cn/raw/51c73a617e69a76ed26e6f74b0071ec9.png)
 
 >- An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
 >- Tags are used to identify and organize your Tencent Cloud resources. For example, an enterprise may have multiple business units, each of which has one or more TRTC applications. In this case, the enterprise can tag TRTC applications to mark out the unit information. Tags are optional and can be added or edited according to your actual business needs.
@@ -34,8 +34,6 @@ You have [signed up](https://intl.cloud.tencent.com) for a Tencent Cloud account
 ### Step 2. Download the SDK and demo source code
 1. Download the SDK and [demo source code](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo) for your platform.
 2. Click **Next**.
-![](https://main.qcloudimg.com/raw/9f4c878c0a150d496786574cae2e89f9.png)
-
 
 [](id:step3)
 ### Step 3. Configure demo project files
