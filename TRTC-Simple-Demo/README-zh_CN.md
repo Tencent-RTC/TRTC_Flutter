@@ -84,10 +84,6 @@
 *  (3) pod install
 *  (4) 执行`flutter run -d macos`
 
-4.web调试
-* （1）启用web支持：flutter config --enable-web
-* （2）执行`flutter run -d chrome`
-
 #### 如何查看 TRTC 日志？
 TRTC 的日志默认压缩加密，后缀为 .xlog。
 * iOS：sandbox的Documents/log
