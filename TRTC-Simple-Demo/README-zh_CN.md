@@ -29,27 +29,29 @@
 您已[注册腾讯云](https://cloud.tencent.com)账号，并完成实名认证。
 
 ## 操作步骤
-<span id="step1"></span>
+[](id:step1)
 ### 步骤1：创建新的应用
 1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
-2. 单击【立即开始】，输入应用名称，例如`TestTRTC`，单击【创建应用】。
+2. 输入应用名称，例如`APIExample`；若您已创建过应用，可以勾选【选择已有应用】，然后单击【创建】。
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/bc7971fd5d1d6c39cbf9419a57dbbb8d.png)
 
-<span id="step2"></span>
+[](id:step2)
 ### 步骤2：下载 SDK 和 Demo 源码
-1. 鼠标移动至对应卡片，单击【[Github](https://github.com/c1avie/trtc_demo)】跳转至 Github，下载相关 SDK 及配套的 Demo 源码。
-<img src="https://imgcache.qq.com/operation/dianshi/other/flutterCard.e9d6e205d0e0a8903aa437602acafecb3958e0cb.png" height="400" />
+1. 前往【[Github](https://github.com/c1avie/trtc_demo)】下载相关 SDK 及配套的 Demo 源码。
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/c9133b42402a8e4d1fff5ebf131339bd.png)
+2. 下载完成后，返回实时音视频控制台，单击【已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
-2. 下载完成后，返回实时音视频控制台，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
-<span id="step3"></span>
+[](id:step3)
 ### 步骤3：配置 Demo 工程文件
 1. 解压 [步骤2](#step2) 中下载的源码包。
 2. 找到并打开`/lib/debug/GenerateTestUserSig.dart`文件。
 3. 设置`GenerateTestUserSig.dart`文件中的相关参数：
-  <ul><li>SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。</li>
-  <li>SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。</li></ul> 
-<img src="https://imgcache.qq.com/operation/dianshi/other/flutterSercet.abb0c77a30a50a27bb36058bdabe1f051484c058.png" height="400" /> 
-4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
 
+>- SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。
+>- SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/7539f12a6a79689f4dec6222382a92e3.png)
+
+4. 返回实时音视频控制台，单击【已复制粘贴，下一步】。
 5. 单击【关闭指引，进入控制台管理应用】。
 
 >本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。

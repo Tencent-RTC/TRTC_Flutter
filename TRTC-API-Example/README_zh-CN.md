@@ -46,21 +46,21 @@
 
 ### 申请 SDKAPPID 和 SECRETKEY
 1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
-2. 单击【立即开始】，输入您的应用名称，例如`TestTRTC`，单击【创建应用】。
-
-![](https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png)
-3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
+2. 输入应用名称，例如`APIExample`；若您已创建过应用，可以勾选【选择已有应用】，然后单击【创建】。
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/bc7971fd5d1d6c39cbf9419a57dbbb8d.png)
+3. 创建应用完成后，单击【已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
 
 ### 配置 Demo 工程文件
-1. 打开 Debug 目录下的 GenerateTestUserSig.dart 文件。
-2. 配置`GenerateTestUserSig.dart`文件中的两个参数：
-  - SDKAPPID：替换该变量值为上一步骤中在页面上看到的 SDKAppID。
-  - SECRETKEY：替换该变量值为上一步骤中在页面上看到的密钥。
- ![ #900px](https://main.qcloudimg.com/raw/fba60aa9a44a94455fe31b809433cfa4.png)
+1. 找到并打开`/lib/debug/GenerateTestUserSig.dart`文件。
+2. 设置`GenerateTestUserSig.dart`文件中的相关参数：
 
-4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
-5. 单击【关闭指引，进入控制台管理应用】。
+>- SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。
+>- SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/7539f12a6a79689f4dec6222382a92e3.png)
+
+3. 返回实时音视频控制台，单击【已复制粘贴，下一步】。
+4. 单击【关闭指引，进入控制台管理应用】。
 
 >!本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通 Demo 和功能调试**。
 >正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。

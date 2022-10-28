@@ -22,10 +22,10 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 ## Directions
 [](id:step1)
 ### Step 1. Create an application
-1. Log in to the TRTC console and select **Development Assistance** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
-2. Click **Create Application** and enter the application name such as `TestTRTC`. If you have already created an application, click **Select Existing Application**.
+1. Log in to the TRTC console and select **Application Management** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
+2. Click **Create Application** and enter the application name such as `APIExample`. If you have already created an application, click **Select Existing Application**.
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/6704c9f7eb9e18e422c513cb9a2a3926.png)
 3. Add or edit tags according to your actual business needs and click **Create**.
-![ #900px](https://qcloudimg.tencent-cloud.cn/raw/51c73a617e69a76ed26e6f74b0071ec9.png)
 
 >- An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
 >- Tags are used to identify and organize your Tencent Cloud resources. For example, an enterprise may have multiple business units, each of which has one or more TRTC applications. In this case, the enterprise can tag TRTC applications to mark out the unit information. Tags are optional and can be added or edited according to your actual business needs.
@@ -34,15 +34,18 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 ### Step 2. Download the SDK and demo source code
 1. Download the SDK and [demo source code](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo) for your platform.
 2. Click **Next**.
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/d28964ad85dddd85833a28310a62d514.png)
 
 [](id:step3)
 ### Step 3. Configure demo project files
 1. In the **Modify Configuration** step, select the development platform in line with the source package downloaded.
+![#900px](https://qcloudimg.tencent-cloud.cn/raw/82a45972f2d12763a6dc80eee6c952c0.png)
 2. Find and open `/lib/debug/GenerateTestUserSig.dart`.
 3. Set parameters in `GenerateTestUserSig.dart` as follows.
-<ul><li/>SDKAPPID: a placeholder by default. Set it to the actual `SDKAppID`.
-	<li/>`SECRETKEY`: a placeholder by default. Set it to the actual key.</ul>
-<img src="https://imgcache.qq.com/operation/dianshi/other/flutter_sig.237b3ce20dde2fa6cac972f49169e7e539d691fd.png">
+
+>- SDKAPPID: a placeholder by default. Set it to the actual `SDKAppID`.
+>- SECRETKEY: a placeholder by default. Set it to the actual key.
+![#900px](https://imgcache.qq.com/operation/dianshi/other/flutter_sig.237b3ce20dde2fa6cac972f49169e7e539d691fd.png)
 
 4. Click **Next** to complete the creation.
 5. After compilation, click **Return to Overview Page**.
