@@ -32,8 +32,9 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
    ![#900px](https://qcloudimg.tencent-cloud.cn/raw/a94af05689b21f38835481db75d16b5f.png)
 3. Add or edit tags according to your actual business needs and click **Create**.
 
-> - An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
-> - Tags are used to identify and organize your Tencent Cloud resources. For example, an enterprise may have multiple business units, each of which has one or more TRTC applications. In this case, the enterprise can tag TRTC applications to mark out the unit information. Tags are optional and can be added or edited according to your actual business needs.
+> An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
+
+> Tags are used to identify and organize your Tencent Cloud resources. For example, an enterprise may have multiple business units, each of which has one or more TRTC applications. In this case, the enterprise can tag TRTC applications to mark out the unit information. Tags are optional and can be added or edited according to your actual business needs.
 
 [](id:step2)
 
@@ -59,8 +60,9 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 4. Click **Next** to complete the creation.
 5. After compilation, click **Return to Overview Page**.
 
-> - The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is leaked, attackers can steal your Tencent Cloud traffic. Therefore, **this method is only suitable for the local execution and debugging of the demo**.
-> - The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can send a request to the business server for a dynamic `UserSig`. For more information, please see [How do I calculate UserSig on the server?](https://intl.cloud.tencent.com/document/product/647/35166).
+> The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is leaked, attackers can steal your Tencent Cloud traffic. Therefore, **this method is only suitable for the local execution and debugging of the demo**.
+
+> The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can send a request to the business server for a dynamic `UserSig`. For more information, please see [How do I calculate UserSig on the server?](https://intl.cloud.tencent.com/document/product/647/35166).
 
 [](id:step4)
 
