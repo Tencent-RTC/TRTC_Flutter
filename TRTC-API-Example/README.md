@@ -49,7 +49,7 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 
 1. Log in to the TRTC console and select **Application Management** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Click **Create Application** and enter the application name such as `APIExample`. If you have already created an application, click **Select Existing Application**.
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/6704c9f7eb9e18e422c513cb9a2a3926.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/a94af05689b21f38835481db75d16b5f.png)
 3. Click **Next** to view your `SDKAppID` and key.
 
 ### Configuring demo project files

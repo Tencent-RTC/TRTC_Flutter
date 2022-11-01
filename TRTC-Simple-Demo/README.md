@@ -29,7 +29,7 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 
 1. Log in to the TRTC console and select **Application Management** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Click **Create Application** and enter the application name such as `APIExample`. If you have already created an application, click **Select Existing Application**.
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/6704c9f7eb9e18e422c513cb9a2a3926.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/a94af05689b21f38835481db75d16b5f.png)
 3. Add or edit tags according to your actual business needs and click **Create**.
 
 > - An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
@@ -41,14 +41,14 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 
 1. Download the SDK and [demo source code](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo) for your platform.
 2. Click **Next**.
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/d28964ad85dddd85833a28310a62d514.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/a5bfe5b0664f05772b8172c29117ac13.png)
 
 [](id:step3)
 
 ### Step 3. Configure demo project files
 
 1. In the **Modify Configuration** step, select the development platform in line with the source package downloaded.
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/82a45972f2d12763a6dc80eee6c952c0.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/fa059c7b0dc9f601dbe1dc9b6548dd90.png)
 2. Find and open `/lib/debug/GenerateTestUserSig.dart`.
 3. Set parameters in `GenerateTestUserSig.dart` as follows.
 

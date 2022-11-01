@@ -51,7 +51,7 @@
 
 1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通 Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
 2. 输入应用名称，例如`APIExample`；若您已创建过应用，可以勾选【选择已有应用】，然后单击【创建】。
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/bc7971fd5d1d6c39cbf9419a57dbbb8d.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/899626ba2c8f9b32921bda193c9ab9a9.png)
 3. 创建应用完成后，单击【已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
 ### 配置 Demo 工程文件
@@ -61,7 +61,7 @@
 
 > - SDKAPPID：默认为 PLACEHOLDER ，请设置为实际的 SDKAppID。
 > - SECRETKEY：默认为 PLACEHOLDER ，请设置为实际的密钥信息。
->   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/7539f12a6a79689f4dec6222382a92e3.png)
+>   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/c8a787f11cb3f52a49ffd04ad0197d4b.png)
 
 3. 返回实时音视频控制台，单击【已复制粘贴，下一步】。
 4. 单击【关闭指引，进入控制台管理应用】。
