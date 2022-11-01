@@ -83,7 +83,6 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 
 1. Enable windows support: flutter config --enable-windows-desktop
 2. run `flutter run -d windows`
-3. Open example.exe directly, or run it again`flutter run -d windows`
 
 #### macOS
 

@@ -43,7 +43,7 @@
 
 ### 步骤 2：下载 SDK 和 Demo 源码
 
-1. 前往【[Github](https://github.com/c1avie/trtc_demo)】下载相关 SDK 及配套的 Demo 源码。
+1. 前往【[Github](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo)】下载相关 SDK 及配套的 Demo 源码。
    ![#900px](https://qcloudimg.tencent-cloud.cn/raw/d501c269104d59d0566013119839fde2.png)
 2. 下载完成后，返回实时音视频控制台，单击【已下载，下一步】，可以查看 SDKAppID 和密钥信息。
 
@@ -87,7 +87,6 @@
 
 1. 启用 windows 支持：`flutter config --enable-windows-desktop`
 2. 执行`flutter run -d windows`
-3. 直接打开 example.exe，或者重新运行 `flutter run -d windows` 即可
 
 #### macOS 调试
 
