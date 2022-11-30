@@ -29,7 +29,7 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 
 1. Log in to the TRTC console and select **Application Management** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Click **Create Application** and enter the application name such as `APIExample`. If you have already created an application, click **Select Existing Application**.
-   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/a94af05689b21f38835481db75d16b5f.png)
+   ![#900px](https://qcloudimg.tencent-cloud.cn/raw/30fddb57f90491c7c94fd1cdfdde9a81.png)
 3. Add or edit tags according to your actual business needs and click **Create**.
 
 > An application name can contain up to 15 characters. Only digits, letters, Chinese characters, and underscores are allowed.
