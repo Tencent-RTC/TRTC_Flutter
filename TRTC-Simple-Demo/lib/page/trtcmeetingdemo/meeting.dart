@@ -604,9 +604,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   }),
               Text(meetId.toString(),
                   style: TextStyle(fontSize: 20, color: Colors.white)),
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
+              TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    textStyle: const TextStyle(color: Colors.white)),
                 onPressed: () async {
                   bool? delete = await showExitMeetingConfirmDialog();
                   if (delete != null) {

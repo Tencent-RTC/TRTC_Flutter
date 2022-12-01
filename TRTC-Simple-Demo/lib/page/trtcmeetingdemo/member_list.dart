@@ -116,8 +116,10 @@ class MemberListPageState extends State<MemberListPage> {
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      RaisedButton(
-                        color: Color.fromRGBO(245, 108, 108, 1),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                                color: Color.fromRGBO(245, 108, 108, 1))),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(true);
                           MeetingTool.toast('Total silence', context);
@@ -129,8 +131,10 @@ class MemberListPageState extends State<MemberListPage> {
                         child: Text('Total silence',
                             style: TextStyle(color: Colors.white)),
                       ),
-                      RaisedButton(
-                        color: Color.fromRGBO(64, 158, 255, 1),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                                color: Color.fromRGBO(64, 158, 255, 1))),
                         onPressed: () {
                           trtcCloud.muteAllRemoteAudio(false);
                           MeetingTool.toast('Lift all bans', context);
@@ -143,6 +147,7 @@ class MemberListPageState extends State<MemberListPage> {
                       ),
                     ],
                   ),
+
                   height: 50.0,
                 ),
                 alignment: Alignment.bottomCenter),
