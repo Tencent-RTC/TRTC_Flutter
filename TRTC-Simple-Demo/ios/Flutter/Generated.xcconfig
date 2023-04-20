@@ -2,13 +2,14 @@
 FLUTTER_ROOT=/Users/clavie/Desktop/tools/flutter3.3.1
 FLUTTER_APPLICATION_PATH=/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_TARGET=/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo/lib/main.dart
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=2.0.0
 FLUTTER_BUILD_NUMBER=2.0.0
 EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
 EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
+DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false
-PACKAGE_CONFIG=.dart_tool/package_config.json
+PACKAGE_CONFIG=/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo/.dart_tool/package_config.json
