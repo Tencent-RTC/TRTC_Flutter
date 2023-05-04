@@ -81,18 +81,6 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 1. Run `pod install`.
 2. Open the `/ios` demo project in the source code directory with Xcode (11.0 or above) and compile and run the demo project.
 
-#### windows
-
-1. Enable windows support: flutter config --enable-windows-desktop
-2. run `flutter run -d windows`
-
-#### macOS
-
-1. Enable macOS support:flutter config --enable-macos-desktop
-2. cd macos
-3. pod install
-4. run `flutter run -d macos`
-
 ## FAQs
 
 ### How do I view TRTC logs?

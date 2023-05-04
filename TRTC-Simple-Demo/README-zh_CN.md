@@ -4,7 +4,6 @@
 
 本文主要介绍如何快速运行腾讯云 TRTC Demo（Flutter）。
 
-注意：目前 Windows/MacOs 端仅支持音频，视频接口暂不支持；安卓/iOS 端支持视频通话
 
 ## 环境要求
 
@@ -12,18 +11,10 @@
 - Android 开发
   - Android Studio 3.5 及以上版本
   - App 要求 Android 4.1 及以上设备
-- iOS & macOS 开发
+- iOS 开发
   - Xcode 11.0 及以上版本
   - macOS 系统版本要求 10.11 及以上
   - 请确保您的项目已设置有效的开发者签名
-- Windows 开发
-  - 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
-    - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
-  - 安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)
-- Flutter Web 开发
-  - Chrome72 及以上版本
-  - Safari13 及以上版本
-  - flutter 2.0 及以上版本
 
 ## 前提条件
 
@@ -84,18 +75,6 @@
 2. 执行`pod install`
 3. 使用 XCode（11.0 及以上的版本）打开源码目录下的 `/ios` 工程，编译并运行 Demo 工程即可。
 
-#### windows 调试：
-
-1. 启用 windows 支持：`flutter config --enable-windows-desktop`
-2. 执行`flutter run -d windows`
-
-#### macOS 调试
-
-1. 启用 macOS 支持：`flutter config --enable-macos-desktop`
-2. 执行`cd macos`
-3. 执行`pod install`
-4. 执行`flutter run -d macos`
-
 #### 如何查看 TRTC 日志？
 
 TRTC 的日志默认压缩加密，后缀为 .xlog。
@@ -109,10 +88,6 @@ TRTC 的日志默认压缩加密，后缀为 .xlog。
 
 更多常见问题参考[文档](https://cloud.tencent.com/document/product/647/51623)
 
-##### windows 运行报错
-
-报错信息"Error waiting for a debug connection: The log reader stopped unexpectedly"
-解决方案：请参照上面 windows 调试将两个缺失的 dll 引入进来
 
 ##### iOS 无法显示视频（Android 是好的）
 
