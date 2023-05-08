@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>CoreTelephony</string>
+	<string>Foundation</string>
+	<string>AppKit</string>
+	<string>VideoToolbox</string>
+	<string>EventKit</string>
+	<string>replay</string>
+	<string>AVFoundation</string>
+	<string>Speech</string>
+	<string>TXCustomBeautyProcesserPlugin</string>
+	<string>AddressBook</string>
+	<string>permission</string>
+	<string>path</string>
+	<string>tencent</string>
+	<string>Contacts</string>
+	<string>UIKit</string>
+	<string>CoreMotion</string>
+	<string>Flutter</string>
+	<string>CoreLocation</string>
+	<string>Photos</string>
+	<string>ReplayKit</string>
+	<string>UserNotifications</string>
+	<string>CoreBluetooth</string>
+	<string>TXLiteAVSDK</string>
+	<string>MediaPlayer</string>
+	<string>OpenGL</string>
+</array>
+</plist>

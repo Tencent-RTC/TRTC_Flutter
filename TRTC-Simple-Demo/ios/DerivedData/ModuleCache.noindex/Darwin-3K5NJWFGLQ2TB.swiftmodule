@@ -1,0 +1,20 @@
+---
+path:            '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/16.4/Darwin.swiftmodule/arm64-apple-ios.swiftmodule'
+dependencies:
+  - mtime:           1679630402000000000
+    path:            '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/16.4/Darwin.swiftmodule/arm64-apple-ios.swiftmodule'
+    size:            137900
+  - mtime:           1677966521000000000
+    path:            'usr/lib/swift/Swift.swiftmodule/arm64-apple-ios.swiftinterface'
+    size:            2001899
+    sdk_relative:    true
+  - mtime:           1677945559000000000
+    path:            'usr/include/Darwin.apinotes'
+    size:            1133
+    sdk_relative:    true
+  - mtime:           1677974152000000000
+    path:            'usr/lib/swift/Darwin.swiftmodule/arm64-apple-ios.swiftinterface'
+    size:            25392
+    sdk_relative:    true
+version:         1
+...

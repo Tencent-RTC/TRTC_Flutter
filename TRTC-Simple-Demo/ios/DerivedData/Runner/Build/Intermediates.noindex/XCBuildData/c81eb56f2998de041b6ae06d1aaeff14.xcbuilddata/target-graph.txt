@@ -1,0 +1,31 @@
+Target dependency graph (10 targets)
+TRTC Demo Screen in Runner, no dependencies
+Flutter in Pods, no dependencies
+TXCustomBeautyProcesserPlugin in Pods, no dependencies
+TXLiteAVSDK_Professional in Pods, no dependencies
+path_provider_ios in Pods, depends on:
+Flutter in Pods (explicit)
+permission_handler in Pods, depends on:
+Flutter in Pods (explicit)
+replay_kit_launcher in Pods, depends on:
+Flutter in Pods (explicit)
+tencent_trtc_cloud in Pods, depends on:
+Flutter in Pods (explicit)
+TXCustomBeautyProcesserPlugin in Pods (explicit)
+TXLiteAVSDK_Professional in Pods (explicit)
+Pods-Runner in Pods, depends on:
+Flutter in Pods (explicit)
+TXCustomBeautyProcesserPlugin in Pods (explicit)
+TXLiteAVSDK_Professional in Pods (explicit)
+path_provider_ios in Pods (explicit)
+permission_handler in Pods (explicit)
+replay_kit_launcher in Pods (explicit)
+tencent_trtc_cloud in Pods (explicit)
+Runner in Runner, depends on:
+TRTC Demo Screen in Runner (explicit)
+Pods-Runner in Pods (implicit dependency via file 'Pods_Runner.framework' in build phase 'Link Binary')
+TXCustomBeautyProcesserPlugin in Pods (implicit dependency via options '-framework TXCustomBeautyProcesserPlugin' in build setting 'OTHER_LDFLAGS')
+path_provider_ios in Pods (implicit dependency via options '-framework path_provider_ios' in build setting 'OTHER_LDFLAGS')
+permission_handler in Pods (implicit dependency via options '-framework permission_handler' in build setting 'OTHER_LDFLAGS')
+replay_kit_launcher in Pods (implicit dependency via options '-framework replay_kit_launcher' in build setting 'OTHER_LDFLAGS')
+tencent_trtc_cloud in Pods (implicit dependency via options '-framework tencent_trtc_cloud' in build setting 'OTHER_LDFLAGS')

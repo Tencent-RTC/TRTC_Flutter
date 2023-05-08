@@ -1,0 +1,10 @@
+framework module tencent_trtc_cloud {
+  umbrella header "tencent_trtc_cloud-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module tencent_trtc_cloud.__Swift {
+  exclude header "tencent_trtc_cloud-Swift.h"
+}

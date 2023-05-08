@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,24 +15,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		D2036D9425676B82006B0084 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2036D9325676B82006B0084 /* ReplayKit.framework */; };
-		E13709A426F0432200380383 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A326F0432200380383 /* libz.tbd */; };
-		E13709A626F0433400380383 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A526F0433400380383 /* libc++.tbd */; };
-		E13709A826F0434C00380383 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E13709A726F0434C00380383 /* Accelerate.framework */; };
-		E144EF312600B41100CDA725 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2036D9325676B82006B0084 /* ReplayKit.framework */; };
-		E144EF382600B41100CDA725 /* TRTC Demo Screen.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		E144EF4A2600B9EB00CDA725 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E144EF492600B9EB00CDA725 /* SampleHandler.swift */; };
-		E144EF512600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E144EF502600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E144EF362600B41100CDA725 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E144EF2F2600B41100CDA725;
-			remoteInfo = Broadcast.Upload;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -47,14 +30,13 @@
 		};
 		E144EF392600B41100CDA725 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				E144EF382600B41100CDA725 /* TRTC Demo Screen.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -79,7 +61,6 @@
 		E13709A326F0432200380383 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E13709A526F0433400380383 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E13709A726F0434C00380383 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TRTC Demo Screen.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E144EF352600B41100CDA725 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E144EF402600B4ED00CDA725 /* Broadcast.UploadDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Broadcast.UploadDebug.entitlements; sourceTree = "<group>"; };
 		E144EF432600B59000CDA725 /* Broadcast.Upload.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Broadcast.Upload.entitlements; sourceTree = "<group>"; };
@@ -96,18 +77,6 @@
 			files = (
 				D2036D9425676B82006B0084 /* ReplayKit.framework in Frameworks */,
 				6CF86F76DC1D5F103A4828D4 /* Pods_Runner.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E144EF2D2600B41100CDA725 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E13709A826F0434C00380383 /* Accelerate.framework in Frameworks */,
-				E13709A626F0433400380383 /* libc++.tbd in Frameworks */,
-				E13709A426F0432200380383 /* libz.tbd in Frameworks */,
-				E144EF512600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework in Frameworks */,
-				E144EF312600B41100CDA725 /* ReplayKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,7 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
-				E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -224,29 +192,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				E144EF372600B41100CDA725 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
-		};
-		E144EF2F2600B41100CDA725 /* TRTC Demo Screen */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E144EF3D2600B41100CDA725 /* Build configuration list for PBXNativeTarget "TRTC Demo Screen" */;
-			buildPhases = (
-				E144EF2C2600B41100CDA725 /* Sources */,
-				E144EF2D2600B41100CDA725 /* Frameworks */,
-				E144EF2E2600B41100CDA725 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "TRTC Demo Screen";
-			productName = Broadcast.Upload;
-			productReference = E144EF302600B41100CDA725 /* TRTC Demo Screen.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -262,12 +212,6 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = FN2V63AD2J;
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Manual;
-					};
-					E144EF2F2600B41100CDA725 = {
-						CreatedOnToolsVersion = 12.4;
-						DevelopmentTeam = FN2V63AD2J;
-						LastSwiftMigration = 1240;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -286,7 +230,6 @@
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
-				E144EF2F2600B41100CDA725 /* TRTC Demo Screen */,
 			);
 		};
 /* End PBXProject section */
@@ -300,13 +243,6 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E144EF2E2600B41100CDA725 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,23 +335,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E144EF2C2600B41100CDA725 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E144EF4A2600B9EB00CDA725 /* SampleHandler.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E144EF372600B41100CDA725 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E144EF2F2600B41100CDA725 /* TRTC Demo Screen */;
-			targetProxy = E144EF362600B41100CDA725 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
@@ -700,108 +620,6 @@
 			};
 			name = Release;
 		};
-		E144EF3A2600B41100CDA725 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = Broadcast.Upload/Broadcast.UploadDebug.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = FN2V63AD2J;
-				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Broadcast.Upload/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload_Development_SignProvision;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		E144EF3B2600B41100CDA725 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = Broadcast.Upload/Broadcast.Upload.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = FN2V63AD2J;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Broadcast.Upload/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload_Development_SignProvision;
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Broadcast.Upload/Broadcast.Upload-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		E144EF3C2600B41100CDA725 /* Profile */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = Broadcast.Upload/Broadcast.Upload.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = FN2V63AD2J;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Broadcast.Upload/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = com.tencent.comm.trtc.demo.Broadcast.Upload_Development_SignProvision;
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Broadcast.Upload/Broadcast.Upload-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Profile;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -821,16 +639,6 @@
 				97C147061CF9000F007C117D /* Debug */,
 				97C147071CF9000F007C117D /* Release */,
 				249021D4217E4FDB00AE95B9 /* Profile */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E144EF3D2600B41100CDA725 /* Build configuration list for PBXNativeTarget "TRTC Demo Screen" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E144EF3A2600B41100CDA725 /* Debug */,
-				E144EF3B2600B41100CDA725 /* Release */,
-				E144EF3C2600B41100CDA725 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

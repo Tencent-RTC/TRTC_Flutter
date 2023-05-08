@@ -1,0 +1,10 @@
+--- !tapi-tbd
+tbd-version:     4
+targets:         [ arm64-ios ]
+flags:           [ not_app_extension_safe ]
+install-name:    '@rpath/replay_kit_launcher.framework/replay_kit_launcher'
+exports:
+  - targets:         [ arm64-ios ]
+    symbols:         [ _replay_kit_launcherVersionNumber, _replay_kit_launcherVersionString ]
+    objc-classes:    [ PodsDummy_replay_kit_launcher, ReplayKitLauncherPlugin ]
+...

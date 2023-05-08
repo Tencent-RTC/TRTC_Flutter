@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "D1DE5886B98E703D85B24309B7BEF63403F03868",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "D1DE5886B98E703D85B24309B7BEF63403F03868" : 0,
+    "ECD0A59EC88E1BC7C473949BACEA86800ADECCFD" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "2BADD1BB-EB7E-400E-8920-7F07B60E0C34",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "D1DE5886B98E703D85B24309B7BEF63403F03868" : "TRTC_Flutter\/",
+    "ECD0A59EC88E1BC7C473949BACEA86800ADECCFD" : "..\/..\/tools\/flutter3.3.1"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Runner",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TRTC-Simple-Demo\/ios\/Runner.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git@github.com:LiteAVSDK\/TRTC_Flutter.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D1DE5886B98E703D85B24309B7BEF63403F03868"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/flutter\/flutter.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ECD0A59EC88E1BC7C473949BACEA86800ADECCFD"
+    }
+  ]
+}

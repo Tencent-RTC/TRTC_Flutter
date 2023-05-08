@@ -1,0 +1,29 @@
+version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
+options: "60e633e510363c08167285b231d9dd0ff127476569d025e8eec8e3fe1d988fc4"
+build_start_time: [1683533056, 632260000]
+build_end_time: [1683533060, 754495000]
+inputs:
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/TencentTRTCCloud.swift"
+  : [1683529882, 110246125]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/enums/ListenerType.swift"
+  : [1683529882, 112525879]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/listener/Listener.swift"
+  : [1683529882, 112863338]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/listener/ProcessVideoFrame.swift"
+  : [1683529882, 113000254]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/manager/AudioEffectManager.swift"
+  : [1683529882, 110964585]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/manager/BeautyManager.swift"
+  : [1683529882, 111468002]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/manager/CloudManager.swift"
+  : [1683529882, 111290960]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/manager/DeviceManager.swift"
+  : [1683529882, 111106543]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/utils/CommonUtils.swift"
+  : [1683529882, 111801586]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/utils/JsonUtil.swift"
+  : [1683529882, 112323753]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/view/TRTCCloudVideoPlatformView.swift"
+  : [1683529882, 110478000]
+  ? "/Users/clavie/Desktop/tools/flutter3.3.1/.pub-cache/hosted/pub.dartlang.org/tencent_trtc_cloud-2.5.0/ios/Classes/view/TencentVideoTextureRender.swift"
+  : [1683529882, 110634751]
