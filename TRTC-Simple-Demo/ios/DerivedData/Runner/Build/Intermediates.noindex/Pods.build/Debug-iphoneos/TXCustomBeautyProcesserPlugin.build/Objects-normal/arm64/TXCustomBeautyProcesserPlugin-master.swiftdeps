@@ -1,9 +1,0 @@
-version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
-options: "afc23748392d1cd62926530eb0ae773a03c12ad7b68246afdaf47ffef7134151"
-build_start_time: [1683533054, 922206000]
-build_end_time: [1683533060, 377510000]
-inputs:
-  ? "/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo/ios/Pods/TXCustomBeautyProcesserPlugin/beauty_processer_plugin/iOS/Classes/ITXCustomBeautyProcesserFactory.swift"
-  : [1683531685, 904395768]
-  ? "/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo/ios/Pods/TXCustomBeautyProcesserPlugin/beauty_processer_plugin/iOS/Classes/ITXCustomBeautyVideoFrame.swift"
-  : [1683531685, 904815519]

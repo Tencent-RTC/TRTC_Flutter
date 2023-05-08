@@ -1,6 +1,0 @@
-version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
-options: "9e670dc42cfd66d93077a1bd00ab6051bf4d014fcce87775a026102d34d06286"
-build_start_time: [1683533036, 982453000]
-build_end_time: [1683533037, 326029000]
-inputs:
-  "/Users/clavie/Desktop/code/flutter/TRTC_Flutter/TRTC-Simple-Demo/ios/Runner/AppDelegate.swift": [1657616210, 154338040]
