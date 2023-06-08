@@ -25,22 +25,11 @@
 		C63C1A3E02DFEEACF124C889 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 224D1A1F470AD3BA48591E69 /* Pods_Runner.framework */; };
 		E1245A0D27CE027000D17E93 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A0C27CE027000D17E93 /* ReplayKit.framework */; };
 		E1245A1127CE027000D17E93 /* SampleHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E1245A1027CE027000D17E93 /* SampleHandler.m */; };
-		E1245A1527CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E1245A0B27CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E1245A2027CE049D00D17E93 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A1F27CE049D00D17E93 /* libc++.tbd */; };
 		E1245A2227CE04A800D17E93 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A2127CE04A800D17E93 /* Accelerate.framework */; };
 		E1245A2427CE04B100D17E93 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A2327CE04B100D17E93 /* libresolv.tbd */; };
 		E1245A2627CE04BD00D17E93 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1245A2527CE04BD00D17E93 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E1245A1327CE027000D17E93 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E1245A0A27CE027000D17E93;
-			remoteInfo = TRTCFlutterAPIExampleScreenCapture;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -51,17 +40,6 @@
 			files = (
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E1245A1627CE027000D17E93 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				E1245A1527CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -253,12 +231,10 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				14A64B896D83BF48C983A860 /* [CP] Embed Pods Frameworks */,
-				E1245A1627CE027000D17E93 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E1245A1427CE027000D17E93 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -434,14 +410,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		E1245A1427CE027000D17E93 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E1245A0A27CE027000D17E93 /* TRTCFlutterAPIExampleScreenCapture */;
-			targetProxy = E1245A1327CE027000D17E93 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -523,6 +491,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -532,6 +501,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -657,6 +627,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -667,6 +638,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -684,6 +656,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -693,6 +666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -712,6 +686,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TRTCFlutterAPIExampleScreenCapture",
@@ -733,6 +708,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios.upload;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios.upload_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -752,6 +728,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TRTCFlutterAPIExampleScreenCapture",
@@ -772,6 +749,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios.upload;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios.upload_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -791,6 +769,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FN2V63AD2J;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = F8A3GH6Q4W;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TRTCFlutterAPIExampleScreenCapture",
@@ -811,6 +790,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.trtc.api.demo.ios.upload;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.tencent.trtc.api.demo.ios.upload_Development_SignProvision;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = abyWildcardDev;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
