@@ -32,6 +32,7 @@ pubspec.lock
 /build/
 ios/build/
 **/*.lock
+**/Podfile.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
