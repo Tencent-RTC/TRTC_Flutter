@@ -1,7 +1,6 @@
 # Flutter-related
 **/Flutter/ephemeral/
 **/Pods/
-**/*.lock
-**/Podfile.lock
+
 # Xcode-related
 **/xcuserdata/

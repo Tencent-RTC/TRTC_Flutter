@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/tool.dart';
 import './setting.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
@@ -84,6 +85,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     txAudioManager = trtcCloud.getAudioEffectManager();
     // Register event callback
     trtcCloud.registerListener(onRtcListener);
+    // trtcCloud.setVideoEncoderParam(TRTCVideoEncParam(
+    //   videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480,
+    //   videoResolutionMode: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT));
 
     // Enter the room
     enterRoom();
@@ -133,7 +137,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       userInfo['userSig'] = '';
       print(err);
     }
-
     await trtcCloud.enterRoom(
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
@@ -162,7 +165,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     }
     if (isOpenMic) {
       if (kIsWeb) {
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 3), () {
           trtcCloud.startLocalAudio(quality);
         });
       } else {
@@ -175,10 +178,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     this.setState(() {});
   }
 
-  destoryRoom() async {
+  destoryRoom() {
     trtcCloud.unRegisterListener(onRtcListener);
-    await trtcCloud.exitRoom();
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.exitRoom();
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -494,22 +497,24 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     if (item['visible']) {
       return GestureDetector(
           key: valueKey,
+          behavior: HitTestBehavior.opaque,
           onDoubleTap: () {
             doubleTap(item);
           },
           child: TRTCCloudVideoView(
               key: valueKey,
+              hitTestBehavior: PlatformViewHitTestBehavior.transparent,
               viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
-              // This parameter is required for rendering desktop.(Android/iOS/web no need)
-              textureParam: CustomRender(
-                userId: item['userId'],
-                isLocal: item['userId'] == userInfo['userId'] ? true : false,
-                streamType: item['type'] == 'video'
-                    ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-                    : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-                width: 72,
-                height: 120,
-              ),
+              // viewMode: TRTCCloudDef.TRTC_VideoView_Model_Hybrid,
+              // textureParam: CustomRender(
+              //   userId: item['userId'],
+              //   isLocal: item['userId'] == userInfo['userId'] ? true : false,
+              //   streamType: item['type'] == 'video'
+              //       ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
+              //       : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+              //   width: width.round(),
+              //   height: height.round(),
+              // ),
               onViewCreated: (viewId) async {
                 if (item['userId'] == userInfo['userId']) {
                   await trtcCloud.startLocalPreview(isFrontCamera, viewId);
@@ -594,9 +599,11 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   ),
                   onPressed: () async {
                     if (isFrontCamera) {
-                      txDeviceManager.switchCamera(false);
+                      // txDeviceManager.switchCamera(false);
+                      trtcCloud.enableCustomVideoProcess(true);
                     } else {
-                      txDeviceManager.switchCamera(true);
+                      // txDeviceManager.switchCamera(true);
+                      trtcCloud.enableCustomVideoProcess(false);
                     }
                     setState(() {
                       isFrontCamera = !isFrontCamera;
@@ -776,6 +783,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                     } else {
                       trtcCloud.startLocalAudio(quality);
                     }
+
                     setState(() {
                       isOpenMic = !isOpenMic;
                     });
@@ -836,6 +844,15 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                 },
               ),
               SettingPage(),
+              IconButton(
+                  icon: Icon(
+                    Icons.info,
+                    color: Colors.white,
+                    size: 36.0,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/test');
+                  }),
             ],
           ),
           height: 70.0,
@@ -883,6 +900,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                                 item.length);
                             double width = size.width;
                             double height = size.height;
+
                             if (isDoubleTap) {
                               //Set the width and height of other video rendering to 1, otherwise the video will not be streamed
                               if (item[index]['size']['width'] == 0) {
@@ -899,6 +917,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                               height = double.parse(
                                   item[index]['size']['height'].toString());
                             }
+
                             return Container(
                               key: valueKey,
                               height: height,

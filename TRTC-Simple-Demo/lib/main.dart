@@ -4,7 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/index.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/meeting.dart';
 import 'package:trtc_demo/page/trtcmeetingdemo/member_list.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/test_api.dart';
 import 'package:trtc_demo/models/meeting.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/texture_render.dart';
+import 'package:trtc_demo/page/trtcmeetingdemo/test_web.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +32,10 @@ class _MyAppState extends State<MyApp> {
           "/": (context) => IndexPage(),
           "/index": (context) => IndexPage(),
           "/video": (context) => MeetingPage(),
+          "/textureRender": (context) => TextureRenderPage(),
           "/memberList": (context) => MemberListPage(),
+          "/test": (context) => TestPage(),
+          "/testweb": (context) => TestWebPage()
         },
       ),
     );

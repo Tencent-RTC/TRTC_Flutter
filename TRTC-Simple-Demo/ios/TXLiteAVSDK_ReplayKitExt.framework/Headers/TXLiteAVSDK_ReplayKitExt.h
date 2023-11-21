@@ -1,6 +1,5 @@
 /*
- *  Copyright (c) 2023 Tencent. All Rights Reserved.
- *
- */
+* Module:   TXReplayKitExt @ TXLiteAVSDK
+*/
 
 #import <TXLiteAVSDK_ReplayKitExt/TXReplayKitExt.h>

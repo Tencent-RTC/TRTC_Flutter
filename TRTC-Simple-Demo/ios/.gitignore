@@ -1,0 +1,10 @@
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+**/*sync/
+**/Pods/
+**/.symlinks/
+xcuserdata
+**/.generated/
+ServiceDefinitions.json
+Runner/GeneratedPluginRegistrant.*
