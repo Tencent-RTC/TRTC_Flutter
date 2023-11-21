@@ -9,12 +9,12 @@
 .history
 .svn/
 pubspec.lock
-
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
+**/*.lock
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -30,9 +30,6 @@ pubspec.lock
 .pub-cache/
 .pub/
 /build/
-ios/build/
-**/*.lock
-**/Podfile.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -40,7 +37,3 @@ lib/generated_plugin_registrant.dart
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-ios/.symlinks/
-ios/Pods/
-ios/Runner.xcworkspace/xcuserdata/clavie.xcuserdatad/
-ios/Flutter/Flutter.podspec

@@ -29,6 +29,7 @@ public class MediaService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Call Start foreground with notification
             Intent notificationIntent = new Intent(this, MediaService.class);
+            // PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
             PendingIntent pendingIntent = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                 pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);

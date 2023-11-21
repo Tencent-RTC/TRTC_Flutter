@@ -147,7 +147,6 @@ class MemberListPageState extends State<MemberListPage> {
                       ),
                     ],
                   ),
-
                   height: 50.0,
                 ),
                 alignment: Alignment.bottomCenter),
