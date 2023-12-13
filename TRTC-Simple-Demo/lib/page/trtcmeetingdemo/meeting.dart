@@ -873,7 +873,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         child: Stack(
           children: <Widget>[
             ListView.builder(
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 physics: new ClampingScrollPhysics(),
                 itemCount: screenUserList.length,
                 cacheExtent: 0,
