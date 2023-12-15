@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:trtc_api_example/Advanced/AudioFrameCustomProcess/AudioFrameCustomProcess.dart';
+import 'package:trtc_api_example/Advanced/PublishMediaStream/PublishMediaStreamSelectRolePage.dart';
 import 'package:trtc_api_example/Advanced/TextureRendering/TextureEnterPage.dart';
 import 'package:trtc_api_example/Advanced/LocalRecord/LocalRecordPage.dart';
 import 'package:trtc_api_example/Advanced/PushCDN/PushCDNSelectRolePage.dart';
@@ -105,6 +107,14 @@ class ExampleData {
       ExamplePageItem(
         title: AppLocalizations.of(context)!.beauty_process,
         detailPage: BeautyProcessEnterPage(),
+      ),
+      ExamplePageItem(
+        title: AppLocalizations.of(context)!.main_item_pushcdn_new,
+        detailPage: PublishMediaStreamSelectRolePage(),
+      ),
+      ExamplePageItem(
+        title: AppLocalizations.of(context)!.main_item_audio_frame_process,
+        detailPage: AudioFrameCustomProcessPage(),
       ),
     ],
   };

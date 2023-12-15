@@ -3,6 +3,9 @@ package com.example.trtc_api_example;
 import android.content.Intent;
 import android.os.Bundle;
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
 
 import com.tencent.live.beauty.custom.ITXCustomBeautyProcesserFactory;
 import com.tencent.live.beauty.custom.ITXCustomBeautyProcesser;
@@ -10,6 +13,9 @@ import static com.tencent.live.beauty.custom.TXCustomBeautyDef.TXCustomBeautyBuf
 import static com.tencent.live.beauty.custom.TXCustomBeautyDef.TXCustomBeautyPixelFormat;
 import static com.tencent.live.beauty.custom.TXCustomBeautyDef.TXCustomBeautyVideoFrame;
 
+import com.tencent.trtc.TRTCCloud;
+import com.tencent.trtc.TRTCCloudDef;
+import com.tencent.trtc.TRTCCloudListener;
 import com.tencent.trtc_demo.opengl.FrameBuffer;
 import com.tencent.trtc_demo.opengl.GpuImageGrayscaleFilter;
 import com.tencent.trtc_demo.opengl.OpenGlUtils;
@@ -17,8 +23,46 @@ import com.tencent.trtc_demo.opengl.Rotation;
 import com.tencent.trtcplugin.TRTCCloudPlugin;
 import java.nio.FloatBuffer;
 import android.opengl.GLES20;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 public class MainActivity extends FlutterActivity {
+    private static final String channelName = "TRCT_FLUTTER_EXAMPLE";
+
+    private MethodChannel channel;
+
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        super.configureFlutterEngine(flutterEngine);
+
+        // Access the onCapturedAudioFrame interface Step 1: Use MethodChannel to turn on or off custom audio processing
+        channel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), channelName);
+        channel.setMethodCallHandler(((call, result) -> {
+            switch (call.method) {
+                case "enableTRTCAudioFrameDelegate":
+                    enableTRTCAudioFrameDelegate(call, result);
+                    break;
+                case "disableTRTCAudioFrameDelegate":
+                    disableTRTCAudioFrameDelegate(call, result);
+                    break;
+                default:
+                    break;
+            }
+        }));
+    }
+
+    // Access the onCapturedAudioFrame interface Step 2.1 : set AudioFrameDelegate
+    void enableTRTCAudioFrameDelegate(MethodCall call, MethodChannel.Result result) {
+        TRTCCloud.sharedInstance(getApplicationContext()).setAudioFrameListener(new AudioFrameListener());
+        result.success("");
+    }
+    // Access the onCapturedAudioFrame interface Step 2.2 : remove AudioFrameDelegate
+    void disableTRTCAudioFrameDelegate(MethodCall call, MethodChannel.Result result) {
+        TRTCCloud.sharedInstance(getApplicationContext()).setAudioFrameListener(null);
+        result.success("");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +75,40 @@ public class MainActivity extends FlutterActivity {
     protected  void onDestroy() {
         super.onDestroy();
         TUICallService.stop(this);
+    }
+}
+
+// Access the onCapturedAudioFrame interface Step 3: get audio frame & handle your business
+class AudioFrameListener implements TRTCCloudListener.TRTCAudioFrameListener {
+
+    @Override
+    public void onCapturedAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // TODO
+    }
+
+    @Override
+    public void onLocalProcessedAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // TODO
+    }
+
+    @Override
+    public void onRemoteUserAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame, String s) {
+        // TODO
+    }
+
+    @Override
+    public void onMixedPlayAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // TODO
+    }
+
+    @Override
+    public void onMixedAllAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // TODO
+    }
+
+    @Override
+    public void onVoiceEarMonitorAudioFrame(TRTCCloudDef.TRTCAudioFrame trtcAudioFrame) {
+        // TODO
     }
 }
 
