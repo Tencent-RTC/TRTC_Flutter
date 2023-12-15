@@ -62,9 +62,11 @@
     "audioquality_quality_music": "音乐模式",
     "audioquality_quality_speech": "语音模式",
 
+    "main_item_audio_frame_process": "自定义音频处理",
     "main_rerc_render_params": "渲染控制",
     "main_item_speed_test": "网络测速",
     "main_item_pushcdn": "CDN发布",
+    "main_item_pushcdn_new": "CDN发布-新版",
     "pushcdn_select_role_anchor_choice": "我是主播",
     "pushcdn_select_role_audience_choice": "我是观众",
     "pushcdn_anchor_mixconfig_manual": "全手动模式",
@@ -98,5 +100,17 @@
     "connectotherroom_please_input_need_pk_userid": "PK主播的用户ID",
 
     "videoCall": "视频通话",
-    "enterRoom": "进入房间"
+    "enterRoom": "进入房间",
+
+    "publish_mode": "发布模式选择",
+    "audio_only_mode": "纯音频模式",
+    "mix_room_id": "混流 RoomID",
+    "mix_user_id": "混流 UserID",
+    "remote_room_id": "远端 RoomID",
+    "remote_user_id": "远端 UserID",
+    "start_publish_media_stream": "发布媒体流",
+    "stop_publish_media_stream": "停止发布",
+    "publish_stream_to_room": "发布媒体流（到房间）",
+    "publish_stream_to_cdn": "发布媒体流（到CDN）",
+    "publish_url": "推流地址（多个地址用逗号隔开）"
 }
