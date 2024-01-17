@@ -599,11 +599,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   ),
                   onPressed: () async {
                     if (isFrontCamera) {
-                      // txDeviceManager.switchCamera(false);
-                      trtcCloud.enableCustomVideoProcess(true);
+                      txDeviceManager.switchCamera(false);
                     } else {
-                      // txDeviceManager.switchCamera(true);
-                      trtcCloud.enableCustomVideoProcess(false);
+                      txDeviceManager.switchCamera(true);
                     }
                     setState(() {
                       isFrontCamera = !isFrontCamera;
