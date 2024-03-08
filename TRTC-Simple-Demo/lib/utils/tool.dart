@@ -11,7 +11,7 @@ class MeetingTool {
     showToast(text, context: context, position: StyledToastPosition.center);
   }
 
-  static int screenLen = 4;
+  static int screenLen = 6;
   static getScreenList(list) {
     int len = screenLen;
     List<List> result = [];
@@ -32,15 +32,10 @@ class MeetingTool {
 
   static Size getViewSize(
       Size screenSize, int listLength, int index, int total) {
-    if (listLength < 5) {
-      if (total == 1) {
-        return screenSize;
-      }
-      if (total == 2) {
-        return Size(screenSize.width, screenSize.height / 2);
-      }
+    if (screenSize.width > screenSize.height) {
+      return Size(screenSize.width / 3, screenSize.height / 2);
     }
-    return Size(screenSize.width / 2, screenSize.height / 2);
+    return Size(screenSize.width / 2, screenSize.height / 3);
   }
 
   static Future<String> copyAssetToLocal(String asset,
