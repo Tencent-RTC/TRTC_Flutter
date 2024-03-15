@@ -54,13 +54,13 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 3. Set parameters in `GenerateTestUserSig.dart` as follows.
 
 > - SDKAPPID: a placeholder by default. Set it to the actual `SDKAppID`.
-> - SECRETKEY: a placeholder by default. Set it to the actual key.
+> - SDKSECRETKEY: a placeholder by default. Set it to the actual key.
 >   ![#900px](https://imgcache.qq.com/operation/dianshi/other/flutter_sig.237b3ce20dde2fa6cac972f49169e7e539d691fd.png)
 
 4. Click **Next** to complete the creation.
 5. After compilation, click **Return to Overview Page**.
 
-> The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is leaked, attackers can steal your Tencent Cloud traffic. Therefore, **this method is only suitable for the local execution and debugging of the demo**.
+> The method for generating `UserSig` described in this document involves configuring `SDKSECRETKEY` in client code. In this method, `SDKSECRETKEY` may be easily decompiled and reversed, and if your key is leaked, attackers can steal your Tencent Cloud traffic. Therefore, **this method is only suitable for the local execution and debugging of the demo**.
 
 > The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can send a request to the business server for a dynamic `UserSig`. For more information, please see [How do I calculate UserSig on the server?](https://intl.cloud.tencent.com/document/product/647/35166).
 

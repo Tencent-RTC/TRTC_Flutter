@@ -8,5 +8,5 @@ class JsGenerateTestUserSig {
   external JsGenerateTestUserSig();
   external constructor();
   // ignore: non_constant_identifier_names
-  external String jsGenTestUserSig(SDKAPPID, SECRETKEY, userID, expireTime);
+  external String jsGenTestUserSig(SDKAPPID, SDKSECRETKEY, userID, expireTime);
 }

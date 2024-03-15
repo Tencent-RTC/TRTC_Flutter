@@ -7,7 +7,7 @@
  * Attention: do not use the code below in your commercial app. This is because:
  *
  *            The code may be able to calculate UserSig correctly, but it is only for quick testing of the SDK’s basic features, not for commercial apps.
- *            `SECRETKEY` in client code can be easily decompiled and reversed, especially on web.
+ *            `SDKSECRETKEY` in client code can be easily decompiled and reversed, especially on web.
  *             Once your key is disclosed, attackers will be able to steal your Tencent Cloud traffic.
  *
  *            The correct method is to deploy the `UserSig` calculation code and encryption key on your project server so that your app can request from your server a `UserSig` that is calculated whenever one is needed.
@@ -49,12 +49,12 @@ class GenerateTestUserSig {
      * Note: this method is for testing only. Before commercial launch, please migrate the UserSig calculation code and key to your backend server to prevent key disclosure and traffic stealing.
      * Reference: https://cloud.tencent.com/document/product/647/17275#Server
      */
-  static String secretKey = '';
+  static String sdkSecretKey = '';
 
   static genTestSig(String userId) {
     if (kIsWeb) {
       return JsGenerateTestUserSig()
-          .jsGenTestUserSig(sdkAppId, secretKey, userId, expireTime);
+          .jsGenTestUserSig(sdkAppId, sdkSecretKey, userId, expireTime);
     }
     int currTime = _getCurrentTime();
     String sig = '';
@@ -90,7 +90,7 @@ class GenerateTestUserSig {
     int sdkappid = sdkAppId;
     String contentToBeSigned =
         "TLS.identifier:$identifier\nTLS.sdkappid:$sdkappid\nTLS.time:$currTime\nTLS.expire:$expire\n";
-    Hmac hmacSha256 = new Hmac(sha256, utf8.encode(secretKey));
+    Hmac hmacSha256 = new Hmac(sha256, utf8.encode(sdkSecretKey));
     Digest hmacSha256Digest =
         hmacSha256.convert(utf8.encode(contentToBeSigned));
     return base64.encode(hmacSha256Digest.bytes);
