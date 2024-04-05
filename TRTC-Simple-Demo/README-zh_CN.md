@@ -6,15 +6,22 @@
 
 
 ## 环境要求
-
-- Flutter 版本 2.0 及以上
-- Android 开发
-  - Android Studio 3.5 及以上版本
-  - App 要求 Android 4.1 及以上设备
-- iOS 开发
-  - Xcode 11.0 及以上版本
-  - macOS 系统版本要求 10.11 及以上
-  - 请确保您的项目已设置有效的开发者签名
+- Flutter 版本 2.0及以上
+- Android开发 
+	-  Android Studio 3.5及以上版本
+	-  App 要求 Android 4.1及以上设备
+- iOS & macOS 开发
+	- Xcode 11.0及以上版本
+	- macOS 系统版本要求 10.11 及以上
+	- 请确保您的项目已设置有效的开发者签名
+- Windows 开发
+	- 操作系统：Windows 7 SP1 或更高的版本（基于 x86-64 的 64 位操作系统）。
+    - 磁盘空间：除安装 IDE 和一些工具之外还应有至少 1.64 GB 的空间。
+	- 安装 Visual Studio 2019[https://visualstudio.microsoft.com/zh-hans/downloads/]
+- Flutter Web 开发
+	- Chrome72及以上版本
+	- Safari13及以上版本
+	- flutter 2.0及以上版本
 
 ## 前提条件
 

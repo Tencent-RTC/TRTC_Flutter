@@ -63,6 +63,18 @@ class TestWebPageState extends State<TestWebPage> {
                 },
                 child: Text('getSDKVersion'),
               ),
+               TextButton(
+                onPressed: () async {
+                  trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAudience);
+                },
+                child: Text('switchRole-audience'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAnchor);
+                },
+                child: Text('switchRole-anchor'),
+              ),
             ],
           ),
           ListView(
