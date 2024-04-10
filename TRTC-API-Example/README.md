@@ -45,7 +45,7 @@ This demo covers the following features (click to view the details of a feature)
 
 You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account and completed identity verification.
 
-### Obtaining `SDKAPPID` and `SECRETKEY`
+### Obtaining `SDKAPPID` and `SDKSECRETKEY`
 
 1. Log in to the TRTC console and select **Application Management** > **[Create application](https://console.tencentcloud.com/trtc/app/create)**.
 2. Click **Create Application** and enter the application name such as `APIExample`. If you have already created an application, click **Select Existing Application**.
@@ -58,13 +58,13 @@ You have [signed up](https://www.tencentcloud.com/) for a Tencent Cloud account 
 2. Set parameters in `GenerateTestUserSig.dart` as follows.
 
 > - SDKAPPID: a placeholder by default. Set it to the actual `SDKAppID`.
-> - SECRETKEY: a placeholder by default. Set it to the actual key.
+> - SDKSECRETKEY: a placeholder by default. Set it to the actual key.
 >   ![#900px](https://imgcache.qq.com/operation/dianshi/other/flutter_sig.237b3ce20dde2fa6cac972f49169e7e539d691fd.png)
 
 3. Click **Next** to complete the creation.
 4. After compilation, click **Return to Overview Page**.
 
-> !The method for generating `UserSig` described in this document involves configuring `SECRETKEY` in client code. In this method, `SECRETKEY` may be easily decompiled and reversed, and if your key is disclosed, attackers can steal your Tencent Cloud traffic. Therefore, **this method is suitable only for the local execution and debugging of the demo**.
+> !The method for generating `UserSig` described in this document involves configuring `SDKSECRETKEY` in client code. In this method, `SDKSECRETKEY` may be easily decompiled and reversed, and if your key is disclosed, attackers can steal your Tencent Cloud traffic. Therefore, **this method is suitable only for the local execution and debugging of the demo**.
 
 > The correct `UserSig` distribution method is to integrate the calculation code of `UserSig` into your server and provide an application-oriented API. When `UserSig` is needed, your application can make a request to the business server for dynamic `UserSig`. For more information, please see [How to Calculate UserSig](https://intl.cloud.tencent.com/document/product/647/35166).
 

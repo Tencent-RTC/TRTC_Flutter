@@ -69,7 +69,7 @@ class LoginPageState extends State<LoginPage> {
       MeetingTool.toast('Please fill in Sdkappid', context);
       return;
     }
-    if (GenerateTestUserSig.secretKey == '') {
+    if (GenerateTestUserSig.sdkSecretKey == '') {
       MeetingTool.toast('Please fill in the key', context);
       return;
     }
