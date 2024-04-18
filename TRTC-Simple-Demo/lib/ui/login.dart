@@ -78,7 +78,7 @@ class LoginPageState extends State<LoginPage> {
       MeetingTool.toast('Please enter the conference number', context);
       return;
     } else if (_meetId == '0') {
-      MeetingTool.toast('请输入合法的会议ID', context);
+      MeetingTool.toast('Please enter the legal meeting ID', context);
       return;
     } else if (_meetId.toString().length > 10) {
       MeetingTool.toast('Please enter a valid conference ID', context);

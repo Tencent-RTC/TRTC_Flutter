@@ -31,7 +31,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
   int? localViewId;
   bool isStartPush = false;
   bool isStartRecord = false;
-  DateTime now = DateTime.now(); //获取当前时间
+  DateTime now = DateTime.now(); //Get the current time
   String recordFileName =
       "TRTC_" + DateFormat("yyMMddHHmmss").format(DateTime.now()) + ".mp4";
   int roomId = int.parse(TXHelper.generateRandomStrRoomId());
@@ -72,7 +72,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-    // TRTCVideoResolution 中仅定义了横屏分辨率（如 640 × 360），如需使用竖屏分辨率（如360 × 640），需要同时指定 TRTCVideoResolutionMode 为 Portrait。
+    // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
     encParams.videoResolutionMode = 1;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);
@@ -97,15 +97,15 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
         recordType: TRTCCloudDef.TRTCRecordTypeBoth,
         interval: 1000);
     await trtcCloud.startLocalRecording(recordParams);
-    showToast('开始录制', dismissOtherToast: true);
+    showToast('Start recording', dismissOtherToast: true);
   }
 
   saveImage() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String savePath = appDocDir.path + recordFileName;
-    // 如果需要使用image_gallery_saver插件，请把flutter 版本降低到2.10以下
+    // If you need to use image_gallery_saver plug -in, reduce the Flutter version to less than 2.10
     // await ImageGallerySaver.saveFile(savePath);
-    showToast('已保存到相册中', dismissOtherToast: true);
+    showToast('Save to the album', dismissOtherToast: true);
   }
 
   stopRecord() async {
@@ -114,14 +114,14 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
       if (await Permission.photos.request().isGranted) {
         saveImage();
       } else {
-        showToast("IOS 拒绝",
+        showToast("IOS reject",
             backgroundColor: Colors.red, dismissOtherToast: true);
       }
     } else if (!kIsWeb && Platform.isAndroid) {
       if (await Permission.photos.request().isGranted) {
         saveImage();
       } else {
-        showToast("Android 拒绝",
+        showToast("Android reject",
             backgroundColor: Colors.red, dismissOtherToast: true);
       }
     }

@@ -47,7 +47,7 @@ public class MediaService extends Service {
             channel.setDescription(NOTIFICATION_CHANNEL_DESC);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
-            startForeground(1, notification); //必须使用此方法显示通知，不能使用notificationManager.notify，否则还是会报上面的错误
+            startForeground(1, notification); //You must use this method to display the notification. You cannot use NotificationManager.notify, otherwise you will still report the above error
         }
     }
 

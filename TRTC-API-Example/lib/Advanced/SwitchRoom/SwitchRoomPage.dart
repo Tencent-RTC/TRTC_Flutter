@@ -48,7 +48,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-    // TRTCVideoResolution 中仅定义了横屏分辨率（如 640 × 360），如需使用竖屏分辨率（如360 × 640），需要同时指定 TRTCVideoResolutionMode 为 Portrait。
+    // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
     encParams.videoResolutionMode = 1;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);

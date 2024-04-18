@@ -23,15 +23,15 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSCameraUsageDescription</key>
-	<string>授权摄像头权限才能正常视频通话</string>
+	<string>The authorized camera permissions can the video call normally</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(PRODUCT_COPYRIGHT)</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>授权麦克风权限才能正常语音通话</string>
+	<string>Authorized Macing's rights to speak normally</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App需要您的同意,才能访问相册</string>
+	<string>The app requires your consent to access the album</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

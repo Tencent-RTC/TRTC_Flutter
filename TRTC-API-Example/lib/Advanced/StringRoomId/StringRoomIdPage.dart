@@ -74,7 +74,7 @@ class _StringRoomIdPageState extends State<StringRoomIdPage> {
 
   final roomIdFocusNode = FocusNode();
   final userIdFocusNode = FocusNode();
-  // 隐藏底部输入框
+  // Hide the bottom input box
   unFocus() {
     if (roomIdFocusNode.hasFocus) {
       roomIdFocusNode.unfocus();

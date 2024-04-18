@@ -23,7 +23,7 @@
         <activity 
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity" 
             android:theme="@android:style/Theme.Translucent"/>
-       <!-- 保活Service-->
+       <!-- Keep alive Service-->
        <service
            android:name=".TUICallService"
            android:enabled="true"

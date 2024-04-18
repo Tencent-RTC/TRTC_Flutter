@@ -216,7 +216,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
 
   onStartPkClick() {
     if (otherRoomId == null || otherUserId == "") {
-      showToast('请输入PK房间和用户ID信息', dismissOtherToast: true);
+      showToast('Please enter the PK room and user ID information', dismissOtherToast: true);
       return;
     }
     bool newIsStartPK = !isStartPK;

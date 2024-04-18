@@ -38,13 +38,13 @@ class SampleHandler: RPBroadcastSampleHandler, TXReplayKitExtDelegate {
         var tip = ""
         switch reason {
         case TXReplayKitExtReason.requestedByMain:
-            tip = "屏幕共享已结束"
+            tip = "Screen sharing is over"
             break
         case TXReplayKitExtReason.disconnected:
-            tip = "应用断开"
+            tip = "Disconnect"
             break
         case TXReplayKitExtReason.versionMismatch:
-            tip = "集成错误（SDK 版本号不相符合）"
+            tip = "Integrated error (SDK version number does not match)"
             break
         default:
             break

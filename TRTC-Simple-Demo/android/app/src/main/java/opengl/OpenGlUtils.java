@@ -68,7 +68,7 @@ public class OpenGlUtils {
     }
 
     /**
-     * 加载纹理
+     * Loading texture
      *
      * @param img
      * @param usedTexId
@@ -101,7 +101,7 @@ public class OpenGlUtils {
     }
 
     /**
-     * 加载纹理
+     * Loading texture
      *
      * @param format
      * @param data
@@ -176,16 +176,16 @@ public class OpenGlUtils {
     }
 
     /**
-     * 通过输入和输出的宽高，计算顶点数组和纹理数组
+     * By input and output width, calculate the vertex array and texture array
      *
-     * @param scaleType 缩放方式
-     * @param inputRotation 输入纹理的旋转角度
-     * @param needFlipHorizontal 是否进行镜面映射处理
-     * @param inputWith 输入纹理的宽（未经处理的）
-     * @param inputHeight 输入纹理的高（未经处理的）
-     * @param outputWidth 绘制目标的宽
-     * @param outputHeight 绘制目标的高
-     * @return 返回顶点数组和纹理数组
+     * @param scaleType Scaling
+     * @param inputRotation Enter the rotation angle of texture
+     * @param needFlipHorizontal Whether mirror mapping treatment
+     * @param inputWith Enter the width of the texture (unprocessed)
+     * @param inputHeight Enter the height of the texture (unprocessed)
+     * @param outputWidth The width of the target
+     * @param outputHeight High drawing goals
+     * @return Return to vertex arrays and texture arrays
      */
     public static Pair<float[], float[]> calcCubeAndTextureBuffer(GLConstants.GLScaleType scaleType,
             Rotation inputRotation,
@@ -231,7 +231,7 @@ public class OpenGlUtils {
     }
 
     /**
-     * 初始化纹理
+     * Initialized texture
      *
      * @param textureCoords
      * @param rotation
@@ -332,7 +332,7 @@ public class OpenGlUtils {
     }
 
     /**
-     * 创建时间水印
+     * Create time watermark
      *
      * @param time
      * @param width

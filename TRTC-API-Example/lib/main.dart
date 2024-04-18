@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: [
           const Locale('en', ''), // English
-          const Locale('zh', ''), // 中文简体
+          const Locale('zh', ''), // Simplified Chinese
         ],
       ),
       

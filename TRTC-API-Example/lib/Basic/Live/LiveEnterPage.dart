@@ -47,7 +47,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
     super.dispose();
   }
 
-  // 隐藏底部输入框
+  // Hide the bottom input box
   unFocus() {
     if (roomIdFocusNode.hasFocus) {
       roomIdFocusNode.unfocus();

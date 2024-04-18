@@ -16,9 +16,7 @@ public class TUICallService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        // 获取服务通知
         Notification notification = createForegroundNotification();
-        //将服务置于启动状态 ,NOTIFICATION_ID指的是创建的通知的ID
         startForeground(NOTIFICATION_ID, notification);
     }
 
@@ -38,18 +36,17 @@ public class TUICallService extends Service {
 
     private Notification createForegroundNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // 唯一的通知通道的id.
         String notificationChannelId = "notification_channel_id_01";
-        // Android8.0以上的系统，新建消息通道
+        // System above Android8.0, new message channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //用户可见的通道名称
+            //The name of the channel visible to the user
             String channelName = "TRTC Foreground Service Notification";
-            //通道的重要程度
+            //The importance of the channel
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(
                     notificationChannelId, channelName, importance);
             notificationChannel.setDescription("Channel description");
-            //震动
+            //shock
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
             notificationChannel.enableVibration(true);
             if (notificationManager != null) {
@@ -57,7 +54,7 @@ public class TUICallService extends Service {
             }
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, notificationChannelId);
-        //创建通知并返回
+        //Create notice and return
         return builder.build();
     }
 

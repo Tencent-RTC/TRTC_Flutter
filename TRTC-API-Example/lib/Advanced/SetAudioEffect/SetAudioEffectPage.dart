@@ -51,7 +51,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-    // TRTCVideoResolution 中仅定义了横屏分辨率（如 640 × 360），如需使用竖屏分辨率（如360 × 640），需要同时指定 TRTCVideoResolutionMode 为 Portrait。
+    // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
     encParams.videoResolutionMode = 1;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);
@@ -230,27 +230,27 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
   getVoiceChangerWidget() {
     return [
       getButtonItem(
-        tile: "原生",
+        tile: "Native",
         value: TXVoiceChangerType.TXLiveVoiceChangerType_0,
         onClick: onVoiceChangerClick,
       ),
       getButtonItem(
-        tile: "熊孩子",
+        tile: "bad boy",
         value: TXVoiceChangerType.TXLiveVoiceChangerType_1,
         onClick: onVoiceChangerClick,
       ),
       getButtonItem(
-        tile: "萝莉",
+        tile: "Loli",
         value: TXVoiceChangerType.TXLiveVoiceChangerType_2,
         onClick: onVoiceChangerClick,
       ),
       getButtonItem(
-        tile: "重金属",
+        tile: "Heavy metal",
         value: TXVoiceChangerType.TXLiveVoiceChangerType_4,
         onClick: onVoiceChangerClick,
       ),
       getButtonItem(
-        tile: "大叔",
+        tile: "Uncle",
         value: TXVoiceChangerType.TXLiveVoiceChangerType_3,
         onClick: onVoiceChangerClick,
       ),
@@ -265,7 +265,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
   getVoiceReverbWidget() {
     return [
       getButtonItem(
-        tile: "无效果",
+        tile: "no effect",
         value: TXVoiceReverbType.TXLiveVoiceReverbType_0,
         onClick: onVoiceReverbClick,
       ),
@@ -275,17 +275,17 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
         onClick: onVoiceReverbClick,
       ),
       getButtonItem(
-        tile: "小房间",
+        tile: "small room",
         value: TXVoiceReverbType.TXLiveVoiceReverbType_2,
         onClick: onVoiceReverbClick,
       ),
       getButtonItem(
-        tile: "大会堂",
+        tile: "Gorgeous hall",
         value: TXVoiceReverbType.TXLiveVoiceReverbType_3,
         onClick: onVoiceReverbClick,
       ),
       getButtonItem(
-        tile: "低沉",
+        tile: "Low",
         value: TXVoiceReverbType.TXLiveVoiceReverbType_4,
         onClick: onVoiceReverbClick,
       ),

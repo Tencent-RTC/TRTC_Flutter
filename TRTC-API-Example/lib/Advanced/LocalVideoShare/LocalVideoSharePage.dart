@@ -33,7 +33,7 @@ class _LocalVideoSharePageState extends State<LocalVideoSharePage> {
           style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
         ),
         Text(
-          'flutter暂时不支持',
+          'Flutter is temporarily not supported',
           overflow: TextOverflow.visible,
         ),
       ],

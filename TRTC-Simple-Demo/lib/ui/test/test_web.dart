@@ -43,14 +43,14 @@ class TestWebPageState extends State<TestWebPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('测试API'),
+          title: const Text('Test API'),
           centerTitle: true,
           elevation: 0,
           bottom: TabBar(tabs: [
-            Tab(text: '主要接口'),
-            Tab(text: '音乐人生'),
-            Tab(text: '视频接口'),
-            Tab(text: '美颜&设备')
+            Tab(text: 'Main interface'),
+            Tab(text: 'Music interface'),
+            Tab(text: 'Video interface'),
+            Tab(text: 'Beauty & equipment')
           ]),
         ),
         body: TabBarView(children: [

@@ -224,7 +224,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
             trtcCloud.startScreenCapture(
                 TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, encParams,
                 appGroup: iosExtensionName);
-            //屏幕分享功能只能在真机测试
+            //The screen sharing function can only be tested in the real machine
             ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
           } else {
             trtcCloud.startScreenCapture(
