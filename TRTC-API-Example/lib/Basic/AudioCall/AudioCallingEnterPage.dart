@@ -43,7 +43,6 @@ class _AudioCallingEnterPageState extends State<AudioCallingEnterPage> {
     super.dispose();
   }
 
-  // 隐藏底部输入框
   unFocus() {
     if (roomIdFocusNode.hasFocus) {
       roomIdFocusNode.unfocus();

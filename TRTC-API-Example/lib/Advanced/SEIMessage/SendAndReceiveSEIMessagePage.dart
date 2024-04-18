@@ -11,15 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 ///  SendAndReceiveSEIMessagePage.dart
 ///  TRTC-API-Example-Dart
-/*
- 收发SEI消息功能示例
- TRTC APP 支持收发SEI消息功能
- 本文件展示如何集成收发SEI消息功能
- 1、进入TRTC房间。API:trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
- 2、发送SEI消息。 API:trtcCloud.sendSEIMsg(seiMessage, 1);;
- 3、接收SEI消息。 API：onTrtcListener：- onRecvSEIMsg(String userId, String message);
- 参考文档：https://cloud.tencent.com/document/product/647/32241
- */
+
 /*
  SEI Message Receiving/Sending
  The TRTC app supports sending and receiving SEI messages.
@@ -27,7 +19,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
  1. Enter a room: trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
  2. Send SEI messages: trtcCloud.sendSEIMsg(seiMessage, 1);
  3. Receive SEI messages: onTrtcListener：- onRecvSEIMsg(String userId, String message);
- Documentation: https://cloud.tencent.com/document/product/647/32241
+ Documentation: https://trtc.io/document/47866?product=featuresserverapis
  */
 class SendAndReceiveSEIMessagePage extends StatefulWidget {
   const SendAndReceiveSEIMessagePage({Key? key}) : super(key: key);
@@ -68,7 +60,7 @@ class _SendAndReceiveSEIMessagePageState
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-    // TRTCVideoResolution 中仅定义了横屏分辨率（如 640 × 360），如需使用竖屏分辨率（如360 × 640），需要同时指定 TRTCVideoResolutionMode 为 Portrait。
+    // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
     encParams.videoResolutionMode = 1;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);

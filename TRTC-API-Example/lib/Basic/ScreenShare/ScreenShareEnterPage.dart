@@ -46,7 +46,7 @@ class _ScreenShareEnterPageState extends State<ScreenShareEnterPage> {
     super.dispose();
   }
 
-  // 隐藏底部输入框
+  // Hide the bottom input box
   unFocus() {
     if (roomIdFocusNode.hasFocus) {
       roomIdFocusNode.unfocus();

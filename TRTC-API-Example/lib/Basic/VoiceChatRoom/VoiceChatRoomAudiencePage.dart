@@ -147,7 +147,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
     }
   }
 
-  // 静音
+  // Mute
   onMuteClick() {
     bool nowAllUserMute = !isAllUserMute;
     anchorUserIdSet.forEach((key, value) {
@@ -158,7 +158,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
     });
   }
 
-  // 上麦
+  // Take seat
   onUpMicClick() {
     bool nowIsUpMic = !isUpMic;
     if (nowIsUpMic) {
@@ -204,7 +204,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
               Row(
                 children: [
                   Text(
-                    '观众操作',
+                    'Audience operation',
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -219,7 +219,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
                     onPressed: () {
                       this.onMuteClick();
                     },
-                    child: Text(isAllUserMute ? '取消静音' : '静音'),
+                    child: Text(isAllUserMute ? 'Cancel mute' : 'Mute'),
                   ),
                   SizedBox(
                     width: 20,
@@ -231,7 +231,7 @@ class _VoiceChatRoomAudiencePageState extends State<VoiceChatRoomAudiencePage> {
                     onPressed: () {
                       this.onUpMicClick();
                     },
-                    child: Text(isUpMic ? '下麦' : '上麦'),
+                    child: Text(isUpMic ? 'Leave Seat' : 'Take Seat'),
                   ),
                 ],
               ),

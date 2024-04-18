@@ -150,7 +150,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
     }
   }
 
-  // 静音
+  // Mute
   onMuteClick() {
     bool nowAllUserMute = !isAllUserMute;
     anchorUserIdSet.forEach((key, value) {
@@ -161,7 +161,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
     });
   }
 
-  // 下麦
+  // Leave seat
   onDownMicClick() {
     bool nowIsDownMic = !isDownMic;
     if (nowIsDownMic) {

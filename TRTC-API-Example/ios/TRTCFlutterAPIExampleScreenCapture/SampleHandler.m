@@ -7,7 +7,7 @@
 @end
 
 @implementation SampleHandler
-// 注意：此处的 APPGROUP 需要改成上文中的创建的 App Group Identifier。
+// Note: The appgroup here needs to be changed to the App Group Identifier created above.
 - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
     [[TXReplayKitExt sharedInstance] setupWithAppGroup:APPGROUP delegate:self];
 }
@@ -31,13 +31,13 @@
     NSString *tip = @"";
     switch (reason) {
         case TXReplayKitExtReasonRequestedByMain:
-            tip = @"屏幕共享已结束";
+            tip = @"Screen sharing is over";
             break;
         case TXReplayKitExtReasonDisconnected:
-            tip = @"应用断开";
+            tip = @"Disconnect";
             break;
         case TXReplayKitExtReasonVersionMismatch:
-            tip = @"集成错误（SDK 版本号不相符合）";
+            tip = @"Integrated error (SDK version number does not match)";
             break;
     }
 

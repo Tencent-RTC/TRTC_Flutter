@@ -50,7 +50,7 @@ class GenerateTestUserSig {
   static String secretKey = '';
 
   /**
-   * CDN发布功能 混流appId
+   * CDN release function Mixed flow appid
    */
 
   /**
@@ -59,7 +59,7 @@ class GenerateTestUserSig {
   static int appId = 1256635546;
 
   /**
-   * CDN发布功能 混流bizId
+   * CDN release function Mixed flow BIZID
    */
 
   /**

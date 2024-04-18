@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "TRTC API Example帮助开发者可以更好的理解 TRTC 实时音视频 SDK 的API，从而快速实现一些音视频场景的基本功能。",
+    "description": "TRTC API Example helps developers can better understand TRTC real -time audio and video SDK APIs, so as to quickly realize the basic functions of some audio and video scenarios.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

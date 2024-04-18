@@ -1,13 +1,13 @@
 /*
  * Module:   TXReplayKitExt @ TXLiteAVSDK
  *
- * Function: 腾讯云 ReplayKit 录屏功能在Extension中的主要接口类
+ * Function: Tencent Cloud ReplayKit screen recording function in Extension
  *
  * Version: <:Version:>
  */
 
 /// @defgroup TXReplayKitExt_ios TXReplayKitExt
-/// 腾讯云 ReplayKit 录屏功能在Extension中的主要接口类
+/// Tencent Cloud ReplayKit screen recording function in Extension
 /// @{
 
 #import <CoreMedia/CoreMedia.h>
@@ -17,67 +17,64 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, TXReplayKitExtReason) {
-  /// 主进程请求结束
+  /// The main process request ends
   TXReplayKitExtReasonRequestedByMain,
-  /// 链接断开，主进程退出
+  /// Link disconnect, the main process exits
   TXReplayKitExtReasonDisconnected,
-  /// 版本号与主进程SDK不符
+  /// The version number does not match the main process SDK
   TXReplayKitExtReasonVersionMismatch
 };
 
 @protocol TXReplayKitExtDelegate;
 
-/// 屏幕分享主入口类
+/// Screen sharing the main entrance class
 API_AVAILABLE(ios(11.0))
 __attribute__((visibility("default"))) @interface TXReplayKitExt : NSObject
 
-/// 获取单例
+/// Obtain a single example
 + (instancetype)sharedInstance;
 
-/// 初始化方法
+/// Initialization method
 ///
-/// 需要在 RPBroadcastSampleHandler 的实现类中的 broadcastStartedWithSetupInfo 方法中调用
+/// You need to call the BroadCastStartEdWithSetupinfo method in the implementation class of the RPBroidSamplehandler implementation class
 /// @param appGroup App group ID
-/// @param delegate 回调对象
+/// @param delegate Callback object
 - (void)setupWithAppGroup:(NSString *)appGroup delegate:(id<TXReplayKitExtDelegate>)delegate;
 
-/// 录屏暂停方法
+/// Method of Display Screen Disposal
 ///
-/// 通过系统控制中心停止录屏时，会回调 RPBroadcastSampleHandler.broadcastPaused，在 broadcastPaused
-/// 方法中调用
+/// When the screen recording is stopped through the system control center, it will call back RPBroidCastSamplehandler.broadcastPaused, 
+/// and call it in the broadcastPaused method
 - (void)broadcastPaused;
 
-/// 录屏恢复方法
+/// Method of recording screen recovery
 ///
-/// 通过系统控制中心停止录屏时，会回调 RPBroadcastSampleHandler.broadcastResumed，在
-/// broadcastResumed 方法中调用
+/// When the screen recording is stopped through the system control center, the RPBroidCastSamplehandler.BroadCastResumed will be called back.
 - (void)broadcastResumed;
 
-/// 录屏完成方法
+/// Screen recording completion method
 ///
-/// 通过系统控制中心停止录屏时，会回调 RPBroadcastSampleHandler.broadcastFinished，在
-/// broadcastFinished 方法中调用
+/// When the screen recording is stopped through the system control center, it will call back RPBroidCastSamplehandler.BroadCastfinished 
+/// and call in the BroadcastFinished method
 - (void)broadcastFinished;
 
-/// 媒体数据（音视频）发送方法
+/// Media data (audio and video) sending method
 ///
-/// 需要在 RPBroadcastSampleHandler 的实现类中的 processSampleBuffer: 方法中调用
+/// You need to call the processsAmpleBuffer: method in the implementation class of RPBroidSamplehandler.
 ///
-/// @param sampleBuffer 系统回调的视频或音频帧
-/// @param sampleBufferType 媒体输入类型
-/// @note
-/// - sampleBufferType 当前支持 RPSampleBufferTypeVideo 和 RPSampleBufferTypeAudioApp
-/// 类型的数据帧处理。
-/// - RPSampleBufferTypeAudioMic 不支持，请在主 app 处理麦克风采集数据
+/// @param sampleBuffer System callback video or audio frame
+/// @param sampleBufferType Media input type
+/// @note  
+/// - sampleBufferType Currently supports RPSampleBufferTypeVideo and RPSampleBufferTypeAudioApp data frame processing.
+/// - RPSampleBufferTypeAudioMic Not supported, please process the microphone collection data in the main APP
 - (void)sendSampleBuffer:(CMSampleBufferRef)sampleBuffer
                 withType:(RPSampleBufferType)sampleBufferType;
 
-/// 视频发送方法
-/// 已废弃，请使用 - (void)sendSampleBuffer:(CMSampleBufferRef)sampleBuffer
-/// withType:(RPSampleBufferType)sampleBufferType; 代替 需要在 RPBroadcastSampleHandler 的实现类中的
-/// processSampleBuffer: 方法中调用
+/// Video sending method
+/// For abandoned, please use - (void)sendSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType; instead instead
+/// You need to call the processsAmpleBuffer: method in the implementation class of RPBroidSamplehandler.
 ///
-/// @param sampleBuffer 系统回调的视频帧
+/// @param sampleBuffer System recovery video frame
 - (void)sendVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer
     __attribute__((deprecated("use sendSampleBuffer:withType instead")));
 
@@ -86,10 +83,10 @@ __attribute__((visibility("default"))) @interface TXReplayKitExt : NSObject
 API_AVAILABLE(ios(11.0))
 @protocol TXReplayKitExtDelegate <NSObject>
 
-/// 录屏完成回调
+/// Screen recording complete callback
 ///
-/// @param broadcast 发出回调的实例
-/// @param reason 结束原因代码, 参见 TXReplayKitExtReason
+/// @param broadcast Examples of callback
+/// @param reason End the cause code, see TXReplayKitExtReason
 - (void)broadcastFinished:(TXReplayKitExt *)broadcast reason:(TXReplayKitExtReason)reason;
 
 @end

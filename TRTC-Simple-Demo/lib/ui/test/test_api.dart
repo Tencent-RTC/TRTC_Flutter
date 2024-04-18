@@ -12,17 +12,18 @@ import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
+import 'package:trtc_demo/models/user_model.dart';
 import 'package:trtc_demo/utils/tool.dart';
 
-/// 视频页面
+/// Video page
 class TestPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => TestPageState();
 }
 
 class TestPageState extends State<TestPage> {
-  var userInfo;
-  var meetModel;
+  late UserModel userInfo;
+  late MeetingModel meetModel;
 
   late TRTCCloud trtcCloud;
   late TXDeviceManager txDeviceManager;
@@ -57,10 +58,10 @@ class TestPageState extends State<TestPage> {
     return streamId;
   }
 
-  // 设置混流
+  // Set up a mixed flow
   setMixConfig() {
-    /// 设置混流预排版-左右模式
-    /// 具体使用方式见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
+    /// Set up mixed stream pre-row-left and right mode
+    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     TRTCTranscodingConfig config = TRTCTranscodingConfig();
     config.videoWidth = 720;
     config.videoHeight = 640;
@@ -76,7 +77,6 @@ class TestPageState extends State<TestPage> {
     config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
     config.mixUsers = [];
 
-    //       主播自己
     TRTCMixUser mixUser = TRTCMixUser();
     mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
     mixUser.zOrder = 0;
@@ -87,7 +87,7 @@ class TestPageState extends State<TestPage> {
     mixUser.roomId = '122';
     config.mixUsers?.add(mixUser);
 
-    //连麦者画面位置
+    //Lianmai people screen location
     TRTCMixUser remote = TRTCMixUser();
     remote.userId = "\$PLACE_HOLDER_REMOTE\$";
     remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
@@ -121,7 +121,7 @@ class TestPageState extends State<TestPage> {
     config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Manual;
     config.mixUsers = [];
 
-    //  主播自己
+    //  Anchor itself
     TRTCMixUser mixUser = new TRTCMixUser();
     mixUser.userId = '345';
     mixUser.zOrder = 0;
@@ -145,8 +145,8 @@ class TestPageState extends State<TestPage> {
     trtcCloud.setMixTranscodingConfig(config);
   }
 
-  /// 预排版-画中画
-  /// 具体使用方式见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
+  /// Pre-Edition-Painting Chinese Painting
+  /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
   setMixConfigInPicture() {
     TRTCTranscodingConfig config = TRTCTranscodingConfig();
     config.videoWidth = 720;
@@ -162,7 +162,7 @@ class TestPageState extends State<TestPage> {
     config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
     config.mixUsers = [];
 
-    // 主播自己
+    // Anchor itself
     TRTCMixUser mixUser = TRTCMixUser();
     mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
     mixUser.zOrder = 0;
@@ -173,7 +173,7 @@ class TestPageState extends State<TestPage> {
     mixUser.roomId = '122';
     config.mixUsers?.add(mixUser);
 
-    //连麦者画面位置
+    //Lianmai people screen location
     TRTCMixUser remote = TRTCMixUser();
     remote.userId = "\$PLACE_HOLDER_REMOTE\$";
     remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
@@ -261,16 +261,16 @@ class TestPageState extends State<TestPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('测试API'),
+          title: const Text('Test API'),
           centerTitle: true,
           elevation: 0,
           bottom: TabBar(tabs: [
-            Tab(text: '主要接口'),
-            Tab(text: '音乐人生'),
-            Tab(text: '视频接口'),
-            Tab(text: '美颜&设备'),
+            Tab(text: 'Main interface'),
+            Tab(text: 'Music interface'),
+            Tab(text: 'Video interface'),
+            Tab(text: 'Beauty & equipment'),
             Tab(text: 'CDN'),
-            Tab(text: '音频回调')
+            Tab(text: 'Audio callback')
           ]),
         ),
         body: TabBarView(children: [
@@ -294,9 +294,9 @@ class TestPageState extends State<TestPage> {
                 onPressed: () async {
                   trtcCloud.startSpeedTest(
                       GenerateTestUserSig.sdkAppId,
-                      userInfo['userId'],
+                      userInfo.userId,
                       await GenerateTestUserSig.genTestSig(
-                          userInfo['userId']));
+                          userInfo.userId));
                 },
                 child: Text('startSpeedTest'),
               ),
@@ -338,7 +338,7 @@ class TestPageState extends State<TestPage> {
                   trtcCloud.switchRoom(TRTCSwitchRoomConfig(
                       roomId: 1546,
                       userSig: await GenerateTestUserSig.genTestSig(
-                          userInfo['userId'])));
+                          userInfo.userId)));
                 },
                 child: Text('switchRoom-1546'),
               ),
@@ -461,20 +461,20 @@ class TestPageState extends State<TestPage> {
                   trtcCloud.setNetworkQosParam(
                       TRTCNetworkQosParam(preference: 1));
                 },
-                child: Text('setNetworkQosParam-保清晰'),
+                child: Text('setNetworkQosParam-Keep a clear'),
               ),
               TextButton(
                 onPressed: () async {
                   trtcCloud.setNetworkQosParam(
                       TRTCNetworkQosParam(preference: 2));
                 },
-                child: Text('setNetworkQosParam-保流畅'),
+                child: Text('setNetworkQosParam-Sustainable'),
               ),
               TextButton(
                 onPressed: () async {
                   trtcCloud.enableAudioVolumeEvaluation(2000);
                 },
-                child: Text('enableAudioVolumeEvaluation-每2s提示音量'),
+                child: Text('enableAudioVolumeEvaluation-Volume every 2S prompt'),
               ),
               TextButton(
                 onPressed: () async {
@@ -491,7 +491,7 @@ class TestPageState extends State<TestPage> {
                           '/sdcard/Android/data/com.tencent.trtc_demo/files/audio.wav'));
                   MeetingTool.toast(result.toString(), context);
                 },
-                child: Text('startAudioRecording-安卓'),
+                child: Text('startAudioRecording-Android'),
               )
                   : TextButton(
                 onPressed: () async {
@@ -511,7 +511,7 @@ class TestPageState extends State<TestPage> {
                           filePath: 'E:\\audio.aac'));
                   MeetingTool.toast(result.toString(), context);
                 },
-                child: Text('startAudioRecording-windows(E盘)'),
+                child: Text('startAudioRecording-windows(E drive)'),
               ),
               TextButton(
                 onPressed: () async {
@@ -531,7 +531,7 @@ class TestPageState extends State<TestPage> {
                           filePath:
                           appDocDir.path + '/isolocalVideo.mp4'));
                 },
-                child: Text('startLocalRecording-安卓&ios'),
+                child: Text('startLocalRecording-Android&ios'),
               ),
               TextButton(
                 onPressed: () async {
@@ -541,7 +541,7 @@ class TestPageState extends State<TestPage> {
                           interval: -1,
                           filePath: 'E:\\videoTest.mp4'));
                 },
-                child: Text('startLocalRecording-windows(E盘)'),
+                child: Text('startLocalRecording-windows(E drive)'),
               ),
               TextButton(
                 onPressed: () async {
@@ -624,7 +624,7 @@ class TestPageState extends State<TestPage> {
                   txAudioManager.setVoiceReverbType(
                       TXVoiceReverbType.TXLiveVoiceReverbType_4);
                 },
-                child: Text('setVoiceReverbType-低沉'),
+                child: Text('setVoiceReverbType-Low'),
               ),
               TextButton(
                 onPressed: () async {
@@ -638,35 +638,35 @@ class TestPageState extends State<TestPage> {
                   txAudioManager.setVoiceReverbType(
                       TXVoiceReverbType.TXLiveVoiceReverbType_5);
                 },
-                child: Text('setVoiceReverbType-洪亮'),
+                child: Text('setVoiceReverbType-Brilliant'),
               ),
               TextButton(
                 onPressed: () async {
                   txAudioManager.setVoiceReverbType(
                       TXVoiceReverbType.TXLiveVoiceReverbType_7);
                 },
-                child: Text('setVoiceReverbType-磁性'),
+                child: Text('setVoiceReverbType-magnetic'),
               ),
               // TextButton(
               //   onPressed: () async {
               //     txAudioManager.setVoiceChangerType(
               //         TXVoiceChangerType.TXLiveVoiceChangerType_2);
               //   },
-              //   child: Text('setVoiceChangerType-萝莉'),
+              //   child: Text('setVoiceChangerType-Loli'),
               // ),
               // TextButton(
               //   onPressed: () async {
               //     txAudioManager.setVoiceChangerType(
               //         TXVoiceChangerType.TXLiveVoiceChangerType_4);
               //   },
-              //   child: Text('setVoiceChangerType-重金属'),
+              //   child: Text('setVoiceChangerType-Heavy metal'),
               // ),
               // TextButton(
               //   onPressed: () async {
               //     txAudioManager.setVoiceChangerType(
               //         TXVoiceChangerType.TXLiveVoiceChangerType_0);
               //   },
-              //   child: Text('setVoiceChangerType-关闭变声'),
+              //   child: Text('setVoiceChangerType-Turn off'),
               // ),
               TextButton(
                 onPressed: () async {
@@ -793,14 +793,14 @@ class TestPageState extends State<TestPage> {
                   print('==time=' + time.toString());
                   MeetingTool.toast(time.toString(), context);
                 },
-                child: Text('getMusicDurationInMS-获取时间比较久'),
+                child: Text('getMusicDurationInMS-Get time for a long time'),
               ),
             ],
           ),
           ListView(children: [
             TextButton(
               onPressed: () async {
-                bool? value = await trtcCloud.sendSEIMsg('clavie嗯', 2);
+                bool? value = await trtcCloud.sendSEIMsg('clavie', 2);
                 MeetingTool.toast(value.toString(), context);
               },
               child: Text('sendSEIMsg'),
@@ -809,21 +809,21 @@ class TestPageState extends State<TestPage> {
               onPressed: () async {
                 trtcCloud.stopLocalPreview();
               },
-              child: Text('stopLocalPreview-stop本地视频'),
+              child: Text('stopLocalPreview-Stop local video'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.stopRemoteView(
                     '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
               },
-              child: Text('stopRemoteView-远端id=345的视频'),
+              child: Text('stopRemoteView-Video of remote ID = 345'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.stopRemoteView(
                     '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
               },
-              child: Text('stopRemoteView-远端id=345的辅流'),
+              child: Text('stopRemoteView-The auxiliary flow of the remote ID = 345'),
             ),
             TextButton(
               onPressed: () async {
@@ -878,13 +878,13 @@ class TestPageState extends State<TestPage> {
               onPressed: () async {
                 trtcCloud.muteRemoteVideoStream('345', true);
               },
-              child: Text('muteRemoteVideoStream-true-远端用户id345'),
+              child: Text('muteRemoteVideoStream-true-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.muteRemoteVideoStream('345', false);
               },
-              child: Text('muteRemoteVideoStream-false-远端用户id345'),
+              child: Text('muteRemoteVideoStream-false-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -906,7 +906,7 @@ class TestPageState extends State<TestPage> {
                     mirrorType:
                     TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
               },
-              child: Text('setLocalRenderParams-90度旋转'),
+              child: Text('setLocalRenderParams-90 degrees spin'),
             ),
             TextButton(
               onPressed: () async {
@@ -916,7 +916,7 @@ class TestPageState extends State<TestPage> {
                     mirrorType:
                     TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO));
               },
-              child: Text('setLocalRenderParams-恢复'),
+              child: Text('setLocalRenderParams-recover'),
             ),
             TextButton(
               onPressed: () async {
@@ -929,7 +929,7 @@ class TestPageState extends State<TestPage> {
                         mirrorType:
                         TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
               },
-              child: Text('setRemoteRenderParams-小画面90度-远端用户id345'),
+              child: Text('setRemoteRenderParams-Small picture 90 degrees-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -942,7 +942,7 @@ class TestPageState extends State<TestPage> {
                         mirrorType:
                         TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
               },
-              child: Text('setRemoteRenderParams-小画面180度-远端用户id345'),
+              child: Text('setRemoteRenderParams-Small picture 180 degrees-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -955,7 +955,7 @@ class TestPageState extends State<TestPage> {
                         mirrorType:
                         TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
               },
-              child: Text('setRemoteRenderParams-小画面270度-远端用户id345'),
+              child: Text('setRemoteRenderParams-Small picture 270 degrees-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -968,7 +968,7 @@ class TestPageState extends State<TestPage> {
                         mirrorType:
                         TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
               },
-              child: Text('setRemoteRenderParams-小画面恢复-远端用户id345'),
+              child: Text('setRemoteRenderParams-Small picture recovery-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -982,7 +982,7 @@ class TestPageState extends State<TestPage> {
                         mirrorType:
                         TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO));
               },
-              child: Text('setRemoteRenderParams-辅流90度-远端用户id345'),
+              child: Text('setRemoteRenderParams-Auxiliary 90 degrees-Distant user ID345'),
             ),
             TextButton(
               onPressed: () async {
@@ -1015,14 +1015,14 @@ class TestPageState extends State<TestPage> {
                 trtcCloud.setGSensorMode(
                     TRTCCloudDef.TRTC_GSENSOR_MODE_UIAUTOLAYOUT);
               },
-              child: Text('setGSensorMode-开启重力感应'),
+              child: Text('setGSensorMode-Open the gravity induction'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.setGSensorMode(
                     TRTCCloudDef.TRTC_GSENSOR_MODE_DISABLE);
               },
-              child: Text('setGSensorMode-关闭重力感应'),
+              child: Text('setGSensorMode-Turn off gravity sensing'),
             ),
             TextButton(
               onPressed: () async {
@@ -1031,7 +1031,7 @@ class TestPageState extends State<TestPage> {
                 print('==trtc value' + value.toString());
                 MeetingTool.toast(value.toString(), context);
               },
-              child: Text('enableEncSmallVideoStream-开启双路编码'),
+              child: Text('enableEncSmallVideoStream-Turn on dual -way coding'),
             ),
             TextButton(
               onPressed: () async {
@@ -1040,21 +1040,21 @@ class TestPageState extends State<TestPage> {
                 print('==trtc value' + value.toString());
                 MeetingTool.toast(value.toString(), context);
               },
-              child: Text('enableEncSmallVideoStream-关闭双路编码'),
+              child: Text('enableEncSmallVideoStream-Turn off dual -way coding'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.setRemoteVideoStreamType(
                     '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
               },
-              child: Text('setRemoteVideoStreamType-观看345的小画面'),
+              child: Text('setRemoteVideoStreamType-Watch the small picture of 345'),
             ),
             TextButton(
               onPressed: () async {
                 trtcCloud.setRemoteVideoStreamType(
                     '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
               },
-              child: Text('setRemoteVideoStreamType-观看345的大画面'),
+              child: Text('setRemoteVideoStreamType-Watch the big picture of 345'),
             ),
             TextButton(
               onPressed: () async {
@@ -1064,7 +1064,7 @@ class TestPageState extends State<TestPage> {
                     0,
                     '/sdcard/Android/data/com.tencent.trtc_demo/files/asw.jpg');
               },
-              child: Text('snapshotVideo-安卓'),
+              child: Text('snapshotVideo-Android'),
             ),
             TextButton(
               onPressed: () async {
@@ -1099,7 +1099,7 @@ class TestPageState extends State<TestPage> {
                     0.3,
                     0.2);
               },
-              child: Text('setWatermark-本地图片'),
+              child: Text('setWatermark-Local picture'),
             ),
             TextButton(
               onPressed: () async {
@@ -1110,7 +1110,7 @@ class TestPageState extends State<TestPage> {
                     0.3,
                     0.2);
               },
-              child: Text('setWatermark-绝对路径'),
+              child: Text('setWatermark-Absolute path'),
             ),
             TextButton(
               onPressed: () async {
@@ -1121,7 +1121,7 @@ class TestPageState extends State<TestPage> {
                     0.3,
                     0.2);
               },
-              child: Text('setWatermark-网络图片'),
+              child: Text('setWatermark-Web image'),
             ),
             TextButton(
               onPressed: () async {
@@ -1143,7 +1143,7 @@ class TestPageState extends State<TestPage> {
                   Map? data = await txDeviceManager
                       .getDevicesList(TRTCCloudDef.TXMediaDeviceTypeMic);
                   MeetingTool.toast(
-                      "设备数：" + data!['count'].toString(), context);
+                      "Number of equipment:" + data!['count'].toString(), context);
                   print(data);
                 },
                 child: Text('getDevicesList'),
@@ -1155,7 +1155,7 @@ class TestPageState extends State<TestPage> {
                   int? result = await txDeviceManager.setCurrentDevice(
                       TRTCCloudDef.TXMediaDeviceTypeMic,
                       data!['deviceList'][0]['deviceId']);
-                  MeetingTool.toast("错误码：" + result.toString(), context);
+                  MeetingTool.toast("error code:" + result.toString(), context);
                 },
                 child: Text('setCurrentDevice'),
               ),
@@ -1164,7 +1164,7 @@ class TestPageState extends State<TestPage> {
                   Map? data = await txDeviceManager.getCurrentDevice(
                       TRTCCloudDef.TXMediaDeviceTypeMic);
                   MeetingTool.toast(
-                      "设备id：" + data!['deviceId'].toString(), context);
+                      "Equipment ID:" + data!['deviceId'].toString(), context);
                   print(data);
                 },
                 child: Text('getCurrentDevice'),
@@ -1174,7 +1174,7 @@ class TestPageState extends State<TestPage> {
                   int? result =
                   await txDeviceManager.setCurrentDeviceVolume(
                       TRTCCloudDef.TXMediaDeviceTypeMic, 80);
-                  MeetingTool.toast("错误码" + result.toString(), context);
+                  MeetingTool.toast("error code" + result.toString(), context);
                 },
                 child: Text('setCurrentDeviceVolume'),
               ),
@@ -1192,7 +1192,7 @@ class TestPageState extends State<TestPage> {
                   int? result =
                   await txDeviceManager.setCurrentDeviceMute(
                       TRTCCloudDef.TXMediaDeviceTypeMic, true);
-                  MeetingTool.toast("错误码" + result.toString(), context);
+                  MeetingTool.toast("error code" + result.toString(), context);
                 },
                 child: Text('setCurrentDeviceMute-true'),
               ),
@@ -1201,7 +1201,7 @@ class TestPageState extends State<TestPage> {
                   int? result =
                   await txDeviceManager.setCurrentDeviceMute(
                       TRTCCloudDef.TXMediaDeviceTypeMic, false);
-                  MeetingTool.toast("错误码" + result.toString(), context);
+                  MeetingTool.toast("error code" + result.toString(), context);
                 },
                 child: Text('setCurrentDeviceMute-false'),
               ),
@@ -1219,7 +1219,7 @@ class TestPageState extends State<TestPage> {
                   int? result =
                   await txDeviceManager.startMicDeviceTest(2000);
                   MeetingTool.toast(
-                      "错误码=： " + result.toString(), context);
+                      "error code=: " + result.toString(), context);
                 },
                 child: Text('startMicDeviceTest'),
               ),
@@ -1227,7 +1227,7 @@ class TestPageState extends State<TestPage> {
                 onPressed: () async {
                   int? result = await txDeviceManager.stopMicDeviceTest();
                   MeetingTool.toast(
-                      "错误码=： " + result.toString(), context);
+                      "error code=: " + result.toString(), context);
                 },
                 child: Text('stopMicDeviceTest'),
               ),
@@ -1236,7 +1236,7 @@ class TestPageState extends State<TestPage> {
                   int? result = await txDeviceManager
                       .startSpeakerDeviceTest("/test.aac");
                   MeetingTool.toast(
-                      "错误码=： " + result.toString(), context);
+                      "error code=: " + result.toString(), context);
                 },
                 child: Text('startSpeakerDeviceTest'),
               ),
@@ -1245,7 +1245,7 @@ class TestPageState extends State<TestPage> {
                   int? result =
                   await txDeviceManager.stopSpeakerDeviceTest();
                   MeetingTool.toast(
-                      "错误码=： " + result.toString(), context);
+                      "error code=: " + result.toString(), context);
                 },
                 child: Text('stopSpeakerDeviceTest'),
               ),
@@ -1301,14 +1301,14 @@ class TestPageState extends State<TestPage> {
               //   onPressed: () async {
               //     txBeautyManager.setFilter('images/watermark_img.png');
               //   },
-              //   child: Text('setFilter-本地图片'),
+              //   child: Text('setFilter-Local picture'),
               // ),
               // TextButton(
               //   onPressed: () async {
               //     txBeautyManager.setFilter(
               //         'https://main.qcloudimg.com/raw/3f9146cacab4a019b0cc44b8b22b6a38.png');
               //   },
-              //   child: Text('setFilter-网络图片'),
+              //   child: Text('setFilter-Web image'),
               // ),
               // TextButton(
               //   onPressed: () async {

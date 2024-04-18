@@ -54,7 +54,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
-    // TRTCVideoResolution 中仅定义了横屏分辨率（如 640 × 360），如需使用竖屏分辨率（如360 × 640），需要同时指定 TRTCVideoResolutionMode 为 Portrait。
+    // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
     encParams.videoResolutionMode = 1;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);
@@ -115,8 +115,8 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
     super.dispose();
   }
 
-    // 设置全手动排版模式
-    // 具体使用方式见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
+    // Set the full manual typesetting mode
+    // See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigManual() {
         TRTCTranscodingConfig config = new TRTCTranscodingConfig();
         config.videoWidth      = 720;
@@ -136,7 +136,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Manual;
         config.mixUsers = [];
 
-        //  主播自己
+        //  Anchor itself
         TRTCMixUser mixUser = new TRTCMixUser();
         mixUser.userId = this.userId;
         mixUser.zOrder = 0;
@@ -162,8 +162,8 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         trtcCloud.setMixTranscodingConfig(config);
     }
 
-    /// 设置混流预排版-左右模式
-    /// 具体使用方式见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
+    /// Set up mixed stream pre-row-left and right mode
+    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigLeftRight() {
         TRTCTranscodingConfig config = TRTCTranscodingConfig();
         config.videoWidth      = 720;
@@ -181,7 +181,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
         config.mixUsers = [];
 
-        //       主播自己
+        //       Anchor itself
         TRTCMixUser mixUser = TRTCMixUser();
         mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
         mixUser.zOrder = 0;
@@ -193,7 +193,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         config.mixUsers?.add(mixUser);
 
 
-        //连麦者画面位置
+        //Lianmai people screen location
         TRTCMixUser remote = TRTCMixUser();
         remote.userId = "\$PLACE_HOLDER_REMOTE\$";
         remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
@@ -218,8 +218,8 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
       return streamId;
     }
 
-    /// 预排版-画中画
-    /// 具体使用方式见<a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
+    /// Pre-Edition-Painting Chinese Painting
+    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigInPicture() {
         TRTCTranscodingConfig config = TRTCTranscodingConfig();
         config.videoWidth      = 720;
@@ -235,7 +235,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
         config.mixUsers = [];
 
-        // 主播自己
+        // Anchor itself
         TRTCMixUser mixUser = TRTCMixUser();
         mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
         mixUser.zOrder = 0;
@@ -247,7 +247,7 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
         config.mixUsers?.add(mixUser);
 
 
-        //连麦者画面位置
+        //Lianmai people screen location
         TRTCMixUser remote = TRTCMixUser();
         remote.userId = "\$PLACE_HOLDER_REMOTE\$";
         remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;

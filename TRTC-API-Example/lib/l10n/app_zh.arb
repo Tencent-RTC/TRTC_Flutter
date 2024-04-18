@@ -92,6 +92,7 @@
     "main_item_sei_message": "收发SEI消息",
     "seimessage_send_sei_message": "发送SEI消息",
     "main_item_switch_room": "快速切换房间",
+      "main_item_join_multiple_room": "加入多个房间",
     "switchroom_switch_room": "切换房间",
     "main_trtc_connect_other_room_pk": "跨房PK",
     "connectotherroom_start_pk": "开始PK",

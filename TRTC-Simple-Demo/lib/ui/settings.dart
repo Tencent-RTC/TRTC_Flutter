@@ -225,7 +225,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                onTap: () => _showVideoFps(state), //点击
+                onTap: () => _showVideoFps(state), 
               ),
             ],
           ),

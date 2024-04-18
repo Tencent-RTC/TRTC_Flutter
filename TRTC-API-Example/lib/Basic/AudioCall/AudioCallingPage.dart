@@ -170,7 +170,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
     });
   }
 
-  // 注意，该功能在ios的模拟器是无效的
+  // Note that the simulator of this function in iOS is invalid
   onUserVoiceVolume(params) {
     List<dynamic> list = params["userVolumes"] as List<dynamic>;
     list.forEach((item) {

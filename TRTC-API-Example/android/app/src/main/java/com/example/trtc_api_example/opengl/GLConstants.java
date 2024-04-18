@@ -39,12 +39,12 @@ public interface GLConstants {
 
     enum GLScaleType {
         /**
-         * 居中显示，不裁剪，宽或高留黑边
+         * Due to the middle show, no cutting, wide or high -leaving black edge
          */
         FIT_CENTER,
 
         /**
-         * 居中裁剪
+         * Cut
          */
         CENTER_CROP,
     }

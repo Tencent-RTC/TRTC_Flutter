@@ -119,7 +119,7 @@ public class GPUImageFilter {
     }
 
     /**
-     * 渲染回调
+     * Rendering
      *
      * @param textureId
      * @param cubeBuffer
@@ -158,7 +158,7 @@ public class GPUImageFilter {
     }
 
     protected void runPendingOnDrawTasks() {
-        // 将当前要运行的拷贝到新的数组,然后再开始执行,防止执行的里面再次添加
+        // Copy the currently to run to the new array, and then start executing to prevent the execution from adding it again
         LinkedList<Runnable> runList;
         synchronized (mRunOnDraw) {
             runList = new LinkedList<>(mRunOnDraw);
