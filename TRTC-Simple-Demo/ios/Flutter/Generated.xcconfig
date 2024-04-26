@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/tatemin/Development/flutter
-FLUTTER_APPLICATION_PATH=/Users/tatemin/Desktop/workspace/source/project/github/TRTC_Flutter/TRTC-Simple-Demo
+FLUTTER_ROOT=/Users/vincepzhang/package/flutter
+FLUTTER_APPLICATION_PATH=/Users/vincepzhang/UGit/work_sapce/liteav_flutter/sdk/trtc/example
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
