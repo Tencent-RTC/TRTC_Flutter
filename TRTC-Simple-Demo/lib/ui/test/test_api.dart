@@ -61,7 +61,6 @@ class TestPageState extends State<TestPage> {
   // Set up a mixed flow
   setMixConfig() {
     /// Set up mixed stream pre-row-left and right mode
-    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     TRTCTranscodingConfig config = TRTCTranscodingConfig();
     config.videoWidth = 720;
     config.videoHeight = 640;
@@ -146,7 +145,6 @@ class TestPageState extends State<TestPage> {
   }
 
   /// Pre-Edition-Painting Chinese Painting
-  /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
   setMixConfigInPicture() {
     TRTCTranscodingConfig config = TRTCTranscodingConfig();
     config.videoWidth = 720;

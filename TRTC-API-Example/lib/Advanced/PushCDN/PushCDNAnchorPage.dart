@@ -116,7 +116,6 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
   }
 
     // Set the full manual typesetting mode
-    // See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigManual() {
         TRTCTranscodingConfig config = new TRTCTranscodingConfig();
         config.videoWidth      = 720;
@@ -163,7 +162,6 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
     }
 
     /// Set up mixed stream pre-row-left and right mode
-    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigLeftRight() {
         TRTCTranscodingConfig config = TRTCTranscodingConfig();
         config.videoWidth      = 720;
@@ -219,7 +217,6 @@ class _PushCDNAnchorPageState extends State<PushCDNAnchorPage> {
     }
 
     /// Pre-Edition-Painting Chinese Painting
-    /// See <a href="https://cloud.tencent.com/document/product/647/16827">云端混流转码</a>
     setMixConfigInPicture() {
         TRTCTranscodingConfig config = TRTCTranscodingConfig();
         config.videoWidth      = 720;
