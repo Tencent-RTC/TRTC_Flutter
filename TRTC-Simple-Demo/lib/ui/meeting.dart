@@ -19,6 +19,7 @@ import 'package:trtc_demo/ui/login.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:provider/provider.dart';
+import 'package:trtc_demo/ui/window_dialog.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
 
 const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
@@ -349,19 +350,52 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           _meetModel.getUserInfo().isOpenCamera = true;
         });
       }
-    } else if (!kIsWeb && (Platform.isWindows || Platform.isMacOS)) {
+    } else if (!kIsWeb && Platform.isMacOS) {
       MeetingTool.toast(
           'The current platform does not support screen sharing.', context);
       return;
+    } else if (!kIsWeb && Platform.isWindows) {
+      if (!_meetModel.getUserInfo().isShowingWindow) {
+        TRTCScreenCaptureSourceList list = await _trtcCloud.getScreenCaptureSources(thumbnailWidth: 100, thumbnailHeight: 100, iconWidth: 100, iconHeight: 100);
+        showWindowSelector(context, list);
+      } else {
+        await _trtcCloud.stopScreenCapture();
+        _userList[0].isOpenCamera = true;
+        _trtcCloud.startLocalPreview(
+            _meetModel.getUserInfo().isFrontCamera, _meetModel.getUserInfo().localViewId);
+        this.setState(() {
+          _meetModel.getUserInfo().isShowingWindow = false;
+          _meetModel.getUserInfo().isOpenCamera = true;
+        });
+      }
     } else {
       await _startShare();
-      //The screen sharing function can only be tested on the real machine
+      // The screen sharing function can only be tested on the real machine
       ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
       this.setState(() {
         _meetModel.getUserInfo().isOpenCamera = false;
       });
     }
   }
+
+  void showWindowSelector(BuildContext context, TRTCScreenCaptureSourceList windows) async {
+    final result = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return WindowSelectorDialog(windows: windows);
+      },
+  );
+
+  if (result != null) {
+    print('Selected window index: $result');
+    await _trtcCloud.selectScreenCaptureTarget(windows.sourceInfo[result], TRTCScreenCaptureProperty());
+        await _startShare();
+        this.setState(() {
+          _meetModel.getUserInfo().isShowingWindow = true;
+          _meetModel.getUserInfo().isOpenCamera = false;
+        });
+  }
+}
 
   Widget _renderView(UserModel item, valueKey, width, height) {
     if (item.isOpenCamera) {
