@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/vincepzhang/package/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/vincepzhang/UGit/work_sapce/liteav_flutter/sdk/trtc/example"
+export "FLUTTER_ROOT=/Users/iveshe/flutterSDK/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/iveshe/FlutterProject/flutter_github/TRTC_Flutter/TRTC-Simple-Demo"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
