@@ -18,10 +18,10 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		B856FAB22C0EFB1D003D40DA /* TXLiteAVSDK_ReplayKitExt.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B856FAB12C0EFB1D003D40DA /* TXLiteAVSDK_ReplayKitExt.xcframework */; };
 		B8D802552BDB91D900045AB5 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2036D9325676B82006B0084 /* ReplayKit.framework */; };
 		B8D802582BDB91D900045AB5 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D802572BDB91D900045AB5 /* SampleHandler.swift */; };
 		B8D8025C2BDB91D900045AB5 /* TRTC Demo Screen.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B8D802542BDB91D900045AB5 /* TRTC Demo Screen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B8D802612BDB926D00045AB5 /* TXLiteAVSDK_ReplayKitExt.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D802482BDB8D5A00045AB5 /* TXLiteAVSDK_ReplayKitExt.xcframework */; };
 		B8D802642BDB92B600045AB5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E17C39A526EF159100C1F645 /* Accelerate.framework */; };
 		B8D802652BDB92C500045AB5 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8D8024D2BDB8DC800045AB5 /* VideoToolbox.framework */; };
 		B8D802662BDB92ED00045AB5 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E17C399F26EF154E00C1F645 /* libc++.tbd */; };
@@ -84,7 +84,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA9771795B45F69477785C11 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
-		B8D802482BDB8D5A00045AB5 /* TXLiteAVSDK_ReplayKitExt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TXLiteAVSDK_ReplayKitExt.xcframework; path = Pods/TXLiteAVSDK_Professional/TXLiteAVSDK_Professional/TXLiteAVSDK_ReplayKitExt.xcframework; sourceTree = "<group>"; };
+		B856FAB12C0EFB1D003D40DA /* TXLiteAVSDK_ReplayKitExt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = TXLiteAVSDK_ReplayKitExt.xcframework; sourceTree = "<group>"; };
 		B8D8024D2BDB8DC800045AB5 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		B8D802542BDB91D900045AB5 /* TRTC Demo Screen.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TRTC Demo Screen.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8D802572BDB91D900045AB5 /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
@@ -92,7 +92,6 @@
 		D2036D9325676B82006B0084 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		DAD3A0908C06832831125739 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		E144EF442600B61700CDA725 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
-		E144EF502600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
 		E17C399F26EF154E00C1F645 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E17C39A126EF156900C1F645 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E17C39A326EF157A00C1F645 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -116,9 +115,9 @@
 			files = (
 				B8D802652BDB92C500045AB5 /* VideoToolbox.framework in Frameworks */,
 				B8D802662BDB92ED00045AB5 /* libc++.tbd in Frameworks */,
+				B856FAB22C0EFB1D003D40DA /* TXLiteAVSDK_ReplayKitExt.xcframework in Frameworks */,
 				B8D802642BDB92B600045AB5 /* Accelerate.framework in Frameworks */,
 				B8D802552BDB91D900045AB5 /* ReplayKit.framework in Frameworks */,
-				B8D802612BDB926D00045AB5 /* TXLiteAVSDK_ReplayKitExt.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,14 +216,13 @@
 		BE34F8A1C753EC8F3DB38AE0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B856FAB12C0EFB1D003D40DA /* TXLiteAVSDK_ReplayKitExt.xcframework */,
 				B8D8024D2BDB8DC800045AB5 /* VideoToolbox.framework */,
-				B8D802482BDB8D5A00045AB5 /* TXLiteAVSDK_ReplayKitExt.xcframework */,
 				E17C39A526EF159100C1F645 /* Accelerate.framework */,
 				E17C39A326EF157A00C1F645 /* libresolv.tbd */,
 				E17C39A126EF156900C1F645 /* libz.tbd */,
 				E17C399F26EF154E00C1F645 /* libc++.tbd */,
 				D2036D9325676B82006B0084 /* ReplayKit.framework */,
-				E144EF502600BE3100CDA725 /* TXLiteAVSDK_ReplayKitExt.framework */,
 				6D5A94714830F8743BE5A46E /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
@@ -238,15 +236,15 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				FD6DF0A0643B868A2C301F96 /* [CP] Check Pods Manifest.lock */,
+				9705A1C41CF9048500538489 /* Embed Frameworks */,
+				B8D802472BDB8D1B00045AB5 /* Embed Foundation Extensions */,
+				C83EFF1A973737911F06177F /* [CP] Embed Pods Frameworks */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
-				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
-				C83EFF1A973737911F06177F /* [CP] Embed Pods Frameworks */,
 				222FEC6F408CB7E67FBD7722 /* [CP] Copy Pods Resources */,
-				B8D802472BDB8D1B00045AB5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -622,7 +620,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -672,7 +670,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -702,7 +700,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -743,7 +741,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
