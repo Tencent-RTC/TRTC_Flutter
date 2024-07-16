@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,7 +36,7 @@ class MeetingTool {
   }
 
   static Future<String> copyAssetToLocal(String asset,
-      {bool rewrite: false}) async {
+      {bool rewrite = false}) async {
     int lastIndex = asset.lastIndexOf("/");
 
     final dir = await getApplicationDocumentsDirectory();

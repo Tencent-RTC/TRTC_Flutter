@@ -28,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
   bool _enabledCamera = true;
 
   /// whether turn on the microphone
-  bool _enabledMicrophone = false;
+  bool _enabledMicrophone = true;
 
   bool _enableTextureRendering = false;
 
@@ -106,7 +106,8 @@ class LoginPageState extends State<LoginPage> {
     _unFocus();
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       if (!(await Permission.camera.request().isGranted) ||
-          !(await Permission.microphone.request().isGranted)) {
+          !(await Permission.microphone.request().isGranted) ||
+          !(await Permission.storage.request().isGranted)) {
         MeetingTool.toast(
             'You need to obtain audio and video permission to enter', context);
         return;

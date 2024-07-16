@@ -12,7 +12,6 @@ import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/tx_beauty_manager.dart';
 import 'package:tencent_trtc_cloud/tx_device_manager.dart';
-import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_demo/ui/login.dart';
@@ -40,7 +39,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   late TRTCCloud _trtcCloud;
   late TXDeviceManager _txDeviceManager;
   late TXBeautyManager _txBeautyManager;
-  late TXAudioEffectManager _txAudioManager;
 
   List<UserModel> _userList = [];
   List _screenUserList = [];
@@ -48,7 +46,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _meetModel = context.read<MeetingModel>();
     _initRoom();
   }
@@ -61,7 +59,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     // Beauty filter and animated effect parameter management
     _txBeautyManager = _trtcCloud.getBeautyManager();
     // Tencent Cloud Audio Effect Management Module
-    _txAudioManager = _trtcCloud.getAudioEffectManager();
     // Register event callback
     _trtcCloud.registerListener(_onRtcListener);
     // trtcCloud.setVideoEncoderParam(TRTCVideoEncParam(
@@ -102,6 +99,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       case AppLifecycleState.paused: // Interface invisible, background
         break;
       case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.hidden:
         break;
     }
   }
@@ -150,7 +149,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
 
   @override
   dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _destoryRoom();
     super.dispose();
   }
@@ -174,6 +173,12 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       if (param > 0) {
         MeetingTool.toast('Enter room success', context);
       }
+    }
+    if (type == TRTCCloudListener.onAudioRouteChanged) {
+      print("TRTCCloudListener onAudioRouteChanged route:${param['route']}, fromRoute:${param['fromRoute']}");
+    }
+    if (type == TRTCCloudListener.onDeviceChange) {
+      print("TRTCCloudListener onDeviceChange deviceId:${param['deviceId']}, type:${param['type']}, state:${param['state']}");
     }
     if (type == TRTCCloudListener.onExitRoom) {
       if (param > 0) {
@@ -258,6 +263,32 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       _screenUserList = MeetingTool.getScreenList(_userList);
       this.setState(() {});
       _meetModel.setList(_userList);
+    }
+
+    if (type == TRTCCloudListener.onMusicObserverStart) {
+      print('TRTCCloudListener onMusicObserverStart id:${param['id']} errCode:${param['errCode']}');
+    }
+    if (type == TRTCCloudListener.onMusicObserverPlayProgress) {
+      print('TRTCCloudListener onMusicObserverPlayProgress id:${param['id']} curPtsMS:${param['curPtsMS']} durationMS:${param['durationMS']}');
+    }
+    if (type == TRTCCloudListener.onMusicObserverComplete) {
+      print('TRTCCloudListener onMusicObserverComplete id:${param['id']} errCode:${param['errCode']}');
+    }
+
+    if (type == TRTCCloudListener.onRecvCustomCmdMsg) {
+      print('TRTCCloudListener onRecvCustomCmdMsg userId:${param['userId']} cmdID:${param['cmdID']} seq:${param['seq']} message:${param['message']}');
+    }
+    if (type == TRTCCloudListener.onMissCustomCmdMsg) {
+      print('TRTCCloudListener onMissCustomCmdMsg userId:${param['userId']} cmdID:${param['cmdID']} errCode:${param['errCode']} missed:${param['missed']}');
+    }
+    if (type == TRTCCloudListener.onRecvSEIMsg) {
+      print('TRTCCloudListener onRecvSEIMsg userId:${param['userId']} message:${param['message']}');
+    }
+    if (type == TRTCCloudListener.onLocalRecordBegin) {
+      print('TRTCCloudListener onLocalRecordBegin errCode:${param['errCode']} storagePath:${param['storagePath']}');
+    }
+    if (type == TRTCCloudListener.onLocalRecordComplete) {
+      print('TRTCCloudListener onLocalRecordComplete errCode:${param['errCode']} storagePath:${param['storagePath']}');
     }
   }
 
@@ -786,10 +817,12 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: WillPopScope(
-        onWillPop: () async {
-          _trtcCloud.exitRoom();
-          return true;
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (value) {
+          if (value) {
+            _trtcCloud.exitRoom();
+          }
         },
         child: Stack(
           children: <Widget>[
