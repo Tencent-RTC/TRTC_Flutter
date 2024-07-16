@@ -94,7 +94,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _initRoom();
   }
 
@@ -411,6 +411,8 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
             _isAPPPausedToClosed = true;
           }
         }
+        break;
+      case AppLifecycleState.hidden:
         break;
     }
   }

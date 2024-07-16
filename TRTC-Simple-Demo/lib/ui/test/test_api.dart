@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_demo/models/user_model.dart';
 import 'package:trtc_demo/utils/tool.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// Video page
 class TestPage extends StatefulWidget {
@@ -519,15 +520,20 @@ class TestPageState extends State<TestPage> {
               ),
               TextButton(
                 onPressed: () async {
-                  Directory appDocDir =
-                  await getApplicationDocumentsDirectory();
+                  Directory? appDocDir;
+                  if(Platform.isAndroid) {
+                    appDocDir = await getExternalStorageDirectory();
+                  } else {
+                    appDocDir = await getApplicationDocumentsDirectory();
+                  }
                   await trtcCloud.startLocalRecording(
                       TRTCLocalRecordingParams(
                           recordType: TRTCCloudDef.TRTCRecordTypeBoth,
                           interval: 2000,
                           maxDurationPerFile: 20000,
                           filePath:
-                          appDocDir.path + '/isolocalVideo.mp4'));
+                          '${appDocDir?.path}/isolocalVideo.mp4'));
+                  MeetingTool.toast('${appDocDir?.path}/isolocalVideo.mp4 Start Recording!', context);
                 },
                 child: Text('startLocalRecording-Android&ios'),
               ),
