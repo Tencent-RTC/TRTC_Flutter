@@ -4,7 +4,7 @@ import tencent_trtc_cloud
 import TXCustomBeautyProcesserPlugin
 import TXLiteAVSDK_Professional
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
     
     var channel: FlutterMethodChannel?
