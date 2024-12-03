@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
@@ -17,7 +17,8 @@ class PublishMediaStreamAnchorPage extends StatefulWidget {
 
 class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorPage> {
   late TRTCCloud trtcCloud;
-  TRTCPublishMode currentMode = TRTCPublishMode.TRTCPublishMixStreamToRoom;
+  late TRTCCloudListener listener;
+  TRTCPublishMode currentMode = TRTCPublishMode.mixStreamToRoom;
   int? localViewId;
   bool isStartPush = false;
   bool isStartPublishMediaStream = false;
@@ -51,7 +52,6 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
           onTap: () {},
           child: TRTCCloudVideoView(
             key: ValueKey("LocalView"),
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
             onViewCreated: (viewId) async {
               setState(() {
                 localViewId = viewId;
@@ -85,9 +85,8 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                     children: [
                       TRTCCloudVideoView(
                         key: ValueKey('RemoteView_$userId'),
-                        viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
                         onViewCreated: (viewId) async {
-                          trtcCloud.startRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, viewId);
+                          trtcCloud.startRemoteView(userId, TRTCVideoStreamType.big, viewId);
                         },
                       ),
                       Positioned(
@@ -145,7 +144,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                     )
                   ],
                 ),
-                currentMode == TRTCPublishMode.TRTCPublishMixStreamToRoom
+                currentMode == TRTCPublishMode.mixStreamToRoom
                     ? Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -421,27 +420,28 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
 
   initTRTCCloud() async {
     trtcCloud = (await TRTCCloud.sharedInstance())!;
-    trtcCloud.registerListener(onTrtcListener);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
   enterRoom() async {
-    trtcCloud.startLocalPreview(true, localViewId);
+    trtcCloud.startLocalPreview(true, localViewId!);
     TRTCParams params = new TRTCParams();
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.localRoomId;
     params.userId = this.localUserId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     params.streamId = getStreamId();
     trtcCloud.callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
+    trtcCloud.enterRoom(params, TRTCAppScene.live);
   }
 
   exitRoom() async {
     remoteRenderParamsDic.clear();
     remoteUidList = [];
-    trtcCloud.unRegisterListener(onTrtcListener);
+    trtcCloud.unRegisterListener(listener);
     trtcCloud.stopLocalAudio();
     trtcCloud.stopLocalPreview();
     trtcCloud.exitRoom();
@@ -451,8 +451,8 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
     trtcCloud.stopLocalAudio();
     trtcCloud.stopLocalPreview();
     trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   String getStreamId() {
@@ -496,7 +496,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
     return [
       getButtonItem(
         tile: AppLocalizations.of(context)!.publish_stream_to_room,
-        value: TRTCPublishMode.TRTCPublishMixStreamToRoom,
+        value: TRTCPublishMode.mixStreamToRoom,
         onClick: setPublishMode,
       ),
       SizedBox(
@@ -504,7 +504,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
       ),
       getButtonItem(
         tile: AppLocalizations.of(context)!.publish_stream_to_cdn,
-        value: TRTCPublishMode.TRTCPublishMixStreamToCdn,
+        value: TRTCPublishMode.mixStreamToCdn,
         onClick: setPublishMode,
       ),
     ];
@@ -514,13 +514,13 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
     TRTCPublishTarget target = TRTCPublishTarget();
     target.mode = currentMode;
 
-    if (target.mode == TRTCPublishMode.TRTCPublishMixStreamToRoom) {
+    if (target.mode == TRTCPublishMode.mixStreamToRoom) {
       TRTCUser trtcUser = TRTCUser();
       trtcUser.userId = mixUserId;
       trtcUser.intRoomId = mixRoomId;
 
       target.mixStreamIdentity = trtcUser;
-    } else if (target.mode == TRTCPublishMode.TRTCPublishMixStreamToCdn) {
+    } else if (target.mode == TRTCPublishMode.mixStreamToCdn) {
       var urlList = cndUrlList.split(',');
       if (urlList.isNotEmpty) {
         target.cdnUrlList = <TRTCPublishCdnUrl>[];
@@ -541,11 +541,11 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
       selfUser.intRoomId = localRoomId;
 
       TRTCVideoLayout selfVideoLayout = TRTCVideoLayout();
-      selfVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeBig;
-      selfVideoLayout.rect = Rect(originX: 0, originY: 0, sizeWidth: 1080, sizeHeight: 1920);
+      selfVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.big;
+      selfVideoLayout.rect = TRTCRect(left: 0, top: 0, right: 1080, bottom: 1920);
       selfVideoLayout.zOrder = 0;
       selfVideoLayout.fixedVideoUser = selfUser;
-      selfVideoLayout.fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit;
+      selfVideoLayout.fillMode = TRTCVideoFillMode.fit;
 
       config.videoLayoutList.add(selfVideoLayout);
 
@@ -554,11 +554,11 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
       remoteUser.intRoomId = remoteRoomId;
 
       TRTCVideoLayout remoteVideoLayout = TRTCVideoLayout();
-      remoteVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeBig;
-      remoteVideoLayout.rect = Rect(originX: 100, originY: 50, sizeWidth: 216, sizeHeight: 384);
+      remoteVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.big;
+      remoteVideoLayout.rect = TRTCRect(left: 100, top: 50, right: 316, bottom: 384);
       remoteVideoLayout.zOrder = 1;
       remoteVideoLayout.fixedVideoUser = remoteUser;
-      remoteVideoLayout.fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit;
+      remoteVideoLayout.fillMode = TRTCVideoFillMode.fit;
 
       config.videoLayoutList.add(remoteVideoLayout);
     }
@@ -579,7 +579,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
     param.audioEncodedKbps = 128;
     param.audioEncodedCodecType = 2;
 
-    trtcCloud.startPublishMediaStream(target: target, config: config, params: param);
+    trtcCloud.startPublishMediaStream(target, param, config);
   }
 
   void stopPublishMediaStream() {
@@ -616,48 +616,25 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
 
     if (remoteUidList.length > 0) {
       setPublishMode(currentMode);
-    } else {
-      trtcCloud.setMixTranscodingConfig(null);
     }
     setState(() {});
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onStartPublishMediaStream:
-        print(
-            "TRTCCloudListener.onStartPublishMediaStream: {taskId:${params["taskId"]}, code:${params["code"]}, message:${params["message"]}");
-        publishMediaStreamTaskId = params["taskId"];
-        break;
-      case TRTCCloudListener.onUpdatePublishMediaStream:
-        print(
-            "TRTCCloudListener.onUpdatePublishMediaStream: {taskId:${params["taskId"]}, code:${params["code"]}, message:${params["message"]}");
-        break;
-      case TRTCCloudListener.onStopPublishMediaStream:
-        print(
-            "TRTCCloudListener.onStopPublishMediaStream: {taskId:${params["taskId"]}, code:${params["code"]}, message:${params["message"]}");
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onUserVideoAvailable: (userId, available) {
+        onUserVideoAvailable(userId, available);
+      },
+      onStartPublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        debugPrint("TRTCCloudListener.onStartPublishMediaStream: taskId:$taskId, code:$errCode, msg:$errMsg");
+        publishMediaStreamTaskId = taskId;
+      },
+      onUpdatePublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        debugPrint("TRTCCloudListener.onUpdatePublishMediaStream: taskId:$taskId, code:$errCode, msg:$errMsg");
+      },
+      onStopPublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        debugPrint("TRTCCloudListener.onStopPublishMediaStream: taskId:$taskId, code:$errCode, msg:$errMsg");
+      }
+    );
   }
 }

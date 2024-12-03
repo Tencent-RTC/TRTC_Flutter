@@ -3,9 +3,9 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 
 class AudioFrameCustomProcessPage extends StatefulWidget {
@@ -43,7 +43,6 @@ class _AudioFrameCustomProcessPageState extends State<AudioFrameCustomProcessPag
       children: [
         TRTCCloudVideoView(
           key: ValueKey("LocalView"),
-          viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
           onViewCreated: (viewId) async {
             setState(() {
               localViewId = viewId;
@@ -172,12 +171,12 @@ class _AudioFrameCustomProcessPageState extends State<AudioFrameCustomProcessPag
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = roomId;
     params.userId = userId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
+    trtcCloud.enterRoom(params, TRTCAppScene.live);
 
     trtcCloud.startLocalPreview(true, localViewId);
     isEnterRoom = true;
@@ -193,8 +192,8 @@ class _AudioFrameCustomProcessPageState extends State<AudioFrameCustomProcessPag
     setState(() {});
   }
 
-  destroyRoom() async {
-    await TRTCCloud.destroySharedInstance();
+  destroyRoom() {
+    TRTCCloud.destroySharedInstance();
   }
 
   _enableAudioFrameCustomProcess() async {

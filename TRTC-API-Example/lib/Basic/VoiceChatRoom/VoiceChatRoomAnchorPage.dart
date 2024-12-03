@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,6 +21,7 @@ class VoiceChatRoomAnchorPage extends StatefulWidget {
 
 class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
   Map<String, String> anchorUserIdSet = {};
   bool isAllUserMute = false;
   bool isDownMic = false;
@@ -36,110 +37,23 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
+    trtcCloud.enterRoom(params, TRTCAppScene.voiceChatRoom);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
 
-    trtcCloud.registerListener(onTrtcListener);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        onUserAudioAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onUserAudioAvailable: (userId, available) {
+        onUserAudioAvailable(userId, available);
+      }
+    );
   }
 
   onUserAudioAvailable(String userId, bool available) {
@@ -165,11 +79,11 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
   onDownMicClick() {
     bool nowIsDownMic = !isDownMic;
     if (nowIsDownMic) {
-      trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAudience);
+      trtcCloud.switchRole(TRTCRoleType.audience);
       trtcCloud.stopLocalAudio();
     } else {
-      trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAnchor);
-      trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
+      trtcCloud.switchRole(TRTCRoleType.anchor);
+      trtcCloud.startLocalAudio(TRTCAudioQuality.music);
     }
     setState(() {
       isDownMic = nowIsDownMic;
@@ -177,10 +91,10 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
   }
 
   destroyRoom() async {
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.stopLocalAudio();
+    trtcCloud.exitRoom();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   @override

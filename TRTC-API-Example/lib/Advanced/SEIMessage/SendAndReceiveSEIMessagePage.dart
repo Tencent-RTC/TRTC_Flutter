@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
  SEI Message Receiving/Sending
  The TRTC app supports sending and receiving SEI messages.
  This document shows how to integrate the SEI message sending/receiving feature.
- 1. Enter a room: trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+ 1. Enter a room: trtcCloud.enterRoom(params, TRTCAppScene.live);
  2. Send SEI messages: trtcCloud.sendSEIMsg(seiMessage, 1);
  3. Receive SEI messages: onTrtcListener：- onRecvSEIMsg(String userId, String message);
  Documentation: https://trtc.io/document/47866?product=featuresserverapis
@@ -32,6 +32,7 @@ class SendAndReceiveSEIMessagePage extends StatefulWidget {
 class _SendAndReceiveSEIMessagePageState
     extends State<SendAndReceiveSEIMessagePage> {
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
   int? localViewId;
   bool isStartPush = false;
   int roomId = int.parse(TXHelper.generateRandomStrRoomId());
@@ -50,120 +51,37 @@ class _SendAndReceiveSEIMessagePageState
   }
 
   startPushStream() async {
-    trtcCloud.startLocalPreview(true, localViewId);
+    trtcCloud.startLocalPreview(true, localViewId!);
     TRTCParams params = new TRTCParams();
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+    trtcCloud.enterRoom(params, TRTCAppScene.videoCall);
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
-    encParams.videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
+    encParams.videoResolution = TRTCVideoResolution.res_960_540;
     // In TRTCVIDEORESOLUTION, only the horizontal screen resolution (such as 640 × 360) is defined. If you need to use a vertical screen resolution (such as 360 × 640), you need to specify the TRTCVIDEORESOLUTIONMODE to be Portrait.
-    encParams.videoResolutionMode = 1;
+    encParams.videoResolutionMode = TRTCVideoResolutionMode.landscape;
     encParams.videoFps = 24;
     trtcCloud.setVideoEncoderParam(encParams);
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
-    trtcCloud.registerListener(onTrtcListener);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
-
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        onRemoteUserLeaveRoom(params["userId"], params['reason']);
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        onRecvSEIMsg(params['userId'], params['message']);
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
-    }
+  
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onRemoteUserLeaveRoom: (userId, reason) {
+        onRemoteUserLeaveRoom(userId, reason);
+      },
+      onUserVideoAvailable: (userId, available) {
+        onUserVideoAvailable(userId, available);
+      },
+      onRecvSEIMsg: (userId, message) {
+        onRecvSEIMsg(userId, message);
+      }
+    );
   }
 
   onRemoteUserLeaveRoom(String userId, int reason) {
@@ -192,10 +110,10 @@ class _SendAndReceiveSEIMessagePageState
   }
 
   destroyRoom() async {
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.stopLocalPreview();
-    await trtcCloud.exitRoom();
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.stopLocalAudio();
+    trtcCloud.stopLocalPreview();
+    trtcCloud.exitRoom();
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -210,7 +128,7 @@ class _SendAndReceiveSEIMessagePageState
     if (isStartPush) {
       startPushStream();
     } else {
-      trtcCloud.unRegisterListener(onTrtcListener);
+      trtcCloud.unRegisterListener(listener);
       trtcCloud.stopLocalAudio();
       trtcCloud.stopLocalPreview();
       trtcCloud.exitRoom();
@@ -235,7 +153,6 @@ class _SendAndReceiveSEIMessagePageState
           onTap: () {},
           child: TRTCCloudVideoView(
             key: ValueKey("LocalView"),
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
             onViewCreated: (viewId) async {
               setState(() {
                 localViewId = viewId;
@@ -271,11 +188,10 @@ class _SendAndReceiveSEIMessagePageState
                         flex: 1,
                         child: TRTCCloudVideoView(
                           key: ValueKey('RemoteView_$userId'),
-                          viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
                           onViewCreated: (viewId) async {
                             trtcCloud.startRemoteView(
                                 userId,
-                                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL,
+                                TRTCVideoStreamType.small,
                                 viewId);
                           },
                         ),

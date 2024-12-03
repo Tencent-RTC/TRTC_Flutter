@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 
 ///  ScreenAudiencePage.dart
 ///  TRTC-API-Example-Dart
@@ -23,6 +23,7 @@ class _ScreenAudiencePageState extends State<ScreenAudiencePage> {
   Map<String, String> anchorUserIdSet = {};
   int? remoteViewId;
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
   @override
   void initState() {
     startPushStream();
@@ -35,45 +36,38 @@ class _ScreenAudiencePageState extends State<ScreenAudiencePage> {
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
-    params.role = TRTCCloudDef.TRTCRoleAudience;
+    params.role = TRTCRoleType.audience;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
-    trtcCloud.registerListener(onTrtcListener);
+    trtcCloud.enterRoom(params, TRTCAppScene.videoCall);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        onUserSubAvailable(params["userId"], params['available']);
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onUserSubStreamAvailable: (userId, available) {
+        onUserSubAvailable(userId, available);
+      }
+    );
   }
 
   onUserSubAvailable(String userId, bool available) {
     if (available && remoteViewId != null) {
       trtcCloud.startRemoteView(
-          userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, remoteViewId);
+          userId, TRTCVideoStreamType.sub, remoteViewId!);
     }
     if (!available) {
-      trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
+      trtcCloud.stopRemoteView(userId, TRTCVideoStreamType.sub);
     }
   }
 
   destroyRoom() async {
     trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -91,7 +85,6 @@ class _ScreenAudiencePageState extends State<ScreenAudiencePage> {
         Container(
           child: TRTCCloudVideoView(
             key: ValueKey("remoteViewId"),
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
             onViewCreated: (viewId) async {
               setState(() {
                 remoteViewId = viewId;

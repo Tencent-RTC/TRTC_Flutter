@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trtc_api_example/Advanced/AudioFrameCustomProcess/AudioFrameCustomProcess.dart';
-import 'package:trtc_api_example/Advanced/JoinMultipleRoom/JoinMultipleRoomPage.dart';
 import 'package:trtc_api_example/Advanced/PublishMediaStream/PublishMediaStreamSelectRolePage.dart';
-import 'package:trtc_api_example/Advanced/TextureRendering/TextureEnterPage.dart';
 import 'package:trtc_api_example/Advanced/LocalRecord/LocalRecordPage.dart';
-import 'package:trtc_api_example/Advanced/PushCDN/PushCDNSelectRolePage.dart';
 import 'package:trtc_api_example/Advanced/RoomPk/RoomPkPage.dart';
 import 'package:trtc_api_example/Advanced/SEIMessage/SendAndReceiveSEIMessagePage.dart';
 import 'package:trtc_api_example/Advanced/SetAudioEffect/SetAudioEffectPage.dart';
@@ -74,14 +71,6 @@ class ExampleData {
         detailPage: SpeedTestPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_pushcdn,
-        detailPage: PushCDNSelectRolePage(),
-      ),
-      ExamplePageItem(
-        title: AppLocalizations.of(context)!.texture_render,
-        detailPage: TextureEnterPage(),
-      ),
-      ExamplePageItem(
         title: AppLocalizations.of(context)!.main_rtrc_set_audio_effect,
         detailPage: SetAudioEffectPage(),
       ),
@@ -100,10 +89,6 @@ class ExampleData {
       ExamplePageItem(
         title: AppLocalizations.of(context)!.main_item_switch_room,
         detailPage: SwitchRoomPage(),
-      ),
-      ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_join_multiple_room,
-        detailPage: JoinMultipleRoomPage(),
       ),
       ExamplePageItem(
         title: AppLocalizations.of(context)!.main_trtc_connect_other_room_pk,

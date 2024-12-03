@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,6 +35,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
   Map<String, String> anchorUserIdSet = {};
   int? remoteViewId;
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
   TRTCVideoEncParam encParams = TRTCVideoEncParam();
   @override
   void initState() {
@@ -48,123 +49,44 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+    trtcCloud.enterRoom(params, TRTCAppScene.videoCall);
 
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_MUSIC);
-    trtcCloud.registerListener(onTrtcListener);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.music);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
-
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
+  
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onUserVideoAvailable: (userId, available) {
+        onUserVideoAvailable(userId, available);
+      },
+      onScreenCaptureStarted: () {
         onScreenCaptureStarted();
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
+      },
+      onScreenCapturePaused: (reason) {
         onScreenCapturePaused();
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
+      },
+      onScreenCaptureResumed: (reason) {
         onScreenCaptureResumed();
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        onScreenCaptureStoped(params['reason']);
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
-    }
+      },
+      onScreenCaptureStopped: (reason) {
+        onScreenCaptureStoped(reason);
+      }
+    );
   }
 
   onUserVideoAvailable(String userId, bool available) {
     if (available && remoteViewId != null) {
       trtcCloud.startRemoteView(
-          userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, remoteViewId);
+          userId, TRTCVideoStreamType.big, remoteViewId!);
     }
     if (!available) {
-      trtcCloud.stopRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
+      trtcCloud.stopRemoteView(userId, TRTCVideoStreamType.big);
     }
   }
 
@@ -193,11 +115,11 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
   }
 
   destroyRoom() async {
-    await trtcCloud.stopScreenCapture();
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.stopScreenCapture();
+    trtcCloud.stopLocalAudio();
+    trtcCloud.exitRoom();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -217,18 +139,17 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
       case ScreenStatus.ScreenStop:
         setState(() {
           encParams.videoResolution =
-              TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720;
+              TRTCVideoResolution.res_1280_720;
           encParams.videoBitrate = 550;
           encParams.videoFps = 10;
           if (!kIsWeb && Platform.isIOS) {
-            trtcCloud.startScreenCapture(
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, encParams,
-                appGroup: iosExtensionName);
+            trtcCloud.startScreenCapture(0,
+                TRTCVideoStreamType.sub, encParams,);
             //The screen sharing function can only be tested in the real machine
             ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
           } else {
-            trtcCloud.startScreenCapture(
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, encParams);
+            trtcCloud.startScreenCapture(0,
+                TRTCVideoStreamType.sub, encParams);
           }
           screenStatus = ScreenStatus.ScreenWait;
         });

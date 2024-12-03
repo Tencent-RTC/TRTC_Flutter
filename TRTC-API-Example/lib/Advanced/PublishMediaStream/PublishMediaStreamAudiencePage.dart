@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,6 +19,7 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
   Map<String, String> remoteUidSet = {};
   bool isEnterRoom = false;
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
 
   @override
   void initState() {
@@ -43,10 +44,9 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
         (remoteUidList.length > 0)
             ? Container(
           child: TRTCCloudVideoView(
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
             onViewCreated: (viewId) async {
               setState(() {
-                trtcCloud.startRemoteView(remoteUidList[0], TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewId);
+                trtcCloud.startRemoteView(remoteUidList[0], TRTCVideoStreamType.small, viewId);
               });
             },
           ),
@@ -77,9 +77,8 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
                   ),
                   child: TRTCCloudVideoView(
                     key: ValueKey('RemoteView_$userId'),
-                    viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
                     onViewCreated: (viewId) async {
-                      trtcCloud.startRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewId);
+                      trtcCloud.startRemoteView(userId, TRTCVideoStreamType.small, viewId);
                     },
                   ),
                 );
@@ -179,18 +178,19 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
-    params.role = TRTCCloudDef.TRTCRoleAudience;
+    params.role = TRTCRoleType.audience;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_LIVE);
-    trtcCloud.registerListener(onTrtcListener);
+    trtcCloud.enterRoom(params, TRTCAppScene.live);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
   exitRoom() async {
     remoteUidSet.clear();
-    await trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.exitRoom();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   onStartPushClick() {
@@ -224,100 +224,14 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
     }
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        onRemoteUserLeaveRoom(params["userId"], params['reason']);
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onRemoteUserLeaveRoom: (userId, reason) {
+        onRemoteUserLeaveRoom(userId, reason);
+      },
+      onUserVideoAvailable: (userId, available) {
+        onUserVideoAvailable(userId, available);
+      }
+    );
   }
 }

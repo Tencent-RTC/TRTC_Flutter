@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:tencent_trtc_cloud/tx_device_manager.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,6 +31,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
   bool isSpeaker = true;
   bool isMuteLocalAudio = false;
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
 
   @override
   void initState() {
@@ -44,87 +45,41 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.widget.roomId;
     params.userId = this.widget.userId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
     trtcCloud.callExperimentalAPI(
         "{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_AUDIOCALL);
-    trtcCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH);
-    trtcCloud.enableAudioVolumeEvaluation(1000);
-
-    trtcCloud.registerListener(onTrtcListener);
+    trtcCloud.enterRoom(params, TRTCAppScene.audioCall);
+    trtcCloud.startLocalAudio(TRTCAudioQuality.speech);
+    TRTCAudioVolumeEvaluateParams evaluateParams = TRTCAudioVolumeEvaluateParams(
+      enableVadDetection: true,
+      enableSpectrumCalculation: true,
+      interval: 1000,
+    );
+    trtcCloud.enableAudioVolumeEvaluation(true, evaluateParams);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        onRemoteUserEnterRoom(params);
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        onRemoteUserLeaveRoom(params["userId"], params['reason']);
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        onNetworkQuality(params);
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        onUserVoiceVolume(params);
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onRemoteUserEnterRoom: (userId) {
+        onRemoteUserEnterRoom(userId);
+      },
+      onRemoteUserLeaveRoom: (userId, reason) {
+        onRemoteUserLeaveRoom(userId, reason);
+      },
+      onUserVoiceVolume: (list, totalVolume) {
+        onUserVoiceVolume(list);
+      }
+    );
   }
 
   destroyRoom() async {
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(onTrtcListener);
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.stopLocalAudio();
+    trtcCloud.exitRoom();
+    trtcCloud.unRegisterListener(listener);
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -171,15 +126,14 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
   }
 
   // Note that the simulator of this function in iOS is invalid
-  onUserVoiceVolume(params) {
-    List<dynamic> list = params["userVolumes"] as List<dynamic>;
+  onUserVoiceVolume(List<TRTCVolumeInfo> list) {
     list.forEach((item) {
-      int volme = int.tryParse(item["volume"].toString())!;
-      if (item['userId'] != null && item['userId'] != "") {
-        String userId = item['userId'];
+      int volume = item.volume;
+      if (item.userId != "") {
+        String userId = item.userId;
         if (remoteInfoDictionary.containsKey(userId)) {
           setState(() {
-            remoteInfoDictionary[userId]!.volume = volme;
+            remoteInfoDictionary[userId]!.volume = volume;
           });
         }
       }
@@ -333,10 +287,10 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                   bool newIsSpeaker = !isSpeaker;
                   if (newIsSpeaker) {
                     deviceManager
-                        .setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER);
+                        .setAudioRoute(TXAudioRoute.speakerPhone);
                   } else {
                     deviceManager
-                        .setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_EARPIECE);
+                        .setAudioRoute(TXAudioRoute.earpiece);
                   }
                   setState(() {
                     isSpeaker = newIsSpeaker;
