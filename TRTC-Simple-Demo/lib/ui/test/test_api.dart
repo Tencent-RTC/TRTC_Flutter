@@ -1,22 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/tx_device_manager.dart';
+import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/tx_beauty_manager.dart';
-import 'package:tencent_trtc_cloud/tx_device_manager.dart';
-import 'package:tencent_trtc_cloud/tx_audio_effect_manager.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
 import 'package:trtc_demo/models/user_model.dart';
+import 'package:trtc_demo/ui/test/api_checker_button.dart';
+import 'package:trtc_demo/ui/test/callback_checker.dart';
+import 'package:trtc_demo/ui/test/parameter_type.dart';
 import 'package:trtc_demo/utils/tool.dart';
-import 'package:path_provider/path_provider.dart';
 
-/// Video page
+typedef VoidFunction = void Function();
+
 class TestPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => TestPageState();
@@ -28,168 +33,1401 @@ class TestPageState extends State<TestPage> {
 
   late TRTCCloud trtcCloud;
   late TXDeviceManager txDeviceManager;
-  late TXBeautyManager txBeautyManager;
-  late TXAudioEffectManager txAudioManager;
+  late TXAudioEffectManager txAudioEffectManager;
 
-  TRTCAudioFrameListener? _audioFrameListener;
+  String musicPath = "";
+  String recordPath = "";
+
+  TRTCCloud? subCloud;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     initRoom();
+    initData();
     meetModel = context.read<MeetingModel>();
     userInfo = meetModel.getUserInfo();
   }
 
+  initData() async {
+    Directory? appDocDir;
+    if(Platform.isAndroid) {
+      appDocDir = await getExternalStorageDirectory();
+    } else {
+      appDocDir = await getApplicationDocumentsDirectory();
+    }
+
+    recordPath = '${appDocDir?.path}/isolocalVideo.mp4';
+
+    musicPath = await MeetingTool.copyAssetToLocal('media/daoxiang.mp3');
+  }
+
   initRoom() async {
-    trtcCloud = (await TRTCCloud.sharedInstance())!;
+    trtcCloud = (await TRTCCloud.sharedInstance());
+
     txDeviceManager = trtcCloud.getDeviceManager();
-    txBeautyManager = trtcCloud.getBeautyManager();
-    txAudioManager = trtcCloud.getAudioEffectManager();
-    trtcCloud.registerListener((type, params) {
-      if (type == TRTCCloudListener.onSpeedTest) {
-        print("=====onSpeedTest=====");
-        print(params);
-      }
-    });
+    txAudioEffectManager = trtcCloud.getAudioEffectManager();
+
+    trtcCloud.setLogCallback(TRTCLogCallback(
+        onLog: (String msg, TRTCLogLevel level, String extInfo) {
+          CallbackChecker.invokeCheck(msg);
+        }
+    ));
   }
 
-  String getStreamId() {
-    String streamId = GenerateTestUserSig.sdkAppId.toString() + '_122_345_main';
-    return streamId;
+  @override
+  void dispose() {
+    super.dispose();
   }
 
-  // Set up a mixed flow
-  setMixConfig() {
-    /// Set up mixed stream pre-row-left and right mode
-    TRTCTranscodingConfig config = TRTCTranscodingConfig();
-    config.videoWidth = 720;
-    config.videoHeight = 640;
-    config.videoBitrate = 1500;
-    config.videoFramerate = 20;
-    config.videoGOP = 2;
-    config.audioSampleRate = 48000;
-    config.audioBitrate = 64;
-    config.audioChannels = 2;
-
-    config.streamId = getStreamId();
-
-    config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
-    config.mixUsers = [];
-
-    TRTCMixUser mixUser = TRTCMixUser();
-    mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
-    mixUser.zOrder = 0;
-    mixUser.x = 0;
-    mixUser.y = 0;
-    mixUser.width = 360;
-    mixUser.height = 640;
-    mixUser.roomId = '122';
-    config.mixUsers?.add(mixUser);
-
-    //Lianmai people screen location
-    TRTCMixUser remote = TRTCMixUser();
-    remote.userId = "\$PLACE_HOLDER_REMOTE\$";
-    remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
-    remote.zOrder = 1;
-    remote.x = 360;
-    remote.y = 0;
-    remote.width = 360;
-    remote.height = 640;
-    remote.roomId = '122';
-    config.mixUsers?.add(remote);
-
-    trtcCloud.setMixTranscodingConfig(config);
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Test API'),
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(text: 'TRTCCloud'),
+                Tab(text: 'TXDeviceManager'),
+                Tab(text: 'TXAudioEffectManager'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              _testTRTCCloud(),
+              _testTXDevice(),
+              _testTXAudioEffect(),
+            ],
+          ),
+        )
+    );
   }
 
-  setMixConfigManual() {
-    TRTCTranscodingConfig config = new TRTCTranscodingConfig();
-    config.videoWidth = 720;
-    config.videoHeight = 1280;
-    config.videoBitrate = 1500;
-    config.videoFramerate = 20;
-    config.videoGOP = 2;
-    config.audioSampleRate = 48000;
-    config.audioBitrate = 64;
-    config.audioChannels = 2;
-    config.streamId = getStreamId();
-    config.appId = 1256635546;
-    config.bizId = 93434;
-    config.backgroundColor = 0x000000;
-    config.backgroundImage = null;
+  ListView _testTRTCCloud() {
+    return ListView(
+      children: [
+        ApiCheckerButton(
+            methodName: "switchRole",
+            parameters: [
+              Parameter(name: 'role', type: ParameterType.tEnum, value: TRTCRoleType.audience),
+            ],
+            extString: 'audience',
+            callApi: (params) {
+              trtcCloud.switchRole(params['role']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: "SwitchRole",
+            parameters: [
+              Parameter(name: 'role', type: ParameterType.tEnum, value: TRTCRoleType.anchor),
+            ],
+            extString: 'anchor',
+            callApi: (params) {
+              trtcCloud.switchRole(params['role']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: "switchRoom",
+            parameters: [
+              Parameter(
+                  name: 'roomId',
+                  type: ParameterType.tClass,
+                  value: TRTCSwitchRoomConfig(
+                      roomId: 666,
+                      userSig: GenerateTestUserSig.genTestSig(userInfo.userId),
+                  ),
+              ),
+            ],
+            extString: '666',
+            callApi: (params) {
+              trtcCloud.switchRoom(params['roomId']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: "switchRoom",
+            parameters: [
+              Parameter(
+                name: 'roomId',
+                type: ParameterType.tClass,
+                value: TRTCSwitchRoomConfig(
+                  roomId: meetModel.getMeetId()!,
+                  userSig: GenerateTestUserSig.genTestSig(userInfo.userId),
+                ),
+              ),
+            ],
+            extString: 'origin',
+            callApi: (params) {
+              trtcCloud.switchRoom(params['roomId']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'connectOtherRoom',
+            parameters: [
+              Parameter(name: 'param', type: ParameterType.string,
+                  value: jsonEncode({
+                    'roomId' : 155,
+                    'userId' : "345"
+                  })),
+            ],
+            callApi: (params) {
+              trtcCloud.connectOtherRoom(params['param']);
+            },
+        ),
+        // ApiCheckerButton(
+        //     methodName: 'createSubCloud',
+        //     parameters: [],
+        //     callApi: (params) {
+        //       subCloud ??= trtcCloud.createSubCloud();
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'destroySubCloud',
+        //     parameters: [
+        //       Parameter(name: 'subCloud', type: ParameterType.tClass, value: subCloud,),
+        //     ],
+        //     callApi: (params) {
+        //       if (params['subCloud'] != null) {
+        //         trtcCloud.destroySubCloud(params['subCloud']!);
+        //       }
+        //     }
+        // ),
+        ApiCheckerButton(
+            methodName: 'disconnectOtherRoom',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.disconnectOtherRoom();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setDefaultStreamRecvMode',
+            parameters: [
+              Parameter(name: 'autoRecvAudio', type: ParameterType.bool, value: false),
+              Parameter(name: 'autoRecvVideo', type: ParameterType.bool, value: false),
+            ],
+            callApi: (params) {
+              trtcCloud.setDefaultStreamRecvMode(params['autoRecvAudio'], params['autoRecvVideo']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startPublishMediaStream',
+            parameters: [
+              Parameter(name: 'target', type: ParameterType.tClass, value: _getTRTCPublishTarget()),
+              Parameter(name: 'param', type: ParameterType.tClass, value: _getTRTCStreamEncoderParam()),
+              Parameter(name: 'config', type: ParameterType.tClass, value: _getTRTCStreamMixingConfig()),
+            ],
+            callApi: (params) {
+              trtcCloud.startPublishMediaStream(params['target'], params['param'], params['config']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'updatePublishMediaStream',
+            parameters: [
+              Parameter(name: 'taskId', type: ParameterType.string, value: "888",),
+              Parameter(name: 'target', type: ParameterType.tClass, value: _getTRTCPublishTarget()),
+              Parameter(name: 'param', type: ParameterType.tClass, value: _getTRTCStreamEncoderParam()),
+              Parameter(name: 'config', type: ParameterType.tClass, value: _getTRTCStreamMixingConfig()),
+            ],
+            callApi: (params) {
+              trtcCloud.updatePublishMediaStream(params['taskId'], params['target'], params['param'], params['config']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopPublishMediaStream',
+            parameters: [
+              Parameter(name: 'taskId', type: ParameterType.string, value: "888",),
+            ],
+            callApi: (params) {
+              trtcCloud.stopPublishMediaStream(params['taskId']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'updateLocalView',
+            parameters: [
+              Parameter(name: 'viewId', type: ParameterType.int, value: 0,),
+            ],
+            callApi: (params) {
+              trtcCloud.updateLocalView(params['viewId']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteLocalVideo',
+            parameters: [
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'mute', type: ParameterType.bool, value: true,),
+            ],
+            extString: 'true',
+            callApi: (params) {
+              trtcCloud.muteLocalVideo(params['streamType'], params['mute']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteLocalVideo',
+            parameters: [
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'mute', type: ParameterType.bool, value: false,),
+            ],
+            extString: 'false',
+            callApi: (params) {
+              trtcCloud.muteLocalVideo(params['streamType'], params['mute']);
+            }
+        ),
+        // ApiCheckerButton(
+        //     methodName: 'setVideoMuteImage',
+        //     token: 'setMuteImage',
+        //     parameters: [
+        //       Parameter(name: 'image', type: ParameterType.tClass, value: TRTCImageBuffer(),),
+        //       Parameter(name: 'fps', type: ParameterType.int, value: 5,),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.setVideoMuteImage(params['image'], params['fps']);
+        //     }
+        // ),
+        ApiCheckerButton(
+            methodName: 'updateRemoteView',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'viewId', type: ParameterType.int, value: 0,),
+            ],
+            callApi: (params) {
+              trtcCloud.updateRemoteView(params['userId'], params['streamType'], params['viewId']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopAllRemoteView',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.stopAllRemoteView();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteRemoteVideoStream',
+            token: 'MuteRemoteVideo',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'mute', type: ParameterType.bool, value: false,),
+            ],
+            callApi: (params) {
+              trtcCloud.muteRemoteVideoStream(params['userId'], params['streamType'], params['mute']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteAllRemoteVideoStreams',
+            token: 'MuteAllRemoteVideo',
+            parameters: [
+              Parameter(name: 'mute', type: ParameterType.bool, value: true,),
+            ],
+            callApi: (params) {
+              trtcCloud.muteAllRemoteVideoStreams(params['mute']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVideoEncoderParam',
+            token: 'SetVideoEncodeParams',
+            parameters: [
+              Parameter(name: 'params', type: ParameterType.tClass,
+                value: TRTCVideoEncParam(
+                  videoBitrate: 1000,
+                  videoResolution: TRTCVideoResolution.res_1920_1080,
+                  videoResolutionMode: TRTCVideoResolutionMode.landscape,
+                  videoFps: 15,
+                  minVideoBitrate: 10,
+                  enableAdjustRes: false,
+                ),),
+            ],
+            callApi: (params) {
+              trtcCloud.setVideoEncoderParam(params['params']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setNetworkQosParam',
+            token: 'SetQosConfigParams',
+            parameters: [
+              Parameter(name: 'params', type: ParameterType.tClass,
+                value: TRTCNetworkQosParam(
+                  preference: TRTCVideoQosPreference.smooth,
+                ),),
+            ],
+            callApi: (params) {
+              trtcCloud.setNetworkQosParam(params['params']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setLocalRenderParams',
+            parameters: [
+              Parameter(name: 'params', type: ParameterType.tClass,
+                value: TRTCRenderParams(
+                  rotation: TRTCVideoRotation.rotation0,
+                  fillMode: TRTCVideoFillMode.fit,
+                  mirrorType: TRTCVideoMirrorType.enable,
+                ),),
+            ],
+            callApi: (params) {
+              trtcCloud.setLocalRenderParams(params['params']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setRemoteRenderParams',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'params', type: ParameterType.tClass, value: TRTCRenderParams(),),
+            ],
+            callApi: (params) {
+              trtcCloud.setRemoteRenderParams(params['userId'], params['streamType'], params['params']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableSmallVideoStream',
+            token: 'SetVideoEncodeParams',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: true,),
+              Parameter(name: 'smallVideoEncParam', type: ParameterType.tClass,
+                value: TRTCVideoEncParam(
+                  videoBitrate: 1000,
+                  videoResolution: TRTCVideoResolution.res_320_240,
+                  videoResolutionMode: TRTCVideoResolutionMode.portrait,
+                  videoFps: 15,
+                  minVideoBitrate: 103,
+                  enableAdjustRes: false,
+                ),),
+            ],
+            callApi: (params) {
+              trtcCloud.enableSmallVideoStream(params['enable'], params['smallVideoEncParam']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setRemoteVideoStreamType',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+            ],
+            callApi: (params) {
+              trtcCloud.setRemoteVideoStreamType(params['userId'], params['streamType']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'snapshotVideo',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'sourceType', type: ParameterType.tEnum, value: TRTCSnapshotSourceType.stream),
+            ],
+            callApi: (params) {
+              trtcCloud.snapshotVideo(params['userId'], params['streamType'], params['sourceType']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setGravitySensorAdaptiveMode',
+            parameters: [
+              Parameter(name: 'mode', type: ParameterType.tEnum, value: TRTCGSensorMode.uiAutoLayout),
+            ],
+            callApi: (params) {
+              trtcCloud.setGravitySensorAdaptiveMode(params['mode']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startLocalAudio',
+            parameters: [
+              Parameter(name: 'quality', type: ParameterType.tEnum, value: TRTCAudioQuality.music,),
+            ],
+            callApi: (params) {
+              trtcCloud.startLocalAudio(params['quality']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopLocalAudio',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.stopLocalAudio();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteLocalAudio',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: true,),
+            ],
+            extString: 'true',
+            callApi: (params) {
+              trtcCloud.muteLocalAudio(params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteLocalAudio',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: false,),
+            ],
+            extString: 'false',
+            callApi: (params) {
+              trtcCloud.muteLocalAudio(params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteRemoteAudio',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value'),
+              Parameter(name: 'enable', type: ParameterType.bool, value: false,),
+            ],
+            callApi: (params) {
+              trtcCloud.muteRemoteAudio(params['userId'], params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'muteAllRemoteAudio',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: false,),
+            ],
+            callApi: (params) {
+              trtcCloud.muteAllRemoteAudio(params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setRemoteAudioVolume',
+            parameters: [
+              Parameter(name: 'userId', type: ParameterType.string, value: 'value',),
+              Parameter(name: 'volume', type: ParameterType.int, value: 70,),
+            ],
+            callApi: (params) {
+              trtcCloud.setRemoteAudioVolume(params['userId'], params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setAudioCaptureVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 80,),
+            ],
+            callApi: (params) {
+              trtcCloud.setAudioCaptureVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getAudioCaptureVolume',
+            parameters: [],
+            callApi: (params) {
+              int result = trtcCloud.getAudioCaptureVolume();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setAudioPlayoutVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 60,),
+            ],
+            callApi: (params) {
+              trtcCloud.setAudioPlayoutVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getAudioPlayoutVolume',
+            parameters: [],
+            callApi: (params) {
+              int result = trtcCloud.getAudioPlayoutVolume();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableAudioVolumeEvaluation',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: false,),
+              Parameter(name: 'params', type: ParameterType.tClass,
+                value: TRTCAudioVolumeEvaluateParams(
+                  enablePitchCalculation: true,
+                  enableSpectrumCalculation: false,
+                  enableVadDetection: true,
+                  interval: 1200,
+                ),
+              ),
+            ],
+            callApi: (params) {
+              trtcCloud.enableAudioVolumeEvaluation(params['enable'], params['params']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startLocalRecording',
+            parameters: [
+              Parameter(name: 'param', type: ParameterType.tClass,
+                value: TRTCLocalRecordingParams(
+                  filePath: recordPath,
+                  recordType: TRTCLocalRecordType.both,
+                  interval: 10000,
+                  maxDurationPerFile: 100000,
+                ),),
+            ],
+            callApi: (params) {
+              int result = trtcCloud.startLocalRecording(params['param']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopLocalRecording',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.stopLocalRecording();
+            },
+        ),
+        // ApiCheckerButton(
+        //     methodName: 'setWatermark',
+        //     parameters: [
+        //       Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+        //       Parameter(name: 'srcData', type: ParameterType.string, value: 'images/watermark_img.png'),
+        //       Parameter(name: 'srcType', type: ParameterType.tEnum, value: TRTCWaterMarkSrcType.file),
+        //       Parameter(name: 'width', type: ParameterType.int, value: 100),
+        //       Parameter(name: 'height', type: ParameterType.int, value: 100),
+        //       Parameter(name: 'xOffset', type: ParameterType.double, value: 0.5),
+        //       Parameter(name: 'yOffset', type: ParameterType.double, value: 0.5),
+        //       Parameter(name: 'fWidthRatio', type: ParameterType.double, value: 0.9),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.setWaterMark(params['streamType'], params['srcData'],
+        //           params['srcType'], params['width'], params['height'],
+        //           params['xOffset'], params['yOffset'], params['fWidthRatio']);
+        //     }
+        // ),
+        ApiCheckerButton(
+            methodName: 'startSystemAudioLoopback',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.startSystemAudioLoopback();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setSystemAudioLoopbackVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 50),
+            ],
+            callApi: (params) {
+              trtcCloud.setSystemAudioLoopbackVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startScreenCapture',
+            parameters: [
+              Parameter(name: 'viewId', type: ParameterType.int, value: 0),
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.sub),
+              Parameter(name: 'encParam', type: ParameterType.tClass, value: TRTCVideoEncParam()),
+            ],
+            callApi: (params) {
+              trtcCloud.startScreenCapture(params['viewId'], params['streamType'], params['encParam']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'pauseScreenCapture',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.pauseScreenCapture();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'resumeScreenCapture',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.resumeScreenCapture();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopScreenCapture',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.stopScreenCapture();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getScreenCaptureSources',
+            parameters: [
+              Parameter(name: 'thumbnail', type: ParameterType.tClass, value: TRTCSize()),
+              Parameter(name: 'icon', type: ParameterType.tClass, value: TRTCSize()),
+            ],
+            callApi: (params) {
+              TRTCScreenCaptureSourceList? list = trtcCloud.getScreenCaptureSources(params['thumbnail'], params['icon']);
+              if (list != null) {
+                _showList(list.sourceList);
+              }
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'selectScreenCaptureTarget',
+            parameters: [
+              Parameter(name: 'source', type: ParameterType.tClass, value: TRTCScreenCaptureSourceInfo()),
+              Parameter(name: 'rect', type: ParameterType.tClass, value: TRTCRect()),
+              Parameter(name: 'property', type: ParameterType.tClass, value: TRTCScreenCaptureProperty()),
+            ],
+            callApi: (params) {
+              trtcCloud.selectScreenCaptureTarget(params['source'], params['rect'], params['property']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setSubStreamEncoderParam',
+            token: 'SetVideoEncodeParams',
+            parameters: [
+              Parameter(name: 'param', type: ParameterType.tClass,
+                  value: TRTCVideoEncParam(
+                    videoBitrate: 1000,
+                    videoResolution: TRTCVideoResolution.res_256_144,
+                    videoResolutionMode: TRTCVideoResolutionMode.landscape,
+                    videoFps: 12,
+                    minVideoBitrate: 10,
+                    enableAdjustRes: true,
+                  )),
+            ],
+            callApi: (params) {
+              trtcCloud.setSubStreamEncoderParam(params['param']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableCustomVideoCapture',
+            parameters: [
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.sub),
+              Parameter(name: 'enable', type: ParameterType.bool, value: false),
+            ],
+            callApi: (params) {
+              trtcCloud.enableCustomVideoCapture(params['streamType'], params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'sendCustomVideoData',
+            parameters: [
+              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+              Parameter(name: 'frame', type: ParameterType.tClass, value: TRTCVideoFrame()),
+            ],
+            callApi: (params) {
+              trtcCloud.sendCustomVideoData(params['streamType'], params['frame']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableCustomAudioCapture',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              trtcCloud.enableCustomAudioCapture(params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'sendCustomAudioData',
+            parameters: [
+              Parameter(name: 'frame', type: ParameterType.tClass,
+                  value: TRTCAudioFrame(length: 3,data: Uint8List.fromList([123,1231,321]))
+              ),
+            ],
+            callApi: (params) {
+              trtcCloud.sendCustomAudioData(params['frame']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableMixExternalAudioFrame',
+            parameters: [
+              Parameter(name: 'enablePublish', type: ParameterType.bool, value: true),
+              Parameter(name: 'enablePlayout', type: ParameterType.bool, value: false),
+            ],
+            callApi: (params) {
+              trtcCloud.enableMixExternalAudioFrame(params['enablePublish'], params['enablePlayout']);
+            }
+        ),
+        // ApiCheckerButton(
+        //     methodName: 'enableLocalVideoCustomProcess',
+        //     token: 'EnableVideoCustomPreprocess',
+        //     parameters: [
+        //       Parameter(name: 'enable', type: ParameterType.bool, value: true),
+        //       Parameter(name: 'format', type: ParameterType.tEnum, value: TRTCVideoPixelFormat.unknown),
+        //       Parameter(name: 'type', type: ParameterType.tEnum, value: TRTCVideoBufferType.unknown),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.enableLocalVideoCustomProcess(params['enable'], params['format'], params['type']);
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'setLocalVideoCustomProcessCallback',
+        //     parameters: [],
+        //     callApi: (params) {
+        //       trtcCloud.setLocalVideoCustomProcessCallback(null);
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'setLocalVideoRenderCallback',
+        //     parameters: [
+        //       Parameter(name: 'format', type: ParameterType.tEnum, value: TRTCVideoPixelFormat.unknown),
+        //       Parameter(name: 'type', type: ParameterType.tEnum, value: TRTCVideoBufferType.unknown),
+        //     ],
+        //     callApi: (params) {
+        //       int result = trtcCloud.setLocalVideoRenderCallback(params['format'], params['type'], null);
+        //       MeetingTool.toast(result.toString(), context);
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'setRemoteVideoRenderCallback',
+        //     parameters: [
+        //       Parameter(name: 'userId', type: ParameterType.string, value: '123'),
+        //       Parameter(name: 'format', type: ParameterType.tEnum, value: TRTCVideoPixelFormat.unknown),
+        //       Parameter(name: 'type', type: ParameterType.tEnum, value: TRTCVideoBufferType.unknown),
+        //     ],
+        //     callApi: (params) {
+        //       int result = trtcCloud.setRemoteVideoRenderCallback(params['userId'], params['format'], params['type'], null);
+        //       MeetingTool.toast(result.toString(), context);
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'setAudioFrameCallback',
+        //     parameters: [],
+        //     callApi: (params) {
+        //       int result = trtcCloud.setAudioFrameCallback(
+        //           TRTCAudioFrameCallback(
+        //               onCapturedAudioFrame: (frame) {
+        //                 debugPrint("onCapturedAudioFrame frame: ${frame.data.length}");
+        //                 String hexString = frame.data.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(' ');
+        //                 debugPrint("onCapturedAudioFrame framedata: $hexString");
+        //               },
+        //               onLocalProcessedAudioFrame: (frame) {
+        //
+        //               },
+        //               onPlayAudioFrame: (frame, userId) {
+        //
+        //               },
+        //               onMixedPlayAudioFrame: (frame) {
+        //
+        //               },
+        //               onMixedAllAudioFrame: (frame) {
+        //                 debugPrint("onMixedAllAudioFrame frame: ${frame.data.length}");
+        //                 String hexString = frame.data.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join(' ');
+        //                 debugPrint("onMixedAllAudioFrame framedata: $hexString");
+        //               }
+        //           ));
+        //       MeetingTool.toast(result.toString(), context);
+        //     }
+        // ),
+        ApiCheckerButton(
+            methodName: 'sendCustomCmdMsg',
+            parameters: [
+              Parameter(name: 'cmdID', type: ParameterType.int, value: 0),
+              Parameter(name: 'data', type: ParameterType.string, value: '123'),
+              Parameter(name: 'reliable', type: ParameterType.bool, value: false),
+              Parameter(name: 'ordered', type: ParameterType.bool, value: false),
+            ],
+            callApi: (params) {
+              bool result = trtcCloud.sendCustomCmdMsg(params['cmdID'], params['data'], params['reliable'], params['ordered']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'sendSEIMsg',
+            parameters: [
+              Parameter(name: 'data', type: ParameterType.string, value: '123'),
+              Parameter(name: 'repeatCount', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              bool result = trtcCloud.sendSEIMsg(params['data'], params['repeatCount']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startSpeedTest',
+            parameters: [
+              Parameter(name: 'params', type: ParameterType.tClass,
+                  value: TRTCSpeedTestParams(
+                    sdkAppId: GenerateTestUserSig.sdkAppId,
+                    userId: "5555",
+                    userSig: GenerateTestUserSig.genTestSig("5555"),
+                    scene: TRTCSpeedTestScene.delayAndBandwidthTesting,
+                    expectedDownBandwidth: 500,
+                    expectedUpBandwidth: 500,
+                  )),
+            ],
+            callApi: (params) {
+              int result = trtcCloud.startSpeedTest(params['params']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopSpeedTest',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.stopSpeedTest();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getSDKVersion',
+            parameters: [],
+            callApi: (params) {
+              String version = trtcCloud.getSDKVersion();
+              MeetingTool.toast(version, context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setLogLevel',
+            parameters: [
+              Parameter(name: 'level', type: ParameterType.tEnum, value: TRTCLogLevel.none),
+            ],
+            callApi: (params) {
+              trtcCloud.setLogLevel(params['level']);
+            }
+        ),
 
-    config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Manual;
-    config.mixUsers = [];
+        ApiCheckerButton(
+            methodName: 'showDebugView',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.showDebugView(1);
+            }
+        ),
 
-    //  Anchor itself
-    TRTCMixUser mixUser = new TRTCMixUser();
-    mixUser.userId = '345';
-    mixUser.zOrder = 0;
-    mixUser.x = 0;
-    mixUser.y = 0;
-    mixUser.width = 720;
-    mixUser.height = 1280;
-    mixUser.roomId = '122';
-    config.mixUsers?.add(mixUser);
-
-    TRTCMixUser remote = TRTCMixUser();
-    remote.userId = '388546';
-    remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
-    remote.zOrder = 1;
-    remote.x = 180;
-    remote.y = 400;
-    remote.width = 135;
-    remote.height = 240;
-    remote.roomId = '122';
-    config.mixUsers!.add(remote);
-    trtcCloud.setMixTranscodingConfig(config);
+        ApiCheckerButton(
+            methodName: 'callExperimentalAPI',
+            parameters: [],
+            callApi: (params) {
+              trtcCloud.callExperimentalAPI(jsonEncode({"api":"enablePictureInPictureFloatingWindow",
+              "params":{"enable": true}}));
+             }
+        ),
+      ],
+    );
   }
 
-  /// Pre-Edition-Painting Chinese Painting
-  setMixConfigInPicture() {
-    TRTCTranscodingConfig config = TRTCTranscodingConfig();
-    config.videoWidth = 720;
-    config.videoHeight = 1280;
-    config.videoBitrate = 1500;
-    config.videoFramerate = 20;
-    config.videoGOP = 2;
-    config.audioSampleRate = 48000;
-    config.audioBitrate = 64;
-    config.audioChannels = 2;
-    config.streamId = getStreamId();
-
-    config.mode = TRTCCloudDef.TRTC_TranscodingConfigMode_Template_PresetLayout;
-    config.mixUsers = [];
-
-    // Anchor itself
-    TRTCMixUser mixUser = TRTCMixUser();
-    mixUser.userId = "\$PLACE_HOLDER_LOCAL_MAIN\$";
-    mixUser.zOrder = 0;
-    mixUser.x = 0;
-    mixUser.y = 0;
-    mixUser.width = 720;
-    mixUser.height = 1280;
-    mixUser.roomId = '122';
-    config.mixUsers?.add(mixUser);
-
-    //Lianmai people screen location
-    TRTCMixUser remote = TRTCMixUser();
-    remote.userId = "\$PLACE_HOLDER_REMOTE\$";
-    remote.streamType = TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG;
-
-    remote.zOrder = 1;
-    remote.x = 500;
-    remote.y = 150;
-    remote.width = 135;
-    remote.height = 240;
-    remote.roomId = '122';
-    config.mixUsers?.add(remote);
-
-    trtcCloud.setMixTranscodingConfig(config);
+  ListView _testTXAudioEffect() {
+    return ListView(
+      children: [
+        ApiCheckerButton(
+            methodName: 'enableVoiceEarMonitor',
+            parameters: [
+              Parameter(name: 'enable', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.enableVoiceEarMonitor(params['enable']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVoiceEarMonitorVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 60),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setVoiceEarMonitorVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVoiceReverbType',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXVoiceReverbType.type3),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setVoiceReverbType(params['type']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVoiceChangerType',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXVoiceChangerType.type1),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setVoiceChangerType(params['type']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVoiceCaptureVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 60),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setVoiceCaptureVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setVoicePitch',
+            parameters: [
+              Parameter(name: 'pitch', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setVoicePitch(params['pitch']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startPlayMusic',
+            parameters: [],
+            callApi: (params) {
+              txAudioEffectManager.setMusicObserver(1,TXMusicPlayObserver(onStart: (int id, int errorCode){
+                  debugPrint("TRTCCloudExample TXMusicPlayObserver onStart id:${id} , errCode:${errorCode}");
+              } ,onPlayProgress: (int id, int curPtsMSm, int durationMS){
+                  debugPrint("TRTCCloudExample TXMusicPlayObserver onPlayProgress id:${id} , curPtsMSm:${curPtsMSm} , durationMS:${durationMS}");
+              }, onComplete: (int id, int errorCode){
+                  debugPrint("TRTCCloudExample TXMusicPlayObserver onComplete id:${id} , errCode:${errorCode}");
+              }) );
+              print("TRTCCloudExample ------------------------ ${musicPath}");
+              txAudioEffectManager.startPlayMusic(AudioMusicParam(
+                  id: 1,
+                  path: musicPath));
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'pausePlayMusic',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.pausePlayMusic(params['id']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'resumePlayMusic',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.resumePlayMusic(params['id']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopPlayMusic',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.stopPlayMusic(params['id']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setAllMusicVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 100),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setAllMusicVolume(params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicPublishVolume',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'volume', type: ParameterType.int, value: 100),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicPublishVolume(params['id'], params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicPlayoutVolume',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'volume', type: ParameterType.int, value: 100),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicPlayoutVolume(params['id'], params['volume']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicPitch',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'pitch', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicPitch(params['id'], params['pitch']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicSpeedRate',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'rate', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicSpeedRate(params['id'], params['rate']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getMusicCurrentPosInMS',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              int result = txAudioEffectManager.getMusicCurrentPosInMS(params['id']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getMusicDurationInMS',
+            parameters: [
+              Parameter(name: 'path', type: ParameterType.string, value: musicPath),
+            ],
+            callApi: (params) {
+              int result = txAudioEffectManager.getMusicDurationInMS(params['path']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'seekMusicToPosInTime',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'pts', type: ParameterType.int, value: 1000),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.seekMusicToPosInTime(params['id'], params['pts']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicScratchSpeedRate',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'scratchSpeedRate', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicScratchSpeedRate(params['id'], params['scratchSpeedRate']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setPreloadObserver',
+            parameters: [],
+            callApi: (params) {
+              txAudioEffectManager.setPreloadObserver(
+                  TXMusicPreloadObserver(
+                      onLoadProgress: (id, progress) {
+                        debugPrint("TXMusicPreloadObserver onLoadProgress id:${id} , progress:${progress}");
+                      },
+                      onLoadError: (id, errCode) {
+                        debugPrint("TXMusicPreloadObserver onLoadError id:${id} , errCode:${errCode}");
+                      },
+                  ));
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'preloadMusic',
+            parameters: [],
+            callApi: (params) {
+              txAudioEffectManager.setPreloadObserver(TXMusicPreloadObserver(onLoadProgress: (int id, int progress){
+                  debugPrint("TRTCCloudExample TXMusicPreloadObserver onLoadProgress id:${id} , progress:${progress}");
+              }, onLoadError: (int id, int progress){
+                  debugPrint("TRTCCloudExample TXMusicPreloadObserver onLoadError id:${id} , errCode:${progress}");
+              }));
+              txAudioEffectManager.preloadMusic(AudioMusicParam(
+                  id: 1,
+                  path: musicPath));
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getMusicTrackCount',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              int result = txAudioEffectManager.getMusicTrackCount(params['id']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setMusicTrack',
+            parameters: [
+              Parameter(name: 'id', type: ParameterType.int, value: 1),
+              Parameter(name: 'track', type: ParameterType.int, value: 1),
+            ],
+            callApi: (params) {
+              txAudioEffectManager.setMusicTrack(params['id'], params['track']);
+            }
+        ),
+      ],
+    );
   }
 
-  setMixConfigNull() {
-    trtcCloud.setMixTranscodingConfig(null);
+  ListView _testTXDevice() {
+    return ListView(
+      children: [
+        ApiCheckerButton(
+            methodName: 'isFrontCamera',
+            parameters: [],
+            callApi: (params) {
+              bool isFront = txDeviceManager.isFrontCamera();
+              MeetingTool.toast(isFront.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'switchCamera',
+            parameters: [
+              Parameter(name: 'frontCamera', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              txDeviceManager.switchCamera(params['frontCamera']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getCameraZoomMaxRatio',
+            parameters: [],
+            callApi: (params) {
+              double result = txDeviceManager.getCameraZoomMaxRatio();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCameraZoomRatio',
+            parameters: [
+              Parameter(name: 'ratio', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setCameraZoomRatio(params['ratio']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'isAutoFocusEnabled',
+            parameters: [],
+            callApi: (params) {
+              bool result = txDeviceManager.isAutoFocusEnabled();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableCameraAutoFocus',
+            parameters: [
+              Parameter(name: 'enabled', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.enableCameraAutoFocus(params['enabled']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCameraFocusPosition',
+            parameters: [
+              Parameter(name: 'x', type: ParameterType.double, value: 0.5),
+              Parameter(name: 'y', type: ParameterType.double, value: 0.5),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setCameraFocusPosition(params['x'], params['y']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableCameraTorch',
+            parameters: [
+              Parameter(name: 'enabled', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.enableCameraTorch(params['enabled']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setAudioRoute',
+            parameters: [
+              Parameter(name: 'route', type: ParameterType.tEnum, value: TXAudioRoute.earpiece),
+            ],
+            extString: 'earpiece',
+            callApi: (params) {
+              int result = txDeviceManager.setAudioRoute(params['route']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setAudioRoute',
+            parameters: [
+              Parameter(name: 'route', type: ParameterType.tEnum, value: TXAudioRoute.speakerPhone),
+            ],
+            extString: 'speakerPhone',
+            callApi: (params) {
+              int result = txDeviceManager.setAudioRoute(params['route']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getDevicesList',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+            ],
+            callApi: (params) {
+              List<TXDeviceInfo> list = txDeviceManager.getDevicesList(params['type']);
+              _showList(list);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCurrentDevice',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+              Parameter(name: 'deviceId', type: ParameterType.string, value: '123'),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setCurrentDevice(params['type'], params['deviceId']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getCurrentDevice',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+            ],
+            callApi: (params) {
+              TXDeviceInfo result = txDeviceManager.getCurrentDevice(params['type']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCurrentDeviceVolume',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+              Parameter(name: 'volume', type: ParameterType.int, value: 100),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setCurrentDeviceVolume(params['type'], params['volume']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getCurrentDeviceVolume',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.getCurrentDeviceVolume(params['type']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCurrentDeviceMute',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+              Parameter(name: 'mute', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setCurrentDeviceMute(params['type'], params['mute']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getCurrentDeviceMute',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+            ],
+            callApi: (params) {
+              bool result = txDeviceManager.getCurrentDeviceMute(params['type']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'enableFollowingDefaultAudioDevice',
+            parameters: [
+              Parameter(name: 'type', type: ParameterType.tEnum, value: TXMediaDeviceType.camera),
+              Parameter(name: 'enable', type: ParameterType.bool, value: true),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.enableFollowingDefaultAudioDevice(params['type'], params['enable']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startCameraDeviceTest',
+            parameters: [
+              Parameter(name: 'viewId', type: ParameterType.int, value: 0),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.startCameraDeviceTest(params['viewId']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopCameraDeviceTest',
+            parameters: [],
+            callApi: (params) {
+              txDeviceManager.stopCameraDeviceTest();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startMicDeviceTest',
+            parameters: [
+              Parameter(name: 'interval', type: ParameterType.int, value: 10),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.startMicDeviceTest(params['interval']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startMicDeviceTest',
+            parameters: [
+              Parameter(name: 'interval', type: ParameterType.int, value: 10),
+              Parameter(name: 'playback', type: ParameterType.bool, value: false)
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.startMicDeviceTestAndPlayback(params['interval'], params['playback']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopMicDeviceTest',
+            parameters: [],
+            callApi: (params) {
+              txDeviceManager.stopMicDeviceTest();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'startSpeakerDeviceTest',
+            parameters: [
+              Parameter(name: 'filePath', type: ParameterType.string, value: ''),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.startSpeakerDeviceTest(params['filePath']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'stopSpeakerDeviceTest',
+            parameters: [],
+            callApi: (params) {
+              txDeviceManager.stopSpeakerDeviceTest();
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setApplicationPlayVolume',
+            parameters: [
+              Parameter(name: 'volume', type: ParameterType.int, value: 100),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setApplicationPlayVolume(params['volume']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getApplicationPlayVolume',
+            parameters: [],
+            callApi: (params) {
+              int result = txDeviceManager.getApplicationPlayVolume();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setApplicationMuteState',
+            parameters: [
+              Parameter(name: 'mute', type: ParameterType.bool, value: false),
+            ],
+            callApi: (params) {
+              int result = txDeviceManager.setApplicationMuteState(params['mute']);
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'getApplicationMuteState',
+            parameters: [],
+            callApi: (params) {
+              int result = txDeviceManager.getApplicationMuteState();
+              MeetingTool.toast(result.toString(), context);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setCameraCaptureParam',
+            parameters: [
+              Parameter(name: 'param', type: ParameterType.tClass, value: TXCameraCaptureParam()),
+            ],
+            callApi: (params) {
+              txDeviceManager.setCameraCaptureParam(params['param']);
+            }
+        ),
+        ApiCheckerButton(
+            methodName: 'setDeviceObserver',
+            parameters: [],
+            callApi: (params) {
+              txDeviceManager.setDeviceObserver(null);
+            }
+        ),
+      ]
+    );
   }
 
   TRTCPublishTarget _getTRTCPublishTarget() {
@@ -203,7 +1441,7 @@ class TestPageState extends State<TestPage> {
     mixStreamIdentity.userId = '999';
 
     TRTCPublishTarget target = TRTCPublishTarget();
-    target.mode = TRTCPublishMode.TRTCPublishMixStreamToRoom;
+    target.mode = TRTCPublishMode.mixStreamToRoom;
     target.cdnUrlList = [url, url];
     target.mixStreamIdentity = mixStreamIdentity;
     return target;
@@ -231,1256 +1469,58 @@ class TestPageState extends State<TestPage> {
 
     TRTCVideoLayout layout = TRTCVideoLayout();
     layout.rect =
-        Rect(originX: 1111, originY: 2222, sizeWidth: 3333, sizeHeight: 4444);
+        TRTCRect(left: 1, top: 2, right: 3, bottom: 4);
     layout.zOrder = 5555;
-    layout.fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit;
+    layout.fillMode = TRTCVideoFillMode.fit;
     layout.backgroundColor = 6666;
-    layout.placeHolderImage = 'image';
+    layout.placeHolderImage = Uint8List.fromList([1, 2, 3, 4]);
     layout.fixedVideoUser = mixStreamIdentity;
-    layout.fixedVideoStreamType = TRTCVideoStreamType.TRTCVideoStreamTypeSub;
+    layout.fixedVideoStreamType = TRTCVideoStreamType.sub;
 
     TRTCWatermark watermark = TRTCWatermark();
     watermark.watermarkUrl = 'www.11111.com';
-    watermark.rect = Rect(originX: 9, originY: 8, sizeWidth: 7, sizeHeight: 6);
+    watermark.rect = TRTCRect(left: 1, top: 2, right: 3, bottom: 4);
     watermark.zOrder = 8888;
 
     TRTCStreamMixingConfig config = TRTCStreamMixingConfig();
     config.backgroundColor = 111111;
-    config.backgroundImage = 'Image';
+    config.backgroundImage = Uint8List.fromList([1, 2, 3, 4]);
     config.videoLayoutList = [layout, layout];
     config.audioMixUserList = [mixStreamIdentity, mixStreamIdentity];
     config.watermarkList = [watermark, watermark];
     return config;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text('Test API'),
-          centerTitle: true,
-          elevation: 0,
-          bottom: TabBar(tabs: [
-            Tab(text: 'Main interface'),
-            Tab(text: 'Music interface'),
-            Tab(text: 'Video interface'),
-            Tab(text: 'Beauty & equipment'),
-            Tab(text: 'CDN'),
-            Tab(text: 'Audio callback')
-          ]),
-        ),
-        body: TabBarView(children: [
-          ListView(
-            children: [
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.updateRemoteView('345', 0, 0);
-                  trtcCloud.updateLocalView(1);
-                },
-                child: Text('changView1'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.updateLocalView(0);
-                  trtcCloud.updateRemoteView('345', 0, 1);
-                },
-                child: Text('changeview2'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.startSpeedTest(
-                      GenerateTestUserSig.sdkAppId,
-                      userInfo.userId,
-                      await GenerateTestUserSig.genTestSig(
-                          userInfo.userId));
-                },
-                child: Text('startSpeedTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopSpeedTest();
-                },
-                child: Text('stopSpeedTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAudience);
-                },
-                child: Text('switchRole-audience'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.switchRole(TRTCCloudDef.TRTCRoleAnchor);
-                },
-                child: Text('switchRole-anchor'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  var object = new Map();
-                  object['roomId'] = 155;
-                  object['userId'] = '345';
-                  trtcCloud.connectOtherRoom(jsonEncode(object));
-                },
-                child: Text('connectOtherRoom-room-155-user-345'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.disconnectOtherRoom();
-                },
-                child: Text('disconnectOtherRoom'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.switchRoom(TRTCSwitchRoomConfig(
-                      roomId: 1546,
-                      userSig: await GenerateTestUserSig.genTestSig(
-                          userInfo.userId)));
-                },
-                child: Text('switchRoom-1546'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.muteLocalAudio(true);
-                },
-                child: Text('muteLocalAudio-true'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.muteLocalAudio(false);
-                },
-                child: Text('muteLocalAudio-false'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.startPublishCDNStream(TRTCPublishCDNParam(
-                      appId: 112,
-                      bizId: 233,
-                      url: 'https://www.baidu.com'));
-                },
-                child: Text('startPublishCDNStream'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopPublishCDNStream();
-                },
-                child: Text('stopPublishCDNStream'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  bool? value = await trtcCloud.sendCustomCmdMsg(
-                      1, 'hello', true, true);
-                  MeetingTool.toast(value.toString(), context);
-                },
-                child: Text('sendCustomCmdMsg'),
-              ),
-
-              // TextButton(
-              //   onPressed: () async {
-              //     trtcCloud.setLogCompressEnabled(false);
-              //   },
-              //   child: Text('setLogCompressEnabled-false'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     trtcCloud.setLogCompressEnabled(true);
-              //   },
-              //   child: Text('setLogCompressEnabled-true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     trtcCloud.setLogDirPath(
-              //         '/sdcard/Android/data/com.tencent.trtc_demo/files/log/tencent/clavietest');
-              //   },
-              //   child: Text('setLogDirPath-android-clavietest'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     Directory appDocDir =
-              //         await getApplicationDocumentsDirectory();
-              //     trtcCloud.setLogDirPath(appDocDir.path + '/clavietest');
-              //   },
-              //   child: Text('setLogDirPath-ios-clavietest'),
-              // ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.startPublishing('clavie_stream_001',
-                      TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
-                },
-                child: Text('startPublishing-clavie_stream_001'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopPublishing();
-                },
-                child: Text('stopPublishing'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setRemoteAudioVolume('345', 100);
-                },
-                child: Text('setRemoteAudioVolume-100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setRemoteAudioVolume('345', 0);
-                },
-                child: Text('setRemoteAudioVolume-0'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setAudioCaptureVolume(70);
-                },
-                child: Text('setAudioCaptureVolume-70'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? volume = await trtcCloud.getAudioCaptureVolume();
-                  MeetingTool.toast(volume.toString(), context);
-                },
-                child: Text('getAudioCaptureVolume'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setAudioPlayoutVolume(80);
-                },
-                child: Text('setAudioPlayoutVolume-80'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? volume = await trtcCloud.getAudioPlayoutVolume();
-                  MeetingTool.toast(volume.toString(), context);
-                },
-                child: Text('getAudioPlayoutVolume'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setNetworkQosParam(
-                      TRTCNetworkQosParam(preference: 1));
-                },
-                child: Text('setNetworkQosParam-Keep a clear'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setNetworkQosParam(
-                      TRTCNetworkQosParam(preference: 2));
-                },
-                child: Text('setNetworkQosParam-Sustainable'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.enableAudioVolumeEvaluation(2000);
-                },
-                child: Text('enableAudioVolumeEvaluation-Volume every 2S prompt'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.enableAudioVolumeEvaluation(0);
-                },
-                child: Text('enableAudioVolumeEvaluation-0'),
-              ),
-              !kIsWeb && Platform.isAndroid
-                  ? TextButton(
-                onPressed: () async {
-                  int? result = await trtcCloud.startAudioRecording(
-                      TRTCAudioRecordingParams(
-                          filePath:
-                          '/sdcard/Android/data/com.tencent.trtc_demo/files/audio.wav'));
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('startAudioRecording-Android'),
-              )
-                  : TextButton(
-                onPressed: () async {
-                  Directory appDocDir =
-                  await getApplicationDocumentsDirectory();
-                  int? result = await trtcCloud.startAudioRecording(
-                      TRTCAudioRecordingParams(
-                          filePath: appDocDir.path + '/audio.aac'));
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('startAudioRecording-ios'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result = await trtcCloud.startAudioRecording(
-                      TRTCAudioRecordingParams(
-                          filePath: 'E:\\audio.aac'));
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('startAudioRecording-windows(E drive)'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopAudioRecording();
-                },
-                child: Text('stopAudioRecording'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Directory? appDocDir;
-                  if(Platform.isAndroid) {
-                    appDocDir = await getExternalStorageDirectory();
-                  } else {
-                    appDocDir = await getApplicationDocumentsDirectory();
-                  }
-                  await trtcCloud.startLocalRecording(
-                      TRTCLocalRecordingParams(
-                          recordType: TRTCCloudDef.TRTCRecordTypeBoth,
-                          interval: 2000,
-                          maxDurationPerFile: 20000,
-                          filePath:
-                          '${appDocDir?.path}/isolocalVideo.mp4'));
-                  MeetingTool.toast('${appDocDir?.path}/isolocalVideo.mp4 Start Recording!', context);
-                },
-                child: Text('startLocalRecording-Android&ios'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await trtcCloud.startLocalRecording(
-                      TRTCLocalRecordingParams(
-                          recordType: TRTCCloudDef.TRTCRecordTypeAudio,
-                          interval: -1,
-                          filePath: 'E:\\videoTest.mp4'));
-                },
-                child: Text('startLocalRecording-windows(E drive)'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopLocalRecording();
-                },
-                child: Text('stopLocalRecording'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  String? version = await trtcCloud.getSDKVersion();
-                  MeetingTool.toast(version, context);
-                },
-                child: Text('getSDKVersion'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.startSystemAudioLoopback();
-                },
-                child: Text('startSystemAudioLoopback'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopSystemAudioLoopback();
-                },
-                child: Text('stopSystemAudioLoopback'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setSystemAudioLoopbackVolume(50);
-                },
-                child: Text('setSystemAudioLoopbackVolume 50'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.setSystemAudioLoopbackVolume(100);
-                },
-                child: Text('setSystemAudioLoopbackVolume 100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  // await trtcCloud.callExperimentalAPI(
-                  // jsonEncode({"name": "clavie"}));
-                  trtcCloud.callExperimentalAPI(jsonEncode({
-                    "api": "setViewBackgroundColor",
-                    "params": {"backgroundColor": "0x00000000"}
-                  }));
-                },
-                child: Text('callExperimentalAPI'),
-              ),
-            ],
+  _showList(List list) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Current Parameters'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: list.map((source) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(
+                    source.toString(), // 将每个源转换为字符串
+                    style: TextStyle(fontSize: 20),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
-          ListView(
-            children: [
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.enableVoiceEarMonitor(true);
-              //   },
-              //   child: Text('enableVoiceEarMonitor-true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.enableVoiceEarMonitor(false);
-              //   },
-              //   child: Text('enableVoiceEarMonitor-flase'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.setVoiceEarMonitorVolume(0);
-              //   },
-              //   child: Text('setVoiceEarMonitorVolume-0'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.setVoiceEarMonitorVolume(100);
-              //   },
-              //   child: Text('setVoiceEarMonitorVolume-100'),
-              // ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceReverbType(
-                      TXVoiceReverbType.TXLiveVoiceReverbType_4);
-                },
-                child: Text('setVoiceReverbType-Low'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceReverbType(
-                      TXVoiceReverbType.TXLiveVoiceReverbType_1);
-                },
-                child: Text('setVoiceReverbType-KTV'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceReverbType(
-                      TXVoiceReverbType.TXLiveVoiceReverbType_5);
-                },
-                child: Text('setVoiceReverbType-Brilliant'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceReverbType(
-                      TXVoiceReverbType.TXLiveVoiceReverbType_7);
-                },
-                child: Text('setVoiceReverbType-magnetic'),
-              ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.setVoiceChangerType(
-              //         TXVoiceChangerType.TXLiveVoiceChangerType_2);
-              //   },
-              //   child: Text('setVoiceChangerType-Loli'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.setVoiceChangerType(
-              //         TXVoiceChangerType.TXLiveVoiceChangerType_4);
-              //   },
-              //   child: Text('setVoiceChangerType-Heavy metal'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txAudioManager.setVoiceChangerType(
-              //         TXVoiceChangerType.TXLiveVoiceChangerType_0);
-              //   },
-              //   child: Text('setVoiceChangerType-Turn off'),
-              // ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceCaptureVolume(0);
-                },
-                child: Text('setVoiceCaptureVolume-0'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setVoiceCaptureVolume(100);
-                },
-                child: Text('setVoiceCaptureVolume-100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  bool? musidTrue = await txAudioManager.startPlayMusic(
-                      AudioMusicParam(
-                          id: 223,
-                          publish: true,
-                          path: kIsWeb
-                              ? './media/daoxiang.mp3'
-                              : await MeetingTool.copyAssetToLocal(
-                              'media/daoxiang.mp3')));
-                  MeetingTool.toast(musidTrue.toString(), context);
-                },
-                child: Text('startPlayMusic'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.pausePlayMusic(223);
-                },
-                child: Text('pausePlayMusic'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.resumePlayMusic(223);
-                },
-                child: Text('resumePlayMusic'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.stopPlayMusic(223);
-                },
-                child: Text('stopPlayMusic'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPlayoutVolume(223, 0);
-                },
-                child: Text('setMusicPlayoutVolume-0'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPlayoutVolume(223, 100);
-                },
-                child: Text('setMusicPlayoutVolume-100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPublishVolume(223, 0);
-                },
-                child: Text('setMusicPublishVolume-0'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPublishVolume(223, 100);
-                },
-                child: Text('setMusicPublishVolume-100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setAllMusicVolume(0);
-                },
-                child: Text('setAllMusicVolume-0'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setAllMusicVolume(100);
-                },
-                child: Text('setAllMusicVolume-100'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPitch(223, -1);
-                },
-                child: Text('setMusicPitch- (-1)'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicPitch(223, 1);
-                },
-                child: Text('setMusicPitch- 1'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicSpeedRate(223, 0.5);
-                },
-                child: Text('setMusicSpeedRate- 0.5'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.setMusicSpeedRate(223, 2);
-                },
-                child: Text('setMusicSpeedRate- 2'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? time =
-                  await txAudioManager.getMusicCurrentPosInMS(223);
-                  MeetingTool.toast(time.toString(), context);
-                },
-                child: Text('getMusicCurrentPosInMS'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  txAudioManager.seekMusicToPosInMS(223, 220000);
-                },
-                child: Text('seekMusicToPosInMS-220000'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? time = await txAudioManager.getMusicDurationInMS(
-                      'https://imgcache.qq.com/operation/dianshi/other/daoxiang.72c46ee085f15dc72603b0ba154409879cbeb15e.mp3');
-                  print('==time=' + time.toString());
-                  MeetingTool.toast(time.toString(), context);
-                },
-                child: Text('getMusicDurationInMS-Get time for a long time'),
-              ),
-            ],
-          ),
-          ListView(children: [
+          actions: <Widget>[
             TextButton(
-              onPressed: () async {
-                bool? value = await trtcCloud.sendSEIMsg('clavie', 2);
-                MeetingTool.toast(value.toString(), context);
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
-              child: Text('sendSEIMsg'),
             ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.stopLocalPreview();
-              },
-              child: Text('stopLocalPreview-Stop local video'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.stopRemoteView(
-                    '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
-              },
-              child: Text('stopRemoteView-Video of remote ID = 345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.stopRemoteView(
-                    '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
-              },
-              child: Text('stopRemoteView-The auxiliary flow of the remote ID = 345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setMixConfig();
-              },
-              child: Text('setMixTranscodingConfig-leftright'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setMixConfigInPicture();
-              },
-              child: Text('setMixTranscodingConfig-picture'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setMixConfigManual();
-              },
-              child: Text('setMixTranscodingConfig-manual'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setMixConfigNull();
-              },
-              child: Text('setMixTranscodingConfig-null'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteLocalVideo(true);
-              },
-              child: Text('muteLocalVideo-true'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteLocalVideo(false);
-              },
-              child: Text('muteLocalVideo-false'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoMuteImage(
-                    'images/watermark_img.png', 10);
-              },
-              child: Text('setVideoMuteImage-watermark_img'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoMuteImage(null, 10);
-              },
-              child: Text('setVideoMuteImage-null'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteRemoteVideoStream('345', true);
-              },
-              child: Text('muteRemoteVideoStream-true-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteRemoteVideoStream('345', false);
-              },
-              child: Text('muteRemoteVideoStream-false-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteAllRemoteVideoStreams(true);
-              },
-              child: Text('muteAllRemoteVideoStreams-true'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.muteAllRemoteVideoStreams(false);
-              },
-              child: Text('muteAllRemoteVideoStreams-false'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setLocalRenderParams(TRTCRenderParams(
-                    rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_90,
-                    fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT,
-                    mirrorType:
-                    TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
-              },
-              child: Text('setLocalRenderParams-90 degrees spin'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setLocalRenderParams(TRTCRenderParams(
-                    rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_0,
-                    fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FILL,
-                    mirrorType:
-                    TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO));
-              },
-              child: Text('setLocalRenderParams-recover'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteRenderParams(
-                    '345',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL,
-                    TRTCRenderParams(
-                        rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_90,
-                        fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT,
-                        mirrorType:
-                        TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
-              },
-              child: Text('setRemoteRenderParams-Small picture 90 degrees-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteRenderParams(
-                    '345',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL,
-                    TRTCRenderParams(
-                        rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_180,
-                        fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT,
-                        mirrorType:
-                        TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
-              },
-              child: Text('setRemoteRenderParams-Small picture 180 degrees-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteRenderParams(
-                    '345',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL,
-                    TRTCRenderParams(
-                        rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_270,
-                        fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT,
-                        mirrorType:
-                        TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
-              },
-              child: Text('setRemoteRenderParams-Small picture 270 degrees-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteRenderParams(
-                    '345',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL,
-                    TRTCRenderParams(
-                        rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_0,
-                        fillMode: TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FIT,
-                        mirrorType:
-                        TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
-              },
-              child: Text('setRemoteRenderParams-Small picture recovery-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteRenderParams(
-                    '345',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-                    TRTCRenderParams(
-                        rotation: TRTCCloudDef.TRTC_VIDEO_ROTATION_90,
-                        fillMode:
-                        TRTCCloudDef.TRTC_VIDEO_RENDER_MODE_FILL,
-                        mirrorType:
-                        TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_AUTO));
-              },
-              child: Text('setRemoteRenderParams-Auxiliary 90 degrees-Distant user ID345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoEncoderRotation(
-                    TRTCCloudDef.TRTC_VIDEO_ROTATION_180);
-              },
-              child: Text('setVideoEncoderRotation-180'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoEncoderRotation(
-                    TRTCCloudDef.TRTC_VIDEO_ROTATION_0);
-              },
-              child: Text('setVideoEncoderRotation-0'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoEncoderMirror(true);
-              },
-              child: Text('setVideoEncoderMirror-true'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setVideoEncoderMirror(false);
-              },
-              child: Text('setVideoEncoderMirror-false'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setGSensorMode(
-                    TRTCCloudDef.TRTC_GSENSOR_MODE_UIAUTOLAYOUT);
-              },
-              child: Text('setGSensorMode-Open the gravity induction'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setGSensorMode(
-                    TRTCCloudDef.TRTC_GSENSOR_MODE_DISABLE);
-              },
-              child: Text('setGSensorMode-Turn off gravity sensing'),
-            ),
-            TextButton(
-              onPressed: () async {
-                int? value = await trtcCloud.enableEncSmallVideoStream(
-                    true, TRTCVideoEncParam(videoFps: 5));
-                print('==trtc value' + value.toString());
-                MeetingTool.toast(value.toString(), context);
-              },
-              child: Text('enableEncSmallVideoStream-Turn on dual -way coding'),
-            ),
-            TextButton(
-              onPressed: () async {
-                int? value = await trtcCloud.enableEncSmallVideoStream(
-                    false, TRTCVideoEncParam(videoFps: 5));
-                print('==trtc value' + value.toString());
-                MeetingTool.toast(value.toString(), context);
-              },
-              child: Text('enableEncSmallVideoStream-Turn off dual -way coding'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteVideoStreamType(
-                    '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL);
-              },
-              child: Text('setRemoteVideoStreamType-Watch the small picture of 345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setRemoteVideoStreamType(
-                    '345', TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
-              },
-              child: Text('setRemoteVideoStreamType-Watch the big picture of 345'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.snapshotVideo(
-                    null,
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0,
-                    '/sdcard/Android/data/com.tencent.trtc_demo/files/asw.jpg');
-              },
-              child: Text('snapshotVideo-Android'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Directory appDocDir =
-                await getApplicationDocumentsDirectory();
-                trtcCloud.snapshotVideo(
-                    null,
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0,
-                    appDocDir.path + '/test8.jpg');
-              },
-              child: Text('snapshotVideo-ios-self'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Directory appDocDir =
-                await getApplicationDocumentsDirectory();
-                trtcCloud.snapshotVideo(
-                    '2536',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0,
-                    appDocDir.path + '/test7.jpg');
-              },
-              child: Text('snapshotVideo-ios'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setWatermark(
-                    'images/watermark_img.png',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0.1,
-                    0.3,
-                    0.2);
-              },
-              child: Text('setWatermark-Local picture'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setWatermark(
-                    '/sdcard/Android/data/com.tencent.trtc_demo/files/asw.jpg',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0.1,
-                    0.3,
-                    0.2);
-              },
-              child: Text('setWatermark-Absolute path'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.setWatermark(
-                    'https://main.qcloudimg.com/raw/3f9146cacab4a019b0cc44b8b22b6a38.png',
-                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                    0.1,
-                    0.3,
-                    0.2);
-              },
-              child: Text('setWatermark-Web image'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.showDebugView(2);
-              },
-              child: Text('showDebugView-show'),
-            ),
-            TextButton(
-              onPressed: () async {
-                trtcCloud.showDebugView(0);
-              },
-              child: Text('showDebugView-close'),
-            ),
-          ]),
-          ListView(
-            children: [
-              TextButton(
-                onPressed: () async {
-                  Map? data = await txDeviceManager
-                      .getDevicesList(TRTCCloudDef.TXMediaDeviceTypeMic);
-                  MeetingTool.toast(
-                      "Number of equipment:" + data!['count'].toString(), context);
-                  print(data);
-                },
-                child: Text('getDevicesList'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Map? data = await txDeviceManager
-                      .getDevicesList(TRTCCloudDef.TXMediaDeviceTypeMic);
-                  int? result = await txDeviceManager.setCurrentDevice(
-                      TRTCCloudDef.TXMediaDeviceTypeMic,
-                      data!['deviceList'][0]['deviceId']);
-                  MeetingTool.toast("error code:" + result.toString(), context);
-                },
-                child: Text('setCurrentDevice'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Map? data = await txDeviceManager.getCurrentDevice(
-                      TRTCCloudDef.TXMediaDeviceTypeMic);
-                  MeetingTool.toast(
-                      "Equipment ID:" + data!['deviceId'].toString(), context);
-                  print(data);
-                },
-                child: Text('getCurrentDevice'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setCurrentDeviceVolume(
-                      TRTCCloudDef.TXMediaDeviceTypeMic, 80);
-                  MeetingTool.toast("error code" + result.toString(), context);
-                },
-                child: Text('setCurrentDeviceVolume'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.getCurrentDeviceVolume(
-                      TRTCCloudDef.TXMediaDeviceTypeMic);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('getCurrentDeviceVolume'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setCurrentDeviceMute(
-                      TRTCCloudDef.TXMediaDeviceTypeMic, true);
-                  MeetingTool.toast("error code" + result.toString(), context);
-                },
-                child: Text('setCurrentDeviceMute-true'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setCurrentDeviceMute(
-                      TRTCCloudDef.TXMediaDeviceTypeMic, false);
-                  MeetingTool.toast("error code" + result.toString(), context);
-                },
-                child: Text('setCurrentDeviceMute-false'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  bool? result =
-                  await txDeviceManager.getCurrentDeviceMute(
-                      TRTCCloudDef.TXMediaDeviceTypeMic);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('getCurrentDeviceMute'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.startMicDeviceTest(2000);
-                  MeetingTool.toast(
-                      "error code=: " + result.toString(), context);
-                },
-                child: Text('startMicDeviceTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result = await txDeviceManager.stopMicDeviceTest();
-                  MeetingTool.toast(
-                      "error code=: " + result.toString(), context);
-                },
-                child: Text('stopMicDeviceTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result = await txDeviceManager
-                      .startSpeakerDeviceTest("/test.aac");
-                  MeetingTool.toast(
-                      "error code=: " + result.toString(), context);
-                },
-                child: Text('startSpeakerDeviceTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.stopSpeakerDeviceTest();
-                  MeetingTool.toast(
-                      "error code=: " + result.toString(), context);
-                },
-                child: Text('stopSpeakerDeviceTest'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setApplicationPlayVolume(70);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('setApplicationPlayVolume-70 - Windows'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setApplicationPlayVolume(80);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('setApplicationPlayVolume-80 - Windows'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.getApplicationPlayVolume();
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('getApplicationPlayVolume - Windows'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result =
-                  await txDeviceManager.setApplicationMuteState(true);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('setApplicationMuteState-true Windows'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  int? result = await txDeviceManager
-                      .setApplicationMuteState(false);
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('setApplicationMuteState-false Windows'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  bool? result =
-                  await txDeviceManager.getApplicationMuteState();
-                  MeetingTool.toast(result.toString(), context);
-                },
-                child: Text('getApplicationMuteState Windows'),
-              ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.setFilter('images/watermark_img.png');
-              //   },
-              //   child: Text('setFilter-Local picture'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.setFilter(
-              //         'https://main.qcloudimg.com/raw/3f9146cacab4a019b0cc44b8b22b6a38.png');
-              //   },
-              //   child: Text('setFilter-Web image'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.setFilterStrength(0);
-              //   },
-              //   child: Text('setFilterStrength - 0'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.setFilterStrength(1);
-              //   },
-              //   child: Text('setFilterStrength - 1'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.enableSharpnessEnhancement(true);
-              //   },
-              //   child: Text('enableSharpnessEnhancement - true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txBeautyManager.enableSharpnessEnhancement(false);
-              //   },
-              //   child: Text('enableSharpnessEnhancement - false'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     bool? isFront = await txDeviceManager.isFrontCamera();
-              //     MeetingTool.toast(isFront.toString(), context);
-              //   },
-              //   child: Text('isFrontCamera'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txDeviceManager.switchCamera(false);
-              //   },
-              //   child: Text('switchCamera-false'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txDeviceManager.switchCamera(true);
-              //   },
-              //   child: Text('switchCamera-true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     double? isFront =
-              //         await txDeviceManager.getCameraZoomMaxRatio();
-              //     MeetingTool.toast(isFront.toString(), context);
-              //   },
-              //   child: Text('getCameraZoomMaxRatio'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     int? value =
-              //         await txDeviceManager.setCameraZoomRatio(1.1);
-              //     MeetingTool.toast(value.toString(), context);
-              //   },
-              //   child: Text('setCameraZoomRatio-1'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     int? value =
-              //         await txDeviceManager.setCameraZoomRatio(5.1);
-              //     MeetingTool.toast(value.toString(), context);
-              //   },
-              //   child: Text('setCameraZoomRatio-5'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     bool? isFront =
-              //         await txDeviceManager.enableCameraTorch(true);
-              //     MeetingTool.toast(isFront.toString(), context);
-              //   },
-              //   child: Text('enableCameraTorch-true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     bool? isFront =
-              //         await txDeviceManager.enableCameraTorch(false);
-              //     MeetingTool.toast(isFront.toString(), context);
-              //   },
-              //   child: Text('enableCameraTorch-false'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txDeviceManager.setCameraFocusPosition(0, 0);
-              //   },
-              //   child: Text('setCameraFocusPosition-0,0'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     txDeviceManager.setCameraFocusPosition(100, 100);
-              //   },
-              //   child: Text('setCameraFocusPosition-100,100'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     int? value =
-              //         await txDeviceManager.enableCameraAutoFocus(true);
-              //     MeetingTool.toast(value.toString(), context);
-              //   },
-              //   child: Text('enableCameraAutoFocus-true'),
-              // ),
-              // TextButton(
-              //   onPressed: () async {
-              //     bool? value =
-              //         await txDeviceManager.isAutoFocusEnabled();
-              //     MeetingTool.toast(value.toString(), context);
-              //   },
-              //   child: Text('isAutoFocusEnabled'),
-              // ),
-            ],
-          ),
-          ListView(
-            children: [
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.startPublishMediaStream(
-                      target: _getTRTCPublishTarget(),
-                      params: _getTRTCStreamEncoderParam(),
-                      config: _getTRTCStreamMixingConfig());
-                },
-                child: Text('startPublishMediaStream'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.updatePublishMediaStream(
-                      taskId: '888',
-                      target: _getTRTCPublishTarget(),
-                      encoderParam: _getTRTCStreamEncoderParam(),
-                      mixingConfig: _getTRTCStreamMixingConfig());
-                },
-                child: Text('updatePublishMediaStream'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  trtcCloud.stopPublishMediaStream('888');
-                },
-                child: Text('stopPublishMediaStream'),
-              ),
-            ],
-          ),
-          ListView(
-            children: [
-              TextButton(
-                onPressed: () async {
-                  if (_audioFrameListener == null) {
-                    _audioFrameListener = TRTCAudioFrameListener(
-                        onCapturedAudioFrame: (audioFrame) {
-                          print(
-                              'channels: ${audioFrame.channels}, sampleRate:${audioFrame.sampleRate}, timestamp:${audioFrame.timestamp}, data:${audioFrame.data}, extraData:${audioFrame.extraData}');
-                        });
-                    trtcCloud.setAudioFrameListener(_audioFrameListener);
-                  } else {
-                    _audioFrameListener = null;
-                    trtcCloud.setAudioFrameListener(_audioFrameListener);
-                  }
-                  setState(() {});
-                },
-                child: _audioFrameListener == null
-                    ? Text('setAudioFrameListener')
-                    : Text('removeAudioFrameListener'),
-              )
-            ],
-          ),
-        ]),
-      ),
+          ],
+        );
+      },
     );
   }
+
 }

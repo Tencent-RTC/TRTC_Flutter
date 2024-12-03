@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
 import 'package:provider/provider.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:trtc_demo/models/user_model.dart';
 import 'package:trtc_demo/utils/tool.dart';
 
@@ -101,12 +102,12 @@ class MemberListPageState extends State<MemberListPage> {
                                 if (item.enableAudio ==
                                     false) {
                                   item.enableAudio = true;
-                                  _trtcCloud.muteRemoteAudio(
-                                      item.userId, false);
+                                  // _trtcCloud.muteRemoteAudio(
+                                  //     item.userId, false);
                                 } else {
                                   item.enableAudio = false;
-                                  _trtcCloud.muteRemoteAudio(
-                                      item.userId, true);
+                                  // _trtcCloud.muteRemoteAudio(
+                                  //     item.userId, true);
                                 }
                                 this.setState(() {});
                               }),
@@ -130,11 +131,11 @@ class MemberListPageState extends State<MemberListPage> {
                                     false) {
                                   item.enableVideo = true;
                                   _trtcCloud.muteRemoteVideoStream(
-                                      item.userId, false);
+                                      item.userId, TRTCVideoStreamType.big, false);
                                 } else {
                                   item.enableVideo = false;
                                   _trtcCloud.muteRemoteVideoStream(
-                                      item.userId, true);
+                                      item.userId, TRTCVideoStreamType.big, true);
                                 }
                                 this.setState(() {});
                               }),
@@ -152,29 +153,37 @@ class MemberListPageState extends State<MemberListPage> {
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     _trtcCloud.muteAllRemoteAudio(_meetModel.getUserInfo().enableAudio);
+                      //     MeetingTool.toast(_totalSilence, context);
+                      //     for (int i = 0; i < _micList.length; i++) {
+                      //       _micList[i].enableAudio = !_micList[i].enableAudio;
+                      //     }
+                      //     this.setState(() {
+                      //       _totalSilence = _meetModel.getUserInfo().enableAudio
+                      //           ? "Total silence"
+                      //           : "Lift total silence";
+                      //     });
+                      //   },
+                      //   child: Text(_totalSilence,
+                      //       style: TextStyle(
+                      //           color: Color.fromRGBO(245, 108, 108, 1))),
+                      // ),
                       ElevatedButton(
                         onPressed: () {
-                          _trtcCloud.muteAllRemoteAudio(_meetModel.getUserInfo().enableAudio);
-                          MeetingTool.toast(_totalSilence, context);
-                          for (int i = 0; i < _micList.length; i++) {
-                            _micList[i].enableAudio = !_micList[i].enableAudio;
-                          }
-                          this.setState(() {
-                            _totalSilence = _meetModel.getUserInfo().enableAudio
-                                ? "Total silence"
-                                : "Lift total silence";
-                          });
-                        },
-                        child: Text(_totalSilence,
-                            style: TextStyle(
-                                color: Color.fromRGBO(245, 108, 108, 1))),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _trtcCloud.muteAllRemoteVideoStreams(_meetModel.getUserInfo().enableVideo);
+                          // _trtcCloud.muteAllRemoteVideoStreams(_meetModel.getUserInfo().enableVideo);
+                          _trtcCloud.stopAllRemoteView();
                           MeetingTool.toast(_totalDarkness, context);
                           for (int i = 0; i < _micList.length; i++) {
                             _micList[i].enableVideo = !_micList[i].enableVideo;
+                            if (_micList[i].enableVideo == true) {
+                              _trtcCloud.startRemoteView(_micList[i].userId,
+                                  _micList[i].type == 'video'
+                                      ? TRTCVideoStreamType.big
+                                      : TRTCVideoStreamType.sub,
+                                  _micList[i].localViewId!);
+                            }
                           }
                           this.setState(() {
                             _totalDarkness = _meetModel.getUserInfo().enableVideo

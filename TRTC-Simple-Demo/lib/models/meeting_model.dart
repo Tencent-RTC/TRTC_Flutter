@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:trtc_demo/models/data_models.dart';
 import 'package:trtc_demo/models/user_model.dart';
 
@@ -9,15 +9,15 @@ class MeetingModel extends ChangeNotifier {
   /// Internal, private state of the cart.
   int? _meetId;
   bool _isTextureRendering = false;
-  int _quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
+  TRTCAudioQuality _quality = TRTCAudioQuality.defaultMode;
 
   late UserModel _userInfo;
   List<UserModel> _userList = [];
 
   Map<BeautyType, double> _beautyInfo = {
-    BeautyType.smooth : 6,
-    BeautyType.nature : 6,
-    BeautyType.pitu : 6,
+    BeautyType.smooth : 0,
+    BeautyType.nature : 0,
+    BeautyType.white : 0,
     BeautyType.ruddy : 0
   };
 
@@ -32,20 +32,20 @@ class MeetingModel extends ChangeNotifier {
       required bool enabledCamera,
       required bool enabledMicrophone,
       required bool enableTextureRendering,
-      int? quality = null}) {
+      TRTCAudioQuality quality = TRTCAudioQuality.defaultMode}) {
     _meetId = meetId;
     _userInfo = UserModel(userId: userId);
     _userInfo.isOpenCamera = enabledCamera;
     _userInfo.isOpenMic = enabledMicrophone;
     _isTextureRendering = enableTextureRendering;
-    _quality = quality ?? TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT;
+    _quality = quality;
   }
 
   int? getMeetId() {
     return _meetId;
   }
 
-  int getQuality() {
+  TRTCAudioQuality getQuality() {
     return _quality;
   }
 

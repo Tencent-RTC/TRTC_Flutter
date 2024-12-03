@@ -8,18 +8,15 @@ import 'package:trtc_demo/models/data_models.dart';
 import 'package:trtc_demo/models/user_model.dart';
 import 'package:trtc_demo/utils/tool.dart';
 import 'package:trtc_demo/ui/settings.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/tx_beauty_manager.dart';
-import 'package:tencent_trtc_cloud/tx_device_manager.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/tx_device_manager.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_demo/ui/login.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:provider/provider.dart';
-import 'package:trtc_demo/ui/window_dialog.dart';
-import 'package:replay_kit_launcher/replay_kit_launcher.dart';
 
 const iosAppGroup = 'group.com.tencent.comm.trtc.demo';
 const iosExtensionName = 'TRTC Demo Screen';
@@ -34,45 +31,253 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late MeetingModel _meetModel;
 
-  BeautyType _curBeauty = BeautyType.pitu;
-
   late TRTCCloud _trtcCloud;
   late TXDeviceManager _txDeviceManager;
-  late TXBeautyManager _txBeautyManager;
-
   List<UserModel> _userList = [];
   List _screenUserList = [];
+  BeautyType _beautyType = BeautyType.white;
+
+  late TRTCCloudListener _listener;
+
+  int _logShowLevel = 0;
+
+  _printLog(int level, String msg) {
+    if (level > _logShowLevel) {
+      debugPrint(msg);
+    }
+  }
+
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+      onError: (errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onError errCode:$errCode errMsg:$errMsg");
+
+        _showErrorDialog(errMsg);
+      },
+      onWarning: (warningCode, warningMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onWarning warningCode:$warningCode warningMsg:$warningMsg");
+      },
+      onEnterRoom: (result) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onEnterRoom result:$result");
+
+        if (result > 0) {
+          MeetingTool.toast('Enter room success', context);
+        }
+      },
+      onExitRoom: (reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onExitRoom reason:$reason");
+
+        if (reason > 0) {
+          MeetingTool.toast('Exit room success', context);
+        }
+      },
+      onSwitchRole: (errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSwitchRole errCode:$errCode errMsg:$errMsg");
+      },
+      onSwitchRoom: (errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSwitchRoom errCode:$errCode errMsg:$errMsg");
+      },
+      onConnectOtherRoom: (userId, errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onConnectOtherRoom userId:$userId errCode:$errCode errMsg:$errMsg");
+      },
+      onDisconnectOtherRoom: (errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onDisconnectOtherRoom errCode:$errCode errMsg:$errMsg");
+      },
+      onRemoteUserEnterRoom: (userId) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRemoteUserEnterRoom userId:$userId");
+
+        _handleOnRemoteUserEnterRoom(userId);
+      },
+      onRemoteUserLeaveRoom: (userId, reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRemoteUserLeaveRoom userId:$userId reason:$reason");
+
+        _handleOnRemoteUserLeaveRoom(userId);
+      },
+      onUserVideoAvailable: (userId, available) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserVideoAvailable userId:$userId available:$available");
+
+        _handleOnUserVideoAvailable(userId, available);
+      },
+      onUserSubStreamAvailable: (userId, available) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserSubStreamAvailable userId:$userId available:$available");
+
+        _handleOnUserSubStreamAvailable(userId, available);
+      },
+      onUserAudioAvailable: (userId, available) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserAudioAvailable userId:$userId available:$available");
+
+        _handleOnUserAudioAvailable(userId, available);
+      },
+      onFirstVideoFrame: (userId, streamType, width, height) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onFirstVideoFrame userId:$userId streamType:$streamType width:$width height:$height");
+      },
+      onFirstAudioFrame: (userId) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onFirstAudioFrame userId:$userId");
+      },
+      onSendFirstLocalVideoFrame: (streamType) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSendFirstLocalVideoFrame streamType:$streamType");
+      },
+      onSendFirstLocalAudioFrame: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSendFirstLocalAudioFrame");
+      },
+      onRemoteVideoStatusUpdated: (userId, streamType, status, reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRemoteVideoStatusUpdated userId:$userId streamType:$streamType status:$status reason:$reason");
+      },
+      onRemoteAudioStatusUpdated: (userId, status, reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRemoteAudioStatusUpdated userId:$userId status:$status reason:$reason");
+      },
+      onUserVideoSizeChanged: (userId, streamType, newWidth, newHeight) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserVideoSizeChanged userId:$userId streamType:$streamType newWidth:$newWidth newHeight:$newHeight");
+      },
+      onNetworkQuality: (localQuality, remoteQuality) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onNetworkQuality localQuality userId:${localQuality.userId} quality:${localQuality.quality}");
+
+        for (TRTCQualityInfo info in remoteQuality) {
+          _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onNetworkQuality remoteQuality userId:${info.userId} quality:${info.quality}");
+        }
+      },
+      onStatistics: (statistics) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onStatistics "
+            "appCu:${statistics.appCpu} systemCu:${statistics.systemCpu} upLoss:${statistics.upLoss} "
+            "downLoss:${statistics.downLoss} rtt:${statistics.rtt} gatewayRtt:${statistics.gatewayRtt} "
+            "sendBytes:${statistics.sentBytes} receiveBytes:${statistics.receivedBytes}");
+
+        for (TRTCLocalStatistics info in statistics.localStatisticsArray!) {
+          _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onStatistics width:${info.width} height:${info.height} frameRate:${info.frameRate} \n"
+              " onStatistics videoBitrate:${info.videoBitrate} audioSampleRate:${info.audioSampleRate} audioBitrate:${info.audioBitrate} \n"
+              " onStatistics streamType:${info.streamType} audioCaptureState:${info.audioCaptureState}");
+        }
+
+        for (TRTCRemoteStatistics info in statistics.remoteStatisticsArray!) {
+          _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onStatistics userId:${info.userId} audioPacketLoss:${info.audioPacketLoss} videoPacketLoss:${info.videoPacketLoss} \n"
+              " onStatistics width:${info.width} height:${info.height} frameRate:${info.frameRate} videoBitrate:${info.videoBitrate} audioSampleRate:${info.audioSampleRate} \n"
+              " onStatistics audioBitrate:${info.audioBitrate} jitterBufferDelay:${info.jitterBufferDelay} point2PointDelay:${info.point2PointDelay} audioTotalBlockTime:${info.audioTotalBlockTime} \n"
+              " onStatistics audioBlockRate:${info.audioBlockRate} videoTotalBlockTime:${info.videoTotalBlockTime} videoBlockRate:${info.videoBlockRate} finalLoss:${info.finalLoss} remoteNetworkUplinkLoss:${info.remoteNetworkUplinkLoss} \n"
+              " onStatistics remoteNetworkRTT:${info.remoteNetworkRTT} streamType:${info.streamType}");
+        }
+      },
+      onSpeedTestResult: (result) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSpeedTestResult TRTCSpeedTestResult: success:${result.success} errMsg:${result.errMsg} ip:${result.ip} \n"
+            " onSpeedTestResult quality:${result.quality} upLostRate:${result.upLostRate} downLostRate:${result.downLostRate} rtt:${result.rtt} \n"
+            " onSpeedTestResult availableUpBandwidth:${result.availableUpBandwidth} availableDownBandwidth:${result.availableDownBandwidth} upJitter:${result.upJitter} downJitter:${result.downJitter}\n");
+      },
+      onConnectionLost: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onConnectionLost");
+      },
+      onTryToReconnect: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onTryToReconnect");
+      },
+      onConnectionRecovery: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onConnectionRecovery");
+      },
+      onCameraDidReady: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onCameraDidReady");
+      },
+      onMicDidReady: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onMicDidReady");
+      },
+      onUserVoiceVolume: (userVolumes, totalVolume) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserVoiceVolume totalVolume:$totalVolume");
+
+        for (TRTCVolumeInfo info in userVolumes) {
+          _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUserVoiceVolume userId:${info.userId} volume:${info.volume}");
+        }
+      },
+      onAudioDeviceCaptureVolumeChanged: (volume, muted) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onAudioDeviceCaptureVolumeChanged volume:$volume muted:$muted");
+      },
+      onAudioDevicePlayoutVolumeChanged: (volume, muted) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onAudioDevicePlayoutVolumeChanged volume:$volume muted:$muted");
+      },
+      onSystemAudioLoopbackError: (errCode) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSystemAudioLoopbackError errCode:$errCode");
+      },
+      onTestMicVolume: (volume) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onTestMicVolume volume:$volume");
+      },
+      onTestSpeakerVolume: (volume) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onTestSpeakerVolume volume:$volume");
+      },
+      onRecvCustomCmdMsg: (userId, cmdId, seq, message) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRecvCustomCmdMsg userId:$userId cmdId:$cmdId seq:$seq message:$message");
+
+        MeetingTool.toast(message, context);
+      },
+      onMissCustomCmdMsg: (userId, cmdId, errCode, missed) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onMissCustomCmdMsg userId:$userId cmdId:$cmdId errCode:$errCode missed:$missed");
+      },
+      onRecvSEIMsg: (userId, message) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onRecvSEIMsg userId:$userId message:$message");
+
+        MeetingTool.toast(message, context);
+      },
+      onStartPublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onStartPublishMediaStream taskId:$taskId errCode:$errCode errMsg:$errMsg extraInfo:$extraInfo");
+      },
+      onUpdatePublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onUpdatePublishMediaStream taskId:$taskId errCode:$errCode errMsg:$errMsg extraInfo:$extraInfo");
+      },
+      onStopPublishMediaStream: (taskId, errCode, errMsg, extraInfo) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onStopPublishMediaStream taskId:$taskId errCode:$errCode errMsg:$errMsg extraInfo:$extraInfo");
+      },
+      onCdnStreamStateChanged: (cdnUrl, status, errCode, errMsg, extraInfo) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onCdnStreamStateChanged cdnUrl:$cdnUrl status:$status errCode:$errCode errMsg:$errMsg extraInfo:$extraInfo");
+      },
+      onScreenCaptureStarted: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onScreenCaptureStarted");
+      },
+      onScreenCapturePaused: (reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onScreenCapturePaused reason:$reason");
+      },
+      onScreenCaptureResumed: (reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onScreenCaptureResumed reason:$reason");
+      },
+      onScreenCaptureStopped: (reason) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onScreenCaptureStopped reason:$reason");
+      },
+      onScreenCaptureCovered: () {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onScreenCaptureCovered");
+      },
+      onLocalRecordBegin: (errCode, storagePath) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onLocalRecordBegin errCode:$errCode storagePath:$storagePath");
+      },
+      onLocalRecording: (duration, storagePath) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onLocalRecording duration:$duration storagePath:$storagePath");
+      },
+      onLocalRecordFragment: (storagePath) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onLocalRecordingFragment storagePath:$storagePath");
+      },
+      onLocalRecordComplete: (errCode, storagePath) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onLocalRecordComplete errCode:$errCode storagePath:$storagePath");
+      },
+      onSnapshotComplete: (userId, type, data, length, width, height, format) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSnapshotComplete userId:$userId type:$type data:$data length:$length width:$width height:$height format:$format");
+      },
+    );
+  }
+
 
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     _meetModel = context.read<MeetingModel>();
     _initRoom();
   }
 
   _initRoom() async {
     // Create TRTCCloud singleton
-    _trtcCloud = (await TRTCCloud.sharedInstance())!;
+    _trtcCloud = await TRTCCloud.sharedInstance();
     // Tencent Cloud Audio Effect Management Module
     _txDeviceManager = _trtcCloud.getDeviceManager();
-    // Beauty filter and animated effect parameter management
-    _txBeautyManager = _trtcCloud.getBeautyManager();
-    // Tencent Cloud Audio Effect Management Module
-    // Register event callback
-    _trtcCloud.registerListener(_onRtcListener);
-    // trtcCloud.setVideoEncoderParam(TRTCVideoEncParam(
-    //   videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480,
-    //   videoResolutionMode: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT));
-
+    _listener = getListener();
+    _trtcCloud.registerListener(_listener);
     // Enter the room
     _enterRoom();
 
-    _initData();
-
-    //Set beauty effect
-    _txBeautyManager.setBeautyStyle(TRTCCloudDef.TRTC_BEAUTY_STYLE_NATURE);
-    _txBeautyManager.setBeautyLevel(6);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initData();
+    });
   }
 
   @override
@@ -100,31 +305,29 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         break;
       case AppLifecycleState.detached:
         break;
-      case AppLifecycleState.hidden:
-        break;
     }
   }
 
   // Enter the trtc room
-  _enterRoom() async {
+  _enterRoom() {
     try {
       _meetModel.getUserInfo().userSig =
-          await GenerateTestUserSig.genTestSig(_meetModel.getUserInfo().userId);
+           GenerateTestUserSig.genTestSig(_meetModel.getUserInfo().userId);
     } catch (err) {
       _meetModel.getUserInfo().userSig = '';
       print(err);
     }
-    await _trtcCloud.enterRoom(
+    _trtcCloud.enterRoom(
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: _meetModel.getUserInfo().userId,
             userSig: _meetModel.getUserInfo().userSig ?? '',
-            role: TRTCCloudDef.TRTCRoleAnchor,
+            role: TRTCRoleType.anchor,
             roomId: _meetModel.getMeetId()!),
-        TRTCCloudDef.TRTC_APP_SCENE_LIVE);
+        TRTCAppScene.live);
   }
 
-  _initData() async {
+  _initData() {
     _userList.add(_meetModel.getUserInfo());
     if (_meetModel.getUserInfo().isOpenMic) {
       if (kIsWeb) {
@@ -132,167 +335,133 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           _trtcCloud.startLocalAudio(_meetModel.getQuality());
         });
       } else {
-        await _trtcCloud.startLocalAudio(_meetModel.getQuality());
+        _trtcCloud.startLocalAudio(_meetModel.getQuality());
       }
     }
 
     _screenUserList = MeetingTool.getScreenList(_userList);
+
     _meetModel.setList(_userList);
-    this.setState(() {});
+    setState(() {});
   }
 
-  _destoryRoom() {
-    _trtcCloud.unRegisterListener(_onRtcListener);
+  _destroyRoom() {
     _trtcCloud.exitRoom();
+    _trtcCloud.unRegisterListener(_listener);
     TRTCCloud.destroySharedInstance();
   }
 
   @override
   dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _destoryRoom();
+    WidgetsBinding.instance!.removeObserver(this);
+    _destroyRoom();
     super.dispose();
   }
 
-  /// Event callbacks
-  _onRtcListener(type, param) async {
-    if (type == TRTCCloudListener.onError) {
-      if (param['errCode'] == -1308) {
-        MeetingTool.toast('Failed to start screen recording', context);
-        await _trtcCloud.stopScreenCapture();
-        _userList[0].isOpenCamera = true;
-        _meetModel.getUserInfo().isShowingWindow = false;
-        this.setState(() {});
-        _trtcCloud.startLocalPreview(
-            _meetModel.getUserInfo().isFrontCamera, _meetModel.getUserInfo().localViewId);
-      } else {
-        _showErrordDialog(param['errMsg']);
+  _handleOnRemoteUserEnterRoom(param) {
+    UserModel user = UserModel(userId: param);
+    user.type = 'video';
+    user.isOpenCamera = false;
+    user.size = WidgetSize(width: 0, height: 0);
+    _userList.add(user);
+
+    _screenUserList = MeetingTool.getScreenList(_userList);
+    this.setState(() {});
+    _meetModel.setList(_userList);
+  }
+
+  _handleOnRemoteUserLeaveRoom(String userId) {
+    for (var i = 0; i < _userList.length; i++) {
+      if (_userList[i].userId == userId) {
+        _userList.removeAt(i);
       }
     }
-    if (type == TRTCCloudListener.onEnterRoom) {
-      if (param > 0) {
-        MeetingTool.toast('Enter room success', context);
+    _screenUserList = MeetingTool.getScreenList(_userList);
+    this.setState(() {});
+    _meetModel.setList(_userList);
+  }
+
+  _handleOnUserAudioAvailable(String userId, bool available) {
+    for (var i = 0; i < _userList.length; i++) {
+      if (_userList[i].userId == userId) {
+        _userList[i].isOpenMic = available;
       }
-    }
-    if (type == TRTCCloudListener.onAudioRouteChanged) {
-      print("TRTCCloudListener onAudioRouteChanged route:${param['route']}, fromRoute:${param['fromRoute']}");
-    }
-    if (type == TRTCCloudListener.onDeviceChange) {
-      print("TRTCCloudListener onDeviceChange deviceId:${param['deviceId']}, type:${param['type']}, state:${param['state']}");
-    }
-    if (type == TRTCCloudListener.onExitRoom) {
-      if (param > 0) {
-        MeetingTool.toast('Exit room success', context);
-      }
-    }
-    // Remote user entry
-    if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
-      UserModel user = UserModel(userId: param);
-      user.type = 'video';
-      user.isOpenCamera = false;
-      user.size = WidgetSize(width: 0, height: 0);
-      _userList.add(user);
-
-      _screenUserList = MeetingTool.getScreenList(_userList);
-      this.setState(() {});
-      _meetModel.setList(_userList);
-    }
-    // Remote user leaves room
-    if (type == TRTCCloudListener.onRemoteUserLeaveRoom) {
-      String userId = param['userId'];
-      for (var i = 0; i < _userList.length; i++) {
-        if (_userList[i].userId == userId) {
-          _userList.removeAt(i);
-        }
-      }
-      _screenUserList = MeetingTool.getScreenList(_userList);
-      this.setState(() {});
-      _meetModel.setList(_userList);
-    }
-    if (type == TRTCCloudListener.onUserAudioAvailable) {
-      String userId = param['userId'];
-
-      for (var i = 0; i < _userList.length; i++) {
-        if (_userList[i].userId == userId) {
-          _userList[i].isOpenMic = param['available'];
-        }
-      }
-    }
-    if (type == TRTCCloudListener.onUserVideoAvailable) {
-      String userId = param['userId'];
-
-      if (param['available']) {
-        for (var i = 0; i < _userList.length; i++) {
-          if (_userList[i].userId == userId && _userList[i].type == 'video') {
-            _userList[i].isOpenCamera = true;
-          }
-        }
-      } else {
-        for (var i = 0; i < _userList.length; i++) {
-          if (_userList[i].userId == userId && _userList[i].type == 'video') {
-            _trtcCloud.stopRemoteView(
-                userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG);
-            _userList[i].isOpenCamera = false;
-          }
-        }
-      }
-
-      _screenUserList = MeetingTool.getScreenList(_userList);
-      this.setState(() {});
-      _meetModel.setList(_userList);
-    }
-
-    if (type == TRTCCloudListener.onUserSubStreamAvailable) {
-      String userId = param["userId"];
-      if (param["available"]) {
-        UserModel user = UserModel(userId: userId);
-        user.type = 'subStream';
-        user.isOpenCamera = true;
-        user.size = WidgetSize(width: 0, height: 0);
-        _userList.add(user);
-      } else {
-        for (var i = 0; i < _userList.length; i++) {
-          if (_userList[i].userId == userId &&
-              _userList[i].type == 'subStream') {
-            _trtcCloud.stopRemoteView(
-                userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB);
-            _userList.removeAt(i);
-          }
-        }
-      }
-      _screenUserList = MeetingTool.getScreenList(_userList);
-      this.setState(() {});
-      _meetModel.setList(_userList);
-    }
-
-    if (type == TRTCCloudListener.onMusicObserverStart) {
-      print('TRTCCloudListener onMusicObserverStart id:${param['id']} errCode:${param['errCode']}');
-    }
-    if (type == TRTCCloudListener.onMusicObserverPlayProgress) {
-      print('TRTCCloudListener onMusicObserverPlayProgress id:${param['id']} curPtsMS:${param['curPtsMS']} durationMS:${param['durationMS']}');
-    }
-    if (type == TRTCCloudListener.onMusicObserverComplete) {
-      print('TRTCCloudListener onMusicObserverComplete id:${param['id']} errCode:${param['errCode']}');
-    }
-
-    if (type == TRTCCloudListener.onRecvCustomCmdMsg) {
-      print('TRTCCloudListener onRecvCustomCmdMsg userId:${param['userId']} cmdID:${param['cmdID']} seq:${param['seq']} message:${param['message']}');
-    }
-    if (type == TRTCCloudListener.onMissCustomCmdMsg) {
-      print('TRTCCloudListener onMissCustomCmdMsg userId:${param['userId']} cmdID:${param['cmdID']} errCode:${param['errCode']} missed:${param['missed']}');
-    }
-    if (type == TRTCCloudListener.onRecvSEIMsg) {
-      print('TRTCCloudListener onRecvSEIMsg userId:${param['userId']} message:${param['message']}');
-    }
-    if (type == TRTCCloudListener.onLocalRecordBegin) {
-      print('TRTCCloudListener onLocalRecordBegin errCode:${param['errCode']} storagePath:${param['storagePath']}');
-    }
-    if (type == TRTCCloudListener.onLocalRecordComplete) {
-      print('TRTCCloudListener onLocalRecordComplete errCode:${param['errCode']} storagePath:${param['storagePath']}');
     }
   }
 
-  Future<bool?> _showErrordDialog(errorMsg) {
+  _handleOnUserVideoAvailable(String userId, bool available)  {
+    if (available) {
+      for (var i = 0; i < _userList.length; i++) {
+        if (_userList[i].userId == userId && _userList[i].type == 'video') {
+          _userList[i].isOpenCamera = true;
+        }
+      }
+    } else {
+      for (var i = 0; i < _userList.length; i++) {
+        if (_userList[i].userId == userId && _userList[i].type == 'video') {
+          _trtcCloud.stopRemoteView(
+              userId, TRTCVideoStreamType.big);
+          _userList[i].isOpenCamera = false;
+        }
+      }
+    }
+
+    _screenUserList = MeetingTool.getScreenList(_userList);
+    this.setState(() {});
+    _meetModel.setList(_userList);
+  }
+
+  _handleOnUserSubStreamAvailable(String userId, bool available) {
+    if (available) {
+      UserModel user = UserModel(userId: userId);
+      user.type = 'subStream';
+      user.isOpenCamera = true;
+      user.size = WidgetSize(width: 0, height: 0);
+      _userList.add(user);
+    } else {
+      for (var i = 0; i < _userList.length; i++) {
+        if (_userList[i].userId == userId &&
+            _userList[i].type == 'subStream') {
+          _trtcCloud.stopRemoteView(
+              userId, TRTCVideoStreamType.sub);
+          _userList.removeAt(i);
+        }
+      }
+    }
+    _screenUserList = MeetingTool.getScreenList(_userList);
+    _meetModel.setList(_userList);
+    this.setState(() {});
+  }
+
+  _startShare(int viewId) {
+    _trtcCloud.startScreenCapture(
+        viewId,
+        TRTCVideoStreamType.sub,
+        TRTCVideoEncParam(
+          videoFps: 10,
+          videoResolution: TRTCVideoResolution.res_1280_720,
+          videoBitrate: 1600,
+          videoResolutionMode: TRTCVideoResolutionMode.portrait,
+        ));
+  }
+
+  _onShareClick() {
+    if (Platform.isAndroid) {
+      if (!_meetModel.getUserInfo().isShowingWindow) {
+        _startShare(0);
+        this.setState(() {
+          _meetModel.getUserInfo().isShowingWindow = true;
+        });
+      } else {
+        _trtcCloud.stopScreenCapture();
+        this.setState(() {
+          _meetModel.getUserInfo().isShowingWindow = false;
+        });
+      }
+    }
+  }
+
+  Future<bool?> _showErrorDialog(errorMsg) {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -342,92 +511,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
     );
   }
 
-  _startShare({String shareUserId = '', String shareUserSig = ''}) async {
-    if (shareUserId == '') await _trtcCloud.stopLocalPreview();
-    _trtcCloud.startScreenCapture(
-      TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-      TRTCVideoEncParam(
-        videoFps: 10,
-        videoResolution: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720,
-        videoBitrate: 1600,
-        videoResolutionMode: TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_PORTRAIT,
-      ),
-      appGroup: iosAppGroup,
-      shareUserId: shareUserId,
-      shareUserSig: shareUserSig,
-    );
-  }
-
-  _onShareClick() async {
-    if (kIsWeb) {
-      String shareUserId = 'share-' + _meetModel.getUserInfo().userId;
-      String shareUserSig = await GenerateTestUserSig.genTestSig(shareUserId);
-      await _startShare(shareUserId: shareUserId, shareUserSig: shareUserSig);
-    } else if (!kIsWeb && Platform.isAndroid) {
-      if (!_meetModel.getUserInfo().isShowingWindow) {
-        await _startShare();
-        _userList[0].isOpenCamera = false;
-        this.setState(() {
-          _meetModel.getUserInfo().isShowingWindow = true;
-          _meetModel.getUserInfo().isOpenCamera = false;
-        });
-      } else {
-        await _trtcCloud.stopScreenCapture();
-        _userList[0].isOpenCamera = true;
-        _trtcCloud.startLocalPreview(
-            _meetModel.getUserInfo().isFrontCamera, _meetModel.getUserInfo().localViewId);
-        this.setState(() {
-          _meetModel.getUserInfo().isShowingWindow = false;
-          _meetModel.getUserInfo().isOpenCamera = true;
-        });
-      }
-    } else if (!kIsWeb && Platform.isMacOS) {
-      MeetingTool.toast(
-          'The current platform does not support screen sharing.', context);
-      return;
-    } else if (!kIsWeb && Platform.isWindows) {
-      if (!_meetModel.getUserInfo().isShowingWindow) {
-        TRTCScreenCaptureSourceList list = await _trtcCloud.getScreenCaptureSources(thumbnailWidth: 100, thumbnailHeight: 100, iconWidth: 100, iconHeight: 100);
-        showWindowSelector(context, list);
-      } else {
-        await _trtcCloud.stopScreenCapture();
-        _userList[0].isOpenCamera = true;
-        _trtcCloud.startLocalPreview(
-            _meetModel.getUserInfo().isFrontCamera, _meetModel.getUserInfo().localViewId);
-        this.setState(() {
-          _meetModel.getUserInfo().isShowingWindow = false;
-          _meetModel.getUserInfo().isOpenCamera = true;
-        });
-      }
-    } else {
-      await _startShare();
-      // The screen sharing function can only be tested on the real machine
-      ReplayKitLauncher.launchReplayKitBroadcast(iosExtensionName);
-      this.setState(() {
-        _meetModel.getUserInfo().isOpenCamera = false;
-      });
-    }
-  }
-
-  void showWindowSelector(BuildContext context, TRTCScreenCaptureSourceList windows) async {
-    final result = await showDialog<int>(
-      context: context,
-      builder: (BuildContext context) {
-        return WindowSelectorDialog(windows: windows);
-      },
-  );
-
-  if (result != null) {
-    print('Selected window index: $result');
-    await _trtcCloud.selectScreenCaptureTarget(windows.sourceInfo[result], TRTCScreenCaptureProperty());
-        await _startShare();
-        this.setState(() {
-          _meetModel.getUserInfo().isShowingWindow = true;
-          _meetModel.getUserInfo().isOpenCamera = false;
-        });
-  }
-}
-
   Widget _renderView(UserModel item, valueKey, width, height) {
     if (item.isOpenCamera) {
       return GestureDetector(
@@ -436,14 +519,9 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: TRTCCloudVideoView(
               key: valueKey,
               hitTestBehavior: PlatformViewHitTestBehavior.transparent,
-              viewType: _meetModel.getTextureRenderingEnable()
-                  ? TRTCCloudDef.TRTC_VideoView_Texture
-                  : TRTCCloudDef.TRTC_VideoView_TextureView,
-              // viewMode: TRTCCloudDef.TRTC_VideoView_Model_Hybrid,
-              textureParam: _buildTextureParam(item, width, height),
               onViewCreated: (viewId) async {
                 if (item.userId == _meetModel.getUserInfo().userId) {
-                  await _trtcCloud.startLocalPreview(
+                   _trtcCloud.startLocalPreview(
                       _meetModel.getUserInfo().isFrontCamera, viewId);
                   setState(() {
                     _meetModel.getUserInfo().localViewId = viewId;
@@ -452,8 +530,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   _trtcCloud.startRemoteView(
                       item.userId,
                       item.type == 'video'
-                          ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-                          : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
+                          ? TRTCVideoStreamType.big
+                          : TRTCVideoStreamType.sub,
                       viewId);
                 }
                 item.localViewId = viewId;
@@ -465,22 +543,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           child: Image.asset('images/avatar3_100.20191230.png', scale: 3.5),
         ),
       );
-    }
-  }
-
-  CustomRender? _buildTextureParam(UserModel item, width, height) {
-    if (_meetModel.getTextureRenderingEnable()) {
-      return CustomRender(
-        userId: item.userId,
-        isLocal: item.userId == _meetModel.getUserInfo().userId ? true : false,
-        streamType: item.type == 'video'
-            ? TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-            : TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB,
-        width: width.round(),
-        height: height.round(),
-      );
-    } else {
-      return null;
     }
   }
 
@@ -525,10 +587,10 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   onPressed: () async {
                     if (_meetModel.getUserInfo().isSpeak) {
                       _txDeviceManager.setAudioRoute(
-                          TRTCCloudDef.TRTC_AUDIO_ROUTE_EARPIECE);
+                          TXAudioRoute.speakerPhone);
                     } else {
                       _txDeviceManager
-                          .setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER);
+                          .setAudioRoute(TXAudioRoute.earpiece);
                     }
                     setState(() {
                       _meetModel.getUserInfo().isSpeak = !_meetModel.getUserInfo().isSpeak;
@@ -573,147 +635,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           color: Color.fromRGBO(200, 200, 200, 0.4),
         ),
         alignment: Alignment.topCenter);
-  }
-
-  ///Beauty setting floating layer
-  Widget _beautySetting() {
-    return Positioned(
-      bottom: 80,
-      child: Offstage(
-        offstage: _meetModel.getUserInfo().isShowBeauty,
-        child: Container(
-          padding: EdgeInsets.all(10),
-          color: Color.fromRGBO(0, 0, 0, 0.8),
-          height: 100,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Row(children: [
-                Expanded(
-                  flex: 2,
-                  child: Slider(
-                    value: _meetModel.getBeautyInfo()[_curBeauty] ?? 0.0,
-                    min: 0,
-                    max: 9,
-                    divisions: 9,
-                    onChanged: (double value) {
-                      switch (_curBeauty) {
-                        case BeautyType.smooth:
-                          _txBeautyManager.setBeautyLevel(value.round());
-                          break;
-                        case BeautyType.nature:
-                          _txBeautyManager.setBeautyLevel(value.round());
-                          break;
-                        case BeautyType.pitu:
-                          _txBeautyManager.setBeautyLevel(value.round());
-                          break;
-                        case BeautyType.ruddy:
-                          _txBeautyManager.setRuddyLevel(value.round());
-                          break;
-                        default:
-                          break;
-                      }
-
-                      this.setState(() {
-                        _meetModel.getBeautyInfo()[_curBeauty] = value;
-                      });
-                    },
-                  ),
-                ),
-                Text(_meetModel.getBeautyInfo()[_curBeauty]?.round().toString() ?? '0',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
-              ]),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        width: 80.0,
-                        child: Text(
-                          'Smooth',
-                          style: TextStyle(
-                              color: _curBeauty == BeautyType.smooth
-                                  ? Color.fromRGBO(64, 158, 255, 1)
-                                  : Colors.white),
-                        ),
-                      ),
-                      onTap: () => this.setState(() {
-                        _txBeautyManager.setBeautyStyle(
-                            TRTCCloudDef.TRTC_BEAUTY_STYLE_SMOOTH);
-                        _curBeauty = BeautyType.smooth;
-                        _txBeautyManager.setBeautyLevel(
-                            _meetModel.getBeautyInfo()[_curBeauty]?.round() ?? 0);
-                      }),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        width: 80.0,
-                        child: Text(
-                          'Nature',
-                          style: TextStyle(
-                              color: _curBeauty == BeautyType.nature
-                                  ? Color.fromRGBO(64, 158, 255, 1)
-                                  : Colors.white),
-                        ),
-                      ),
-                      onTap: () => this.setState(() {
-                        _txBeautyManager.setBeautyStyle(
-                            TRTCCloudDef.TRTC_BEAUTY_STYLE_NATURE);
-                        _curBeauty = BeautyType.nature;
-                        _txBeautyManager.setBeautyLevel(
-                            _meetModel.getBeautyInfo()[_curBeauty]?.round() ?? 0);
-                      }),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        width: 80.0,
-                        child: Text(
-                          'Pitu',
-                          style: TextStyle(
-                              color: _curBeauty == BeautyType.pitu
-                                  ? Color.fromRGBO(64, 158, 255, 1)
-                                  : Colors.white),
-                        ),
-                      ),
-                      onTap: () => this.setState(() {
-                        _txBeautyManager.setBeautyStyle(
-                            TRTCCloudDef.TRTC_BEAUTY_STYLE_PITU);
-                        _curBeauty = BeautyType.pitu;
-                        _txBeautyManager.setBeautyLevel(
-                            _meetModel.getBeautyInfo()[_curBeauty]?.round() ?? 0);
-                      }),
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        width: 50.0,
-                        child: Text(
-                          'Ruddy',
-                          style: TextStyle(
-                              color: _curBeauty == BeautyType.ruddy
-                                  ? Color.fromRGBO(64, 158, 255, 1)
-                                  : Colors.white),
-                        ),
-                      ),
-                      onTap: () => this.setState(() {
-                        _curBeauty = BeautyType.ruddy;
-                        _txBeautyManager.setRuddyLevel(
-                            _meetModel.getBeautyInfo()[_curBeauty]?.round() ?? 0);
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _bottomSetting() {
@@ -813,16 +734,151 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
         alignment: Alignment.bottomCenter);
   }
 
+  // Widget _beautySetting() {
+  //   return Positioned(
+  //     bottom: 80,
+  //     child: Offstage(
+  //       offstage: _meetModel.getUserInfo().isShowBeauty,
+  //       child: Container(
+  //         padding: EdgeInsets.all(10),
+  //         color: Color.fromRGBO(0, 0, 0, 0.8),
+  //         height: 100,
+  //         width: MediaQuery.of(context).size.width,
+  //         child: Column(
+  //           children: [
+  //             Row(children: [
+  //               Expanded(
+  //                 flex: 2,
+  //                 child: Slider(
+  //                   value: _meetModel.getBeautyInfo()[_beautyType] ?? 0.0,
+  //                   min: 0,
+  //                   max: 9,
+  //                   divisions: 9,
+  //                   onChanged: (double value) {
+  //                     switch (_beautyType) {
+  //                       case BeautyType.smooth:
+  //                         _trtcCloud.setBeautyStyle(TRTCBeautyStyle.smooth, value.round(), 0, 0);
+  //                         break;
+  //                       case BeautyType.nature:
+  //                         _trtcCloud.setBeautyStyle(TRTCBeautyStyle.nature, value.round(), 0, 0);
+  //                         break;
+  //                       case BeautyType.white:
+  //                         _trtcCloud.setBeautyStyle(TRTCBeautyStyle.smooth, 0, value.round(), 0);
+  //                         break;
+  //                       case BeautyType.ruddy:
+  //                         _trtcCloud.setBeautyStyle(TRTCBeautyStyle.smooth, 0, 0, value.round());
+  //                         break;
+  //                       default:
+  //                         break;
+  //                     }
+  //                     this.setState(() {
+  //                       _meetModel.getBeautyInfo()[_beautyType] = value;
+  //                     });
+  //                   },
+  //                 ),
+  //               ),
+  //               Text(_meetModel.getBeautyInfo()[_beautyType]?.round().toString() ?? '0',
+  //                   textAlign: TextAlign.center,
+  //                   style: TextStyle(color: Colors.white)),
+  //             ]),
+  //
+  //             Padding(
+  //               padding: EdgeInsets.only(top: 10),
+  //               child: Row(
+  //                 children: [
+  //                   GestureDetector(
+  //                     child: Container(
+  //                       alignment: Alignment.centerLeft,
+  //                       width: 80.0,
+  //                       child: Text(
+  //                         'Smooth',
+  //                         style: TextStyle(
+  //                             color: _beautyType == BeautyType.smooth
+  //                                 ? Color.fromRGBO(64, 158, 255, 1)
+  //                                 : Colors.white),
+  //                       ),
+  //                     ),
+  //                     onTap: () => this.setState(() {
+  //                       _beautyType = BeautyType.smooth;
+  //                       _trtcCloud.setBeautyStyle(TRTCBeautyStyle.smooth,
+  //                           _meetModel.getBeautyInfo()[BeautyType.smooth]?.round() ?? 0, 0, 0);
+  //                     }),
+  //                   ),
+  //
+  //                   GestureDetector(
+  //                     child: Container(
+  //                       alignment: Alignment.centerLeft,
+  //                       width: 80.0,
+  //                       child: Text(
+  //                         'Nature',
+  //                         style: TextStyle(
+  //                             color: _beautyType == BeautyType.nature
+  //                                 ? Color.fromRGBO(64, 158, 255, 1)
+  //                                 : Colors.white),
+  //                       ),
+  //                     ),
+  //                     onTap: () => this.setState(() {
+  //                       _beautyType = BeautyType.nature;
+  //                       _trtcCloud.setBeautyStyle(TRTCBeautyStyle.nature,
+  //                           _meetModel.getBeautyInfo()[BeautyType.nature]?.round() ?? 0, 0, 0);
+  //                     }),
+  //                   ),
+  //
+  //                   GestureDetector(
+  //                     child: Container(
+  //                       alignment: Alignment.centerLeft,
+  //                       width: 80.0,
+  //                       child: Text(
+  //                         'White',
+  //                         style: TextStyle(
+  //                             color: _beautyType == BeautyType.white
+  //                                 ? Color.fromRGBO(64, 158, 255, 1)
+  //                                 : Colors.white),
+  //                       ),
+  //                     ),
+  //                     onTap: () => this.setState(() {
+  //                       _beautyType = BeautyType.white;
+  //                       _trtcCloud.setBeautyStyle(TRTCBeautyStyle.nature, 0,
+  //                           _meetModel.getBeautyInfo()[BeautyType.ruddy]?.round() ?? 0, 0);
+  //                     }),
+  //                   ),
+  //
+  //                   GestureDetector(
+  //                     child: Container(
+  //                       alignment: Alignment.centerLeft,
+  //                       width: 50.0,
+  //                       child: Text(
+  //                         'Ruddy',
+  //                         style: TextStyle(
+  //                             color: _beautyType == BeautyType.ruddy
+  //                                 ? Color.fromRGBO(64, 158, 255, 1)
+  //                                 : Colors.white),
+  //                       ),
+  //                     ),
+  //                     onTap: () => this.setState(() {
+  //                       _beautyType = BeautyType.ruddy;
+  //                       _trtcCloud.setBeautyStyle(TRTCBeautyStyle.nature, 0, 0,
+  //                           _meetModel.getBeautyInfo()[BeautyType.white]?.round() ?? 0);
+  //                     }),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (value) {
-          if (value) {
-            _trtcCloud.exitRoom();
-          }
+      body: WillPopScope(
+        onWillPop: () async {
+          _trtcCloud.exitRoom();
+          return true;
         },
         child: Stack(
           children: <Widget>[
@@ -882,7 +938,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                   );
                 }),
             _topSetting(),
-            _beautySetting(),
+            // _beautySetting(),
             _bottomSetting()
           ],
         ),

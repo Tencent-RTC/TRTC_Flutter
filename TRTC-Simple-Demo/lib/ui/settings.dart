@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 
 /// Set video resolution
 class SettingsPage extends StatefulWidget {
@@ -19,66 +19,66 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
   double _currentPlayValue = 100; //Default playback volume
   bool _enabledMirror = true;
   String _currentResolution = "360 * 640"; // Default resolution
-  int _currentResValue = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360;
+  TRTCVideoResolution _currentResValue = TRTCVideoResolution.res_640_360;
   List _resolutionList = [
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_160,
+      "value": TRTCVideoResolution.res_160_160,
       "text": "160 * 160",
       "minBitrate": 40,
       "maxBitrate": 300,
       "curBitrate": 300
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_180,
+      "value": TRTCVideoResolution.res_320_180,
       "text": "180 * 320",
       "minBitrate": 80,
       "maxBitrate": 350,
       "curBitrate": 350
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_320_240,
+      "value": TRTCVideoResolution.res_320_240,
       "text": "240 * 320",
       "minBitrate": 100,
       "maxBitrate": 400,
       "curBitrate": 400
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_480_480,
+      "value": TRTCVideoResolution.res_480_480,
       "text": "480 * 480",
       "minBitrate": 200,
       "maxBitrate": 1000,
       "curBitrate": 750
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360,
+      "value": TRTCVideoResolution.res_640_360,
       "text": "360 * 640",
       "minBitrate": 200,
       "maxBitrate": 1000,
       "curBitrate": 900
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_480,
+      "value": TRTCVideoResolution.res_640_480,
       "text": "480 * 640",
       "minBitrate": 250,
       "maxBitrate": 1000,
       "curBitrate": 1000
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540,
+      "value": TRTCVideoResolution.res_960_540,
       "text": "540 * 960",
       "minBitrate": 400,
       "maxBitrate": 1600,
       "curBitrate": 1350
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720,
+      "value": TRTCVideoResolution.res_1280_720,
       "text": "720 * 1280",
       "minBitrate": 500,
       "maxBitrate": 2000,
       "curBitrate": 1850
     },
     {
-      "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1920_1080,
+      "value": TRTCVideoResolution.res_1920_1080,
       "text": "1080 * 1920",
       "minBitrate": 800,
       "maxBitrate": 3000,
@@ -94,7 +94,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     _initRoom();
   }
 
@@ -108,10 +108,10 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
     });
     if (value) {
       _trtcCloud.setLocalRenderParams(TRTCRenderParams(
-          mirrorType: TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_ENABLE));
+          mirrorType: TRTCVideoMirrorType.enable));
     } else {
       _trtcCloud.setLocalRenderParams(TRTCRenderParams(
-          mirrorType: TRTCCloudDef.TRTC_VIDEO_MIRROR_TYPE_DISABLE));
+          mirrorType: TRTCVideoMirrorType.disable));
     }
   }
 
@@ -130,7 +130,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                       videoResolution: _resolutionList[position]['value'],
                       videoBitrate: _resolutionList[position]['curBitrate'],
                       videoResolutionMode:
-                          TRTCCloudDef.TRTC_VIDEO_RESOLUTION_MODE_LANDSCAPE));
+                      TRTCVideoResolutionMode.landscape));
 
                   morePageState(() {
                     _currentResValue = _resolutionList[position]['value'];
@@ -302,8 +302,8 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                   divisions: 100,
                   label: _currentCaptureValue.round().toString(),
                   onChanged: (double value) {
-                    _trtcCloud
-                        .setAudioCaptureVolume(value.round());
+                    // _trtcCloud
+                    //     .setAudioCaptureVolume(value.round());
                     state(() {
                       _currentCaptureValue = value;
                     });
@@ -326,8 +326,8 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                   divisions: 100,
                   label: _currentPlayValue.round().toString(),
                   onChanged: (double value) {
-                    _trtcCloud
-                        .setAudioPlayoutVolume(value.round());
+                    // _trtcCloud
+                    //     .setAudioPlayoutVolume(value.round());
                     state(() {
                       _currentPlayValue = value;
                     });
@@ -411,8 +411,6 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
             _isAPPPausedToClosed = true;
           }
         }
-        break;
-      case AppLifecycleState.hidden:
         break;
     }
   }

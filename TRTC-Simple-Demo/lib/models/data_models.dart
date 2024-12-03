@@ -9,6 +9,6 @@ class WidgetSize {
 enum BeautyType {
   smooth,
   nature,
-  pitu,
+  white,
   ruddy,
 }

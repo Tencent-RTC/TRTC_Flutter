@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
@@ -28,12 +28,12 @@ class LoginPageState extends State<LoginPage> {
   bool _enabledCamera = true;
 
   /// whether turn on the microphone
-  bool _enabledMicrophone = true;
+  bool _enabledMicrophone = false;
 
   bool _enableTextureRendering = false;
 
   /// sound quality selection
-  int _quality = TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH;
+  TRTCAudioQuality _quality = TRTCAudioQuality.speech;
 
   final _meetIdFocusNode = FocusNode();
   final _userFocusNode = FocusNode();
@@ -104,15 +104,18 @@ class LoginPageState extends State<LoginPage> {
       return;
     }
     _unFocus();
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    if (!kIsWeb && !Platform.isMacOS && !Platform.isIOS) {
       if (!(await Permission.camera.request().isGranted) ||
-          !(await Permission.microphone.request().isGranted) ||
-          !(await Permission.storage.request().isGranted)) {
+          !(await Permission.microphone.request().isGranted) ) {
         MeetingTool.toast(
             'You need to obtain audio and video permission to enter', context);
         return;
       }
+      await Permission.storage.request();
+      await Permission.systemAlertWindow.request();
     }
+
+
     var meetModel = context.read<MeetingModel>();
     meetModel.setUserSettings(
       meetId: int.parse(_meetId),

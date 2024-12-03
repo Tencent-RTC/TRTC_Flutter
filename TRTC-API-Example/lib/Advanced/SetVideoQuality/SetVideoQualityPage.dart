@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_listener.dart';
-import 'package:tencent_trtc_cloud/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
@@ -26,20 +26,21 @@ class SetVideoQualityPage extends StatefulWidget {
 
 class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
   late TRTCCloud trtcCloud;
+  late TRTCCloudListener listener;
   int? localViewId;
   bool isStartPush = false;
   int roomId = int.parse(TXHelper.generateRandomStrRoomId());
   String userId = TXHelper.generateRandomUserId();
   Map<String, String> remoteUidSet = {};
-  Map<int, BitrateRange> bitrateDic = {
-    TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360: BitrateRange(200, 1000, 800),
-    TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540: BitrateRange(400, 1600, 900),
-    TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720: BitrateRange(500, 2000, 1250),
-    TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1920_1080: BitrateRange(800, 3000, 1900),
+  Map<TRTCVideoResolution, BitrateRange> bitrateDic = {
+    TRTCVideoResolution.res_640_360: BitrateRange(200, 1000, 800),
+    TRTCVideoResolution.res_960_540: BitrateRange(400, 1600, 900),
+    TRTCVideoResolution.res_1280_720: BitrateRange(500, 2000, 1250),
+    TRTCVideoResolution.res_1920_1080: BitrateRange(800, 3000, 1900),
   };
   int videoFps = 15;
   int videoBitrate = 900;
-  int videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
+  TRTCVideoResolution videoResolution = TRTCVideoResolution.res_960_540;
   @override
   void initState() {
     initTRTCCloud();
@@ -52,117 +53,30 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
   }
 
   startPushStream() async {
-    trtcCloud.startLocalPreview(true, localViewId);
+    trtcCloud.startLocalPreview(true, localViewId!);
     TRTCParams params = new TRTCParams();
     params.sdkAppId = GenerateTestUserSig.sdkAppId;
     params.roomId = this.roomId;
     params.userId = this.userId;
-    params.role = TRTCCloudDef.TRTCRoleAnchor;
+    params.role = TRTCRoleType.anchor;
     params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.enterRoom(params, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+    trtcCloud.enterRoom(params, TRTCAppScene.videoCall);
 
     TRTCVideoEncParam encParams = new TRTCVideoEncParam();
     encParams.videoResolution = videoResolution;
     encParams.videoBitrate = videoBitrate;
     encParams.videoFps = videoFps;
     trtcCloud.setVideoEncoderParam(encParams);
-    trtcCloud.registerListener(onTrtcListener);
+    listener = getListener();
+    trtcCloud.registerListener(listener);
   }
 
-  onTrtcListener(type, params) async {
-    switch (type) {
-      case TRTCCloudListener.onError:
-        break;
-      case TRTCCloudListener.onWarning:
-        break;
-      case TRTCCloudListener.onEnterRoom:
-        break;
-      case TRTCCloudListener.onExitRoom:
-        break;
-      case TRTCCloudListener.onSwitchRole:
-        break;
-      case TRTCCloudListener.onRemoteUserEnterRoom:
-        break;
-      case TRTCCloudListener.onRemoteUserLeaveRoom:
-        break;
-      case TRTCCloudListener.onConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onDisConnectOtherRoom:
-        break;
-      case TRTCCloudListener.onSwitchRoom:
-        break;
-      case TRTCCloudListener.onUserVideoAvailable:
-        onUserVideoAvailable(params["userId"], params['available']);
-        break;
-      case TRTCCloudListener.onUserSubStreamAvailable:
-        break;
-      case TRTCCloudListener.onUserAudioAvailable:
-        break;
-      case TRTCCloudListener.onFirstVideoFrame:
-        break;
-      case TRTCCloudListener.onFirstAudioFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalVideoFrame:
-        break;
-      case TRTCCloudListener.onSendFirstLocalAudioFrame:
-        break;
-      case TRTCCloudListener.onNetworkQuality:
-        break;
-      case TRTCCloudListener.onStatistics:
-        break;
-      case TRTCCloudListener.onConnectionLost:
-        break;
-      case TRTCCloudListener.onTryToReconnect:
-        break;
-      case TRTCCloudListener.onConnectionRecovery:
-        break;
-      case TRTCCloudListener.onSpeedTest:
-        break;
-      case TRTCCloudListener.onCameraDidReady:
-        break;
-      case TRTCCloudListener.onMicDidReady:
-        break;
-      case TRTCCloudListener.onUserVoiceVolume:
-        break;
-      case TRTCCloudListener.onRecvCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onMissCustomCmdMsg:
-        break;
-      case TRTCCloudListener.onRecvSEIMsg:
-        break;
-      case TRTCCloudListener.onStartPublishing:
-        break;
-      case TRTCCloudListener.onStopPublishing:
-        break;
-      case TRTCCloudListener.onStartPublishCDNStream:
-        break;
-      case TRTCCloudListener.onStopPublishCDNStream:
-        break;
-      case TRTCCloudListener.onSetMixTranscodingConfig:
-        break;
-      case TRTCCloudListener.onMusicObserverStart:
-        break;
-      case TRTCCloudListener.onMusicObserverPlayProgress:
-        break;
-      case TRTCCloudListener.onMusicObserverComplete:
-        break;
-      case TRTCCloudListener.onSnapshotComplete:
-        break;
-      case TRTCCloudListener.onScreenCaptureStarted:
-        break;
-      case TRTCCloudListener.onScreenCapturePaused:
-        break;
-      case TRTCCloudListener.onScreenCaptureResumed:
-        break;
-      case TRTCCloudListener.onScreenCaptureStoped:
-        break;
-      case TRTCCloudListener.onDeviceChange:
-        break;
-      case TRTCCloudListener.onTestMicVolume:
-        break;
-      case TRTCCloudListener.onTestSpeakerVolume:
-        break;
-    }
+  TRTCCloudListener getListener() {
+    return TRTCCloudListener(
+        onUserVideoAvailable: (userId, available) {
+          onUserVideoAvailable(userId, available);
+        }
+    );
   }
 
   onUserVideoAvailable(String userId, bool available) {
@@ -179,10 +93,10 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
   }
 
   destroyRoom() async {
-    await trtcCloud.stopLocalAudio();
-    await trtcCloud.stopLocalPreview();
-    await trtcCloud.exitRoom();
-    await TRTCCloud.destroySharedInstance();
+    trtcCloud.stopLocalAudio();
+    trtcCloud.stopLocalPreview();
+    trtcCloud.exitRoom();
+    TRTCCloud.destroySharedInstance();
   }
 
   @override
@@ -192,32 +106,32 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
   }
 
   onVideo360PClick() {
-    videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360;
+    videoResolution = TRTCVideoResolution.res_640_360;
     refreshBitrateSlider();
     refreshEncParam();
   }
 
   onVideo540PClick() {
-    videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540;
+    videoResolution = TRTCVideoResolution.res_960_540;
     refreshBitrateSlider();
     refreshEncParam();
   }
 
   onVideo720PClick() {
-    videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720;
+    videoResolution = TRTCVideoResolution.res_1280_720;
     refreshBitrateSlider();
     refreshEncParam();
   }
 
   onVideo1080PClick() {
-    videoResolution = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1920_1080;
+    videoResolution = TRTCVideoResolution.res_1920_1080;
     refreshBitrateSlider();
     refreshEncParam();
   }
 
   refreshBitrateSlider() {
     BitrateRange currentBitrate =
-        bitrateDic[TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540]!;
+        bitrateDic[TRTCVideoResolution.res_960_540]!;
     if (bitrateDic.containsKey(videoResolution)) {
       currentBitrate = bitrateDic[videoResolution]!;
     }
@@ -240,7 +154,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
       startPushStream();
     } else {
       remoteUidSet.clear();
-      trtcCloud.unRegisterListener(onTrtcListener);
+      trtcCloud.unRegisterListener(listener);
       trtcCloud.stopLocalPreview();
       trtcCloud.exitRoom();
     }
@@ -267,7 +181,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
     MaterialStateProperty<Color> greyColor =
         MaterialStateProperty.all(Colors.grey);
     BitrateRange currentBitrate =
-        bitrateDic[TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540]!;
+        bitrateDic[TRTCVideoResolution.res_960_540]!;
     if (bitrateDic.containsKey(videoResolution)) {
       currentBitrate = bitrateDic[videoResolution]!;
     }
@@ -280,7 +194,6 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
           onTap: () {},
           child: TRTCCloudVideoView(
             key: ValueKey("LocalView"),
-            viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
             onViewCreated: (viewId) async {
               setState(() {
                 localViewId = viewId;
@@ -312,10 +225,9 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                   ),
                   child: TRTCCloudVideoView(
                     key: ValueKey('RemoteView_$userId'),
-                    viewType: TRTCCloudDef.TRTC_VideoView_TextureView,
                     onViewCreated: (viewId) async {
                       trtcCloud.startRemoteView(userId,
-                          TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewId);
+                          TRTCVideoStreamType.small, viewId);
                     },
                   ),
                 );
@@ -359,7 +271,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                             EdgeInsets.only(left: 0, right: 0),
                           ),
                           backgroundColor: videoResolution ==
-                                  TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360
+                                  TRTCVideoResolution.res_640_360
                               ? greenColor
                               : greyColor,
                         ),
@@ -384,7 +296,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                             EdgeInsets.only(left: 0, right: 0),
                           ),
                           backgroundColor: videoResolution ==
-                                  TRTCCloudDef.TRTC_VIDEO_RESOLUTION_960_540
+                                  TRTCVideoResolution.res_960_540
                               ? greenColor
                               : greyColor,
                         ),
@@ -409,7 +321,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                             EdgeInsets.only(left: 0, right: 0),
                           ),
                           backgroundColor: videoResolution ==
-                                  TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1280_720
+                                  TRTCVideoResolution.res_1280_720
                               ? greenColor
                               : greyColor,
                         ),
@@ -434,7 +346,7 @@ class _SetVideoQualityPageState extends State<SetVideoQualityPage> {
                             EdgeInsets.only(left: 0, right: 0),
                           ),
                           backgroundColor: videoResolution ==
-                                  TRTCCloudDef.TRTC_VIDEO_RESOLUTION_1920_1080
+                                  TRTCVideoResolution.res_1920_1080
                               ? greenColor
                               : greyColor,
                         ),
