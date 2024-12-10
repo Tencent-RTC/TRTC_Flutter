@@ -1,145 +1,103 @@
-[English](./README.md) | 简体中文
+简体中文 | [English](https://github.com/Tencent-RTC/TRTC_Flutter/blob/master/SDK/README.md)
 
-## TRTC SDK （Flutter）
+# **腾讯 RTC Flutter SDK**
 
-[API 概览](https://cloud.tencent.com/document/product/647/51530)，[API 详细文档](https://comm.qq.com/trtc/flutter/cn/)
+凭借腾讯在网络和音视频技术领域21年的经验，腾讯实时通信（TRTC）提供了群组音视频通话和低延迟互动直播的解决方案。使用 TRTC，您可以快速开发具有成本效益、低延迟和高质量的互动音视频服务。
 
-[Flutter API 示例Demo](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-API-Example)
+## **SDK 概述**
 
-多人视频会议DEMO地址 [Github](https://github.com/LiteAVSDK/TRTC_Flutter/tree/master/TRTC-Simple-Demo)
+[tencent_rtc_sdk](https://pub.dev/packages/tencent_rtc_sdk)：`tencent_rtc_sdk` 是 `tencent_trtc_cloud` 插件的升级版。在 `tencent_rtc_sdk` 中，我们针对 `tencent_trtc_cloud` 中的一些使用痛点进行了优化，主要包括但不限于以下方面：
+- 改进了 `TRTCCloudListener` 的使用方式
+- 规范化了枚举的定义
 
-一对一音视频通话、语音沙龙、互动直播DEMO地址 [Github](https://github.com/tencentyun/TRTCFlutterScenesDemo)
+## **Demo 快速开始**
 
-任何问题可以通过 Github Issues 提问，也可加qq群788910197咨询。
+请参见 [Demo 快速开始（Flutter）](https://cloud.tencent.com/document/product/647/51601)
 
-#### SDK集成地址
-[pub地址](https://pub.dev/packages/tencent_trtc_cloud)
+## **SDK 快速集成**
 
-#### 快速跑通Demo
+请参见 [快速集成（Flutter）](https://cloud.tencent.com/document/product/647/51602)
 
-详情参考[跑通Demo(Flutter)](https://cloud.tencent.com/document/product/647/51601)
+## **SDK 类文件**
 
-#### 快速集成SDK
+* trtc_cloud - 腾讯云 TRTC 核心功能接口。
+* trtc_cloud_video_view - 提供用于渲染视频的 `TRTCCloudVideoView` 小部件。
+* tx_audio_effect_manager - 腾讯云音效管理模块。
+* tx_device_manager - 腾讯云设备管理模块。
+* trtc_cloud_def - TRTC 关键类定义描述：接口和常量值的定义，如分辨率和质量等级。
+* trtc_cloud_listener - 腾讯云 TRTC 事件通知接口。
 
-详情参考[快速集成(Flutter)](https://cloud.tencent.com/document/product/647/51602)
+## **示例调用**
 
-#### sdk类文件说明
-
-* trtc_cloud-腾讯云视频通话功能的主要接口类
-* trtc_cloud_video_view-提供渲染视频TRTCCloudVideoView的widget
-* tx_audio_effect_manager-腾讯云视频通话功能音乐和人声设置接口
-* tx_beauty_manager-美颜及动效参数管理
-* tx_device_manager-设备管理类
-* trtc_cloud_def-腾讯云视频通话功能的关键类型定义
-* trtc_cloud_listener-腾讯云视频通话功能的事件回调监听接口
-
-#### 调用示例
-
-1.初始化
+1. **初始化**
 ```
 // 创建 TRTCCloud 单例
 trtcCloud = await TRTCCloud.sharedInstance();
-// 获取设备管理模块
+// 腾讯云音效管理模块
 txDeviceManager = trtcCloud.getDeviceManager();
-// 获取美颜管理对象
-txBeautyManager = trtcCloud.getBeautyManager();
-// 获取音效管理类
+// 腾讯云音效管理模块
 txAudioManager = trtcCloud.getAudioEffectManager();
 ```
 
-2.进退房
+2.**进退房**
 ```
-//进房
+// 进房
 trtcCloud.enterRoom(
         TRTCParams(
-            sdkAppId: sdkAppId, //应用Id
-            userId: userId, // 用户Id
-            userSig: userSig, // 用户签名
-            roomId: roomId), //房间Id
+            sdkAppId: sdkAppId,
+            userId: userId,
+            userSig: userSig,
+            roomId: roomId),
         TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
-//退房
+// 退房
 trtcCloud.exitRoom();
 ```
 
-3.事件监听
+3.**事件监听**
 ```
-//设置事件监听
-trtcCloud.registerListener(onRtcListener);
-onRtcListener(type, param) {
-  //进房回调事件
-  if (type == TRTCCloudListener.onEnterRoom) {
-    if (param > 0) {
-      showToast('进房成功');
+// 设置事件监听
+TRTCCloudListener listener = TRTCCloudListener(
+    onError: (errorCode, errorMessage) {
+      debugPrint("TRTCCloudListener onError errCode:$errCode errMsg: $errMsg");
     }
-  }
-  // 远端用户进房
-  if (type == TRTCCloudListener.onRemoteUserEnterRoom) {
-    //param参数为远端用户userId
-  }
-  //远端用户是否存在可播放的主路画面（一般用于摄像头）
-  if (type == TRTCCloudListener.onUserVideoAvailable) {
-    //param['userId']表示远端用户id
-    //param['visible']画面是否开启
-  }
-}
-//移除事件监听
-trtcCloud.unRegisterListener(onRtcListener);
+    ……
+)
+trtcCloud.registerListener(listener);
+// 移除事件监听
+trtcCloud.unRegisterListener(listener);
 ```
 
-4.显示本地视频
+4.**显示本地视频**
 ```
-// 参数：
-// frontCamera	true：前置摄像头；false：后置摄像头
-// viewId TRTCCloudVideoView生成的viewId
+// 参数:
+// frontCamera: `true`: 前置摄像头; `false`: 后置摄像头
+// viewId: `TRTCCloudVideoView` 生成的 viewId
 TRTCCloudVideoView(
     onViewCreated: (viewId) {
       trtcCloud.startLocalPreview(true, viewId);
 });
 ```
 
-5.显示远端视频
+5.**显示远端视频**
 
 ```
-// 参数：
-// userId 指定远端用户的 userId
-// streamType 指定要观看 userId 的视频流类型：
-//* 高清大画面：TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG
-//* 低清大画面：TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL
-// viewId TRTCCloudVideoView生成的viewId
-TRTCCloudVideoView(
-    onViewCreated: (viewId) {
-      trtcCloud.startRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, viewId);
-});
-```
-
-5.显示远端屏幕分享
-
-```
-/// 参数：
+// 参数:
 /// userId 指定远端用户的 userId
 /// streamType 指定要观看 userId 的视频流类型：
-///* 辅流（屏幕分享）：TRTCCloudDe.TRTC_VIDEO_STREAM_TYPE_SUB
+//* 高清大画面：TRTCVideoStreamType.big
+//* 低清小画面：TRTCVideoStreamType.small
 /// viewId TRTCCloudVideoView生成的viewId
 TRTCCloudVideoView(
     onViewCreated: (viewId) {
-      trtcCloud.startRemoteView(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SUB, viewId);
+      trtcCloud.startRemoteView(userId, TRTCVideoStreamType.big, viewId);
 });
 ```
 
-#### 常见问题
+### 如何查看 TRTC 日志 ？
+TRTC 日志默认是压缩和加密的，扩展名为 xlog/clog。您可以设置 setLogCompressEnabled 来指定是否加密日志。如果日志文件名包含 C（压缩），则日志是压缩和加密的；如果包含 R（原始），则日志是明文的。
 
-更多常见问题参考[文档](https://cloud.tencent.com/document/product/647/51623)
+* iOS：Documents/log of the application sandbox
+* Android
+  * 6.7 或更低: /sdcard/log/tencent/liteav
+  * 6.8 或更高: /sdcard/Android/data/package name/files/log/tencent/liteav/
 
-##### iOS无法显示视频（Android是好的）
-
-请确认 io.flutter.embedded_views_preview为`YES`在你的info.plist中
-
-##### Android Manifest merge failed编译失败
-
-请打开/example/android/app/src/main/AndroidManifest.xml文件。
-
-1.将xmlns:tools="http://schemas.android.com/tools" 加入到manifest中
-
-2.将tools:replace="android:label"加入到application中。
-
-![图示](https://main.qcloudimg.com/raw/7a37917112831488423c1744f370c883.png)
