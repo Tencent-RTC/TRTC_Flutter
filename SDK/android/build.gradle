@@ -1,0 +1,59 @@
+group 'com.tencent.trtcplugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.3'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 34
+    if (project.android.hasProperty("namespace")) {
+        namespace "com.tencent.trtcplugin"
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+        }
+        // library 混淆 -> 随 library 引用，自动添加到 apk 打包混淆
+        consumerProguardFiles 'consumer-proguard-rules.txt'
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    dependencies {
+        api 'com.tencent.liteav:custom-video-processor:1.0.1'
+        api 'com.tencent.liteav:LiteAVSDK_Professional:12.2.0.+'
+        implementation 'com.google.code.gson:gson:2.8.9'
+    }
+
+    packagingOptions{
+        pickFirst '**/libc++_shared.so'
+        doNotStrip "*/armeabi/libYTCommon.so"
+        doNotStrip "*/armeabi-v7a/libYTCommon.so"
+        doNotStrip "*/x86/libYTCommon.so"
+        doNotStrip "*/arm64-v8a/libYTCommon.so"
+    }
+}
+dependencies {
+    // implementation fileTree(dir:"./libs",include:['*.jar','*.aar'])
+}
