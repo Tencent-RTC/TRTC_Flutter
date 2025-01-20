@@ -1,0 +1,3 @@
+# 腾讯云音视频实时通信
+-keep class com.tencent.** { *; }
+-keepclassmembers enum * {*;}

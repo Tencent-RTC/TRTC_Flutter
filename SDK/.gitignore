@@ -1,0 +1,19 @@
+.DS_Store
+.dart_tool/
+.history/
+.packages
+pubspec.lock
+.pub/
+.idea/
+*.iml
+build/
+.vscode/
+doc/
+
+# some auth data
+/example/lib/debug/Config.dart
+
+example/pubspec.lock
+.vscode/
+web/node_modules/
+example/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
