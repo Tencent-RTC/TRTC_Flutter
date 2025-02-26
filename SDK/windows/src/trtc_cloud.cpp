@@ -12,24 +12,363 @@ using flutter::MethodChannel;
 using flutter::EncodableMap;
 using std::string;
 using flutter::EncodableValue;
-
 namespace trtc_sdk_flutter {
 
-SDKManager::SDKManager(SP<flutter::MethodChannel<>> method_channel, flutter::TextureRegistrar *registrar) {
+std::mutex SDKManager::mtx_;
+std::unordered_map<std::string, SP<SDKManager>> SDKManager::instances_;
+
+SP<SDKManager> SDKManager::createMain(const std::string& key, flutter::PluginRegistrarWindows *registrar){
+  auto instance = SP<SDKManager>(new SDKManager(key, registrar));
+  instance->initialize();
+  return instance;
+};
+SP<SDKManager> SDKManager::createSub(const std::string& key, flutter::PluginRegistrarWindows *registrar, ITRTCCloud* sub_cloud){
+  auto instance = SP<SDKManager>(new SDKManager(sub_cloud, key, registrar));
+  instance->initialize();
+  return instance;
+};
+
+void SDKManager::initialize() {
+  if (isInit_) {
+    trtcCallback = MK_SP<TRTCCloudCallbackImpl>(method_channel_);
+    trtc_cloud->addCallback(trtcCallback.get());
+  }
+  std::weak_ptr<SDKManager> weak_this = shared_from_this();
+  method_channel_->SetMethodCallHandler(
+      [weak_this](const auto &call, auto result) {
+          if (auto self = weak_this.lock()) {
+            self->HandleMethodCall(call, std::move(result));
+          } else {
+            result->Error("Plugin unavailable");
+          }
+      }
+  );
+};
+SDKManager::SDKManager(std::string key, flutter::PluginRegistrarWindows *registrar) {
+  key_= key;
+  method_channel_ = MK_SP<flutter::MethodChannel<flutter::EncodableValue>>(
+      registrar->messenger(), key,
+      &flutter::StandardMethodCodec::GetInstance());
   registrar_ = registrar;
-  method_channel_ = method_channel;
-}
+  texture_registrar_ = registrar->texture_registrar();
+};
+SDKManager::SDKManager(ITRTCCloud* sub_cloud, std::string key, flutter::PluginRegistrarWindows *registrar) {
+  if (sub_cloud != nullptr) {
+    isInit_ = true;
+  }
+  key_= key;
+  trtc_cloud = sub_cloud;
+  method_channel_ = MK_SP<flutter::MethodChannel<flutter::EncodableValue>>(
+      registrar->messenger(), key,
+      &flutter::StandardMethodCodec::GetInstance());
+  registrar_ = registrar;
+  texture_registrar_ = registrar->texture_registrar();
+};
+void SDKManager::release(ITRTCCloud* main_cloud) {
+  trtc_cloud->removeCallback(trtcCallback.get());
+  main_cloud->destroySubCloud(trtc_cloud);
+  method_channel_->SetMethodCallHandler(nullptr);
+  renderMap.clear();
+};
+
+void SDKManager::HandleMethodCall(
+    const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string methodName = method_call.method_name();
+
+  if (methodName.compare("getPlatformVersion") == 0) {
+    std::ostringstream version_stream;
+    version_stream << "Windows ";
+    if (IsWindows10OrGreater()) {
+      version_stream << "10+";
+    } else if (IsWindows8OrGreater()) {
+      version_stream << "8";
+    } else if (IsWindows7OrGreater()) {
+      version_stream << "7";
+    }
+    result->Success(flutter::EncodableValue(version_stream.str()));
+    return;
+  }
+
+  if(methodName.compare("sharedInstance") == 0) {
+    isInit_ = true;
+    sharedInstance(method_call, std::move(result));
+    return;
+  }
+
+  // 未进行单例初始化
+  if(!isInit_) {
+    result->Success(nullptr);
+    return;
+  }
+
+  if(methodName.compare("destroySharedInstance") == 0) {
+    isInit_ = false;
+    destroySharedInstance(method_call, std::move(result));
+  } else if(methodName.compare("createSubCloud") == 0) {
+    createSubCloud(method_call, std::move(result));
+  } else if(methodName.compare("destroySubCloud") == 0) {
+    destroySubCloud(method_call, std::move(result));
+  } else if(methodName.compare("getSDKVersion") == 0) {
+    getSDKVersion(method_call, std::move(result));
+  } else if(methodName.compare("enterRoom") == 0) {
+    enterRoom(method_call, std::move(result));
+  } else if(methodName.compare("switchRoom") == 0) {
+    switchRoom(method_call, std::move(result));
+  } else if(methodName.compare("exitRoom") == 0) {
+    exitRoom(method_call, std::move(result));
+  } else if(methodName.compare("connectOtherRoom") == 0) {
+    connectOtherRoom(method_call, std::move(result));
+  } else if(methodName.compare("disconnectOtherRoom") == 0) {
+    disconnectOtherRoom(method_call, std::move(result));
+  } else if(methodName.compare("switchRole") == 0) {
+    switchRole(method_call, std::move(result));
+  } else if(methodName.compare("setDefaultStreamRecvMode") == 0) {
+    setDefaultStreamRecvMode(method_call, std::move(result));
+  } else if(methodName.compare("startPublishing") == 0) {
+    startPublishing(method_call, std::move(result));
+  } else if(methodName.compare("stopPublishing") == 0) {
+    stopPublishing(method_call, std::move(result));
+  } else if(methodName.compare("startPublishCDNStream") == 0) {
+    startPublishCDNStream(method_call, std::move(result));
+  } else if(methodName.compare("stopPublishCDNStream") == 0) {
+    stopPublishCDNStream(method_call, std::move(result));
+  } else if(methodName.compare("setMixTranscodingConfig") == 0) {
+    setMixTranscodingConfig(method_call, std::move(result));
+  } else if(methodName.compare("startLocalPreview") == 0) {
+    startLocalPreview(method_call, std::move(result));
+  } else if(methodName.compare("stopLocalPreview") == 0) {
+    stopLocalPreview(method_call, std::move(result));
+  } else if(methodName.compare("startRemoteView") == 0) {
+    startRemoteView(method_call, std::move(result));
+  } else if(methodName.compare("stopRemoteView") == 0) {
+    stopRemoteView(method_call, std::move(result));
+  } else if(methodName.compare("stopAllRemoteView") == 0) {
+    stopAllRemoteView(method_call, std::move(result));
+  } else if(methodName.compare("muteRemoteAudio") == 0) {
+    muteRemoteAudio(method_call, std::move(result));
+  } else if(methodName.compare("muteAllRemoteAudio") == 0) {
+    muteAllRemoteAudio(method_call, std::move(result));
+  } else if(methodName.compare("setRemoteAudioVolume") == 0) {
+    setRemoteAudioVolume(method_call, std::move(result));
+  } else if(methodName.compare("setAudioCaptureVolume") == 0) {
+    setAudioCaptureVolume(method_call, std::move(result));
+  } else if(methodName.compare("getAudioCaptureVolume") == 0) {
+    getAudioCaptureVolume(method_call, std::move(result));
+  } else if(methodName.compare("setAudioPlayoutVolume") == 0) {
+    setAudioPlayoutVolume(method_call, std::move(result));
+  } else if(methodName.compare("getAudioPlayoutVolume") == 0) {
+    getAudioPlayoutVolume(method_call, std::move(result));
+  } else if(methodName.compare("startLocalAudio") == 0) {
+    startLocalAudio(method_call, std::move(result));
+  } else if(methodName.compare("stopLocalAudio") == 0) {
+    stopLocalAudio(method_call, std::move(result));
+  } else if(methodName.compare("muteRemoteVideoStream") == 0) {
+    muteRemoteVideoStream(method_call, std::move(result));
+  } else if(methodName.compare("muteAllRemoteVideoStreams") == 0) {
+    muteAllRemoteVideoStreams(method_call, std::move(result));
+  } else if(methodName.compare("setVideoEncoderParam") == 0) {
+    setVideoEncoderParam(method_call, std::move(result));
+  } else if(methodName.compare("setNetworkQosParam") == 0) {
+    setNetworkQosParam(method_call, std::move(result));
+  } else if(methodName.compare("setLocalRenderParams") == 0) {
+    setLocalRenderParams(method_call, std::move(result));
+  } else if(methodName.compare("setRemoteRenderParams") == 0) {
+    setRemoteRenderParams(method_call, std::move(result));
+  } else if(methodName.compare("setVideoEncoderRotation") == 0) {
+    setVideoEncoderRotation(method_call, std::move(result));
+  } else if(methodName.compare("setVideoEncoderMirror") == 0) {
+    setVideoEncoderMirror(method_call, std::move(result));
+  } else if(methodName.compare("enableEncSmallVideoStream") == 0) {
+    enableEncSmallVideoStream(method_call, std::move(result));
+  } else if(methodName.compare("setRemoteVideoStreamType") == 0) {
+    setRemoteVideoStreamType(method_call, std::move(result));
+  } else if(methodName.compare("snapshotVideo") == 0) {
+    snapshotVideo(method_call, std::move(result));
+  } else if(methodName.compare("setLocalVideoRenderListener") == 0) {
+    setLocalVideoRenderListener(method_call, std::move(result));
+  } else if(methodName.compare("setRemoteVideoRenderListener") == 0) {
+    setRemoteVideoRenderListener(method_call, std::move(result));
+  } else if(methodName.compare("muteLocalAudio") == 0) {
+    muteLocalAudio(method_call, std::move(result));
+  } else if(methodName.compare("muteLocalVideo") == 0) {
+    muteLocalVideo(method_call, std::move(result));
+  } else if(methodName.compare("enableAudioVolumeEvaluation") == 0) {
+    enableAudioVolumeEvaluation(method_call, std::move(result));
+  } else if(methodName.compare("startAudioRecording") == 0) {
+    startAudioRecording(method_call, std::move(result));
+  } else if(methodName.compare("stopAudioRecording") == 0) {
+    stopAudioRecording(method_call, std::move(result));
+  } else if(methodName.compare("startLocalRecording") == 0) {
+    startLocalRecording(method_call, std::move(result));
+  } else if(methodName.compare("stopLocalRecording") == 0) {
+    stopLocalRecording(method_call, std::move(result));
+  } else if(methodName.compare("setSystemVolumeType") == 0) {
+    setSystemVolumeType(method_call, std::move(result));
+  } else if(methodName.compare("getDeviceManager") == 0) {
+    getDeviceManager(method_call, std::move(result));
+  } else if(methodName.compare("getBeautyManager") == 0) {
+    getBeautyManager(method_call, std::move(result));
+  } else if(methodName.compare("getAudioEffectManager") == 0) {
+    getAudioEffectManager(method_call, std::move(result));
+  } else if(methodName.compare("getScreenCaptureSources") == 0) {
+    getScreenCaptureSources(method_call, std::move(result));
+  } else if(methodName.compare("selectScreenCaptureTarget") == 0) {
+    selectScreenCaptureTarget(method_call, std::move(result));
+  } else if(methodName.compare("startScreenCapture") == 0) {
+    startScreenCapture(method_call, std::move(result));
+  } else if(methodName.compare("stopScreenCapture") == 0) {
+    stopScreenCapture(method_call, std::move(result));
+  } else if(methodName.compare("pauseScreenCapture") == 0) {
+    pauseScreenCapture(method_call, std::move(result));
+  } else if(methodName.compare("resumeScreenCapture") == 0) {
+    resumeScreenCapture(method_call, std::move(result));
+  } else if(methodName.compare("setWatermark") == 0) {
+    setWatermark(method_call, std::move(result));
+  } else if(methodName.compare("sendCustomCmdMsg") == 0) {
+    sendCustomCmdMsg(method_call, std::move(result));
+  } else if(methodName.compare("sendSEIMsg") == 0) {
+    sendSEIMsg(method_call, std::move(result));
+  } else if(methodName.compare("startSpeedTest") == 0) {
+    startSpeedTest(method_call, std::move(result));
+  } else if(methodName.compare("startSpeedTestWithParams") == 0) {
+      startSpeedTestWithParams(method_call, std::move(result));
+  } else if(methodName.compare("stopSpeedTest") == 0) {
+    stopSpeedTest(method_call, std::move(result));
+  } else if(methodName.compare("setLogLevel") == 0) {
+    setLogLevel(method_call, std::move(result));
+  } else if(methodName.compare("setConsoleEnabled") == 0) {
+    setConsoleEnabled(method_call, std::move(result));
+  } else if(methodName.compare("setLogDirPath") == 0) {
+    setLogDirPath(method_call, std::move(result));
+  } else if(methodName.compare("setLogCompressEnabled") == 0) {
+    setLogCompressEnabled(method_call, std::move(result));
+  } else if(methodName.compare("callExperimentalAPI") == 0) {
+    callExperimentalAPI(method_call, std::move(result));
+  } else if(methodName.compare("setBeautyStyle") == 0) {
+    setBeautyStyle(method_call, std::move(result));
+  } else if(methodName.compare("setBeautyLevel") == 0) {
+    setBeautyLevel(method_call, std::move(result));
+  } else if(methodName.compare("setWhitenessLevel") == 0) {
+    setWhitenessLevel(method_call, std::move(result));
+  } else if(methodName.compare("setRuddyLevel") == 0) {
+    setRuddyLevel(method_call, std::move(result));
+  } else if(methodName.compare("startPlayMusic") == 0) {
+    startPlayMusic(method_call, std::move(result));
+  } else if(methodName.compare("stopPlayMusic") == 0) {
+    stopPlayMusic(method_call, std::move(result));
+  } else if(methodName.compare("pausePlayMusic") == 0) {
+    pausePlayMusic(method_call, std::move(result));
+  } else if(methodName.compare("resumePlayMusic") == 0) {
+    resumePlayMusic(method_call, std::move(result));
+  } else if(methodName.compare("setMusicPublishVolume") == 0) {
+    setMusicPublishVolume(method_call, std::move(result));
+  } else if(methodName.compare("setMusicPlayoutVolume") == 0) {
+    setMusicPlayoutVolume(method_call, std::move(result));
+  } else if(methodName.compare("setAllMusicVolume") == 0) {
+    setAllMusicVolume(method_call, std::move(result));
+  } else if(methodName.compare("setMusicPitch") == 0) {
+    setMusicPitch(method_call, std::move(result));
+  } else if(methodName.compare("setMusicSpeedRate") == 0) {
+    setMusicSpeedRate(method_call, std::move(result));
+  } else if(methodName.compare("getMusicCurrentPosInMS") == 0) {
+    getMusicCurrentPosInMS(method_call, std::move(result));
+  } else if(methodName.compare("seekMusicToPosInMS") == 0) {
+    seekMusicToPosInMS(method_call, std::move(result));
+  } else if(methodName.compare("getMusicDurationInMS") == 0) {
+    getMusicDurationInMS(method_call, std::move(result));
+  } else if(methodName.compare("setVoiceReverbType") == 0) {
+    setVoiceReverbType(method_call, std::move(result));
+  } else if(methodName.compare("setVoiceCaptureVolume") == 0) {
+    setVoiceCaptureVolume(method_call, std::move(result));
+  } else if(methodName.compare("preloadMusic") == 0) {
+    preloadMusic(method_call, std::move(result));
+  } else if(methodName.compare("getDevicesList") == 0) {
+    getDevicesList(method_call, std::move(result));
+  } else if(methodName.compare("setCurrentDevice") == 0) {
+    setCurrentDevice(method_call, std::move(result));
+  } else if(methodName.compare("enableFollowingDefaultAudioDevice") == 0) {
+    enableFollowingDefaultAudioDevice(method_call, std::move(result));
+  } else if(methodName.compare("getCurrentDevice") == 0) {
+    getCurrentDevice(method_call, std::move(result));
+  } else if(methodName.compare("setCurrentDeviceVolume") == 0) {
+    setCurrentDeviceVolume(method_call, std::move(result));
+  } else if(methodName.compare("getCurrentDeviceVolume") == 0) {
+    getCurrentDeviceVolume(method_call, std::move(result));
+  } else if(methodName.compare("setCurrentDeviceMute") == 0) {
+    setCurrentDeviceMute(method_call, std::move(result));
+  } else if(methodName.compare("getCurrentDeviceMute") == 0) {
+    getCurrentDeviceMute(method_call, std::move(result));
+  } else if(methodName.compare("startMicDeviceTest") == 0) {
+    startMicDeviceTest(method_call, std::move(result));
+  } else if(methodName.compare("stopMicDeviceTest") == 0) {
+    stopMicDeviceTest(method_call, std::move(result));
+  } else if(methodName.compare("startSpeakerDeviceTest") == 0) {
+    startSpeakerDeviceTest(method_call, std::move(result));
+  } else if(methodName.compare("stopSpeakerDeviceTest") == 0) {
+    stopSpeakerDeviceTest(method_call, std::move(result));
+  } else if(methodName.compare("setApplicationPlayVolume") == 0) {
+    setApplicationPlayVolume(method_call, std::move(result));
+  } else if(methodName.compare("getApplicationPlayVolume") == 0) {
+    getApplicationPlayVolume(method_call, std::move(result));
+  } else if(methodName.compare("setApplicationMuteState") == 0) {
+    setApplicationMuteState(method_call, std::move(result));
+  } else if(methodName.compare("getApplicationMuteState") == 0) {
+    getApplicationMuteState(method_call, std::move(result));
+  } else if(methodName.compare("unregisterTexture") == 0) {
+    unregisterTexture(method_call, std::move(result));
+  } else if(methodName.compare("startSystemAudioLoopback") == 0) {
+    startSystemAudioLoopback(method_call, std::move(result));
+  } else if(methodName.compare("stopSystemAudioLoopback") == 0) {
+    stopSystemAudioLoopback(method_call, std::move(result));
+  } else if(methodName.compare("setSystemAudioLoopbackVolume") == 0) {
+    setSystemAudioLoopbackVolume(method_call, std::move(result));
+  } else {
+    result->NotImplemented();
+  }
+};
+
 void SDKManager::sharedInstance(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+    std::lock_guard<std::mutex> lock(SDKManager::mtx_);
     trtc_cloud = getTRTCShareInstance();
-    trtc_cloud->addCallback(new TRTCCloudCallbackImpl(method_channel_));
+    trtcCallback = MK_SP<TRTCCloudCallbackImpl>(method_channel_);
+    trtc_cloud->addCallback(trtcCallback.get());
+    instances_[key_] = shared_from_this();
     result->Success(nullptr);
 };
 void SDKManager::destroySharedInstance(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+    std::lock_guard<std::mutex> lock(SDKManager::mtx_);
+    trtc_cloud->removeCallback(trtcCallback.get());
     destroyTRTCShareInstance();
     trtc_cloud = nullptr;
     renderMap.clear();
+    instances_.erase(key_);
+    result->Success(nullptr);
+};
+void SDKManager::createSubCloud(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+    std::lock_guard<std::mutex> lock(SDKManager::mtx_);
+    auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+    auto channelName = std::get<std::string>(methodParams[flutter::EncodableValue("channelName")]).c_str();
+    auto sub_cloud = trtc_cloud->createSubCloud();
+    auto sdk_manager = SDKManager::createSub(channelName, registrar_, sub_cloud);
+    instances_[channelName] = sdk_manager;
+    result->Success(nullptr);
+};
+void SDKManager::destroySubCloud(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+    std::lock_guard<std::mutex> lock(SDKManager::mtx_);
+    auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+    auto channelName = std::get<std::string>(methodParams[flutter::EncodableValue("channelName")]).c_str();
+    auto it = instances_.find(channelName);
+    if (it != instances_.end()) {
+      if (auto manager = it->second) {
+        manager->release(trtc_cloud);
+      }
+    }
+    instances_.erase(channelName);
     result->Success(nullptr);
 };
 void SDKManager::getSDKVersion(const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -37,7 +376,6 @@ void SDKManager::getSDKVersion(const flutter::MethodCall<flutter::EncodableValue
     std::string version = trtc_cloud->getSDKVersion();
     result->Success(flutter::EncodableValue(version));
 };
-
 void SDKManager::enterRoom(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
     auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
@@ -390,7 +728,7 @@ void SDKManager::setLocalVideoRenderListener(const flutter::MethodCall<flutter::
         auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
         auto userId = std::get<std::string>(methodParams[flutter::EncodableValue("userId")]).c_str();
         trtc_cloud->startLocalPreview(nullptr);
-        TextureRenderer* trtc_render = new TextureRenderer(registrar_, method_channel_, static_cast<TRTCVideoStreamType>(0), userId);
+        TextureRenderer* trtc_render = new TextureRenderer(texture_registrar_, method_channel_, static_cast<TRTCVideoStreamType>(0), userId);
         trtc_cloud->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render);
         int64_t texture_id = trtc_render->texture_id();
         renderMap[texture_id] = trtc_render;
@@ -412,7 +750,7 @@ void SDKManager::setRemoteVideoRenderListener(const flutter::MethodCall<flutter:
         auto userId = std::get<std::string>(methodParams[flutter::EncodableValue("userId")]).c_str();
         TRTCVideoStreamType stype = static_cast<TRTCVideoStreamType>(streamType);
         trtc_cloud->startRemoteView(userId, stype, nullptr);
-        TextureRenderer* trtc_render = new TextureRenderer(registrar_, method_channel_, stype, userId);
+        TextureRenderer* trtc_render = new TextureRenderer(texture_registrar_, method_channel_, stype, userId);
         trtc_cloud->setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render);
         int64_t texture_id = trtc_render->texture_id();
         renderMap[texture_id] = trtc_render;
@@ -800,13 +1138,6 @@ void SDKManager::setVoiceReverbType(const flutter::MethodCall<flutter::Encodable
         auto type = std::get<int>(methodParams[flutter::EncodableValue("type")]);
         audioEffectManager->setVoiceReverbType(static_cast<TXVoiceReverbType>(type));
         result->Success(nullptr);
-}
-void SDKManager::setVoiceChangerType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
-                                    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-    auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-    auto type = std::get<int>(methodParams[flutter::EncodableValue("type")]);
-    audioEffectManager->setVoiceChangerType(static_cast<TXVoiceChangerType>(type));
-    result->Success(nullptr);
 }
 void SDKManager::setVoiceCaptureVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {

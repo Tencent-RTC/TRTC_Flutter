@@ -1,5 +1,7 @@
 #pragma once
 #include <flutter/method_channel.h>
+#include <flutter/plugin_registrar_windows.h>
+#include <VersionHelpers.h>
 #include "include/macros.h"
 #include "include/TRTC/ITRTCCloud.h"
 #include "include/TRTC/IDeprecatedTRTCCloud.h"
@@ -10,16 +12,29 @@
 #include <flutter/texture_registrar.h>
 #include <map>
 #include <memory>
+#include <sstream>
 #include "texture_view_factory.h"
 #include "trtc_cloud_callback.cpp"
 
 namespace trtc_sdk_flutter {
-class SDKManager {
+class SDKManager : public std::enable_shared_from_this<SDKManager> {
 public:
-    SDKManager(SP<flutter::MethodChannel<>> method_channel, flutter::TextureRegistrar *registrar);
+    static SP<SDKManager> createMain(const std::string& key, flutter::PluginRegistrarWindows *registrar);
+    static SP<SDKManager> createSub(const std::string& key, flutter::PluginRegistrarWindows *registrar, ITRTCCloud* sub_cloud);
+
+    SDKManager(const SDKManager&) = delete;
+    SDKManager& operator=(const SDKManager&) = delete;
+
+    void initialize();
+    void release(ITRTCCloud* main_cloud);
+
     void sharedInstance(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void destroySharedInstance(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void createSubCloud(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void destroySubCloud(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void getSDKVersion(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
@@ -197,8 +212,6 @@ public:
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void setVoiceReverbType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
-    void setVoiceChangerType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
-    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void setVoiceCaptureVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void preloadMusic(const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -240,6 +253,12 @@ public:
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     
 private:
+    SDKManager(std::string key, flutter::PluginRegistrarWindows *registrar);
+    SDKManager(ITRTCCloud* sub_cloud, std::string key, flutter::PluginRegistrarWindows *registrar);
+
+    void HandleMethodCall(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
     flutter::EncodableValue ToEncodableValue(ITRTCScreenCaptureSourceList* list);
     flutter::EncodableValue ToEncodableValue(const TRTCScreenCaptureSourceInfo& info);
     flutter::EncodableValue ToEncodableValue(const TRTCImageBuffer& imageBuffer);
@@ -247,14 +266,23 @@ private:
     TRTCImageBuffer FromEncodableValueToBuffer(const flutter::EncodableValue& value);
     TRTCScreenCaptureProperty FromEncodableValueProperty(const flutter::EncodableValue& value);
 
+public:
+    static std::mutex mtx_;
+    static std::unordered_map<std::string, SP<SDKManager>> instances_;
+
 private:
+    bool isInit_ = false;
+    std::string key_;
+    flutter::PluginRegistrarWindows *registrar_;
+
     ITRTCCloud *trtc_cloud;
     ITXDeviceManager* deviceManager;
     ITXAudioEffectManager* audioEffectManager;
+    SP<TRTCCloudCallbackImpl> trtcCallback;
     std::unique_ptr<TXMusicPreloadObserverImpl> musicPreloadObserver = nullptr;
     std::unique_ptr<TXMusicPlayObserverImpl> musicPlayObserver = nullptr;
     SP<flutter::MethodChannel<>> method_channel_;
-    flutter::TextureRegistrar *registrar_;
+    flutter::TextureRegistrar *texture_registrar_;
     std::map<int64_t , TextureRenderer*> renderMap;
     int _beautyStyle = 0;
     int _beautyLevel = 0;
