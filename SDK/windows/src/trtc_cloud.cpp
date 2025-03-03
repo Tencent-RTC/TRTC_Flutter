@@ -279,6 +279,8 @@ void SDKManager::HandleMethodCall(
     getMusicDurationInMS(method_call, std::move(result));
   } else if(methodName.compare("setVoiceReverbType") == 0) {
     setVoiceReverbType(method_call, std::move(result));
+  } else if(methodName.compare("setVoiceChangerType") == 0) {
+    setVoiceChangerType(method_call, std::move(result));
   } else if(methodName.compare("setVoiceCaptureVolume") == 0) {
     setVoiceCaptureVolume(method_call, std::move(result));
   } else if(methodName.compare("preloadMusic") == 0) {
@@ -1137,6 +1139,13 @@ void SDKManager::setVoiceReverbType(const flutter::MethodCall<flutter::Encodable
         auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
         auto type = std::get<int>(methodParams[flutter::EncodableValue("type")]);
         audioEffectManager->setVoiceReverbType(static_cast<TXVoiceReverbType>(type));
+        result->Success(nullptr);
+}
+void SDKManager::setVoiceChangerType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto type = std::get<int>(methodParams[flutter::EncodableValue("type")]);
+        audioEffectManager->setVoiceChangerType(static_cast<TXVoiceChangerType>(type));
         result->Success(nullptr);
 }
 void SDKManager::setVoiceCaptureVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,

@@ -32,7 +32,7 @@ class TRTCCloudCallbackImpl : public ITRTCCloudCallback
             EncodableMap values;
             values[string("errCode")] = err_code;
             values[string("errMsg")] = err_msg;
-            values[string("extraInfo")] = extra_info;
+            // values[string("extraInfo")] = extra_info;
             EncodableMap params;
             params[string("type")] = "onError";
             params[string("params")] = values;
@@ -43,7 +43,7 @@ class TRTCCloudCallbackImpl : public ITRTCCloudCallback
             EncodableMap values;
             values[string("warningCode")] = warning_code;
             values[string("warningMsg")] = warning_msg;
-            values[string("extraInfo")] = extra_info;
+            // values[string("extraInfo")] = extra_info;
             EncodableMap params;
             params[string("type")] = "onWarning";
             params[string("params")] = values;

@@ -212,6 +212,8 @@ public:
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void setVoiceReverbType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void setVoiceChangerType(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void setVoiceCaptureVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void preloadMusic(const flutter::MethodCall<flutter::EncodableValue> &method_call,
