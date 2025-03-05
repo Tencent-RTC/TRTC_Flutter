@@ -223,6 +223,22 @@ void SDKManager::HandleMethodCall(
     pauseScreenCapture(method_call, std::move(result));
   } else if(methodName.compare("resumeScreenCapture") == 0) {
     resumeScreenCapture(method_call, std::move(result));
+  } else if(methodName.compare("setSubStreamEncoderParam") == 0) {
+    setSubStreamEncoderParam(method_call, std::move(result));
+  } else if(methodName.compare("setSubStreamMixVolume") == 0) {
+    setSubStreamMixVolume(method_call, std::move(result));
+  } else if(methodName.compare("addExcludedShareWindow") == 0) {
+    addExcludedShareWindow(method_call, std::move(result));
+  } else if(methodName.compare("removeExcludedShareWindow") == 0) {
+    removeExcludedShareWindow(method_call, std::move(result));
+  } else if(methodName.compare("removeAllExcludedShareWindow") == 0) {
+    removeAllExcludedShareWindow(method_call, std::move(result));
+  } else if(methodName.compare("addIncludedShareWindow") == 0) {
+    addIncludedShareWindow(method_call, std::move(result));
+  } else if(methodName.compare("removeIncludedShareWindow") == 0) {
+    removeIncludedShareWindow(method_call, std::move(result));
+  } else if(methodName.compare("removeAllIncludedShareWindow") == 0) {
+    removeAllIncludedShareWindow(method_call, std::move(result));
   } else if(methodName.compare("setWatermark") == 0) {
     setWatermark(method_call, std::move(result));
   } else if(methodName.compare("sendCustomCmdMsg") == 0) {
@@ -728,10 +744,9 @@ void SDKManager::snapshotVideo(const flutter::MethodCall<flutter::EncodableValue
 void SDKManager::setLocalVideoRenderListener(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-        auto userId = std::get<std::string>(methodParams[flutter::EncodableValue("userId")]).c_str();
         trtc_cloud->startLocalPreview(nullptr);
-        TextureRenderer* trtc_render = new TextureRenderer(texture_registrar_, method_channel_, static_cast<TRTCVideoStreamType>(0), userId);
-        trtc_cloud->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render);
+        SP<TextureRenderer> trtc_render = MK_SP<TextureRenderer>(texture_registrar_, method_channel_, static_cast<TRTCVideoStreamType>(0), "");
+        trtc_cloud->setLocalVideoRenderCallback(TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render.get());
         int64_t texture_id = trtc_render->texture_id();
         renderMap[texture_id] = trtc_render;
         result->Success(flutter::EncodableValue(texture_id));
@@ -740,9 +755,13 @@ void SDKManager::unregisterTexture(const flutter::MethodCall<flutter::EncodableV
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
         auto textureID = std::get<int64_t>(methodParams[flutter::EncodableValue("textureID")]);
-        TextureRenderer* trtc_render = renderMap[textureID];
-        trtc_render->unRegisterTexture();
-        renderMap[textureID] = nullptr;
+        SP<TextureRenderer> trtc_render = renderMap[textureID];
+        if (trtc_render->userId_.empty()) {
+          trtc_cloud->setLocalVideoRenderCallback(TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Unknown, nullptr);
+        } else {
+          trtc_cloud->setRemoteVideoRenderCallback(trtc_render->userId_.c_str(), TRTCVideoPixelFormat_Unknown, TRTCVideoBufferType_Unknown, nullptr);
+        }
+        renderMap.erase(textureID);
         result->Success(nullptr);
 };
 void SDKManager::setRemoteVideoRenderListener(const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -752,8 +771,8 @@ void SDKManager::setRemoteVideoRenderListener(const flutter::MethodCall<flutter:
         auto userId = std::get<std::string>(methodParams[flutter::EncodableValue("userId")]).c_str();
         TRTCVideoStreamType stype = static_cast<TRTCVideoStreamType>(streamType);
         trtc_cloud->startRemoteView(userId, stype, nullptr);
-        TextureRenderer* trtc_render = new TextureRenderer(texture_registrar_, method_channel_, stype, userId);
-        trtc_cloud->setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render);
+        SP<TextureRenderer> trtc_render = MK_SP<TextureRenderer>(texture_registrar_, method_channel_, stype, userId);
+        trtc_cloud->setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType_Buffer, trtc_render.get());
         int64_t texture_id = trtc_render->texture_id();
         renderMap[texture_id] = trtc_render;
         result->Success(flutter::EncodableValue(texture_id));
@@ -883,6 +902,67 @@ void SDKManager::stopScreenCapture(const flutter::MethodCall<flutter::EncodableV
 void SDKManager::pauseScreenCapture(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         trtc_cloud->pauseScreenCapture();
+        result->Success(nullptr);
+};
+void SDKManager::setSubStreamEncoderParam(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto config = std::get<std::string>(methodParams[flutter::EncodableValue("param")]);
+        Document configDo;
+        configDo.Parse(config.c_str());
+        TRTCVideoEncParam param;
+        param.videoResolution = static_cast<TRTCVideoResolution>(configDo["videoResolution"].GetInt());
+        param.resMode = static_cast<TRTCVideoResolutionMode>(configDo["videoResolutionMode"].GetInt());
+        param.videoFps = configDo["videoFps"].GetInt();
+        param.videoBitrate = configDo["videoBitrate"].GetInt();
+        param.minVideoBitrate = configDo["minVideoBitrate"].GetInt();
+        param.enableAdjustRes = configDo["enableAdjustRes"].GetBool();
+        trtc_cloud->setSubStreamEncoderParam(param);
+        result->Success(nullptr);
+};
+void SDKManager::setSubStreamMixVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto volume = std::get<int>(methodParams[flutter::EncodableValue("volume")]);
+        trtc_cloud->setSubStreamMixVolume(volume);
+        result->Success(nullptr);
+};
+void SDKManager::addExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto windowId = FromEncodableValueToTXView(methodParams[flutter::EncodableValue("windowId")]);
+        trtc_cloud->addExcludedShareWindow(windowId);
+        result->Success(nullptr);
+};
+void SDKManager::removeExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto windowId = FromEncodableValueToTXView(methodParams[flutter::EncodableValue("windowId")]);
+        trtc_cloud->removeExcludedShareWindow(windowId);
+        result->Success(nullptr);
+};
+void SDKManager::removeAllExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        trtc_cloud->removeAllExcludedShareWindow();
+        result->Success(nullptr);
+};
+void SDKManager::addIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto windowId = FromEncodableValueToTXView(methodParams[flutter::EncodableValue("windowId")]);
+        trtc_cloud->addIncludedShareWindow(windowId);
+        result->Success(nullptr);
+};
+void SDKManager::removeIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
+        auto windowId = FromEncodableValueToTXView(methodParams[flutter::EncodableValue("windowId")]);
+        trtc_cloud->removeIncludedShareWindow(windowId);
+        result->Success(nullptr);
+};
+void SDKManager::removeAllIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+        trtc_cloud->removeAllIncludedShareWindow();
         result->Success(nullptr);
 };
 void SDKManager::setWatermark(const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -1373,7 +1453,7 @@ TRTCScreenCaptureSourceInfo SDKManager::FromEncodableValue(const flutter::Encoda
 
   info.type = static_cast<TRTCScreenCaptureSourceType>(std::get<int>(map.at(flutter::EncodableValue("type"))));
 
-  info.sourceId = reinterpret_cast<TXView>(static_cast<intptr_t>(std::get<int>(map.at(flutter::EncodableValue("sourceId")))));
+  info.sourceId = FromEncodableValueToTXView(map.at(flutter::EncodableValue("sourceId")));
 
   std::string source_name_string = std::get<std::string>(map.at(flutter::EncodableValue("sourceName")));
   info.sourceName = source_name_string.c_str();
@@ -1423,5 +1503,18 @@ TRTCScreenCaptureProperty SDKManager::FromEncodableValueProperty(const flutter::
 
   return property;
 }
+
+TXView SDKManager::FromEncodableValueToTXView(const flutter::EncodableValue& value) {
+  TXView sourceId = nullptr;
+  if (auto sourceIdPtr = std::get_if<int32_t>(&value)) {
+    std::cout << "sourceId:" << *sourceIdPtr <<std::endl;
+    sourceId = reinterpret_cast<TXView>(static_cast<intptr_t>(*sourceIdPtr));
+  } else if (auto windowIdPtr = std::get_if<int64_t>(&value)) {
+    std::cout << "sourceId:" << *windowIdPtr <<std::endl;
+    sourceId = reinterpret_cast<TXView>(static_cast<intptr_t>(*windowIdPtr));
+  }
+  return sourceId;
+}
+
 
 } // namespace tim_sdk_flutter
