@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:tencent_trtc_cloud/trtc_cloud.dart';
 import 'package:tencent_trtc_cloud/trtc_cloud_def.dart';
+import 'package:trtc_demo/ui/window_dialog.dart';
 
 /// Set video resolution
 class SettingsPage extends StatefulWidget {
@@ -20,6 +23,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
   bool _enabledMirror = true;
   String _currentResolution = "360 * 640"; // Default resolution
   int _currentResValue = TRTCCloudDef.TRTC_VIDEO_RESOLUTION_640_360;
+  double _currentVolume = 50;
   List _resolutionList = [
     {
       "value": TRTCCloudDef.TRTC_VIDEO_RESOLUTION_160_160,
@@ -342,6 +346,151 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
     );
   }
 
+  Widget _screenCaptureSettings(state) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Row(
+            children: <Widget>[
+              Container(
+                  width: 85,
+                  alignment: Alignment.centerLeft,
+                  child: Text('volume',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white))),
+              Expanded(
+                flex: 2,
+                child: Slider(
+                  value: _currentVolume,
+                  min: 0,
+                  max: 100,
+                  divisions: 100,
+                  label: _currentVolume.round().toString(),
+                  onChanged: (double value) {
+                    _trtcCloud.setSubStreamMixVolume(_currentVolume.round());
+                    state(() {
+                      _currentVolume = value;
+                    });
+                  },
+                ),
+              ),
+              Text(_currentVolume.round().toString(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white)),
+            ],
+          ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("addExcludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => addExcludedShareWindow(context)
+            ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("removeExcludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => removeExcludedShareWindow(context)
+            ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("removeAllExcludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => removeAllExcludedShareWindow(context)
+            ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("addIncludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => addIncludedShareWindow(context)
+            ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("removeIncludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => removeIncludedShareWindow(context)
+            ),
+            InkWell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50.0,
+                child: Text("removeAllIncludedShareWindow",
+                            style: TextStyle(color: Colors.white)),
+              ),
+              onTap: () => removeAllIncludedShareWindow(context)
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  addExcludedShareWindow(BuildContext context) async {
+    int? windowId = await showWindowSelector(context);
+    if (windowId != null) {
+      _trtcCloud.addExcludedShareWindow(windowId);
+    }
+  }
+
+  removeExcludedShareWindow(BuildContext context) async {
+    int? windowId = await showWindowSelector(context);
+    if (windowId != null) {
+      _trtcCloud.removeExcludedShareWindow(windowId);
+    }
+  }
+
+  addIncludedShareWindow(BuildContext context) async {
+    int? windowId = await showWindowSelector(context);
+    if (windowId != null) {
+      _trtcCloud.addIncludedShareWindow(windowId);
+    }
+  }
+
+  removeIncludedShareWindow(BuildContext context) async {
+    int? windowId = await showWindowSelector(context);
+    if (windowId != null) {
+      _trtcCloud.removeIncludedShareWindow(windowId);
+    }
+  }
+
+  removeAllExcludedShareWindow(BuildContext context) async {
+    _trtcCloud.removeAllExcludedShareWindow();
+  }
+
+  removeAllIncludedShareWindow(BuildContext context) async {
+    _trtcCloud.removeAllIncludedShareWindow();
+  }
+  
+  Future<int?> showWindowSelector(BuildContext context) async {
+    TRTCScreenCaptureSourceList list = await _trtcCloud.getScreenCaptureSources(thumbnailWidth: 100, thumbnailHeight: 100, iconWidth: 100, iconHeight: 100);
+    final result = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return WindowSelectorDialog(windows: list);
+      },
+    );
+    if (result == null) {
+      return null;
+    }
+    return list.sourceInfo[result].sourceId;
+  }
+
   _showSetDialog() {
     _isShowSetDialog = true;
     Future<void> future = showModalBottomSheet(
@@ -351,7 +500,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
           return Container(
             color: Color.fromRGBO(19, 41, 75, 1),
             child: DefaultTabController(
-              length: 2,
+              length: Platform.isWindows ? 3 : 2,
               child: Scaffold(
                 backgroundColor: Color.fromRGBO(19, 41, 75, 1),
                 appBar: AppBar(
@@ -360,6 +509,7 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                       tabs: [
                         Tab(text: 'Video'),
                         Tab(text: 'Audio'),
+                        if (Platform.isWindows) Tab(text: 'screenCapture'),
                       ],
                       unselectedLabelColor: Colors.white70,
                     ),
@@ -372,7 +522,8 @@ class SettingsPageState extends State<SettingsPage> with WidgetsBindingObserver 
                 body: TabBarView(
                   children: [
                     _videoSettings(state),
-                    _audioSettings(state)
+                    _audioSettings(state),
+                    if (Platform.isWindows) _screenCaptureSettings(state), 
                   ],
                 ),
               ),

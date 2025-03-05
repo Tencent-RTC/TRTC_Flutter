@@ -1340,6 +1340,74 @@ class TRTCCloud extends DeprecatedTRTCCloud {
     return _cloudChannel!.invokeMethod('resumeScreenCapture');
   }
 
+  Future<void> setSubStreamEncoderParam(TRTCVideoEncParam param) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('setSubStreamEncoderParam', 
+        {"param": jsonEncode(param)},
+      );
+    }
+    return Future.value();
+  }
+
+  Future<void> setSubStreamMixVolume(int volume) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('setSubStreamMixVolume', 
+        {"volume": volume},
+      );
+    }
+    return Future.value(); 
+  }
+
+  Future<void> addExcludedShareWindow(int windowId) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('addExcludedShareWindow', 
+        {"windowId": windowId},
+      );
+    }
+    return Future.value();
+  }
+
+  Future<void> removeExcludedShareWindow(int windowId) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('removeExcludedShareWindow', 
+        {"windowId": windowId},
+      );
+    }
+    return Future.value();
+  }
+
+  Future<void> removeAllExcludedShareWindow() {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('removeAllExcludedShareWindow');
+    }
+    return Future.value();
+  }
+
+  Future<void> addIncludedShareWindow(int windowId) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('addIncludedShareWindow', 
+        {"windowId": windowId},
+      );
+    }
+    return Future.value();
+  }
+
+  Future<void> removeIncludedShareWindow(int windowId) {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('removeIncludedShareWindow', 
+        {"windowId": windowId},
+      );
+    }
+    return Future.value();
+  }
+
+  Future<void> removeAllIncludedShareWindow() {
+    if (Platform.isWindows) {
+      return _cloudChannel!.invokeMethod('removeAllIncludedShareWindow');
+    }
+    return Future.value();
+  }
+
   /// Get sound effect management class `TXAudioEffectManager`, which is used to set the background music, short sound effects and life effects.
   ///
   /// **Platform not supported：**

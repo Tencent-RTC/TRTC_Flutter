@@ -150,6 +150,22 @@ public:
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void resumeScreenCapture(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void setSubStreamEncoderParam(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void setSubStreamMixVolume(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void addExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void removeExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void removeAllExcludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void addIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void removeIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+    void removeAllIncludedShareWindow(const flutter::MethodCall<flutter::EncodableValue> &method_call,
+    std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void setWatermark(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
     void sendCustomCmdMsg(const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -267,6 +283,7 @@ private:
     TRTCScreenCaptureSourceInfo FromEncodableValue(const flutter::EncodableValue& value);
     TRTCImageBuffer FromEncodableValueToBuffer(const flutter::EncodableValue& value);
     TRTCScreenCaptureProperty FromEncodableValueProperty(const flutter::EncodableValue& value);
+    TXView FromEncodableValueToTXView(const flutter::EncodableValue& value);
 
 public:
     static std::mutex mtx_;
@@ -285,7 +302,7 @@ private:
     std::unique_ptr<TXMusicPlayObserverImpl> musicPlayObserver = nullptr;
     SP<flutter::MethodChannel<>> method_channel_;
     flutter::TextureRegistrar *texture_registrar_;
-    std::map<int64_t , TextureRenderer*> renderMap;
+    std::map<int64_t , SP<TextureRenderer>> renderMap;
     int _beautyStyle = 0;
     int _beautyLevel = 0;
     int _whitenessLevel = 0;

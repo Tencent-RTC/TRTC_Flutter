@@ -111,6 +111,7 @@ class LoginPageState extends State<LoginPage> {
           !(await Permission.storage.request().isGranted)) {
         MeetingTool.toast(
             'You need to obtain audio and video permission to enter', context);
+        return;
       } else {
         const MethodChannel("serviceControl").invokeMethod("startVideoForegroundService");
       }
