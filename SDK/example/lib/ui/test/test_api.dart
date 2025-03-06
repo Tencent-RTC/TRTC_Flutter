@@ -435,7 +435,7 @@ class TestPageState extends State<TestPage> {
               TextButton(
                 onPressed: () async {
                   bool? value = await trtcCloud.sendCustomCmdMsg(
-                      1, 'hello', true, true);
+                      1, 'hello12345678901234567890', true, true);
                   MeetingTool.toast(value.toString(), context);
                 },
                 child: Text('sendCustomCmdMsg'),
