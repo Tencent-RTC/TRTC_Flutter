@@ -894,12 +894,13 @@ void SDKManager::setWatermark(const flutter::MethodCall<flutter::EncodableValue>
 void SDKManager::sendCustomCmdMsg(const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
         auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-        auto data = std::get<std::string>(methodParams[flutter::EncodableValue("data")]).c_str();
+        auto data_str = std::get<std::string>(methodParams[flutter::EncodableValue("data")]);
         auto cmdID = std::get<int>(methodParams[flutter::EncodableValue("cmdID")]);
         auto reliable = std::get<bool>(methodParams[flutter::EncodableValue("reliable")]);
         auto ordered = std::get<bool>(methodParams[flutter::EncodableValue("ordered")]);
-        const uint8_t* message = reinterpret_cast<const uint8_t*>(data);
-        bool res = trtc_cloud->sendCustomCmdMsg(cmdID, message, sizeof(message), reliable, ordered);
+        const uint8_t* message = reinterpret_cast<const uint8_t*>(data_str.data());
+        uint32_t data_length = static_cast<uint32_t>(data_str.size()); 
+        bool res = trtc_cloud->sendCustomCmdMsg(cmdID, message, data_length, reliable, ordered);
         result->Success(flutter::EncodableValue(res));
 };
 void SDKManager::sendSEIMsg(const flutter::MethodCall<flutter::EncodableValue> &method_call,
