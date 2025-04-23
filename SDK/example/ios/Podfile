@@ -31,7 +31,6 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-pod 'TXLiteAVSDK_Professional',:podspec =>'https://liteav.sdk.qcloud.com/pod/liteavsdkspec/customer/TXLiteAVSDK_Professional_yuyin_12.4.1.9036.podspec'
 end
 
 post_install do |installer|
