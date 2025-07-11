@@ -11,7 +11,6 @@ import com.tencent.trtcplugin.view.TRTCCloudVideoSurfaceView;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 
 import io.flutter.view.TextureRegistry;
@@ -51,14 +50,6 @@ public class TRTCCloudPlugin implements FlutterPlugin {
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    }
-
-    public static void registerWith(Registrar registrar) {
-        if (registrar.activity() == null) {
-            return;
-        }
-        TRTCCloudPlugin plugin = new TRTCCloudPlugin();
-
     }
 
     public static void register(ITXCustomBeautyProcesserFactory processerFactory) {
