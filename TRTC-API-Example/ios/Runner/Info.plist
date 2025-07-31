@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -26,10 +28,12 @@
 	<string>The authorized camera permissions can the video call normally</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Authorized Macing's rights to speak normally</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow the APP to save the picture to the album</string>
 	<key>NSPhotoLibraryUsageDescription</key>
- 	<string></string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>Please allow the APP to save the picture to the album</string>
+	<string></string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -49,9 +53,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>
