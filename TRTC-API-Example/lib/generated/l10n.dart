@@ -20,7 +20,7 @@ class TRTCAPIExampleLocalizations {
   static TRTCAPIExampleLocalizations get current {
     assert(
       _current != null,
-      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+      'No instance of TRTCAPIExampleLocalizations was loaded. Try to initialize the TRTCAPIExampleLocalizations delegate before accessing TRTCAPIExampleLocalizations.current.',
     );
     return _current!;
   }
@@ -46,13 +46,16 @@ class TRTCAPIExampleLocalizations {
     final instance = TRTCAPIExampleLocalizations.maybeOf(context);
     assert(
       instance != null,
-      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+      'No instance of TRTCAPIExampleLocalizations present in the widget tree. Did you add TRTCAPIExampleLocalizations.delegate in localizationsDelegates?',
     );
     return instance!;
   }
 
   static TRTCAPIExampleLocalizations? maybeOf(BuildContext context) {
-    return Localizations.of<TRTCAPIExampleLocalizations>(context, TRTCAPIExampleLocalizations);
+    return Localizations.of<TRTCAPIExampleLocalizations>(
+      context,
+      TRTCAPIExampleLocalizations,
+    );
   }
 
   /// `Original`
@@ -3286,7 +3289,8 @@ class TRTCAPIExampleLocalizations {
   }
 }
 
-class AppLocalizationDelegate extends LocalizationsDelegate<TRTCAPIExampleLocalizations> {
+class AppLocalizationDelegate
+    extends LocalizationsDelegate<TRTCAPIExampleLocalizations> {
   const AppLocalizationDelegate();
 
   List<Locale> get supportedLocales {
@@ -3299,7 +3303,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<TRTCAPIExampleLocali
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
   @override
-  Future<TRTCAPIExampleLocalizations> load(Locale locale) => TRTCAPIExampleLocalizations.load(locale);
+  Future<TRTCAPIExampleLocalizations> load(Locale locale) =>
+      TRTCAPIExampleLocalizations.load(locale);
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 
