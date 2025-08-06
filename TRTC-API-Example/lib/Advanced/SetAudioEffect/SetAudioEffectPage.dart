@@ -7,7 +7,7 @@ import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  SetAudioEffectPage.dart
 ///  TRTC-API-Example-Dart
@@ -294,7 +294,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
               children: [
                 Row(
                   children: [
-                    Text(AppLocalizations.of(context)!.audioeffect_please_select_effect),
+                    Text(TRTCAPIExampleLocalizations.current.audioeffect_please_select_effect),
                   ],
                 ),
                 Row(
@@ -304,7 +304,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                 ),
                 Row(
                   children: [
-                    Text(AppLocalizations.of(context)!.audioeffect_please_select_reverb),
+                    Text(TRTCAPIExampleLocalizations.current.audioeffect_please_select_reverb),
                   ],
                 ),
                 Row(
@@ -382,7 +382,7 @@ class _SetAudioEffectPageState extends State<SetAudioEffectPage> {
                         onPressed: () {
                           onStartButtonClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

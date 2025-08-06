@@ -5,7 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  VideoCallingPage.dart
 ///  TRTC-API-Example-Dart
@@ -185,7 +185,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.videocall_video_item,
+                    TRTCAPIExampleLocalizations.current.videocall_video_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -206,7 +206,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isFrontCamera = newIsFrontCamera;
                       });
                     },
-                    child: Text(isFrontCamera ? AppLocalizations.of(context)!.videocall_user_back_camera : AppLocalizations.of(context)!.videocall_user_front_camera),
+                    child: Text(isFrontCamera ? TRTCAPIExampleLocalizations.current.videocall_user_back_camera : TRTCAPIExampleLocalizations.current.videocall_user_front_camera),
                   ),
                   SizedBox(
                     width: 30,
@@ -226,7 +226,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                       //   isOpenBeauty = !isOpenBeauty;
                       // });
                     },
-                    child: Text(isOpenBeauty ? AppLocalizations.of(context)!.beauty_process_open : AppLocalizations.of(context)!.beauty_process_close),
+                    child: Text(isOpenBeauty ? TRTCAPIExampleLocalizations.current.beauty_process_open : TRTCAPIExampleLocalizations.current.beauty_process_close),
                   ),
                 ],
               ),
@@ -244,7 +244,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.videocall_audio_item,
+                    TRTCAPIExampleLocalizations.current.videocall_audio_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -263,7 +263,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isMuteLocalAudio = newIsMuteLocalAudio;
                       });
                     },
-                    child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
+                    child: Text(isMuteLocalAudio ? TRTCAPIExampleLocalizations.current.open_audio : TRTCAPIExampleLocalizations.current.close_audio),
                   ),
                   SizedBox(
                     width: 30,
@@ -287,7 +287,7 @@ class _VideoCallingPageState extends State<VideoCallingPage> {
                         isSpeaker = newIsSpeaker;
                       });
                     },
-                    child: Text(isSpeaker ? AppLocalizations.of(context)!.use_speaker : AppLocalizations.of(context)!.use_receiver),
+                    child: Text(isSpeaker ? TRTCAPIExampleLocalizations.current.use_speaker : TRTCAPIExampleLocalizations.current.use_receiver),
                   ),
                 ],
               ),

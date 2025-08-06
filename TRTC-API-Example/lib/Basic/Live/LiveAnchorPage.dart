@@ -5,7 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  LiveAnchorPage.dart
 ///  TRTC-API-Example-Dart
@@ -103,7 +103,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.videocall_video_item,
+                    TRTCAPIExampleLocalizations.current.videocall_video_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -124,7 +124,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
                         isFrontCamera = newIsFrontCamera;
                       });
                     },
-                    child: Text(isFrontCamera ? AppLocalizations.of(context)!.videocall_user_back_camera : AppLocalizations.of(context)!.videocall_user_front_camera),
+                    child: Text(isFrontCamera ? TRTCAPIExampleLocalizations.current.videocall_user_back_camera : TRTCAPIExampleLocalizations.current.videocall_user_front_camera),
                   ),
                   SizedBox(
                     width: 30,
@@ -144,7 +144,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
                         isOpenCamera = newIsOpenCamera;
                       });
                     },
-                    child: Text(isOpenCamera ? AppLocalizations.of(context)!.videocall_close_camera : AppLocalizations.of(context)!.videocall_open_camera),
+                    child: Text(isOpenCamera ? TRTCAPIExampleLocalizations.current.videocall_close_camera : TRTCAPIExampleLocalizations.current.videocall_open_camera),
                   ),
                 ],
               ),
@@ -162,7 +162,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.videocall_audio_item,
+                    TRTCAPIExampleLocalizations.current.videocall_audio_item,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -181,7 +181,7 @@ class _LiveAnchorPageState extends State<LiveAnchorPage> {
                         isMuteLocalAudio = newIsMuteLocalAudio;
                       });
                     },
-                    child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
+                    child: Text(isMuteLocalAudio ? TRTCAPIExampleLocalizations.current.open_audio : TRTCAPIExampleLocalizations.current.close_audio),
                   ),
                 ],
               ),

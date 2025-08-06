@@ -14,7 +14,7 @@ import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  LocalRecordPage.dart
 ///  TRTC-API-Example-Dart
@@ -331,7 +331,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         onPressed: () {
                           onRecordClick();
                         },
-                        child: Text(isStartRecord ? AppLocalizations.of(context)!.localrecord_stop_record : AppLocalizations.of(context)!.localrecord_start_record),
+                        child: Text(isStartRecord ? TRTCAPIExampleLocalizations.current.localrecord_stop_record : TRTCAPIExampleLocalizations.current.localrecord_start_record),
                       ),
                     ),
                   ],
@@ -406,7 +406,7 @@ class _LocalRecordPageState extends State<LocalRecordPage> {
                         onPressed: () {
                           onStartPushStreamClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

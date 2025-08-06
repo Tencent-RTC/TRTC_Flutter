@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 import 'LiveAnchorPage.dart';
 import 'LiveAudiencePage.dart';
@@ -93,8 +93,8 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                     ),
                     focusNode: roomIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_roomid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_roomid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_roomid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_roomid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -123,8 +123,8 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                     ),
                     focusNode: userIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_userid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_userid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_userid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_userid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -140,7 +140,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                   SizedBox(height: 25),
                   Row(
                     children: [
-                      Text(AppLocalizations.of(context)!.live_please_select_role),
+                      Text(TRTCAPIExampleLocalizations.current.live_please_select_role),
                     ],
                   ),
                   Row(
@@ -187,7 +187,7 @@ class _LiveEnterPageState extends State<LiveEnterPage> {
                 onPressed: () {
                   this.goLivePage();
                 },
-                child: Text(AppLocalizations.of(context)!.enter_room),
+                child: Text(TRTCAPIExampleLocalizations.current.enter_room),
               ),
             ),
           ),

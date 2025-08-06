@@ -7,7 +7,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  SendAndReceiveSEIMessagePage.dart
 ///  TRTC-API-Example-Dart
@@ -275,7 +275,7 @@ class _SendAndReceiveSEIMessagePageState
                           } else if (isStartPush && seiMessage != "")
                             onSendSEIMessageClick();
                         },
-                        child: Text(AppLocalizations.of(context)!.seimessage_send_sei_message),
+                        child: Text(TRTCAPIExampleLocalizations.current.seimessage_send_sei_message),
                       ),
                     ),
                   ],
@@ -350,7 +350,7 @@ class _SendAndReceiveSEIMessagePageState
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

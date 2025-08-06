@@ -18,92 +18,92 @@ import 'package:trtc_api_example/Basic/Live/LiveEnterPage.dart';
 import 'package:trtc_api_example/Basic/ScreenShare/ScreenShareEnterPage.dart';
 import 'package:trtc_api_example/Basic/VideoCall/VideoCallingEnterPage.dart';
 import 'package:trtc_api_example/Basic/VoiceChatRoom/VoiceChatRoomEnterPage.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 
 class ExampleData {
   static late BuildContext context;
   static final Map<String, List<ExamplePageItem>> exampleDataList = {
-    AppLocalizations.of(context)!.main_trtc_base_funciton: [
+    TRTCAPIExampleLocalizations.current.main_trtc_base_funciton: [
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_aduio_call,
-        subTitle: AppLocalizations.of(context)!.main_item_aduio_call_desc,
+        title: TRTCAPIExampleLocalizations.current.main_item_aduio_call,
+        subTitle: TRTCAPIExampleLocalizations.current.main_item_aduio_call_desc,
         detailPage: AudioCallingEnterPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_video_call,
-        subTitle: AppLocalizations.of(context)!.main_item_video_call_desc,
+        title: TRTCAPIExampleLocalizations.current.main_item_video_call,
+        subTitle: TRTCAPIExampleLocalizations.current.main_item_video_call_desc,
         detailPage: VideoCallingEnterPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_live,
+        title: TRTCAPIExampleLocalizations.current.main_item_live,
         detailPage: LiveEnterPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_voice_chat_room,
+        title: TRTCAPIExampleLocalizations.current.main_item_voice_chat_room,
         detailPage: VoiceChatRoomEnterPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_screen_share,
-        subTitle: AppLocalizations.of(context)!.main_item_screen_share_desc,
+        title: TRTCAPIExampleLocalizations.current.main_item_screen_share,
+        subTitle: TRTCAPIExampleLocalizations.current.main_item_screen_share_desc,
         detailPage: ScreenShareEnterPage(),
       ),
     ],
-    AppLocalizations.of(context)!.main_trtc_advanced: [
+    TRTCAPIExampleLocalizations.current.main_trtc_advanced: [
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_string_room_id,
+        title: TRTCAPIExampleLocalizations.current.main_item_string_room_id,
         detailPage: StringRoomIdPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_rtrc_set_video_quality,
+        title: TRTCAPIExampleLocalizations.current.main_rtrc_set_video_quality,
         detailPage: SetVideoQualityPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_rtrc_set_audio_quality,
+        title: TRTCAPIExampleLocalizations.current.main_rtrc_set_audio_quality,
         detailPage: SetAudioQualityPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_rerc_render_params,
+        title: TRTCAPIExampleLocalizations.current.main_rerc_render_params,
         detailPage: SetRenderParamsPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_speed_test,
+        title: TRTCAPIExampleLocalizations.current.main_item_speed_test,
         detailPage: SpeedTestPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_rtrc_set_audio_effect,
+        title: TRTCAPIExampleLocalizations.current.main_rtrc_set_audio_effect,
         detailPage: SetAudioEffectPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_trtc_set_bgm,
+        title: TRTCAPIExampleLocalizations.current.main_trtc_set_bgm,
         detailPage: SetBGMPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_local_record,
+        title: TRTCAPIExampleLocalizations.current.main_item_local_record,
         detailPage: LocalRecordPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_sei_message,
+        title: TRTCAPIExampleLocalizations.current.main_item_sei_message,
         detailPage: SendAndReceiveSEIMessagePage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_switch_room,
+        title: TRTCAPIExampleLocalizations.current.main_item_switch_room,
         detailPage: SwitchRoomPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_trtc_connect_other_room_pk,
+        title: TRTCAPIExampleLocalizations.current.main_trtc_connect_other_room_pk,
         detailPage: RoomPkPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.beauty_process,
+        title: TRTCAPIExampleLocalizations.current.beauty_process,
         detailPage: BeautyProcessEnterPage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_pushcdn_new,
+        title: TRTCAPIExampleLocalizations.current.main_item_pushcdn_new,
         detailPage: PublishMediaStreamSelectRolePage(),
       ),
       ExamplePageItem(
-        title: AppLocalizations.of(context)!.main_item_audio_frame_process,
+        title: TRTCAPIExampleLocalizations.current.main_item_audio_frame_process,
         detailPage: AudioFrameCustomProcessPage(),
       ),
     ],

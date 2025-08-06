@@ -4,7 +4,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 class PublishMediaStreamAudiencePage extends StatefulWidget {
   const PublishMediaStreamAudiencePage({Key? key}) : super(key: key);
@@ -162,7 +162,7 @@ class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudie
                     onStartPushClick();
                   },
                   child: Text(
-                      isEnterRoom ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                      isEnterRoom ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                 ),
               ),
             ],

@@ -4,7 +4,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  AudioCallingPage.dart
 ///  TRTC-API-Example-Dart
@@ -210,7 +210,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(AppLocalizations.of(context)!.audiocall_voice_info),
+                      child: Text(TRTCAPIExampleLocalizations.current.audiocall_voice_info),
                     ),
                   ],
                 ),
@@ -228,7 +228,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(AppLocalizations.of(context)!.audiocall_net_info),
+                      child: Text(TRTCAPIExampleLocalizations.current.audiocall_net_info),
                     ),
                   ],
                 ),
@@ -296,7 +296,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     isSpeaker = newIsSpeaker;
                   });
                 },
-                child: Text(isSpeaker ? AppLocalizations.of(context)!.use_speaker : AppLocalizations.of(context)!.use_receiver),
+                child: Text(isSpeaker ? TRTCAPIExampleLocalizations.current.use_speaker : TRTCAPIExampleLocalizations.current.use_receiver),
               ),
               ElevatedButton(
                 style: ButtonStyle(
@@ -313,7 +313,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                     isMuteLocalAudio = newIsMuteLocalAudio;
                   });
                 },
-                child: Text(isMuteLocalAudio ? AppLocalizations.of(context)!.open_audio : AppLocalizations.of(context)!.close_audio),
+                child: Text(isMuteLocalAudio ? TRTCAPIExampleLocalizations.current.open_audio : TRTCAPIExampleLocalizations.current.close_audio),
               ),
               ElevatedButton(
                 style: ButtonStyle(
@@ -322,7 +322,7 @@ class _AudioCallingPageState extends State<AudioCallingPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(AppLocalizations.of(context)!.audiocall_hang_up),
+                child: Text(TRTCAPIExampleLocalizations.current.audiocall_hang_up),
               ),
             ],
           ),

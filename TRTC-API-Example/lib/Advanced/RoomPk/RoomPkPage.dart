@@ -9,7 +9,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  RoomPkPage.dart
 ///  TRTC-API-Example-Dart
@@ -226,8 +226,8 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         autofocus: false,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          hintText: AppLocalizations.of(context)!.please_input_roomid,
-                          labelText: AppLocalizations.of(context)!.connectotherroom_please_input_need_pk_roomid
+                          hintText: TRTCAPIExampleLocalizations.current.please_input_roomid,
+                          labelText: TRTCAPIExampleLocalizations.current.connectotherroom_please_input_need_pk_roomid
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -256,8 +256,8 @@ class _RoomPkPageState extends State<RoomPkPage> {
                       child: TextField(
                         autofocus: false,
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.connectotherroom_please_input_need_pk_userid,
-                          hintText: AppLocalizations.of(context)!.please_input_userid,
+                          labelText: TRTCAPIExampleLocalizations.current.connectotherroom_please_input_need_pk_userid,
+                          hintText: TRTCAPIExampleLocalizations.current.please_input_userid,
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -289,7 +289,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         onPressed: () {
                           onStartPkClick();
                         },
-                        child: Text(isStartPK ? AppLocalizations.of(context)!.connectotherroom_stop_pk : AppLocalizations.of(context)!.connectotherroom_start_pk),
+                        child: Text(isStartPK ? TRTCAPIExampleLocalizations.current.connectotherroom_stop_pk : TRTCAPIExampleLocalizations.current.connectotherroom_start_pk),
                       ),
                     ),
                   ],
@@ -364,7 +364,7 @@ class _RoomPkPageState extends State<RoomPkPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

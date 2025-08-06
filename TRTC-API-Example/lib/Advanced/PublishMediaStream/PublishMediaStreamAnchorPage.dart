@@ -6,7 +6,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 class PublishMediaStreamAnchorPage extends StatefulWidget {
   const PublishMediaStreamAnchorPage({Key? key}) : super(key: key);
@@ -119,7 +119,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(AppLocalizations.of(context)!.publish_mode),
+                Text(TRTCAPIExampleLocalizations.current.publish_mode),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -129,7 +129,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(AppLocalizations.of(context)!.audio_only_mode),
+                    Text(TRTCAPIExampleLocalizations.current.audio_only_mode),
                     SizedBox(
                       width: 10,
                     ),
@@ -157,7 +157,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                               enabled: !isStartPublishMediaStream,
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(color: Colors.white),
-                                labelText: AppLocalizations.of(context)!.mix_room_id,
+                                labelText: TRTCAPIExampleLocalizations.current.mix_room_id,
                               ),
                               controller: TextEditingController.fromValue(
                                 TextEditingValue(
@@ -186,7 +186,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                               autofocus: false,
                               enabled: !isStartPublishMediaStream,
                               decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!.mix_user_id,
+                                labelText: TRTCAPIExampleLocalizations.current.mix_user_id,
                                 labelStyle: TextStyle(color: Colors.white),
                               ),
                               controller: TextEditingController.fromValue(
@@ -221,7 +221,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                               enabled: !isStartPublishMediaStream,
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(color: Colors.white),
-                                labelText: AppLocalizations.of(context)!.publish_url,
+                                labelText: TRTCAPIExampleLocalizations.current.publish_url,
                               ),
                               controller: TextEditingController.fromValue(
                                 TextEditingValue(
@@ -256,7 +256,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                         enabled: !isStartPublishMediaStream,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(color: Colors.white),
-                          labelText: AppLocalizations.of(context)!.remote_room_id,
+                          labelText: TRTCAPIExampleLocalizations.current.remote_room_id,
                         ),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
@@ -285,7 +285,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                         autofocus: false,
                         enabled: !isStartPublishMediaStream,
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.remote_user_id,
+                          labelText: TRTCAPIExampleLocalizations.current.remote_user_id,
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         controller: TextEditingController.fromValue(
@@ -317,8 +317,8 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                         },
                         child: Text(
                           isStartPublishMediaStream
-                              ? AppLocalizations.of(context)!.stop_publish_media_stream
-                              : AppLocalizations.of(context)!.start_publish_media_stream,
+                              ? TRTCAPIExampleLocalizations.current.stop_publish_media_stream
+                              : TRTCAPIExampleLocalizations.current.start_publish_media_stream,
                         ),
                       ),
                     ),
@@ -398,8 +398,8 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
                           onStartPushClick();
                         },
                         child: Text(isStartPush
-                            ? AppLocalizations.of(context)!.stop_push
-                            : AppLocalizations.of(context)!.start_push),
+                            ? TRTCAPIExampleLocalizations.current.stop_push
+                            : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],
@@ -495,7 +495,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
   getBGWidgetList() {
     return [
       getButtonItem(
-        tile: AppLocalizations.of(context)!.publish_stream_to_room,
+        tile: TRTCAPIExampleLocalizations.current.publish_stream_to_room,
         value: TRTCPublishMode.mixStreamToRoom,
         onClick: setPublishMode,
       ),
@@ -503,7 +503,7 @@ class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorP
         width: 20,
       ),
       getButtonItem(
-        tile: AppLocalizations.of(context)!.publish_stream_to_cdn,
+        tile: TRTCAPIExampleLocalizations.current.publish_stream_to_cdn,
         value: TRTCPublishMode.mixStreamToCdn,
         onClick: setPublishMode,
       ),
