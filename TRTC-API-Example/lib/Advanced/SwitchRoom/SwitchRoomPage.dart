@@ -6,7 +6,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  SwitchRoomPage.dart
 ///  TRTC-API-Example-Dart
@@ -257,7 +257,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                             onChangeRoomClick();
                           }
                         },
-                        child: Text(AppLocalizations.of(context)!.switchroom_switch_room),
+                        child: Text(TRTCAPIExampleLocalizations.current.switchroom_switch_room),
                       ),
                     ),
                     SizedBox(
@@ -270,7 +270,7 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

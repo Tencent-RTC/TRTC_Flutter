@@ -7,7 +7,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:replay_kit_launcher/replay_kit_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  ScreenAnchorPage.dart
 ///  TRTC-API-Example-Dart
@@ -224,7 +224,7 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                             height: 5,
                           ),
                           Text(
-                            AppLocalizations.of(context)!
+                            TRTCAPIExampleLocalizations.current
                                 .screenshare_watch_tips,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
@@ -243,11 +243,11 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                   Text(screenStatus == ScreenStatus.ScreenStop
                       ? ''
                       : screenStatus == ScreenStatus.ScreenWait
-                          ? AppLocalizations.of(context)!.screenshare_wait_tips
+                          ? TRTCAPIExampleLocalizations.current.screenshare_wait_tips
                           : screenStatus == ScreenStatus.ScreenStart
-                              ? AppLocalizations.of(context)!
+                              ? TRTCAPIExampleLocalizations.current
                                   .screenshare_ing_tips
-                              : AppLocalizations.of(context)!
+                              : TRTCAPIExampleLocalizations.current
                                   .screenshare_unknow_tips)
                 ],
               ),
@@ -272,13 +272,13 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                           onScreenCaptureClick();
                         },
                         child: Text(screenStatus == ScreenStatus.ScreenStop
-                            ? AppLocalizations.of(context)!.screenshare_start
+                            ? TRTCAPIExampleLocalizations.current.screenshare_start
                             : screenStatus == ScreenStatus.ScreenWait
-                                ? AppLocalizations.of(context)!.screenshare_wait
+                                ? TRTCAPIExampleLocalizations.current.screenshare_wait
                                 : screenStatus == ScreenStatus.ScreenStart
-                                    ? AppLocalizations.of(context)!
+                                    ? TRTCAPIExampleLocalizations.current
                                         .screenshare_stop
-                                    : AppLocalizations.of(context)!
+                                    : TRTCAPIExampleLocalizations.current
                                         .screenshare_unknow_tips),
                       ),
                     ),
@@ -305,8 +305,8 @@ class _ScreenAnchorPageState extends State<ScreenAnchorPage> {
                   onMicCaptureClick();
                 },
                 child: Text(isMuteLocalAudio
-                    ? AppLocalizations.of(context)!.open_audio
-                    : AppLocalizations.of(context)!.close_audio),
+                    ? TRTCAPIExampleLocalizations.current.open_audio
+                    : TRTCAPIExampleLocalizations.current.close_audio),
               ),
             ),
           ),

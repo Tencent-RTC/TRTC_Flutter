@@ -3,7 +3,7 @@ import 'package:trtc_api_example/Advanced/PublishMediaStream/PublishMediaStreamA
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import './PublishMediaStreamAnchorPage.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 class PublishMediaStreamSelectRolePage extends StatefulWidget {
   const PublishMediaStreamSelectRolePage({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class _PublishMediaStreamSelectRolePageState extends State<PublishMediaStreamSel
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(AppLocalizations.of(context)!.pushcdn_select_role_guide),
+          Text(TRTCAPIExampleLocalizations.current.pushcdn_select_role_guide),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
@@ -43,7 +43,7 @@ class _PublishMediaStreamSelectRolePageState extends State<PublishMediaStreamSel
                 ),
               );
             },
-            child: Text(AppLocalizations.of(context)!.pushcdn_select_role_anchor_choice),
+            child: Text(TRTCAPIExampleLocalizations.current.pushcdn_select_role_anchor_choice),
           ),
           const SizedBox(height: 10),
           ElevatedButton(
@@ -58,10 +58,10 @@ class _PublishMediaStreamSelectRolePageState extends State<PublishMediaStreamSel
                 ),
               );
             },
-            child: Text(AppLocalizations.of(context)!.pushcdn_select_role_audience_choice),
+            child: Text(TRTCAPIExampleLocalizations.current.pushcdn_select_role_audience_choice),
           ),
           const SizedBox(height: 20),
-          Text(AppLocalizations.of(context)!.pushcdn_select_role_result),
+          Text(TRTCAPIExampleLocalizations.current.pushcdn_select_role_result),
         ],
       ),
     );

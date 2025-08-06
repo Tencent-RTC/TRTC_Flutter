@@ -4,7 +4,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  LiveAudiencePage.dart
 ///  TRTC-API-Example-Dart
@@ -114,7 +114,7 @@ class _LiveAudiencePageState extends State<LiveAudiencePage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.live_operator,
+                    TRTCAPIExampleLocalizations.current.live_operator,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -135,7 +135,7 @@ class _LiveAudiencePageState extends State<LiveAudiencePage> {
                         isMuteAudio = newIsMuteAudio;
                       });
                     },
-                    child: Text(isMuteAudio ? AppLocalizations.of(context)!.unmute_audio : AppLocalizations.of(context)!.mute_audio),
+                    child: Text(isMuteAudio ? TRTCAPIExampleLocalizations.current.unmute_audio : TRTCAPIExampleLocalizations.current.mute_audio),
                   ),
                 ],
               ),

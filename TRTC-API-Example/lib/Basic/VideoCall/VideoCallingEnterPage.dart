@@ -3,7 +3,7 @@ import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'VideoCallingPage.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  VideoCallingEnterPage.dart
 ///  TRTC-API-Example-Dart
@@ -84,8 +84,8 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                     ),
                     focusNode: roomIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_roomid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_roomid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_roomid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_roomid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -114,8 +114,8 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                     ),
                     focusNode: userIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_userid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_userid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_userid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_userid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -143,7 +143,7 @@ class _VideoCallingEnterPageState extends State<VideoCallingEnterPage> {
                 onPressed: () {
                   this.goVideoCallingPage();
                 },
-                child: Text(AppLocalizations.of(context)!.enter_room),
+                child: Text(TRTCAPIExampleLocalizations.current.enter_room),
               ),
             ),
           ),

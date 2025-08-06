@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trtc_api_example/Common/ExamplePageLayout.dart';
 import 'package:trtc_api_example/Common/ExampleData.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 import 'ScreenAnchorPage.dart';
 import 'ScreenAudiencePage.dart';
 
@@ -92,8 +92,8 @@ class _ScreenShareEnterPageState extends State<ScreenShareEnterPage> {
                     ),
                     focusNode: roomIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_roomid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_roomid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_roomid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_roomid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -122,8 +122,8 @@ class _ScreenShareEnterPageState extends State<ScreenShareEnterPage> {
                     ),
                     focusNode: userIdFocusNode,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.please_input_userid_required,
-                      hintText: AppLocalizations.of(context)!.please_input_userid,
+                      labelText: TRTCAPIExampleLocalizations.current.please_input_userid_required,
+                      hintText: TRTCAPIExampleLocalizations.current.please_input_userid,
                       labelStyle: TextStyle(color: Colors.white),
                       hintStyle:
                           TextStyle(color: Color.fromRGBO(255, 255, 255, 0.5)),
@@ -139,7 +139,7 @@ class _ScreenShareEnterPageState extends State<ScreenShareEnterPage> {
                   SizedBox(height: 25),
                   Row(
                     children: [
-                      Text(AppLocalizations.of(context)!.live_please_select_role),
+                      Text(TRTCAPIExampleLocalizations.current.live_please_select_role),
                     ],
                   ),
                   Row(
@@ -186,7 +186,7 @@ class _ScreenShareEnterPageState extends State<ScreenShareEnterPage> {
                 onPressed: () {
                   this.goScreenShareRoomPage();
                 },
-                child: Text(AppLocalizations.of(context)!.enter_room),
+                child: Text(TRTCAPIExampleLocalizations.current.enter_room),
               ),
             ),
           ),

@@ -7,7 +7,7 @@ import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
 import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  SetBGMPage.dart
 ///  TRTC-API-Example-Dart
@@ -146,7 +146,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
   getBGWidgetList() {
     return [
       getButtonItem(
-        tile: AppLocalizations.of(context)!.bgm_bgm_1,
+        tile: TRTCAPIExampleLocalizations.current.bgm_bgm_1,
         value: bgmURLArray[0],
         onClick: onBgmAClick,
       ),
@@ -154,7 +154,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: AppLocalizations.of(context)!.bgm_bgm_2,
+        tile: TRTCAPIExampleLocalizations.current.bgm_bgm_2,
         value: bgmURLArray[1],
         onClick: onBgmBClick,
       ),
@@ -162,7 +162,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
         width: 20,
       ),
       getButtonItem(
-        tile: AppLocalizations.of(context)!.bgm_bgm_3,
+        tile: TRTCAPIExampleLocalizations.current.bgm_bgm_3,
         value: bgmURLArray[2],
         onClick: onBgmCClick,
       ),
@@ -321,7 +321,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
               children: [
                 Row(
                   children: [
-                    Text(AppLocalizations.of(context)!.bgm_please_select_audio_bgm),
+                    Text(TRTCAPIExampleLocalizations.current.bgm_please_select_audio_bgm),
                   ],
                 ),
                 Row(
@@ -331,7 +331,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                 ),
                 Row(
                   children: [
-                    Text(AppLocalizations.of(context)!.bgm_please_set_volumn),
+                    Text(TRTCAPIExampleLocalizations.current.bgm_please_set_volumn),
                   ],
                 ),
                 Row(
@@ -435,7 +435,7 @@ class _SetBGMPageState extends State<SetBGMPage> {
                         onPressed: () {
                           onPushStreamClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],

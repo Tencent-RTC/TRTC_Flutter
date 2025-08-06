@@ -3,7 +3,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  VoiceChatRoomAnchorPage.dart
 ///  TRTC-API-Example-Dart
@@ -121,7 +121,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
               Row(
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.voicechatroom_anchor_operator,
+                    TRTCAPIExampleLocalizations.current.voicechatroom_anchor_operator,
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   ),
@@ -136,7 +136,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
                     onPressed: () {
                       this.onMuteClick();
                     },
-                    child: Text(isAllUserMute ? AppLocalizations.of(context)!.unmute_audio : AppLocalizations.of(context)!.mute_audio),
+                    child: Text(isAllUserMute ? TRTCAPIExampleLocalizations.current.unmute_audio : TRTCAPIExampleLocalizations.current.mute_audio),
                   ),
                   SizedBox(
                     width: 20,
@@ -148,7 +148,7 @@ class _VoiceChatRoomAnchorPageState extends State<VoiceChatRoomAnchorPage> {
                     onPressed: () {
                       this.onDownMicClick();
                     },
-                    child: Text(isDownMic ? AppLocalizations.of(context)!.voicechatroom_up_mic : AppLocalizations.of(context)!.voicechatroom_down_mic)
+                    child: Text(isDownMic ? TRTCAPIExampleLocalizations.current.voicechatroom_up_mic : TRTCAPIExampleLocalizations.current.voicechatroom_down_mic)
                   ),
                 ],
               ),

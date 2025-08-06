@@ -6,7 +6,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:trtc_api_example/Common/TXHelper.dart';
 import 'package:trtc_api_example/Common/TXUpdateEvent.dart';
 import 'package:trtc_api_example/Debug/GenerateTestUserSig.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trtc_api_example/generated/l10n.dart';
 
 ///  SetAudioQualityPage.dart
 ///  TRTC-API-Example-Dart
@@ -211,11 +211,11 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                   children: [
                     SizedBox(
                       width: 195,
-                      child: Text(AppLocalizations.of(context)!.audioquality_please_select_audio_quality),
+                      child: Text(TRTCAPIExampleLocalizations.current.audioquality_please_select_audio_quality),
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(AppLocalizations.of(context)!.audioquality_please_set_volumn),
+                      child: Text(TRTCAPIExampleLocalizations.current.audioquality_please_set_volumn),
                     ),
                   ],
                 ),
@@ -244,7 +244,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onDefaultButtonClick();
                         },
-                        child: Text(AppLocalizations.of(context)!.audioquality_quality_default),
+                        child: Text(TRTCAPIExampleLocalizations.current.audioquality_quality_default),
                       ),
                     ),
                     SizedBox(
@@ -269,7 +269,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onSpeechButtonClick();
                         },
-                        child: Text(AppLocalizations.of(context)!.audioquality_quality_speech),
+                        child: Text(TRTCAPIExampleLocalizations.current.audioquality_quality_speech),
                       ),
                     ),
                     SizedBox(
@@ -294,7 +294,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onMusicButtonClick();
                         },
-                        child: Text(AppLocalizations.of(context)!.audioquality_quality_music),
+                        child: Text(TRTCAPIExampleLocalizations.current.audioquality_quality_music),
                       ),
                     ),
                     SizedBox(
@@ -403,7 +403,7 @@ class _SetAudioQualityPageState extends State<SetAudioQualityPage> {
                         onPressed: () {
                           onStartButtonClick();
                         },
-                        child: Text(isStartPush ? AppLocalizations.of(context)!.stop_push : AppLocalizations.of(context)!.start_push),
+                        child: Text(isStartPush ? TRTCAPIExampleLocalizations.current.stop_push : TRTCAPIExampleLocalizations.current.start_push),
                       ),
                     ),
                   ],
