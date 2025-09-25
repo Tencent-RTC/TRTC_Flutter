@@ -22,17 +22,15 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App needs permission to access your camera</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(PRODUCT_COPYRIGHT)</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>App needs permission to access your microphone</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSCameraUsageDescription</key>
-	<string>The authorized camera permissions can the video call normally</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Authorized Macing's rights to speak normally</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The app requires your consent to access the album</string>
 </dict>
 </plist>
