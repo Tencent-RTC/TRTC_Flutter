@@ -678,26 +678,26 @@ class TestPageState extends State<TestPage> {
               trtcCloud.setSubStreamEncoderParam(params['param']);
             }
         ),
-        ApiCheckerButton(
-            methodName: 'enableCustomVideoCapture',
-            parameters: [
-              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.sub),
-              Parameter(name: 'enable', type: ParameterType.bool, value: false),
-            ],
-            callApi: (params) {
-              trtcCloud.enableCustomVideoCapture(params['streamType'], params['enable']);
-            }
-        ),
-        ApiCheckerButton(
-            methodName: 'sendCustomVideoData',
-            parameters: [
-              Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
-              Parameter(name: 'frame', type: ParameterType.tClass, value: TRTCVideoFrame()),
-            ],
-            callApi: (params) {
-              trtcCloud.sendCustomVideoData(params['streamType'], params['frame']);
-            }
-        ),
+        // ApiCheckerButton(
+        //     methodName: 'enableCustomVideoCapture',
+        //     parameters: [
+        //       Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.sub),
+        //       Parameter(name: 'enable', type: ParameterType.bool, value: false),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.enableCustomVideoCapture(params['streamType'], params['enable']);
+        //     }
+        // ),
+        // ApiCheckerButton(
+        //     methodName: 'sendCustomVideoData',
+        //     parameters: [
+        //       Parameter(name: 'streamType', type: ParameterType.tEnum, value: TRTCVideoStreamType.big),
+        //       Parameter(name: 'frame', type: ParameterType.tClass, value: TRTCVideoFrame()),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.sendCustomVideoData(params['streamType'], params['frame']);
+        //     }
+        // ),
         ApiCheckerButton(
             methodName: 'enableCustomAudioCapture',
             parameters: [
@@ -718,16 +718,16 @@ class TestPageState extends State<TestPage> {
               trtcCloud.sendCustomAudioData(params['frame']);
             }
         ),
-        ApiCheckerButton(
-            methodName: 'enableMixExternalAudioFrame',
-            parameters: [
-              Parameter(name: 'enablePublish', type: ParameterType.bool, value: true),
-              Parameter(name: 'enablePlayout', type: ParameterType.bool, value: false),
-            ],
-            callApi: (params) {
-              trtcCloud.enableMixExternalAudioFrame(params['enablePublish'], params['enablePlayout']);
-            }
-        ),
+        // ApiCheckerButton(
+        //     methodName: 'enableMixExternalAudioFrame',
+        //     parameters: [
+        //       Parameter(name: 'enablePublish', type: ParameterType.bool, value: true),
+        //       Parameter(name: 'enablePlayout', type: ParameterType.bool, value: false),
+        //     ],
+        //     callApi: (params) {
+        //       trtcCloud.enableMixExternalAudioFrame(params['enablePublish'], params['enablePlayout']);
+        //     }
+        // ),
         // ApiCheckerButton(
         //     methodName: 'enableLocalVideoCustomProcess',
         //     token: 'EnableVideoCustomPreprocess',

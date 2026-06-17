@@ -250,8 +250,8 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
       onLocalRecordComplete: (errCode, storagePath) {
         _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onLocalRecordComplete errCode:$errCode storagePath:$storagePath");
       },
-      onSnapshotComplete: (userId, type, data, length, width, height, format) {
-        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSnapshotComplete userId:$userId type:$type data:$data length:$length width:$width height:$height format:$format");
+      onSnapshotComplete: (userId, path, errCode, errMsg) {
+        _printLog(1, "TRTCCloudExample TRTCCloudListenerparseCallbackParam onSnapshotComplete userId:$userId path:$path errCode:$errCode errMsg:$errMsg");
       },
     );
   }
@@ -518,7 +518,6 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
           behavior: HitTestBehavior.opaque,
           child: TRTCCloudVideoView(
               key: valueKey,
-              hitTestBehavior: PlatformViewHitTestBehavior.transparent,
               onViewCreated: (viewId) async {
                 if (item.userId == _meetModel.getUserInfo().userId) {
                    _trtcCloud.startLocalPreview(
