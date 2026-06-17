@@ -3,11 +3,10 @@ description: TRTC Demo.
 publish_to: 'none'
 version: 2.0.0
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.19.0 <4.0.0'
 
 dependencies:
   # tencent_trtc_cloud: ^1.0.8
-  audioplayers: any
   cupertino_icons: ^1.0.5
   provider: ^5.0.0
   crypto: ^3.0.1
@@ -16,6 +15,7 @@ dependencies:
   path_provider: ^2.0.15
   permission_handler: ^11.3.1
 #  replay_kit_launcher: ^0.3.0
+  tencent_rtc_sdk: ^13.2.3
   flutter:
     sdk: flutter
 
@@ -24,7 +24,6 @@ dev_dependencies:
     sdk: flutter
   build_runner: '>=1.6.2 <3.0.0'
   build_web_compilers: '>=2.12.0 <4.0.0'
-  tencent_rtc_sdk: ^12.3.2
 
 flutter:
   # The following line ensures that the Material Icons font is
