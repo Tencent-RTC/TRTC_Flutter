@@ -1,4 +1,4 @@
-package com.example.ffi_test_example
+package com.tencent.trtcflutterdemo
 
 import io.flutter.embedding.android.FlutterActivity
 

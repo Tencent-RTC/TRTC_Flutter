@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA"/>
 
     <application
-        android:label="api_example"
+        android:label="TRTCFlutterApiDemo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
