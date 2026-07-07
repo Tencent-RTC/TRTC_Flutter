@@ -45,6 +45,7 @@ class VideoCallState extends ChangeNotifier {
     _roomId = roomId;
     _isCallActive = true;
     _statusMessage = 'Initializing...';
+    notifyListeners();
 
     await _initializeTRTC();
     notifyListeners();

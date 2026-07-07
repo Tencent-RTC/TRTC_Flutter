@@ -30,8 +30,6 @@ class LoginPageState extends State<LoginPage> {
   /// whether turn on the microphone
   bool _enabledMicrophone = false;
 
-  bool _enableTextureRendering = false;
-
   /// sound quality selection
   TRTCAudioQuality _quality = TRTCAudioQuality.speech;
 
@@ -41,13 +39,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
-    Future.delayed(Duration(microseconds: 500), () {
-      if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
-        setState(() {
-          _enableTextureRendering = true;
-        });
-      }
-    });
   }
 
   _unFocus() {
@@ -122,7 +113,6 @@ class LoginPageState extends State<LoginPage> {
       userId: _userId,
       enabledCamera: _enabledCamera,
       enabledMicrophone: _enabledMicrophone,
-      enableTextureRendering:_enableTextureRendering,
       quality: _quality
     );
     Navigator.pushNamed(context, "/meeting");
@@ -188,29 +178,7 @@ class LoginPageState extends State<LoginPage> {
                 this.setState(() => _enabledMicrophone = value),
           ),
         ),
-        ListTile(
-          contentPadding: EdgeInsets.all(0),
-          title: Text("Texture rendering",
-              style: TextStyle(color: Colors.white)),
-          trailing: Switch(
-            value: _enableTextureRendering,
-            onChanged: (value) {
-              if (kIsWeb && value) {
-                MeetingTool.toast(
-                    'Texture rendering is not supported on the web',
-                    context);
-                return;
-              }
-              if ((Platform.isMacOS || Platform.isWindows) && !value) {
-                MeetingTool.toast(
-                    'Platform rendering is not supported on the MacOS/Windows',
-                    context);
-                return;
-              }
-              this.setState(() => _enableTextureRendering = value);
-            },
-          ),
-        ),
+
       ],
     );
   }

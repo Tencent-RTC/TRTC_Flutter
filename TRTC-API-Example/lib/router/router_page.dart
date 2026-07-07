@@ -19,6 +19,7 @@ class _RouterPageState extends State<RouterPage> {
         title: const Text('Router Page'),
         elevation: 0,
         backgroundColor: Colors.blue[700],
+        actions: [],
       ),
       body: Container(
         decoration: const BoxDecoration(

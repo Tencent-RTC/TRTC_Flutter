@@ -1,4 +1,9 @@
-//{{NO_DEPENDENCIES}}
+// Copyright (c) Tencent. All rights reserved.  // NOLINT(build/header_guard)
+//
+// resource.h
+//
+
+// {{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by Runner.rc
 //

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import 'package:api_example/common/render_type_probe.dart';
 import 'video_call_state.dart';
 
 class VideoCallPage extends StatefulWidget {
@@ -20,6 +21,9 @@ class VideoCallPage extends StatefulWidget {
 class _VideoCallPageState extends State<VideoCallPage> {
   late VideoCallState _callState;
   bool _isInitializing = true;
+
+  /// 当前渲染类型(探测得到,本次进房后固定且所有窗口一致)
+  RenderType _renderType = RenderType.unknown;
 
   @override
   void initState() {
@@ -53,7 +57,17 @@ class _VideoCallPageState extends State<VideoCallPage> {
     if (_isInitializing) {
       return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text(
+                'Initializing...',
+                style: TextStyle(color: Colors.white70),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -96,12 +110,19 @@ class _VideoCallPageState extends State<VideoCallPage> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Text(
-                'Room ID: ${callState.roomId}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Room ID: ${callState.roomId}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  _buildRenderTypeBadge(),
+                ],
               ),
               const SizedBox(height: 10),
               Container(
@@ -122,6 +143,51 @@ class _VideoCallPageState extends State<VideoCallPage> {
           ),
         );
       },
+    );
+  }
+
+  /// 仅用本地画面探测一次渲染类型(本次进房后全局一致,无需每个窗口都探)
+  Widget _wrapWithProbeIfNeeded({
+    required bool isLocalUser,
+    required Widget child,
+  }) {
+    if (!isLocalUser || _renderType != RenderType.unknown) {
+      return child;
+    }
+    return RenderTypeProbe(
+      onDetected: (type) {
+        if (mounted && type != _renderType) {
+          setState(() {
+            _renderType = type;
+          });
+        }
+      },
+      child: child,
+    );
+  }
+
+  Widget _buildRenderTypeBadge() {
+    final bool known = _renderType != RenderType.unknown;
+    final Color color = _renderType == RenderType.texture
+        ? Colors.greenAccent
+        : (_renderType == RenderType.platformView
+            ? Colors.orangeAccent
+            : Colors.grey);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color, width: 1),
+      ),
+      child: Text(
+        known ? _renderType.label : 'Detecting...',
+        style: TextStyle(
+          fontSize: 12,
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
@@ -157,8 +223,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
 
   Widget _buildVideoTile(RemoteUserState participant) {
     final isLocalUser = participant.userId == _callState.localUserId;
-
     return Stack(
+      key: ValueKey(participant.userId),
       children: [
         Container(
           decoration: BoxDecoration(
@@ -167,14 +233,17 @@ class _VideoCallPageState extends State<VideoCallPage> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: TRTCCloudVideoView(
-              onViewCreated: (viewId) {
-                if (isLocalUser) {
-                  _callState.setLocalViewId(viewId);
-                } else {
-                  _callState.setRemoteViewId(participant.userId, viewId);
-                }
-              },
+            child: _wrapWithProbeIfNeeded(
+              isLocalUser: isLocalUser,
+              child: TRTCCloudVideoView(
+                onViewCreated: (viewId) {
+                  if (isLocalUser) {
+                    _callState.setLocalViewId(viewId);
+                  } else {
+                    _callState.setRemoteViewId(participant.userId, viewId);
+                  }
+                },
+              ),
             ),
           ),
         ),

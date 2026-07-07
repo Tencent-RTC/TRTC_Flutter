@@ -1,5 +1,11 @@
-#include "flutter_window.h"
+// Copyright (c) Tencent. All rights reserved.
+//
+// flutter_window.cpp
+//
 
+#include "flutter_window.h"  // NOLINT(build/include_subdir)
+
+#include <memory>
 #include <optional>
 
 #include "flutter/generated_plugin_registrant.h"

@@ -4,6 +4,8 @@ import 'package:api_example/pages/advance_media/render_params/render_params_page
 import 'package:api_example/pages/advance_media/screenshot/screenshot_page.dart';
 import 'package:api_example/pages/advance_media/small_video_stream/small_video_stream_page.dart';
 import 'package:api_example/pages/advance_media/video_quality/video_quality_page.dart';
+import 'package:api_example/pages/advance_more/ai_transcriber/ai_transcriber_prepare_page.dart';
+import 'package:api_example/pages/advance_more/camera_device_test/camera_device_test_page.dart';
 import 'package:api_example/pages/advance_more/device_manager/device_manager_page.dart';
 import 'package:api_example/pages/advance_more/publish_media_stream/publish_media_stream_prepare_page.dart';
 import 'package:api_example/pages/basic_rooms/audio_call/audio_call_prepare_page.dart';
@@ -23,6 +25,7 @@ import 'package:api_example/pages/advance_more/audio_effect_manager/voice_effect
 import 'package:api_example/pages/advance_more/screen_share/screen_share_prepare_page.dart';
 import 'package:api_example/pages/advance_media/screenshot/screenshot_page.dart';
 import 'package:api_example/pages/advance_media/small_video_stream/small_video_stream_page.dart';
+import 'package:api_example/pages/advance_more/custom_audio_capture/custom_audio_capture_prepare_page.dart';
 
 class RouterInfo {
   Icon icon;
@@ -95,6 +98,11 @@ List<RouterInfo> advanceAvList = [
     title: 'Small Video Stream',
     page: const SmallVideoStreamPage(),
   ),
+  RouterInfo(
+    icon: const Icon(Icons.share),
+    title: 'Screen Share',
+    page: const ScreenSharePreparePage(),
+  ),
 ];
 
 List<RouterInfo> advanceOtherList = [
@@ -134,6 +142,11 @@ List<RouterInfo> advanceOtherList = [
     page: const DeviceManagerPage(),
   ),
   RouterInfo(
+    icon: const Icon(Icons.camera_alt),
+    title: 'Camera Device Test',
+    page: const CameraDeviceTestPage(),
+  ),
+  RouterInfo(
     icon: const Icon(Icons.music_note_outlined),
     title: 'Music Effect',
     page: const MusicEffectPreparePage(),
@@ -147,5 +160,15 @@ List<RouterInfo> advanceOtherList = [
     icon: const Icon(Icons.branding_watermark),
     title: 'Publish Media Stream',
     page: const PublishMediaStreamPreparePage(),
+  ),
+  RouterInfo(
+    icon: const Icon(Icons.mic_external_on),
+    title: 'Custom Audio Capture',
+    page: const CustomAudioCapturePreparePage(),
+  ),
+  RouterInfo(
+    icon: const Icon(Icons.transcribe),
+    title: 'AI Transcriber',
+    page: const AITranscriberPreparePage(),
   ),
 ];

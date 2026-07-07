@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'video_call_page.dart';
 
 class VideoCallPreparePage extends StatefulWidget {
@@ -12,6 +13,18 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
   final _userIdController = TextEditingController();
   final _roomIdController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _sdkReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSdk();
+  }
+
+  Future<void> _initSdk() async {
+    await TRTCCloud.sharedInstance();
+    if (mounted) setState(() => _sdkReady = true);
+  }
 
   @override
   void dispose() {
@@ -63,6 +76,7 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
                   return null;
                 },
               ),
+              const SizedBox(height: 24),
               const Spacer(),
               ElevatedButton(
                 onPressed: _startCall,
@@ -75,26 +89,6 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildDeviceControl({
-    required IconData icon,
-    required String label,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return Row(
-      children: [
-        Icon(icon),
-        const SizedBox(width: 10),
-        Text(label),
-        const Spacer(),
-        Switch(
-          value: value,
-          onChanged: onChanged,
-        ),
-      ],
     );
   }
 
@@ -111,5 +105,4 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
       );
     }
   }
-
 }

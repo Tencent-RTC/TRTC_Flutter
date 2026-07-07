@@ -1,0 +1,15 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "fluttertoast": "file:../har/fluttertoast.har",
+    "path_provider_ohos": "file:../har/path_provider_ohos.har",
+    "permission_handler_ohos": "file:../har/permission_handler_ohos.har",
+    "tencent_rtc_sdk": "file:../har/tencent_rtc_sdk.har",
+    "@ohos/flutter_ohos": "har/flutter.har"
+  }
+}

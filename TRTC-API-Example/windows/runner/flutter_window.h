@@ -1,12 +1,17 @@
-#ifndef RUNNER_FLUTTER_WINDOW_H_
-#define RUNNER_FLUTTER_WINDOW_H_
+// Copyright (c) Tencent. All rights reserved.
+//
+// flutter_window.h
+//
+
+#ifndef RUNNER_FLUTTER_WINDOW_H_  // NOLINT(build/header_guard)
+#define RUNNER_FLUTTER_WINDOW_H_  // NOLINT(build/header_guard)
 
 #include <flutter/dart_project.h>
 #include <flutter/flutter_view_controller.h>
 
 #include <memory>
 
-#include "win32_window.h"
+#include "win32_window.h"  // NOLINT(build/include_subdir)
 
 // A window that does nothing but host a Flutter view.
 class FlutterWindow : public Win32Window {
@@ -25,9 +30,8 @@ class FlutterWindow : public Win32Window {
  private:
   // The project to run.
   flutter::DartProject project_;
-
   // The Flutter instance hosted by this window.
   std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
 };
 
-#endif  // RUNNER_FLUTTER_WINDOW_H_
+#endif  // RUNNER_FLUTTER_WINDOW_H_  // NOLINT(build/header_guard)

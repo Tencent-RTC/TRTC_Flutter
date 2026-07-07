@@ -1,5 +1,10 @@
-#ifndef RUNNER_WIN32_WINDOW_H_
-#define RUNNER_WIN32_WINDOW_H_
+// Copyright (c) Tencent. All rights reserved.
+//
+// win32_window.h
+//
+
+#ifndef RUNNER_WIN32_WINDOW_H_  // NOLINT(build/header_guard)
+#define RUNNER_WIN32_WINDOW_H_  // NOLINT(build/header_guard)
 
 #include <windows.h>
 
@@ -94,9 +99,8 @@ class Win32Window {
 
   // window handle for top level window.
   HWND window_handle_ = nullptr;
-
   // window handle for hosted content.
   HWND child_content_ = nullptr;
 };
 
-#endif  // RUNNER_WIN32_WINDOW_H_
+#endif  // RUNNER_WIN32_WINDOW_H_  // NOLINT(build/header_guard)

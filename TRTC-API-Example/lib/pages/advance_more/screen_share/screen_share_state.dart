@@ -81,12 +81,14 @@ class ScreenShareState extends ChangeNotifier {
     param.videoResolution = TRTCVideoResolution.res_1920_1080;
     param.videoResolutionMode = TRTCVideoResolutionMode.landscape;
     _trtcCloud?.startScreenCapture(0, TRTCVideoStreamType.sub, param);
+    _trtcCloud?.startSystemAudioLoopback();
     logs.insert(0, 'Start screen share');
     notifyListeners();
   }
 
   void stopScreenShare() {
     _trtcCloud?.stopScreenCapture();
+    _trtcCloud?.stopSystemAudioLoopback();
     logs.insert(0, 'Stop screen share');
     notifyListeners();
   }

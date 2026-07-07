@@ -1,9 +1,8 @@
 name: api_example
-description: TRTC API Example helps developers can better understand TRTC real -time audio and video SDK APIs, so as to quickly realize the basic functions of some audio and video scenarios.
-
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -42,7 +41,7 @@ dependencies:
   path_provider: ^2.1.5
   file: ^6.0.0
 
-  tencent_rtc_sdk: ^13.2.3
+  tencent_rtc_sdk: ^13.4.0
 #  fluttertoast:
 #    git:
 #      url: "https://gitcode.com/openharmony-sig/flutter_fluttertoast.git"

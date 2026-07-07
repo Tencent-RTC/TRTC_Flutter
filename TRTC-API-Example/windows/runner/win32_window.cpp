@@ -1,9 +1,14 @@
-#include "win32_window.h"
+// Copyright (c) Tencent. All rights reserved.
+//
+// win32_window.cpp
+//
+
+#include "win32_window.h"  // NOLINT(build/include_subdir)
 
 #include <dwmapi.h>
 #include <flutter_windows.h>
 
-#include "resource.h"
+#include "resource.h"  // NOLINT(build/include_subdir)
 
 namespace {
 
@@ -23,7 +28,7 @@ constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
 /// A value of 0 indicates apps should use dark mode. A non-zero or missing
 /// value indicates apps should use light mode.
 constexpr const wchar_t kGetPreferredBrightnessRegKey[] =
-  L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
+L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
 constexpr const wchar_t kGetPreferredBrightnessRegValue[] = L"AppsUseLightTheme";
 
 // The number of Win32Window objects that currently exist.
