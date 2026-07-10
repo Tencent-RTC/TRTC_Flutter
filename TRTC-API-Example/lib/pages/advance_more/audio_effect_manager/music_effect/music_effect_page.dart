@@ -22,12 +22,12 @@ class _MusicEffectPageState extends State<MusicEffectPage> {
   @override
   void initState() {
     super.initState();
-    _state = MusicEffectState(widget.userId, int.tryParse(widget.roomId) ?? 0);
+    _state = MusicEffectState(widget.userId, widget.roomId);
     _initRoom();
   }
 
   Future<void> _initRoom() async {
-    await _state.enterRoom(widget.userId, int.tryParse(widget.roomId) ?? 0);
+    await _state.enterRoom(widget.userId, widget.roomId);
     setState(() {
       _isInit = true;
     });

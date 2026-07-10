@@ -68,11 +68,12 @@ class _SetBeautyStylePageState extends State<SetBeautyStylePage> {
   }
 
   void _enterRoom() {
+    final roomIdStr = widget.roomId;
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: widget.userId,
-        roomId: int.tryParse(widget.roomId) ?? 0,
+        strRoomId: roomIdStr,
         userSig: GenerateTestUserSig.genTestSig(widget.userId),
         role: TRTCRoleType.anchor,
       ),

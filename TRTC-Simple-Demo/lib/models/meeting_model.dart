@@ -5,7 +5,7 @@ import 'package:trtc_demo/models/user_model.dart';
 
 class MeetingModel extends ChangeNotifier {
   /// Internal, private state of the cart.
-  int? _meetId;
+  String? _meetId;
   TRTCAudioQuality _quality = TRTCAudioQuality.defaultMode;
 
   late UserModel _userInfo;
@@ -24,7 +24,7 @@ class MeetingModel extends ChangeNotifier {
   }
 
   void setUserSettings(
-      {required int meetId,
+      {required String meetId,
       required String userId,
       required bool enabledCamera,
       required bool enabledMicrophone,
@@ -36,7 +36,7 @@ class MeetingModel extends ChangeNotifier {
     _quality = quality;
   }
 
-  int? getMeetId() {
+  String? getMeetId() {
     return _meetId;
   }
 

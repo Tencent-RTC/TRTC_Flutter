@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'audio_quality_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class AudioQualityPreparePage extends StatefulWidget {
   const AudioQualityPreparePage({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class AudioQualityPreparePage extends StatefulWidget {
 
 class _AudioQualityPreparePageState extends State<AudioQualityPreparePage> {
   final _formKey = GlobalKey<FormState>();
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
+  final _userIdController = TextEditingController(text: AppConfig.userId);
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   void dispose() {
@@ -55,7 +56,6 @@ class _AudioQualityPreparePageState extends State<AudioQualityPreparePage> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.meeting_room),
                 ),
-                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter room ID';
@@ -67,6 +67,8 @@ class _AudioQualityPreparePageState extends State<AudioQualityPreparePage> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
+                    AppConfig.roomId = _roomIdController.text;
+                    AppConfig.userId = _userIdController.text;
                     Navigator.push(
                       context,
                       MaterialPageRoute(

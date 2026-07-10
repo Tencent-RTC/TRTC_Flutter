@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'connect_other_room_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class ConnectOtherRoomPreparePage extends StatefulWidget {
   const ConnectOtherRoomPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class ConnectOtherRoomPreparePage extends StatefulWidget {
 }
 
 class _ConnectOtherRoomPreparePageState extends State<ConnectOtherRoomPreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,6 @@ class _ConnectOtherRoomPreparePageState extends State<ConnectOtherRoomPreparePag
                 labelText: 'Room ID',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
             ),
             const Spacer(),
             ElevatedButton(
@@ -50,13 +50,15 @@ class _ConnectOtherRoomPreparePageState extends State<ConnectOtherRoomPreparePag
 
   void _onEnterRoom() {
     final userId = _userIdController.text.trim();
-    final roomId = int.tryParse(_roomIdController.text.trim());
-    if (userId.isEmpty || roomId == null) {
+    final roomId = _roomIdController.text.trim();
+    if (userId.isEmpty || roomId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter User ID and Room ID')),
       );
       return;
     }
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(

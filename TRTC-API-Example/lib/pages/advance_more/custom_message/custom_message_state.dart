@@ -11,7 +11,7 @@ class CustomMessageState extends ChangeNotifier {
   TRTCCloudListener? _listener;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   String _statusMessage = 'Not in room';
   bool _isEnterRoom = false;
 
@@ -21,11 +21,11 @@ class CustomMessageState extends ChangeNotifier {
   List<String> get messages => List.unmodifiable(_messages);
 
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   String get statusMessage => _statusMessage;
   bool get isEnterRoom => _isEnterRoom;
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _statusMessage = 'Entering room...';
@@ -39,7 +39,7 @@ class CustomMessageState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),

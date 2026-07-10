@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'set_beauty_style_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class SetBeautyStylePreparePage extends StatefulWidget {
   const SetBeautyStylePreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class SetBeautyStylePreparePage extends StatefulWidget {
 }
 
 class _SetBeautyStylePreparePageState extends State<SetBeautyStylePreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   void dispose() {
@@ -22,6 +23,8 @@ class _SetBeautyStylePreparePageState extends State<SetBeautyStylePreparePage> {
   void _onEnter() {
     final userId = _userIdController.text;
     final roomId = _roomIdController.text;
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(

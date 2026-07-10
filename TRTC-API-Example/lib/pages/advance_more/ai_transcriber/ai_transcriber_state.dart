@@ -4,6 +4,7 @@ import 'package:tencent_rtc_sdk/ai_transcriber_manager.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:api_example/common/app_config.dart';
 
 class AITranscriberState extends ChangeNotifier {
   TRTCCloud? _trtcCloud;
@@ -12,7 +13,7 @@ class AITranscriberState extends ChangeNotifier {
   AITranscriberListener? _transcriberListener;
 
   String? _localUserId;
-  int? _roomId;
+  String? _roomId;
   bool _isEnterRoomSuccess = false;
   bool _isTranscribing = false;
   bool _isPaused = false;
@@ -20,14 +21,14 @@ class AITranscriberState extends ChangeNotifier {
   final List<TranscriptItem> _transcripts = [];
 
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   bool get isEnterRoomSuccess => _isEnterRoomSuccess;
   bool get isTranscribing => _isTranscribing;
   bool get isPaused => _isPaused;
   String get statusMessage => _statusMessage;
   List<TranscriptItem> get transcripts => List.unmodifiable(_transcripts);
 
-  Future<void> initialize({required String userId, required int roomId}) async {
+  Future<void> initialize({required String userId, required String roomId}) async {
     _localUserId = userId;
     _roomId = roomId;
     _statusMessage = 'Initializing...';
@@ -70,11 +71,12 @@ class AITranscriberState extends ChangeNotifier {
     );
 
     _trtcCloud?.registerListener(_listener!);
+    final roomIdStr = _roomId ?? AppConfig.defaultRoomId;
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomIdStr,
         role: TRTCRoleType.anchor,
         userSig: GenerateTestUserSig.genTestSig(userId),
       ),

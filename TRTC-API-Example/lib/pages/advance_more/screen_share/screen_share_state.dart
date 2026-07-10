@@ -11,7 +11,7 @@ class ScreenShareState extends ChangeNotifier {
   UserListState? userListState;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   bool _isEnterRoom = false;
   bool _isInit = false;
   List<String> logs = [];
@@ -19,9 +19,9 @@ class ScreenShareState extends ChangeNotifier {
   bool get isInit => _isInit;
   bool get isEntered => _isEnterRoom;
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _trtcCloud = await TRTCCloud.sharedInstance();
@@ -33,7 +33,7 @@ class ScreenShareState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),

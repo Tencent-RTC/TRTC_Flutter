@@ -13,7 +13,7 @@ class ScreenshotState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   UserListState? userListState;
 
   ValueNotifier<bool> isEnterRoom = ValueNotifier(false);
@@ -52,7 +52,7 @@ class ScreenshotState extends ChangeNotifier {
   }
 
   void enterRoom() {
-    if (localUserId == null || roomId == null) {
+    if (localUserId == null || roomId == null || roomId!.isEmpty) {
       print("ScreenshotState localUserId or roomId is null");
       Fluttertoast.showToast(msg: "localUserId or roomId is null");
       return;
@@ -62,7 +62,7 @@ class ScreenshotState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: localUserId!,
-            roomId: roomId!,
+            strRoomId: roomId!,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(localUserId!)
         ), TRTCAppScene.videoCall);

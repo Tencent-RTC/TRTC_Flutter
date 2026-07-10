@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_audio_capture_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class CustomAudioCapturePreparePage extends StatefulWidget {
   const CustomAudioCapturePreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class CustomAudioCapturePreparePage extends StatefulWidget {
 }
 
 class _CustomAudioCapturePreparePageState extends State<CustomAudioCapturePreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -144,13 +145,9 @@ class _CustomAudioCapturePreparePageState extends State<CustomAudioCapturePrepar
                               border: OutlineInputBorder(),
                               prefixIcon: Icon(Icons.meeting_room, color: Colors.deepPurple),
                             ),
-                            keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter room ID';
-                              }
-                              if (int.tryParse(value) == null) {
-                                return 'Please enter a valid number';
                               }
                               return null;
                             },
@@ -226,12 +223,14 @@ class _CustomAudioCapturePreparePageState extends State<CustomAudioCapturePrepar
 
   void _startTest() {
     if (_formKey.currentState!.validate()) {
+    AppConfig.roomId = _roomIdController.text;
+    AppConfig.userId = _userIdController.text;
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CustomAudioCapturePage(
             userId: _userIdController.text,
-            roomId: int.parse(_roomIdController.text),
+            roomId: _roomIdController.text,
           ),
         ),
       );

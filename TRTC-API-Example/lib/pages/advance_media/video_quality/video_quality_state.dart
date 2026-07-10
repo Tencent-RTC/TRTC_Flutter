@@ -14,7 +14,7 @@ class VideoQualityState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   List<UserInfo> users = [];
   UserListState? userListState;
 
@@ -46,7 +46,7 @@ class VideoQualityState extends ChangeNotifier {
     }
   }
 
-  void enterRoom(String userId, int roomId) {
+  void enterRoom(String userId, String roomId) {
     localUserId = userId;
     this.roomId = roomId;
 
@@ -54,7 +54,7 @@ class VideoQualityState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: userId,
-            roomId: roomId,
+            strRoomId: roomId,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(userId)
         ), TRTCAppScene.live);

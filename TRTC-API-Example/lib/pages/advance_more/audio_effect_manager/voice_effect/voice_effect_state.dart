@@ -13,14 +13,14 @@ class VoiceEffectState extends ChangeNotifier {
   UserListState? userListState;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   bool _isEnterRoom = false;
   bool _isInit = false;
 
   bool get isInit => _isInit;
   bool get isEntered => _isEnterRoom;
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
 
   bool earMonitorEnabled = false;
   int earMonitorVolume = 100;
@@ -35,7 +35,7 @@ class VoiceEffectState extends ChangeNotifier {
 
   TXAudioEffectManager? _audioEffectManager;
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _trtcCloud = await TRTCCloud.sharedInstance();
@@ -48,7 +48,7 @@ class VoiceEffectState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),

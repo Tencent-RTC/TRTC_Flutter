@@ -13,7 +13,7 @@ class DeviceManagerState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   UserListState? userListState;
 
   double focusPositionX = 0.5;
@@ -43,7 +43,7 @@ class DeviceManagerState extends ChangeNotifier {
   }
 
   void enterRoom() {
-    if (localUserId == null || roomId == null) {
+    if (localUserId == null || roomId == null || localUserId!.isEmpty || roomId!.isEmpty) {
       print("DeviceManagerState localUserId or roomId is null");
       Fluttertoast.showToast(msg: "localUserId or roomId is null");
       return;
@@ -53,7 +53,7 @@ class DeviceManagerState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: localUserId!,
-            roomId: roomId!,
+            strRoomId: roomId!,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(localUserId!)
         ), TRTCAppScene.videoCall);

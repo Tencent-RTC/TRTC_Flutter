@@ -6,7 +6,7 @@ import 'video_call_state.dart';
 
 class VideoCallPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
 
   const VideoCallPage({
     Key? key,

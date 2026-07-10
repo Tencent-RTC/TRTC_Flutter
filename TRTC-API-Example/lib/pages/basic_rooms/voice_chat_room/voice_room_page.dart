@@ -4,7 +4,7 @@ import 'voice_room_state.dart';
 
 class VoiceRoomPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
 
   const VoiceRoomPage({
     Key? key,

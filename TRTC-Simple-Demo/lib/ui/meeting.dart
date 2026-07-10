@@ -323,7 +323,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
             userId: _meetModel.getUserInfo().userId,
             userSig: _meetModel.getUserInfo().userSig ?? '',
             role: TRTCRoleType.anchor,
-            roomId: _meetModel.getMeetId()!),
+            strRoomId: _meetModel.getMeetId() ?? ''),
         TRTCAppScene.live);
   }
 
@@ -611,7 +611,7 @@ class MeetingPageState extends State<MeetingPage> with WidgetsBindingObserver {
                       _meetModel.getUserInfo().isFrontCamera = !_meetModel.getUserInfo().isFrontCamera;
                     });
                   }),
-              Text(_meetModel.getMeetId().toString(),
+              Text(_meetModel.getMeetId() ?? '',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
               TextButton(
                 style: TextButton.styleFrom(

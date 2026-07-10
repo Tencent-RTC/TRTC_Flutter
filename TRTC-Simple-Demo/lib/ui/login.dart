@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:trtc_demo/common/app_config.dart';
 import 'package:trtc_demo/debug/GenerateTestUserSig.dart';
 import 'package:trtc_demo/models/meeting_model.dart';
 import 'package:trtc_demo/utils/tool.dart';
@@ -39,6 +40,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   initState() {
     super.initState();
+    _meetId = AppConfig.roomId;
+    _userId = AppConfig.userId;
   }
 
   _unFocus() {
@@ -68,17 +71,6 @@ class LoginPageState extends State<LoginPage> {
     if (_meetId == '') {
       MeetingTool.toast('Please enter the conference number', context);
       return;
-    } else if (_meetId == '0') {
-      MeetingTool.toast('Please enter the legal meeting ID', context);
-      return;
-    } else if (_meetId.toString().length > 10) {
-      MeetingTool.toast('Please enter a valid conference ID', context);
-      return;
-    } else if (!new RegExp(r"[0-9]+$").hasMatch(_meetId)) {
-      MeetingTool.toast(
-          'Conference ID can only be numeric. Please enter a legal conference ID',
-          context);
-      return;
     }
     _userId = _userId.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
     if (_userId == '') {
@@ -106,10 +98,12 @@ class LoginPageState extends State<LoginPage> {
       await Permission.systemAlertWindow.request();
     }
 
+    AppConfig.roomId = _meetId;
+    AppConfig.userId = _userId;
 
     var meetModel = context.read<MeetingModel>();
     meetModel.setUserSettings(
-      meetId: int.parse(_meetId),
+      meetId: _meetId,
       userId: _userId,
       enabledCamera: _enabledCamera,
       enabledMicrophone: _enabledMicrophone,
@@ -125,6 +119,7 @@ class LoginPageState extends State<LoginPage> {
             style: TextStyle(color: Colors.white),
             autofocus: false,
             focusNode: _meetIdFocusNode,
+            controller: TextEditingController(text: _meetId),
             decoration: InputDecoration(
               labelText: "Conference number",
               hintText: "Please enter the conference number",
@@ -135,12 +130,12 @@ class LoginPageState extends State<LoginPage> {
                 borderSide: BorderSide(color: Colors.white),
               ),
             ),
-            keyboardType: TextInputType.number,
             onChanged: (value) => _meetId = value),
         TextField(
             style: TextStyle(color: Colors.white),
             autofocus: false,
             focusNode: _userFocusNode,
+            controller: TextEditingController(text: _userId),
             decoration: InputDecoration(
               labelText: "User ID",
               hintText: "Please enter user ID",

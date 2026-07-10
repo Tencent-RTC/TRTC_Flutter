@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'video_call_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class VideoCallPreparePage extends StatefulWidget {
   const VideoCallPreparePage({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class VideoCallPreparePage extends StatefulWidget {
 }
 
 class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
+  final _userIdController = TextEditingController(text: AppConfig.userId);
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
   final _formKey = GlobalKey<FormState>();
   bool _sdkReady = false;
 
@@ -68,7 +69,6 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.meeting_room),
                 ),
-                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter room ID';
@@ -94,12 +94,14 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
 
   void _startCall() {
     if (_formKey.currentState!.validate()) {
+      AppConfig.roomId = _roomIdController.text;
+      AppConfig.userId = _userIdController.text;
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => VideoCallPage(
             userId: _userIdController.text,
-            roomId: int.parse(_roomIdController.text),
+            roomId: _roomIdController.text,
           ),
         ),
       );

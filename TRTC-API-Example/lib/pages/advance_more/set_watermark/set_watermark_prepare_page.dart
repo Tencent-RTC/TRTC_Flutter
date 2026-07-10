@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'set_watermark_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class SetWatermarkPreparePage extends StatefulWidget {
   const SetWatermarkPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class SetWatermarkPreparePage extends StatefulWidget {
 }
 
 class _SetWatermarkPreparePageState extends State<SetWatermarkPreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   void dispose() {
@@ -22,6 +23,8 @@ class _SetWatermarkPreparePageState extends State<SetWatermarkPreparePage> {
   void _onEnter() {
     final userId = _userIdController.text;
     final roomId = _roomIdController.text;
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(

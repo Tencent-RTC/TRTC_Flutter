@@ -154,7 +154,7 @@ class TestPageState extends State<TestPage> {
                 name: 'roomId',
                 type: ParameterType.tClass,
                 value: TRTCSwitchRoomConfig(
-                  roomId: meetModel.getMeetId()!,
+                  strRoomId: meetModel.getMeetId() ?? '',
                   userSig: GenerateTestUserSig.genTestSig(userInfo.userId),
                 ),
               ),

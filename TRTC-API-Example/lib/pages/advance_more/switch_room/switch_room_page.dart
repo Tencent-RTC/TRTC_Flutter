@@ -5,7 +5,7 @@ import 'package:api_example/common/user_list_widget.dart';
 
 class SwitchRoomPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
   const SwitchRoomPage({Key? key, required this.userId, required this.roomId}) : super(key: key);
 
   @override
@@ -88,15 +88,14 @@ class _SwitchRoomPageState extends State<SwitchRoomPage> {
                                   labelText: 'Target Room ID',
                                   border: OutlineInputBorder(),
                                 ),
-                                keyboardType: TextInputType.number,
                               ),
                             ),
                             const SizedBox(width: 8),
                             ElevatedButton(
                               onPressed: () {
                                 FocusScope.of(context).unfocus();
-                                final newRoomId = int.tryParse(_switchRoomIdController.text.trim());
-                                if (newRoomId != null) {
+                                final newRoomId = _switchRoomIdController.text.trim();
+                                if (newRoomId.isNotEmpty) {
                                   state.switchRoom(newRoomId);
                                 }
                               },

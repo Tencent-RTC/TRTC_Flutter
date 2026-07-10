@@ -24,7 +24,7 @@ class _ScreenSharePageState extends State<ScreenSharePage> {
   }
 
   Future<void> _initRoom() async {
-    await _state.enterRoom(widget.userId, int.tryParse(widget.roomId) ?? 0);
+    await _state.enterRoom(widget.userId, widget.roomId);
     setState(() {
       _isInit = true;
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screen_share_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class ScreenSharePreparePage extends StatefulWidget {
   const ScreenSharePreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class ScreenSharePreparePage extends StatefulWidget {
 }
 
 class _ScreenSharePreparePageState extends State<ScreenSharePreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
   String? _error;
 
   void _onEnter() {
@@ -22,6 +23,8 @@ class _ScreenSharePreparePageState extends State<ScreenSharePreparePage> {
       });
       return;
     }
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -43,7 +46,7 @@ class _ScreenSharePreparePageState extends State<ScreenSharePreparePage> {
             TextField(controller: _userIdController),
             const SizedBox(height: 16),
             const Text('Room ID'),
-            TextField(controller: _roomIdController, keyboardType: TextInputType.number),
+            TextField(controller: _roomIdController),
             const SizedBox(height: 32),
             if (_error != null) ...[
               Text(_error!, style: const TextStyle(color: Colors.red)),

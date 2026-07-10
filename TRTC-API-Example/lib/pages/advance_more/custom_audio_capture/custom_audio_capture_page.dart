@@ -4,7 +4,7 @@ import 'custom_audio_capture_state.dart';
 
 class CustomAudioCapturePage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
 
   const CustomAudioCapturePage({
     Key? key,

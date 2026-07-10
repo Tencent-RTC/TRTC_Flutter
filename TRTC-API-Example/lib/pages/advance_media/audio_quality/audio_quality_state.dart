@@ -86,7 +86,7 @@ class AudioQualityState extends ChangeNotifier {
     _trtcCloud?.enterRoom(TRTCParams(
       sdkAppId: GenerateTestUserSig.sdkAppId,
       userId: userId,
-      roomId: int.parse(roomId),
+      strRoomId: roomId,
       role: TRTCRoleType.anchor,
       userSig: GenerateTestUserSig.genTestSig(userId)
     ), TRTCAppScene.voiceChatRoom);

@@ -11,26 +11,26 @@ class ConnectOtherRoomState extends ChangeNotifier {
   TRTCCloudListener? _listener;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   String _statusMessage = 'Not in room';
   bool _isEnterRoom = false;
   bool _isConnecting = false;
   bool _isConnected = false;
   String? _targetUserId;
-  int? _targetRoomId;
+  String? _targetRoomId;
 
   UserListState? userListState;
 
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   String get statusMessage => _statusMessage;
   bool get isEnterRoom => _isEnterRoom;
   bool get isConnecting => _isConnecting;
   bool get isConnected => _isConnected;
   String? get targetUserId => _targetUserId;
-  int? get targetRoomId => _targetRoomId;
+  String? get targetRoomId => _targetRoomId;
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _statusMessage = 'Entering room...';
@@ -44,7 +44,7 @@ class ConnectOtherRoomState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),
@@ -53,7 +53,7 @@ class ConnectOtherRoomState extends ChangeNotifier {
     _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
   }
 
-  void connectOtherRoom(int targetRoomId, String targetUserId) {
+  void connectOtherRoom(String targetRoomId, String targetUserId) {
     if (_trtcCloud == null) return;
     _isConnecting = true;
     _statusMessage = 'Connecting to other room...';

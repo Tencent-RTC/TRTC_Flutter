@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'network_speed_test_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class NetworkSpeedTestPreparePage extends StatefulWidget {
   const NetworkSpeedTestPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class NetworkSpeedTestPreparePage extends StatefulWidget {
 }
 
 class _NetworkSpeedTestPreparePageState extends State<NetworkSpeedTestPreparePage> {
-  final TextEditingController _roomIdController = TextEditingController();
-  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
 
   @override
   void dispose() {
@@ -22,6 +23,8 @@ class _NetworkSpeedTestPreparePageState extends State<NetworkSpeedTestPreparePag
   void _onStartTest() {
     final roomId = _roomIdController.text;
     final userId = _userIdController.text;
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(

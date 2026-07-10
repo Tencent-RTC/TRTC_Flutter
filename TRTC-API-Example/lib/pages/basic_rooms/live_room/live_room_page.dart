@@ -5,7 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 
 class LiveRoomPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
 
   const LiveRoomPage({
     Key? key,

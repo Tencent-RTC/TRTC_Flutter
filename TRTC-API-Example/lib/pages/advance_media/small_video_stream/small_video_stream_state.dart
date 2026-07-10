@@ -12,7 +12,7 @@ class SmallVideoStreamState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   UserListState? userListState;
 
   ValueNotifier<bool> isEnterRoom = ValueNotifier(false);
@@ -37,7 +37,7 @@ class SmallVideoStreamState extends ChangeNotifier {
   }
 
   void enterRoom() {
-    if (localUserId == null || roomId == null) {
+    if (localUserId == null || roomId == null || roomId!.isEmpty) {
       print("SmallVideoStreamState localUserId or roomId is null");
       Fluttertoast.showToast(msg: "localUserId or roomId is null");
       return;
@@ -47,7 +47,7 @@ class SmallVideoStreamState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: localUserId!,
-            roomId: roomId!,
+            strRoomId: roomId!,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(localUserId!)
         ), TRTCAppScene.videoCall);

@@ -5,6 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'render_params_state.dart';
 import '../../../../common/user_list_widget.dart';
 import '../../../../common/user_list_state.dart';
+import 'package:api_example/common/app_config.dart';
 
 class RenderParamsPage extends StatefulWidget {
   const RenderParamsPage({Key? key}) : super(key: key);
@@ -18,11 +19,17 @@ class _RenderParamsPageState extends State<RenderParamsPage> with SingleTickerPr
   late RenderParamsState _renderParamsState;
   UserListState? _userListState;
 
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
+  final _userIdController = TextEditingController(
+      text: AppConfig.userId);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this); // Adjusted to 3 Tabs
     _renderParamsState = RenderParamsState();
+    _renderParamsState.roomId = _roomIdController.text;
+    _renderParamsState.localUserId = _userIdController.text;
   }
 
   Future<void> _initialize() async {
@@ -35,6 +42,8 @@ class _RenderParamsPageState extends State<RenderParamsPage> with SingleTickerPr
   void dispose() {
     _tabController.dispose();
     _renderParamsState.dispose();
+    _roomIdController.dispose();
+    _userIdController.dispose();
     _userListState?.dispose();
     super.dispose();
   }
@@ -138,9 +147,9 @@ class _RenderParamsPageState extends State<RenderParamsPage> with SingleTickerPr
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
+              controller: _roomIdController,
               onChanged: (value) {
-                _renderParamsState.roomId = int.tryParse(value) ?? 0;
+                _renderParamsState.roomId = value;
               },
             ),
             const SizedBox(height: 16),
@@ -150,6 +159,7 @@ class _RenderParamsPageState extends State<RenderParamsPage> with SingleTickerPr
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
+              controller: _userIdController,
               onChanged: (value) {
                 _renderParamsState.localUserId = value;
               },

@@ -7,6 +7,7 @@ import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 import '../../../common/user_list_widget.dart';
 import '../../../common/user_list_state.dart';
 import 'device_manager_state.dart';
+import 'package:api_example/common/app_config.dart';
 
 class DeviceManagerPage extends StatefulWidget {
   const DeviceManagerPage({Key? key}) : super(key: key);
@@ -20,11 +21,18 @@ class _DeviceManagerPageState extends State<DeviceManagerPage> with SingleTicker
   late DeviceManagerState _deviceManagerState;
   UserListState? _userListState;
 
+  final _roomIdController = TextEditingController(
+      text: AppConfig.roomId);
+  final _userIdController = TextEditingController(
+      text: AppConfig.userId);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _deviceManagerState = DeviceManagerState();
+    _deviceManagerState.roomId = _roomIdController.text;
+    _deviceManagerState.localUserId = _userIdController.text;
   }
 
   Future<void> _initialize() async {
@@ -39,6 +47,8 @@ class _DeviceManagerPageState extends State<DeviceManagerPage> with SingleTicker
     _tabController.dispose();
     _deviceManagerState.dispose();
     _userListState?.dispose();
+    _roomIdController.dispose();
+    _userIdController.dispose();
     super.dispose();
   }
 
@@ -134,18 +144,19 @@ class _DeviceManagerPageState extends State<DeviceManagerPage> with SingleTicker
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
+              controller: _roomIdController,
               decoration: const InputDecoration(
                 labelText: 'Room ID',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
               onChanged: (value) {
-                _deviceManagerState.roomId = int.tryParse(value) ?? 0;
+                _deviceManagerState.roomId = value;
               },
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: _userIdController,
               decoration: const InputDecoration(
                 labelText: 'User ID',
                 border: OutlineInputBorder(),
@@ -166,7 +177,8 @@ class _DeviceManagerPageState extends State<DeviceManagerPage> with SingleTicker
                       if (isEnterRoom) {
                         _deviceManagerState.exitRoom();
                       } else {
-                        if (_deviceManagerState.localUserId != null && _deviceManagerState.roomId != null) {
+                        if (_deviceManagerState.localUserId != null && _deviceManagerState.localUserId!.isNotEmpty
+                            && _deviceManagerState.roomId != null && _deviceManagerState.roomId!.isNotEmpty) {
                           _deviceManagerState.enterRoom();
                         }
                       }

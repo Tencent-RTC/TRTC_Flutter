@@ -4,7 +4,7 @@ import 'ai_transcriber_state.dart';
 
 class AITranscriberPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
   final String sourceLanguage;
   final List<String> translationLanguages;
 

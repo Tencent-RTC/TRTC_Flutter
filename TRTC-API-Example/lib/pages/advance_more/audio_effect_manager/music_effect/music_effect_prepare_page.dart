@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'music_effect_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class MusicEffectPreparePage extends StatefulWidget {
   const MusicEffectPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class MusicEffectPreparePage extends StatefulWidget {
 }
 
 class _MusicEffectPreparePageState extends State<MusicEffectPreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
   String? _error;
 
   void _onEnter() {
@@ -22,6 +23,8 @@ class _MusicEffectPreparePageState extends State<MusicEffectPreparePage> {
       });
       return;
     }
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -43,7 +46,7 @@ class _MusicEffectPreparePageState extends State<MusicEffectPreparePage> {
             TextField(controller: _userIdController),
             const SizedBox(height: 16),
             const Text('Room ID'),
-            TextField(controller: _roomIdController, keyboardType: TextInputType.number),
+            TextField(controller: _roomIdController),
             const SizedBox(height: 32),
             if (_error != null) ...[
               Text(_error!, style: const TextStyle(color: Colors.red)),

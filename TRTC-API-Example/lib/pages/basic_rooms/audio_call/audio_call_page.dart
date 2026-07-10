@@ -4,7 +4,7 @@ import 'audio_call_state.dart';
 
 class AudioCallPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
 
   const AudioCallPage({
     Key? key,

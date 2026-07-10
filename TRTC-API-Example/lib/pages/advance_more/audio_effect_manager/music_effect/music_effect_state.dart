@@ -14,7 +14,7 @@ class MusicEffectState extends ChangeNotifier {
   UserListState? userListState;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   bool _isEnterRoom = false;
   bool _isInit = false;
 
@@ -37,14 +37,14 @@ class MusicEffectState extends ChangeNotifier {
   bool get isInit => _isInit;
   bool get isEntered => _isEnterRoom;
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
 
-  MusicEffectState(String userId, int roomId) {
+  MusicEffectState(String userId, String roomId) {
     _userId = userId;
     _roomId = roomId;
   }
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _trtcCloud = await TRTCCloud.sharedInstance();
@@ -57,7 +57,7 @@ class MusicEffectState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),

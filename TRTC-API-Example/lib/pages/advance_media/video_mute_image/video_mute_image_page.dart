@@ -5,6 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import '../../../../common/user_list_widget.dart';
 import '../../../../common/user_list_state.dart';
+import 'package:api_example/common/app_config.dart';
 
 class VideoMuteImagePage extends StatefulWidget {
   const VideoMuteImagePage({Key? key}) : super(key: key);
@@ -18,11 +19,17 @@ class _VideoMuteImagePageState extends State<VideoMuteImagePage> with SingleTick
   late VideoMuteImageState _videoMuteState;
   UserListState? _userListState;
 
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
+  final _userIdController = TextEditingController(
+      text: AppConfig.userId);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _videoMuteState = VideoMuteImageState();
+    _videoMuteState.roomId = _roomIdController.text;
+    _videoMuteState.localUserId = _userIdController.text;
   }
 
   Future<void> _initialize() async {
@@ -35,6 +42,8 @@ class _VideoMuteImagePageState extends State<VideoMuteImagePage> with SingleTick
   void dispose() {
     _tabController.dispose();
     _videoMuteState.dispose();
+    _roomIdController.dispose();
+    _userIdController.dispose();
     _userListState?.dispose();
     super.dispose();
   }
@@ -136,9 +145,9 @@ class _VideoMuteImagePageState extends State<VideoMuteImagePage> with SingleTick
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
+              controller: _roomIdController,
               onChanged: (value) {
-                _videoMuteState.roomId = int.tryParse(value) ?? 0;
+                _videoMuteState.roomId = value;
               },
             ),
             const SizedBox(height: 16),
@@ -148,6 +157,7 @@ class _VideoMuteImagePageState extends State<VideoMuteImagePage> with SingleTick
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
+              controller: _userIdController,
               onChanged: (value) {
                 _videoMuteState.localUserId = value;
               },

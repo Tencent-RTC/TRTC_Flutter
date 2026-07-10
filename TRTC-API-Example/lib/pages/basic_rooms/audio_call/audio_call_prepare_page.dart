@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'audio_call_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class AudioCallPreparePage extends StatefulWidget {
   const AudioCallPreparePage({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class AudioCallPreparePage extends StatefulWidget {
 
 class _AudioCallPreparePageState extends State<AudioCallPreparePage> {
 
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -58,7 +59,6 @@ class _AudioCallPreparePageState extends State<AudioCallPreparePage> {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.meeting_room),
                   ),
-                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter room ID';
@@ -101,12 +101,14 @@ class _AudioCallPreparePageState extends State<AudioCallPreparePage> {
 
   void _startCall() {
     if (_formKey.currentState!.validate()) {
+      AppConfig.roomId = _roomIdController.text;
+      AppConfig.userId = _userIdController.text;
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AudioCallPage(
             userId: _userIdController.text,
-            roomId: int.parse(_roomIdController.text),
+            roomId: _roomIdController.text,
           ),
         ),
       );

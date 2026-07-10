@@ -40,6 +40,7 @@ dependencies:
   fluttertoast: 8.2.12
   path_provider: ^2.1.5
   file: ^6.0.0
+  shared_preferences: ^2.2.2
 
   tencent_rtc_sdk: ^13.4.1
 #  fluttertoast:

@@ -5,6 +5,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'video_quality_state.dart';
 import '../../../../common/user_list_widget.dart';
 import '../../../../common/user_list_state.dart';
+import 'package:api_example/common/app_config.dart';
 
 class VideoQualityPage extends StatefulWidget {
   const VideoQualityPage({Key? key}) : super(key: key);
@@ -18,11 +19,17 @@ class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerPr
   late VideoQualityState _videoQualityState;
   UserListState? _userListState;
 
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
+  final _userIdController = TextEditingController(
+      text: AppConfig.userId);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _videoQualityState = VideoQualityState();
+    _videoQualityState.roomId = _roomIdController.text;
+    _videoQualityState.localUserId = _userIdController.text;
   }
 
   Future<void> _initialize() async {
@@ -36,6 +43,8 @@ class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerPr
     _tabController.dispose();
     _videoQualityState.dispose();
     _userListState?.dispose();
+    _roomIdController.dispose();
+    _userIdController.dispose();
     super.dispose();
   }
 
@@ -140,9 +149,9 @@ class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerPr
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
+              controller: _roomIdController,
               onChanged: (value) {
-                state.roomId = int.tryParse(value) ?? 0;
+                state.roomId = value;
               },
             ),
             const SizedBox(height: 16),
@@ -152,6 +161,7 @@ class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerPr
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
+              controller: _userIdController,
               onChanged: (value) {
                 state.localUserId = value;
               },

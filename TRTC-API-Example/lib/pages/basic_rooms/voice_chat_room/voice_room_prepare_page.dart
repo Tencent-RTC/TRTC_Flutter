@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'voice_room_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class VoiceRoomPreparePage extends StatefulWidget {
   const VoiceRoomPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class VoiceRoomPreparePage extends StatefulWidget {
 }
 
 class _VoiceRoomPreparePageState extends State<VoiceRoomPreparePage> {
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
+  final _userIdController = TextEditingController(text: AppConfig.userId);
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   void dispose() {
@@ -44,7 +45,7 @@ class _VoiceRoomPreparePageState extends State<VoiceRoomPreparePage> {
                 labelText: 'Room ID',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
             ),
             const Spacer(),
             ElevatedButton(
@@ -71,12 +72,14 @@ class _VoiceRoomPreparePageState extends State<VoiceRoomPreparePage> {
       return;
     }
 
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => VoiceRoomPage(
           userId: userId,
-          roomId: int.parse(roomId),
+          roomId: roomId,
         ),
       ),
     );

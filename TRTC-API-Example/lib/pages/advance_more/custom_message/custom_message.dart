@@ -5,7 +5,7 @@ import 'package:api_example/common/user_list_widget.dart';
 
 class CustomMessagePage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
   const CustomMessagePage({Key? key, required this.userId, required this.roomId}) : super(key: key);
 
   @override

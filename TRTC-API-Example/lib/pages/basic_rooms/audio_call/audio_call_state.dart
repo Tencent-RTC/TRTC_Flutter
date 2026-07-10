@@ -4,12 +4,13 @@ import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
+import 'package:api_example/common/app_config.dart';
 
 class AudioCallState extends ChangeNotifier {
   bool _isLocalMicrophoneEnabled = true;
   bool _isLocalSpeakerEnabled = true;
   String? _localUserId;
-  int? _roomId;
+  String? _roomId;
   bool _isCallActive = false;
   TRTCCloud? _trtcCloud;
   TXDeviceManager? _deviceManager;
@@ -22,7 +23,7 @@ class AudioCallState extends ChangeNotifier {
   bool get isLocalMicrophoneEnabled => _isLocalMicrophoneEnabled;
   bool get isLocalSpeakerEnabled => _isLocalSpeakerEnabled;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   bool get isCallActive => _isCallActive;
   List<RemoteUserState> get remoteUsers => _remoteUsers.values.toList();
   bool get isInitialized => _isInitialized;
@@ -33,7 +34,7 @@ class AudioCallState extends ChangeNotifier {
 
   Future<void> initializeCall({
     required String userId,
-    required int roomId,
+    required String roomId,
   }) async {
     _localUserId = userId;
     _roomId = roomId;
@@ -56,10 +57,11 @@ class AudioCallState extends ChangeNotifier {
     }
 
     _statusMessage = 'Entering room...';
+    final roomIdStr = _roomId ?? AppConfig.defaultRoomId;
     _trtcCloud?.enterRoom(TRTCParams(
       sdkAppId: GenerateTestUserSig.sdkAppId,
       userId: _localUserId ?? "",
-      roomId: roomId ?? 123456,
+      strRoomId: roomIdStr,
       role: TRTCRoleType.anchor,
       userSig: GenerateTestUserSig.genTestSig(_localUserId!)
     ), TRTCAppScene.audioCall);

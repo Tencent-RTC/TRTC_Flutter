@@ -15,7 +15,7 @@ class LocalRecordState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   UserListState? userListState;
 
   ValueNotifier<bool> isEnterRoom = ValueNotifier(false);
@@ -64,7 +64,7 @@ class LocalRecordState extends ChangeNotifier {
   }
 
   void enterRoom() {
-    if (localUserId == null || roomId == null) {
+    if (localUserId == null || roomId == null || roomId!.isEmpty) {
       print("VideoContentState localUserId or roomId is null");
       Fluttertoast.showToast(msg: "User ID or Room ID cannot be empty");
       return;
@@ -74,7 +74,7 @@ class LocalRecordState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: localUserId!,
-            roomId: roomId!,
+            strRoomId: roomId!,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(localUserId!)
         ), TRTCAppScene.videoCall);

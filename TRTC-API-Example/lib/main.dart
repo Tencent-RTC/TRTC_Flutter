@@ -1,9 +1,12 @@
+import 'package:api_example/common/app_config.dart';
 import 'package:api_example/router/router_page.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppConfig.init();
   runApp(const MyApp());
 }
 

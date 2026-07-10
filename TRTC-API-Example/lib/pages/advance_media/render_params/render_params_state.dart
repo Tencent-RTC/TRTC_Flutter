@@ -10,7 +10,7 @@ class RenderParamsState extends ChangeNotifier {
   bool _isInitialized = false;
 
   String? localUserId;
-  int? roomId;
+  String? roomId;
   UserListState? userListState;
 
   // Local render parameters
@@ -53,7 +53,7 @@ class RenderParamsState extends ChangeNotifier {
   }
 
   void enterRoom() {
-    if (localUserId == null || roomId == null) {
+    if (localUserId == null || roomId == null || roomId!.isEmpty) {
       print("localUserId or roomId is null");
       return;
     }
@@ -62,7 +62,7 @@ class RenderParamsState extends ChangeNotifier {
         TRTCParams(
             sdkAppId: GenerateTestUserSig.sdkAppId,
             userId: localUserId!,
-            roomId: roomId!,
+            strRoomId: roomId!,
             role: TRTCRoleType.anchor,
             userSig: GenerateTestUserSig.genTestSig(localUserId!)
         ), TRTCAppScene.videoCall);

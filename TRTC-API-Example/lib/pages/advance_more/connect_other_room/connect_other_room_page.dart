@@ -5,7 +5,7 @@ import 'package:api_example/common/user_list_widget.dart';
 
 class ConnectOtherRoomPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final String roomId;
   const ConnectOtherRoomPage({Key? key, required this.userId, required this.roomId}) : super(key: key);
 
   @override
@@ -83,7 +83,6 @@ class _ConnectOtherRoomPageState extends State<ConnectOtherRoomPage> {
                             labelText: 'Target Room ID',
                             border: OutlineInputBorder(),
                           ),
-                          keyboardType: TextInputType.number,
                         ),
                         const SizedBox(height: 12),
                         TextField(
@@ -99,9 +98,9 @@ class _ConnectOtherRoomPageState extends State<ConnectOtherRoomPage> {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  final targetRoomId = int.tryParse(_targetRoomIdController.text.trim());
+                                  final targetRoomId = _targetRoomIdController.text.trim();
                                   final targetUserId = _targetUserIdController.text.trim();
-                                  if (targetRoomId != null && targetUserId.isNotEmpty) {
+                                  if (targetRoomId.isNotEmpty && targetUserId.isNotEmpty) {
                                     state.connectOtherRoom(targetRoomId, targetUserId);
                                   }
                                 },

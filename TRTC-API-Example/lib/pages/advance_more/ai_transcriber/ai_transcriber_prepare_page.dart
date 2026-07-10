@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ai_transcriber_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class AITranscriberPreparePage extends StatefulWidget {
   const AITranscriberPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class AITranscriberPreparePage extends StatefulWidget {
 }
 
 class _AITranscriberPreparePageState extends State<AITranscriberPreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController(text: AppConfig.userId);
+  final TextEditingController _roomIdController = TextEditingController(text: AppConfig.roomId);
   final _formKey = GlobalKey<FormState>();
 
   String _sourceLanguage = 'zh';
@@ -69,7 +70,6 @@ class _AITranscriberPreparePageState extends State<AITranscriberPreparePage> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.meeting_room),
                 ),
-                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter room ID';
@@ -137,12 +137,14 @@ class _AITranscriberPreparePageState extends State<AITranscriberPreparePage> {
 
   void _startTranscriber() {
     if (_formKey.currentState!.validate()) {
+      AppConfig.roomId = _roomIdController.text;
+      AppConfig.userId = _userIdController.text;
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AITranscriberPage(
             userId: _userIdController.text,
-            roomId: int.parse(_roomIdController.text),
+            roomId: _roomIdController.text,
             sourceLanguage: _sourceLanguage,
             translationLanguages: _selectedTranslationLanguages,
           ),

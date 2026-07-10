@@ -10,21 +10,21 @@ class SwitchRoomState extends ChangeNotifier {
   TRTCCloudListener? _listener;
 
   String? _userId;
-  int? _roomId;
+  String? _roomId;
   String _statusMessage = 'Not in room';
   bool _isEnterRoom = false;
   bool _isSwitching = false;
-  int? _pendingRoomId; // 用于切换房间时暂存目标房间号
+  String? _pendingRoomId; // 用于切换房间时暂存目标房间号
 
   UserListState? userListState;
 
   String? get userId => _userId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   String get statusMessage => _statusMessage;
   bool get isEnterRoom => _isEnterRoom;
   bool get isSwitching => _isSwitching;
 
-  Future<void> enterRoom(String userId, int roomId) async {
+  Future<void> enterRoom(String userId, String roomId) async {
     _userId = userId;
     _roomId = roomId;
     _statusMessage = 'Entering room...';
@@ -38,7 +38,7 @@ class SwitchRoomState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        strRoomId: roomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),
@@ -47,7 +47,7 @@ class SwitchRoomState extends ChangeNotifier {
     _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
   }
 
-  void switchRoom(int newRoomId) {
+  void switchRoom(String newRoomId) {
     if (_trtcCloud == null || _userId == null) return;
     _isSwitching = true;
     _statusMessage = 'Switching room...';
@@ -55,7 +55,7 @@ class SwitchRoomState extends ChangeNotifier {
     notifyListeners();
     final config = TRTCSwitchRoomConfig(
       userSig: GenerateTestUserSig.genTestSig(_userId!),
-      roomId: newRoomId,
+      strRoomId: newRoomId,
     );
     _trtcCloud?.switchRoom(config);
   }

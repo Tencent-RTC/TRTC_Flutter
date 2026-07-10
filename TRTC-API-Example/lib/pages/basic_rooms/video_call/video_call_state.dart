@@ -4,6 +4,7 @@ import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
+import 'package:api_example/common/app_config.dart';
 
 class VideoCallState extends ChangeNotifier {
   bool _isLocalCameraMute = false;
@@ -11,7 +12,7 @@ class VideoCallState extends ChangeNotifier {
   bool _isMuteAllRemoteVideo = false;
   bool _isMuteAllRemoteAudio = false;
   String? _localUserId;
-  int? _roomId;
+  String? _roomId;
   int _localViewId = 0;
   bool _isCallActive = false;
   TRTCCloud? _trtcCloud;
@@ -27,7 +28,7 @@ class VideoCallState extends ChangeNotifier {
   bool get isMuteAllRemoteVideo => _isMuteAllRemoteVideo;
   bool get isMuteAllRemoteAudio => _isMuteAllRemoteAudio;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   int get localViewId => _localViewId;
   bool get isCallActive => _isCallActive;
   List<RemoteUserState> get remoteUsers => _remoteUsers.values.toList();
@@ -39,7 +40,7 @@ class VideoCallState extends ChangeNotifier {
 
   Future<void> initializeCall({
     required String userId,
-    required int roomId,
+    required String roomId,
   }) async {
     _localUserId = userId;
     _roomId = roomId;
@@ -63,10 +64,11 @@ class VideoCallState extends ChangeNotifier {
     }
 
     _statusMessage = 'Entering room...';
+    final roomIdStr = _roomId ?? AppConfig.defaultRoomId;
     _trtcCloud?.enterRoom(TRTCParams(
       sdkAppId: GenerateTestUserSig.sdkAppId,
       userId: _localUserId ?? "",
-      roomId: roomId ?? 123456,
+            strRoomId: roomIdStr,
       role: TRTCRoleType.anchor,
       userSig: GenerateTestUserSig.genTestSig(_localUserId!)
     ), TRTCAppScene.videoCall);

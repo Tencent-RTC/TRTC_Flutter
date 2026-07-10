@@ -5,11 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:api_example/common/app_config.dart';
 
 class CustomAudioCaptureState extends ChangeNotifier {
   bool _isCustomAudioEnabled = false;
   String? _localUserId;
-  int? _roomId;
+  String? _roomId;
   TRTCCloud? _trtcCloud;
   bool _isInitialized = false;
   final Map<String, RemoteUserState> _remoteUsers = {};
@@ -52,7 +53,7 @@ class CustomAudioCaptureState extends ChangeNotifier {
   // Getters
   bool get isCustomAudioEnabled => _isCustomAudioEnabled;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomId;
   List<RemoteUserState> get remoteUsers => _remoteUsers.values.toList();
   bool get isInitialized => _isInitialized;
   String get statusMessage => _statusMessage;
@@ -63,7 +64,7 @@ class CustomAudioCaptureState extends ChangeNotifier {
 
   Future<void> initialize({
     required String userId,
-    required int roomId,
+    required String roomId,
   }) async {
     _localUserId = userId;
     _roomId = roomId;
@@ -84,11 +85,12 @@ class CustomAudioCaptureState extends ChangeNotifier {
     }
 
     _statusMessage = 'Entering room...';
+    final roomIdStr = _roomId ?? AppConfig.defaultRoomId;
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: _localUserId ?? "",
-        roomId: roomId ?? 123456,
+        strRoomId: roomIdStr,
         role: TRTCRoleType.anchor,
         userSig: GenerateTestUserSig.genTestSig(_localUserId!),
       ),

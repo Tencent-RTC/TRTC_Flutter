@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'live_room_page.dart';
+import 'package:api_example/common/app_config.dart';
 
 class LiveRoomPreparePage extends StatefulWidget {
   const LiveRoomPreparePage({Key? key}) : super(key: key);
@@ -9,8 +10,8 @@ class LiveRoomPreparePage extends StatefulWidget {
 }
 
 class _LiveRoomPreparePageState extends State<LiveRoomPreparePage> {
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
+  final _userIdController = TextEditingController(text: AppConfig.userId);
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
 
   @override
   void dispose() {
@@ -44,7 +45,7 @@ class _LiveRoomPreparePageState extends State<LiveRoomPreparePage> {
                 labelText: 'Room ID',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 20),
             const Spacer(),
@@ -72,12 +73,14 @@ class _LiveRoomPreparePageState extends State<LiveRoomPreparePage> {
       return;
     }
 
+    AppConfig.roomId = roomId;
+    AppConfig.userId = userId;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LiveRoomPage(
           userId: userId,
-          roomId: int.parse(roomId),
+          roomId: roomId,
         ),
       ),
     );

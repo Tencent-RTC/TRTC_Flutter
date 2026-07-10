@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import '../../../../common/user_list_widget.dart';
 import '../../../../common/user_list_state.dart';
+import 'package:api_example/common/app_config.dart';
 
 class SmallVideoStreamPage extends StatefulWidget {
   const SmallVideoStreamPage({Key? key}) : super(key: key);
@@ -17,11 +18,17 @@ class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> with Single
   late SmallVideoStreamState _smallVideoState;
   UserListState? _userListState;
 
+  final _roomIdController = TextEditingController(text: AppConfig.roomId);
+  final _userIdController = TextEditingController(
+      text: AppConfig.userId);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _smallVideoState = SmallVideoStreamState();
+    _smallVideoState.roomId = _roomIdController.text;
+    _smallVideoState.localUserId = _userIdController.text;
   }
 
   Future<void> _initialize() async {
@@ -34,6 +41,8 @@ class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> with Single
   void dispose() {
     _tabController.dispose();
     _smallVideoState.dispose();
+    _roomIdController.dispose();
+    _userIdController.dispose();
     _userListState?.dispose();
     super.dispose();
   }
@@ -135,9 +144,9 @@ class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> with Single
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
+              controller: _roomIdController,
               onChanged: (value) {
-                _smallVideoState.roomId = int.tryParse(value) ?? 0;
+                _smallVideoState.roomId = value;
               },
             ),
             const SizedBox(height: 16),
@@ -147,6 +156,7 @@ class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> with Single
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
+              controller: _userIdController,
               onChanged: (value) {
                 _smallVideoState.localUserId = value;
               },
