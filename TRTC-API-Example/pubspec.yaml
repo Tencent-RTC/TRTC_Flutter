@@ -41,7 +41,7 @@ dependencies:
   path_provider: ^2.1.5
   file: ^6.0.0
 
-  tencent_rtc_sdk: ^13.4.0
+  tencent_rtc_sdk: ^13.4.1
 #  fluttertoast:
 #    git:
 #      url: "https://gitcode.com/openharmony-sig/flutter_fluttertoast.git"
