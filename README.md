@@ -1,52 +1,110 @@
-[简体中文](./README-zh_CN.md) | English
+[简体中文](https://github.com/Tencent-RTC/TRTC_Flutter/blob/master/SDK/README-zh_CN.md) | English
 
-# TRTC Flutter SDK
+# **Tencent RTC Flutter SDK**
 
-## Overview
+Leveraging Tencent's 21 years of experience in network and audio/video technologies, Tencent Real-Time Communication (TRTC) offers solutions for group audio/video calls and low-latency interactive live streaming. 
+With TRTC, you can quickly develop cost-effective, low-latency, and high-quality interactive audio/video services.
 
-Leveraging Tencent's many years of experience in network and audio/video technologies, Tencent Real-Time Communication (TRTC) offers solutions for group audio/video calls and low-latency interactive live streaming. With TRTC, you can quickly develop cost-effective, low-latency, and high-quality interactive audio/video services. [Learn more](https://trtc.io/document)...
+## **Demo quick start**
 
-> We offer SDKs for web, Android, iOS, Windows, Flutter, WeChat Mini Program, and [other mainstream platforms](https://github.com/LiteAVSDK?q=TRTC_&type=all&sort=).
+Please see [Demo Quick Start(Flutter)](https://trtc.io/document/39243?platform=flutter&product=rtcengine&menulabel=sdk)
 
-## Contents
+## **SDK quick integration**
 
-```bash
-├─ TRTC-API-Example // TRTC API examples, including those for basic features such as audio call and video call as well as some advanced features
-|  ├─ Basic                 // Demos for TRTC basic features
-|  |  ├─ AudioCall                 // Demo for audio call in TRTC
-|  |  ├─ VideoCall                 // Demo for video call in TRTC
-|  |  ├─ Live                      // Demo for interactive video live streaming in TRTC
-|  |  ├─ VoiceChatRoom             // Demo for interactive audio live streaming in TRTC
-|  |  ├─ ScreenShare               // Demo for screen sharing live streaming in TRTC
-|  ├─ Advanced              // Demos for TRTC advanced features
-|  |  ├─ StringRoomId              // Demo for string room ID in TRTC
-|  |  ├─ SetVideoQuality           // Demo for video quality setting in TRTC
-|  |  ├─ SetAudioQuality           // Demo for audio quality setting in TRTC
-|  |  ├─ SetRenderParams           // Demo for rendering control in TRTC
-|  |  ├─ SpeedTest                 // Demo for network speed test in TRTC
-|  |  ├─ SetAudioEffect            // Demo for sound effect configuration in TRTC
-|  |  ├─ SetBackgroundMusic        // Demo for background music configuration in TRTC
-|  |  ├─ LocalRecord               // Demo for local video recording in TRTC
-|  |  ├─ SEIMessage                // Demo for SEI message sending/receiving in TRTC
-|  |  ├─ SwitchRoom                // Demo for quick room switching in TRTC
-|  |  ├─ RoomPk                    // Demo for cross-room competition in TRTC
-|  
-├─ TRTC-Simple-Demo // Multiplayer audio and video conference Demo
-├─ SDK 
-│  ├─README.md     // Download address of the latest version of TRTC SDK
+Please see [Quick integration(Flutter)](https://trtc.io/document/64203?platform=flutter&product=rtcengine&menulabel=sdk)
+
+## **SDK class files**
+
+* trtc_cloud-Tencent Cloud TRTC Core Function Interface.
+* trtc_cloud_video_view-Provides widgets for rendering video `TRTCCloudVideoView`.
+* tx_audio_effect_manager-Tencent Cloud Audio Effect Management Module.
+* tx_device_manager-Tencent Cloud Audio Effect Management Module.
+* trtc_cloud_def-TRTC key class definition Description: definitions of interfaceerated and constant values such as resolution and quality level
+* trtc_cloud_listener-Tencent Cloud TRTC Event Notification Interface.
+
+## **Sample call**
+
+1.**Initialization**
+```
+// Create TRTCCloud singleton
+trtcCloud = await TRTCCloud.sharedInstance();
+// Tencent Cloud Audio Effect Management Module
+txDeviceManager = trtcCloud.getDeviceManager();
+// Tencent Cloud Audio Effect Management Module
+txAudioManager = trtcCloud.getAudioEffectManager();
 ```
 
-## Contact Us
-- If you have questions, see [FAQs](https://www.tencentcloud.com/document/product/647/36057?lang=en&pg=).
+2.**Room entry/exit**
+```
+// Room entry/exit
+trtcCloud.enterRoom(
+        TRTCParams(
+            sdkAppId: sdkAppId,
+            userId: userId,
+            userSig: userSig,
+            roomId: roomId),
+        TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
+// Leave a room
+trtcCloud.exitRoom();
+```
 
-- To learn about how the TRTC SDK can be used in different scenarios, see [Sample Code](https://www.tencentcloud.com/document/product/647/42963).
+3.**Listener registration**
+```
+// Register a listener
+TRTCCloudListener listener = TRTCCloudListener(
+    onError: (errorCode, errorMessage) {
+      debugPrint("TRTCCloudListener onError errCode:$errCode errMsg: $errMsg");
+    }
+    ……
+)
+trtcCloud.registerListener(listener);
+//Remove a listener
+trtcCloud.unRegisterListener(listener);
+```
 
-- For complete API documentation, see [SDK API Documentation](https://pub.dev/documentation/tencent_trtc_cloud/latest/).
+4.**Playing local video**
+```
+// Parameters:
+// frontCamera: `true`: front camera; `false`: rear camera
+// viewId: view ID generated by `TRTCCloudVideoView`
+TRTCCloudVideoView(
+    onViewCreated: (viewId) {
+      trtcCloud.startLocalPreview(true, viewId);
+});
+```
 
-- To report bugs in our sample code, please create an issue.
+5.**Display remote video**
 
-- Communication & Feedback   
-Welcome to join our Telegram Group to communicate with our professional engineers! We are more than happy to hear from you~
-Click to join: [https://t.me/+EPk6TMZEZMM5OGY1](https://t.me/+EPk6TMZEZMM5OGY1)   
-Or scan the QR code   
-  <img src="https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/internal/upgrade/github/Telegram-TRTC-Android.jpg" width="300px">    
+```
+// Parameters:
+// userId: Specifies the userid of the remote user
+// streamType: Specifies the type of video stream to watch userid：
+//* HD big picture：TRTCVideoStreamType.big
+//* Low definition large picture：TRTCVideoStreamType.small
+// viewId: view ID generated by `TRTCCloudVideoView`
+TRTCCloudVideoView(
+    onViewCreated: (viewId) {
+      trtcCloud.startRemoteView(userId, TRTCVideoStreamType.big, viewId);
+});
+```
+
+5.**Display remote screen sharing**
+
+```
+/// Parameters:
+/// userId: Specifies the userid of the remote user
+/// streamType: type of the remote user’s video stream to play:
+///* Substream (screen sharing): TRTCVideoStreamType.sub
+/// viewId: view ID generated by `TRTCCloudVideoView`
+TRTCCloudVideoView(
+    onViewCreated: (viewId) {
+      trtcCloud.startRemoteView(userId, TRTCVideoStreamType.sub, viewId);
+});
+```
+
+### How do I view TRTC logs?
+TRTC logs are compressed and encrypted by default with the XLOG extension. You can set setLogCompressEnabled to specify whether to encrypt logs. If a log filename contains C (compressed), the log is compressed and encrypted; if it contains R (raw), the log is in plaintext.
+* iOS：Documents/log of the application sandbox
+* Android
+  * 6.7 or below: /sdcard/log/tencent/liteav
+  * 6.8 or above: /sdcard/Android/data/package name/files/log/tencent/liteav/

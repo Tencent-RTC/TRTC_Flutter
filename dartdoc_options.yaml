@@ -1,0 +1,12 @@
+dartdoc:
+  nodoc:
+    - 'lib/chorus_music_player.dart'
+    - 'lib/trtc_cloud_def.g.dart'
+    - 'lib/tx_audio_effect_manager.g.dart'
+    - 'lib/tx_device_manager.g.dart'
+    - 'lib/bindings/*.dart'
+    - 'lib/bridge/*.dart'
+    - 'lib/impl/*.dart'
+    - 'lib/bindings/**/*.dart'
+    - 'lib/bridge/**/*.dart'
+    - 'lib/impl/**/*.dart'

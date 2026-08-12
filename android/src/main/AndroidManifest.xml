@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tencent.trtcplugin">
+
+    <application>
+        <!-- Vod Picture-in-Picture Activity (package adjusted to com.tencent.trtcplugin.vod.* during the C1 relocation). -->
+        <activity
+            android:name="com.tencent.trtcplugin.vod.pip.FlutterPipImplActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:supportsPictureInPicture="true"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout"
+            android:exported="false"
+            android:allowTaskReparenting="true"
+            android:launchMode="singleTop"
+            android:resizeableActivity="true"
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="UnusedAttribute">
+            <intent-filter>
+                <action android:name="com.tencent.flutter.startPip" />
+                <action android:name="com.tencent.flutter.exitPip" />
+                <action android:name="com.tencent.flutter.updatePip" />
+                <action android:name="com.tencent.flutter.doExitPip" />
+            </intent-filter>
+        </activity>
+
+        <!-- Bridge Service that works around the PiP "click-to-restore" failure on certain Android 12 builds. -->
+        <service android:name="com.tencent.trtcplugin.vod.pip.TXAndroid12BridgeService" />
+    </application>
+
+</manifest>

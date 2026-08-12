@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "tencent_rtc_sdk",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+# Run with `flutter pub run ffigen --config ffigen.yaml`.
+name: FFIBindings
+description: |
+  Bindings for `src/ffi_test.h`.
+
+  Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
+output: 'lib/ffi_bindings.dart'
+headers:
+  entry-points:
+    - 'src/trtc_c_api/trtc_cloud.h'
+    - 'src/trtc_c_api/trtc_cloud_type.h'
+    - 'src/trtc_c_api/tx_audio_effect_manager.h'
+    - 'src/trtc_c_api/tx_device_manager.h'
+    - 'src/trtc_c_api/tx_beauty_manager.h'
+  include-directives:
+    - 'src/trtc_c_api/trtc_cloud.h'
+    - 'src/trtc_c_api/trtc_cloud_type.h'
+    - 'src/trtc_c_api/tx_audio_effect_manager.h'
+    - 'src/trtc_c_api/tx_device_manager.h'
+    - 'src/trtc_c_api/tx_beauty_manager.h'
+functions:
+  rename:
+    '^trtc_cloud_(.*)': '$1'
+    '^tx_audio_effect_manager_(.*)': '$1'
+    '^tx_device_manager_(.*)': '$1'
+preamble: |
+  // ignore_for_file: always_specify_types
+  // ignore_for_file: camel_case_types
+  // ignore_for_file: non_constant_identifier_names
+comments:
+  style: any
+  length: full

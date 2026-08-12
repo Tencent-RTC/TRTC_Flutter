@@ -1,0 +1,46 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A19B3F3B1E0DA97E11AD67ABC5EFFAE06EEEFD123902AA0B11BFDBF0BC85D55DDACEB60F10583",
+          "profile": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.p12",
+          "storePassword": "0000001AC4CD9E3FD3EC17055F0084302A55133446FBB52A2C22EB8EEAE5FBC9EEAA1FE84780855340DE"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

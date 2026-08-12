@@ -1,0 +1,15 @@
+{
+  "name": "tencent_rtc_sdk",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "@tencentcloud/liteavsdk_professional": "13.4.8926"
+  },
+  "modelVersion": "5.0.0",
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
