@@ -1,5 +1,3 @@
-[简体中文](https://github.com/Tencent-RTC/TRTC_Flutter/blob/master/SDK/README-zh_CN.md) | English
-
 # **Tencent RTC Flutter SDK**
 
 Leveraging Tencent's 21 years of experience in network and audio/video technologies, Tencent Real-Time Communication (TRTC) offers solutions for group audio/video calls and low-latency interactive live streaming. 
