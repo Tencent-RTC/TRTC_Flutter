@@ -1,3 +1,6 @@
+import 'package:api_example/common/scene_entry_scaffold.dart';
+import 'package:api_example/common/user_room_id_form.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'set_watermark_page.dart';
 
@@ -9,55 +12,36 @@ class SetWatermarkPreparePage extends StatefulWidget {
 }
 
 class _SetWatermarkPreparePageState extends State<SetWatermarkPreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final GlobalKey<UserRoomIdFormState> _formKey = GlobalKey();
 
-  @override
-  void dispose() {
-    _userIdController.dispose();
-    _roomIdController.dispose();
-    super.dispose();
-  }
+  static const _accentColor = Color(0xFF6D4C41);
 
   void _onEnter() {
-    final userId = _userIdController.text;
-    final roomId = _roomIdController.text;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SetWatermarkPage(
-          userId: userId,
-          roomId: roomId,
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState!.save();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SetWatermarkPage(
+            userId: _formKey.currentState!.userId,
+            roomIdSpec: _formKey.currentState!.roomIdSpec,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Set Watermark Prepare')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('User ID'),
-            TextField(controller: _userIdController),
-            const SizedBox(height: 16),
-            const Text('Room ID'),
-            TextField(controller: _roomIdController),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _onEnter,
-                child: const Text('Enter Room'),
-              ),
-            ),
-          ],
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return SceneEntryScaffold(
+      icon: Icons.branding_watermark_rounded,
+      accentColor: _accentColor,
+      title: l10n.sceneWatermark,
+      subtitle: l10n.descWatermark,
+      form: UserRoomIdForm(key: _formKey),
+      actionLabel: l10n.enterRoom,
+      onAction: _onEnter,
     );
   }
-} 
+}

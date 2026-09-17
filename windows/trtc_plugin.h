@@ -83,6 +83,8 @@ class TrtcPlugin : public flutter::Plugin {
   SP<trtc_sdk_flutter::VideoFrameDispatcher> local_dispatcher_;
   // Remote dispatchers: userId -> dispatcher
   std::map<std::string, SP<trtc_sdk_flutter::VideoFrameDispatcher>> remote_dispatcher_map_;
+  // Dedicated dispatcher for camera device test (startCameraDeviceTest/stopCameraDeviceTest)
+  SP<trtc_sdk_flutter::VideoFrameDispatcher> device_test_dispatcher_;
 
   std::unique_ptr<trtc_sdk_flutter::MainThreadDispatcher> main_thread_dispatcher_;
 };

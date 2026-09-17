@@ -50,8 +50,15 @@ android {
     }
 }
 
+// Single source of the underlying LiteAVSDK series/version; super_player follows these.
+def liteavSdkModule = "LiteAVSDK_Professional"
+def liteavSdkVersion = "13.5.0.20670"
+rootProject.ext.rtcSdkLiteavSdkModule = liteavSdkModule
+rootProject.ext.rtcSdkLiteavSdkVersion = liteavSdkVersion
+println("[TencentRTC] liteavSdk: ${liteavSdkModule}:${liteavSdkVersion}")
+
 dependencies {
-    api 'com.tencent.liteav:LiteAVSDK_Professional:13.4.0.20477'
+    api "com.tencent.liteav:${liteavSdkModule}:${liteavSdkVersion}"
     api 'com.tencent.liteav:custom-video-processor:1.0.1'
 }
 

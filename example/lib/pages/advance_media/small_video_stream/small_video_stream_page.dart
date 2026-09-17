@@ -1,313 +1,249 @@
-import 'package:api_example/pages/advance_media/small_video_stream/small_video_stream_state.dart';
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud.dart';
-import '../../../../common/user_list_widget.dart';
-import '../../../../common/user_list_state.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import 'small_video_stream_state.dart';
 
 class SmallVideoStreamPage extends StatefulWidget {
-  const SmallVideoStreamPage({Key? key}) : super(key: key);
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  const SmallVideoStreamPage({Key? key, required this.userId, required this.roomIdSpec})
+      : super(key: key);
 
   @override
   State<SmallVideoStreamPage> createState() => _SmallVideoStreamPageState();
 }
 
-class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late SmallVideoStreamState _smallVideoState;
-  UserListState? _userListState;
+class _SmallVideoStreamPageState extends State<SmallVideoStreamPage> {
+  late SmallVideoStreamState _state;
+  static const _accentColor = Color(0xFF00838F);
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _smallVideoState = SmallVideoStreamState();
+    _state = SmallVideoStreamState(userId: widget.userId, roomIdSpec: widget.roomIdSpec);
+    _state.addListener(_onChanged);
+    _state.initialize();
   }
 
-  Future<void> _initialize() async {
-    TRTCCloud trtcCloud = await TRTCCloud.sharedInstance();
-    _userListState = UserListState(trtcCloud);
-    _smallVideoState.initialize(trtcCloud, _userListState!);
-  }
+  void _onChanged() => mounted ? setState(() {}) : null;
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _smallVideoState.dispose();
-    _userListState?.dispose();
+    _state.removeListener(_onChanged);
+    _state.dispose();
     super.dispose();
+  }
+
+  InputDecoration _dec(String label, {IconData? icon}) => InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        prefixIcon: icon != null ? Icon(icon, size: 20) : null,
+      );
+
+  BoxDecoration _cardDec() => BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+      );
+
+  String _resLabel(TRTCVideoResolution r) {
+    const m = {
+      TRTCVideoResolution.res_120_120: '120×120', TRTCVideoResolution.res_160_160: '160×160',
+      TRTCVideoResolution.res_270_270: '270×270', TRTCVideoResolution.res_480_480: '480×480',
+      TRTCVideoResolution.res_160_90: '160×90 (16:9)', TRTCVideoResolution.res_256_144: '256×144 (16:9)',
+      TRTCVideoResolution.res_320_180: '320×180 (16:9)', TRTCVideoResolution.res_480_270: '480×270 (16:9)',
+      TRTCVideoResolution.res_640_360: '640×360 (16:9)', TRTCVideoResolution.res_960_540: '960×540 (16:9)',
+      TRTCVideoResolution.res_1280_720: '1280×720 (16:9)', TRTCVideoResolution.res_1920_1080: '1920×1080 (16:9)',
+    };
+    return m[r] ?? '320×180';
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initialize(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(value: _smallVideoState),
-            ChangeNotifierProvider.value(value: _userListState!),
+    final l10n = AppLocalizations.of(context)!;
+    return ChangeNotifierProvider.value(
+      value: _state,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.sceneSmallVideoStream),
+          actions: [
+            Container(
+              width: 10, height: 10, margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(color: _state.isEnterRoom ? Colors.green : Colors.grey, shape: BoxShape.circle),
+            ),
           ],
-          child: Builder(
-            builder: (context) => _buildPageContent(context),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPageContent(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Small Stream Settings'),
-        actions: [
-          ValueListenableBuilder<bool>(
-            valueListenable: _smallVideoState.isEnterRoom,
-            builder: (context, isEnterRoom, _) {
-              return Container(
-                width: 24,
-                height: 24,
-                margin: const EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  color: isEnterRoom ? Colors.green : Colors.grey,
-                  shape: BoxShape.circle,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          const Expanded(
-            child: UserListWidget(isVideoMode: true),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                TabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Room Settings'),
-                    Tab(text: 'Small Stream Settings'),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildRoomSettings(),
-                      _buildSmallStreamSettings(),
-                    ],
+        body: Column(children: [
+          _buildVideoArea(l10n),
+          Expanded(child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(children: [
+              // Enable small stream switch
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                decoration: _cardDec(),
+                child: Row(children: [
+                  const Icon(Icons.picture_in_picture_alt, size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text(l10n.descSmallVideoStream, style: const TextStyle(fontSize: 14))),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _state.enableSmallStream,
+                    builder: (_, v, __) => Switch(value: v, activeColor: _accentColor, onChanged: (_) => _state.enableSmallStream.value = !v),
+                  ),
+                ]),
+              ),
+              // Bitrate slider
+              ValueListenableBuilder<int>(
+                valueListenable: _state.smallVideoBitrate,
+                builder: (_, v, __) => _slider('Bitrate', '$v kbps', v.toDouble(), 100, 1000, 9,
+                    (val) => _state.smallVideoBitrate.value = val.toInt()),
+              ),
+              // FPS slider
+              ValueListenableBuilder<int>(
+                valueListenable: _state.smallVideoFps,
+                builder: (_, v, __) => _slider('FPS', '$v fps', v.toDouble(), 5, 30, 5,
+                    (val) => _state.smallVideoFps.value = val.toInt()),
+              ),
+              // Resolution dropdown
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                decoration: _cardDec(),
+                child: ValueListenableBuilder<TRTCVideoResolution>(
+                  valueListenable: _state.smallVideoResolution,
+                  builder: (_, v, __) => DropdownButtonFormField<TRTCVideoResolution>(
+                    value: v,
+                    decoration: _dec('Resolution', icon: Icons.aspect_ratio),
+                    items: TRTCVideoResolution.values
+                        .map((r) => DropdownMenuItem(value: r, child: Text(_resLabel(r), style: const TextStyle(fontSize: 13))))
+                        .toList(),
+                    onChanged: (val) { if (val != null) _state.smallVideoResolution.value = val; },
                   ),
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRoomSettings() {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Room ID',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                _smallVideoState.roomId = int.tryParse(value) ?? 0;
-              },
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'User ID',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              ),
-              onChanged: (value) {
-                _smallVideoState.localUserId = value;
-              },
-            ),
-            const SizedBox(height: 16),
-            ValueListenableBuilder<bool>(
-              valueListenable: _smallVideoState.displaySmall,
-              builder: (context, displaySmall, _) {
-                return Row(
-                  children: [
-                    const Text('Display Remote Small Stream'),
-                    const Spacer(),
-                    Switch(
-                      value: displaySmall,
-                      onChanged: (value) {
-                        _smallVideoState.enableAllRemoteUserDisplaySmallVideoStream();
-                      },
+              // Remote stream type toggle
+              if (_state.remoteUsers.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(l10n.remoteUser, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                ..._state.remoteUsers.map((u) => Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: _cardDec(),
+                  child: Row(children: [
+                    Icon(Icons.person, size: 18, color: _accentColor),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text(u.userId, style: const TextStyle(fontSize: 13))),
+                    Text(u.useSmallStream ? 'Small' : 'Big',
+                        style: TextStyle(fontSize: 12, color: u.useSmallStream ? _accentColor : Colors.grey)),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () => _state.toggleRemoteStreamType(u.userId),
+                      child: Text('Switch', style: TextStyle(color: _accentColor, fontSize: 12)),
                     ),
-                  ],
-                );
-              },
+                  ]),
+                )),
+              ],
+            ]),
+          )),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: SizedBox(
+              width: double.infinity, height: 48,
+              child: FilledButton(
+                onPressed: () { _state.exitRoom(); Navigator.pop(context); },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                ),
+                child: Text(l10n.exitRoomButton),
+              ),
             ),
-            const SizedBox(height: 16),
-            ValueListenableBuilder<bool>(
-              valueListenable: _smallVideoState.isEnterRoom,
-              builder: (context, isEnterRoom, _) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (isEnterRoom) {
-                        _smallVideoState.exitRoom();
-                      } else {
-                        if (_smallVideoState.localUserId != null && _smallVideoState.roomId != null) {
-                          _smallVideoState.enterRoom();
-                        }
-                      }
-                    },
-                    child: Text(isEnterRoom ? 'Exit Room' : 'Enter'),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
 
-  Widget _buildSmallStreamSettings() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Small Stream Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          ValueListenableBuilder<bool>(
-            valueListenable: _smallVideoState.enableSmallVideo,
-            builder: (context, enableSmallVideo, _) {
-              return Row(
-                children: [
-                  const Text('Enable Small Stream'),
-                  const Spacer(),
-                  Switch(
-                    value: enableSmallVideo,
-                    onChanged: (value) {
-                      _smallVideoState.enableSmallVideo.value = value;
-                      _smallVideoState.enableSmallVideoStream();
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          ValueListenableBuilder<bool>(
-            valueListenable: _smallVideoState.enableAdjustRes,
-            builder: (context, enableAdjustRes, _) {
-              return Row(
-                children: [
-                  const Text('Enable Adjust Res'),
-                  const Spacer(),
-                  Switch(
-                    value: enableAdjustRes,
-                    onChanged: (value) {
-                      _smallVideoState.enableAdjustRes.value = value;
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          ValueListenableBuilder<int>(
-            valueListenable: _smallVideoState.minVideoBitrate,
-            builder: (context, minVideoBitrate, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Min Bitrate (kbps)'),
-                  Slider(
-                    value: minVideoBitrate.toDouble(),
-                    min: 0,
-                    max: 2000,
-                    divisions: 20,
-                    onChanged: (newValue) {
-                      _smallVideoState.minVideoBitrate.value = newValue.toInt();
-                    },
-                  ),
-                  Text('Current: $minVideoBitrate'),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          ValueListenableBuilder<int>(
-            valueListenable: _smallVideoState.videoBitrate,
-            builder: (context, videoBitrate, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Bitrate (kbps)'),
-                  Slider(
-                    value: videoBitrate.toDouble(),
-                    min: 0,
-                    max: 2000,
-                    divisions: 20,
-                    onChanged: (newValue) {
-                      _smallVideoState.videoBitrate.value = newValue.toInt();
-                    },
-                  ),
-                  Text('Current: $videoBitrate'),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          ValueListenableBuilder<int>(
-            valueListenable: _smallVideoState.videoFps,
-            builder: (context, videoFps, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Frame Rate (FPS)'),
-                  Slider(
-                    value: videoFps.toDouble(),
-                    min: 1,
-                    max: 60,
-                    divisions: 59,
-                    onChanged: (newValue) {
-                      _smallVideoState.videoFps.value = newValue.toInt();
-                    },
-                  ),
-                  Text('Current: $videoFps'),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
+  Widget _slider(String label, String val, double value, double min, double max, int div, ValueChanged<double> onChanged) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 2),
+      decoration: _cardDec(),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(label, style: const TextStyle(fontSize: 14)),
+          Text(val, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: _accentColor)),
+        ]),
+        Slider(value: value, min: min, max: max, divisions: div, activeColor: _accentColor, onChanged: onChanged),
+      ]),
     );
   }
+
+  Widget _buildVideoArea(AppLocalizations l10n) {
+    final remotes = _state.remoteUsers.where((u) => u.isVideoAvailable).toList();
+    final hasRemote = remotes.isNotEmpty;
+    return SizedBox(
+      height: hasRemote ? 280 : 200,
+      child: hasRemote ? _buildGrid(l10n, remotes) : _buildLocalOnly(l10n),
+    );
+  }
+
+  Widget _buildLocalOnly(AppLocalizations l10n) => Container(
+        margin: const EdgeInsets.all(12),
+        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(16)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(children: [
+            TRTCCloudVideoView(onViewCreated: (v) => _state.setLocalViewId(v)),
+            Positioned(top: 8, left: 12, child: _label(l10n.localPreview, _accentColor)),
+          ]),
+        ),
+      );
+
+  Widget _buildGrid(AppLocalizations l10n, List<RemoteVideoUser> remotes) {
+    final all = [
+      _Tile(isLocal: true, label: l10n.localPreview),
+      ...remotes.map((u) => _Tile(isLocal: false, label: '${l10n.remoteUser}: ${u.userId}\n${u.useSmallStream ? "small" : "big"}', userId: u.userId)),
+    ];
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, childAspectRatio: 0.85, crossAxisSpacing: 8, mainAxisSpacing: 8),
+      itemCount: all.length,
+      itemBuilder: (_, i) => _buildTile(all[i]),
+    );
+  }
+
+  Widget _buildTile(_Tile t) => Container(
+        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(children: [
+            t.isLocal
+                ? TRTCCloudVideoView(onViewCreated: (v) => _state.setLocalViewId(v))
+                : TRTCCloudVideoView(onViewCreated: (v) => _state.setRemoteViewId(t.userId!, v)),
+            Positioned(top: 6, left: 10, child: _label(t.label, t.isLocal ? _accentColor : Colors.cyan)),
+          ]),
+        ),
+      );
+
+  Widget _label(String text, Color color) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(6)),
+        child: Text(text, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+      );
+}
+
+class _Tile {
+  final bool isLocal;
+  final String label;
+  final String? userId;
+  _Tile({required this.isLocal, required this.label, this.userId});
 }

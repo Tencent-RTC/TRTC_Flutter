@@ -670,6 +670,37 @@ class ITXLocalMediaTranscoding {
     virtual void stopScreenSource(const TXView screenSourceId) = 0;
 
     /**
+     * 将指定窗口加入屏幕分享的排除列表中。
+     *
+     * 加入排除列表中的窗口不会被分享出去，常见的用法是将某个应用的窗口加入到排除列表中以避免隐私问题。
+     * 支持启动屏幕分享前设置过滤窗口，也支持屏幕分享过程中动态添加过滤窗口。
+     * @param windowID 不希望分享出去的窗口 ID，即 {@link TRTCScreenCaptureSourceInfo} 中的 `sourceId` 成员
+     *     （Windows 平台为窗口句柄 HWND，Mac 平台为 CGWindowID），
+     *     您可以通过 TRTCCloud 中的 getScreenCaptureSources 接口获取。
+     * @note
+     *  1. 【生效范围】仅在采集整屏画面（{@link TRTCScreenCaptureSourceTypeScreen}）时生效；
+     *     采集指定窗口画面（{@link TRTCScreenCaptureSourceTypeWindow}）的媒体源不受排除列表影响。
+     *  2. 使用该接口添加到排除列表中的窗口会在 {@link stopTranscoding} 后被 SDK 自动清除。
+     */
+    virtual void addExcludedShareWindow(TXView windowID) = 0;
+
+    /**
+     * 将指定窗口从屏幕分享的排除列表中移除。
+     *
+     * @param windowID 要移除的窗口 ID，与 {@link addExcludedShareWindow} 传入的窗口 ID 一致
+     *     （Windows 平台为窗口句柄 HWND，Mac 平台为 CGWindowID）。
+     * @note 若该窗口不在排除列表中，本接口不产生任何效果。
+     */
+    virtual void removeExcludedShareWindow(TXView windowID) = 0;
+
+    /**
+     * 将所有窗口从屏幕分享的排除列表中移除。
+     *
+     * @note 排除列表为空时，本接口不产生任何效果。
+     */
+    virtual void removeAllExcludedShareWindow() = 0;
+
+    /**
      * 启动图片采集。
      *
      * @param imagePath 图片路径 ，目前只支持 BMP、JPG、PNG、GIF 四种格式。

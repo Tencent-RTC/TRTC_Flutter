@@ -1,242 +1,232 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/debug/generate_test_user_sig.dart';
 import 'package:api_example/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
-import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
-import 'package:api_example/debug/generate_test_user_sig.dart';
-import 'package:api_example/common/user_list_state.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import 'package:tencent_rtc_sdk/tx_audio_effect_manager.dart';
 
 class MusicEffectState extends ChangeNotifier {
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  MusicEffectState({required this.userId, required this.roomIdSpec});
+
   TRTCCloud? _trtcCloud;
   TRTCCloudListener? _listener;
-  UserListState? userListState;
-
-  String? _userId;
-  int? _roomId;
+  TXAudioEffectManager? _audioEffectManager;
   bool _isEnterRoom = false;
-  bool _isInit = false;
+  int? _localViewId;
 
-  // 控件
-  final TextEditingController musicPathController = TextEditingController(text: 'assets/music/daoxiang.mp3');
-  final TextEditingController musicIdController = TextEditingController(text: '1');
-  final TextEditingController loopCountController = TextEditingController(text: '0');
-  final TextEditingController seekPosController = TextEditingController();
-  final TextEditingController trackIndexController = TextEditingController();
+  bool get isEnterRoom => _isEnterRoom;
+  TXAudioEffectManager? get audioEffectManager => _audioEffectManager;
 
+  // Music params
+  String musicPath = 'assets/music/daoxiang.mp3';
+  int musicId = 1;
+  int loopCount = 0;
   bool publish = false;
   bool isShortFile = false;
+
+  // Audio adjustments
   int allMusicVolume = 100;
+  int musicPlayoutVolume = 100;
+  int musicPublishVolume = 100;
   double musicPitch = 0.0;
   double musicSpeedRate = 1.0;
-  List<String> logs = [];
 
-  TXAudioEffectManager? _audioEffectManager;
+  // Playback state
+  ValueNotifier<bool> isPlaying = ValueNotifier(false);
+  ValueNotifier<bool> isPaused = ValueNotifier(false);
 
-  bool get isInit => _isInit;
-  bool get isEntered => _isEnterRoom;
-  String? get userId => _userId;
-  int? get roomId => _roomId;
+  // Log
+  final List<String> _logs = [];
+  List<String> get logs => List.unmodifiable(_logs);
 
-  MusicEffectState(String userId, int roomId) {
-    _userId = userId;
-    _roomId = roomId;
+  Future<void> initialize() async {
+    _trtcCloud = await TRTCCloud.sharedInstance();
+    _audioEffectManager = _trtcCloud?.getAudioEffectManager();
+    _listener = _getListener();
+    _trtcCloud?.registerListener(_listener!);
+    _enterRoom();
+    notifyListeners();
   }
 
-  Future<void> enterRoom(String userId, int roomId) async {
-    _userId = userId;
-    _roomId = roomId;
-    _trtcCloud = await TRTCCloud.sharedInstance();
-    _listener ??= _getTRTCCloudListener();
-    _audioEffectManager = _trtcCloud?.getAudioEffectManager();
-    _trtcCloud?.registerListener(_listener!);
-    userListState = UserListState(_trtcCloud!);
-    userListState?.setLocalUser(userId);
+  void _enterRoom() {
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        roomId: roomIdSpec.effectiveRoomId,
+        strRoomId: roomIdSpec.effectiveStrRoomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),
       TRTCAppScene.live,
     );
     _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
-    _isInit = true;
+  }
+
+  void setLocalViewId(int viewId) {
+    if (_localViewId == viewId) return;
+    if (!TRTCCloudVideoView.containsViewId(viewId)) return;
+    _localViewId = viewId;
+    _trtcCloud?.startLocalPreview(true, viewId);
+  }
+
+  void setMusicPath(String path) { musicPath = path; notifyListeners(); }
+  void setMusicId(int id) { musicId = id; notifyListeners(); }
+  void setLoopCount(int count) { loopCount = count; notifyListeners(); }
+  void togglePublish() { publish = !publish; notifyListeners(); }
+  void toggleShortFile() { isShortFile = !isShortFile; notifyListeners(); }
+
+  void setAllMusicVolume(int v) {
+    allMusicVolume = v;
+    _audioEffectManager?.setAllMusicVolume(v);
+    notifyListeners();
+  }
+
+  void setMusicPlayoutVolume(int v) {
+    musicPlayoutVolume = v;
+    _audioEffectManager?.setMusicPlayoutVolume(musicId, v);
+    notifyListeners();
+  }
+
+  void setMusicPublishVolume(int v) {
+    musicPublishVolume = v;
+    _audioEffectManager?.setMusicPublishVolume(musicId, v);
+    notifyListeners();
+  }
+
+  void setMusicPitch(double v) {
+    musicPitch = v;
+    _audioEffectManager?.setMusicPitch(musicId, v);
+    notifyListeners();
+  }
+
+  void setMusicSpeedRate(double v) {
+    musicSpeedRate = v;
+    _audioEffectManager?.setMusicSpeedRate(musicId, v);
+    notifyListeners();
+  }
+
+  Future<void> startPlayMusic() async {
+    if (musicPath.isEmpty) return;
+    final param = AudioMusicParam(
+      id: musicId,
+      path: await Utils.getAssetsFilePath(musicPath),
+      loopCount: loopCount,
+      publish: publish,
+      isShortFile: isShortFile,
+    );
+    _audioEffectManager?.startPlayMusic(param);
+    isPlaying.value = true;
+    isPaused.value = false;
+  }
+
+  void pauseMusic() {
+    _audioEffectManager?.pausePlayMusic(musicId);
+    isPaused.value = true;
+  }
+
+  void resumeMusic() {
+    _audioEffectManager?.resumePlayMusic(musicId);
+    isPaused.value = false;
+  }
+
+  void stopMusic() {
+    _audioEffectManager?.stopPlayMusic(musicId);
+    isPlaying.value = false;
+    isPaused.value = false;
+  }
+
+  void getMusicCurrentPos() {
+    final pos = _audioEffectManager?.getMusicCurrentPosInMS(musicId) ?? -1;
+    _addLog('pos:$pos');
+  }
+
+  void getMusicDuration() {
+    final duration = _audioEffectManager?.getMusicDurationInMS(musicPath) ?? -1;
+    _addLog('duration:$duration');
+  }
+
+  void seekMusicToPos(int pts) {
+    _audioEffectManager?.seekMusicToPosInTime(musicId, pts);
+  }
+
+  void getMusicTrackCount() {
+    final count = _audioEffectManager?.getMusicTrackCount(musicId) ?? 0;
+    _addLog('track_count:$count');
+  }
+
+  void setMusicTrack(int idx) {
+    _audioEffectManager?.setMusicTrack(musicId, idx);
+  }
+
+  void preloadMusic() {
+    final param = AudioMusicParam(
+      id: musicId, path: musicPath,
+      loopCount: loopCount, publish: publish, isShortFile: isShortFile,
+    );
+    _audioEffectManager?.preloadMusic(param);
+  }
+
+  void setPreloadObserver() {
+    _audioEffectManager?.setPreloadObserver(TXMusicPreloadObserver(
+      onLoadProgress: (id, progress) => _addLog('preload_progress:$id:$progress'),
+      onLoadError: (id, code) => _addLog('preload_error:$id:$code'),
+    ));
+  }
+
+  void setMusicObserver() {
+    _audioEffectManager?.setMusicObserver(musicId, TXMusicPlayObserver(
+      onStart: (id, code) => _addLog('music_start:$id:$code'),
+      onPlayProgress: (id, cur, dur) => _addLog('music_progress:$id:$cur:$dur'),
+      onComplete: (id, code) => _addLog('music_complete:$id:$code'),
+    ));
+  }
+
+  void clearLogs() { _logs.clear(); notifyListeners(); }
+
+  void _addLog(String msg) {
+    final now = DateTime.now();
+    final time = '${now.hour.toString().padLeft(2, '0')}:'
+        '${now.minute.toString().padLeft(2, '0')}:'
+        '${now.second.toString().padLeft(2, '0')}';
+    _logs.insert(0, '[$time] $msg');
+    if (_logs.length > 50) _logs.removeLast();
     notifyListeners();
   }
 
   void exitRoom() {
+    _trtcCloud?.stopLocalPreview();
     _trtcCloud?.exitRoom();
     _isEnterRoom = false;
     notifyListeners();
   }
 
-  TRTCCloudListener _getTRTCCloudListener() {
+  TRTCCloudListener _getListener() {
     return TRTCCloudListener(
+      onError: (code, msg) => debugPrint('MusicEffect onError: $code, $msg'),
       onEnterRoom: (result) {
-        if (result > 0) {
-          _isEnterRoom = true;
-          if (_userId != null) {
-            userListState?.setLocalUser(_userId!);
-            userListState?.refreshUserListWidget();
-          }
-        } else {
-          _isEnterRoom = false;
-        }
+        _isEnterRoom = result > 0;
         notifyListeners();
       },
       onExitRoom: (reason) {
         _isEnterRoom = false;
         notifyListeners();
       },
-      onError: (code, msg) {
-        notifyListeners();
-      },
     );
-  }
-
-  void setPublish(bool v) {
-    publish = v;
-    notifyListeners();
-  }
-  void setShortFile(bool v) {
-    isShortFile = v;
-    notifyListeners();
-  }
-  void setAllMusicVolume(int v) {
-    allMusicVolume = v;
-    _audioEffectManager?.setAllMusicVolume(v);
-    notifyListeners();
-  }
-  void setMusicPitch(double v) {
-    musicPitch = v;
-    if (_musicId != null) {
-      _audioEffectManager?.setMusicPitch(_musicId!, v);
-    }
-    notifyListeners();
-  }
-  void setMusicSpeedRate(double v) {
-    musicSpeedRate = v;
-    if (_musicId != null) {
-      _audioEffectManager?.setMusicSpeedRate(_musicId!, v);
-    }
-    notifyListeners();
-  }
-
-  int? get _musicId => int.tryParse(musicIdController.text);
-  String get _musicPath => musicPathController.text;
-  int get _loopCount => int.tryParse(loopCountController.text) ?? 0;
-
-  void startPlayMusic() async {
-    if (_musicId == null || _musicPath.isEmpty) return;
-    final param = AudioMusicParam(
-      id: _musicId!,
-      path: await Utils.getAssetsFilePath(_musicPath),
-      loopCount: _loopCount,
-      publish: publish,
-      isShortFile: isShortFile,
-    );
-    _audioEffectManager?.startPlayMusic(param);
-    _addLog('Start music: id=$_musicId, path=$_musicPath');
-  }
-  void pauseMusic() {
-    if (_musicId == null) return;
-    _audioEffectManager?.pausePlayMusic(_musicId!);
-    _addLog('Pause music: id=$_musicId');
-  }
-  void resumeMusic() {
-    if (_musicId == null) return;
-    _audioEffectManager?.resumePlayMusic(_musicId!);
-    _addLog('Resume music: id=$_musicId');
-  }
-  void stopMusic() {
-    if (_musicId == null) return;
-    _audioEffectManager?.stopPlayMusic(_musicId!);
-    _addLog('Stop music: id=$_musicId');
-  }
-  void getMusicCurrentPos() {
-    if (_musicId == null) return;
-    final pos = _audioEffectManager?.getMusicCurrentPosInMS(_musicId!) ?? -1;
-    _addLog('Current Pos: $pos ms');
-  }
-  void getMusicDuration() {
-    final duration = _audioEffectManager?.getMusicDurationInMS(_musicPath) ?? -1;
-    _addLog('Duration: $duration ms');
-  }
-  void seekMusicToPos() {
-    if (_musicId == null) return;
-    final pts = int.tryParse(seekPosController.text) ?? 0;
-    _audioEffectManager?.seekMusicToPosInTime(_musicId!, pts);
-    _addLog('Seek music: id=$_musicId, pos=$pts');
-  }
-  void getMusicTrackCount() {
-    if (_musicId == null) return;
-    final count = _audioEffectManager?.getMusicTrackCount(_musicId!) ?? 0;
-    _addLog('Track count: $count');
-  }
-  void setMusicTrack() {
-    if (_musicId == null) return;
-    final idx = int.tryParse(trackIndexController.text) ?? 0;
-    _audioEffectManager?.setMusicTrack(_musicId!, idx);
-    _addLog('Set music track: id=$_musicId, idx=$idx');
-  }
-  void preloadMusic() {
-    if (_musicId == null || _musicPath.isEmpty) return;
-    final param = AudioMusicParam(
-      id: _musicId!,
-      path: _musicPath,
-      loopCount: _loopCount,
-      publish: publish,
-      isShortFile: isShortFile,
-    );
-    _audioEffectManager?.preloadMusic(param);
-    _addLog('Preload music: id=$_musicId, path=$_musicPath');
-  }
-  void setPreloadObserver() {
-    _audioEffectManager?.setPreloadObserver(TXMusicPreloadObserver(
-      onLoadProgress: (id, progress) {
-        _addLog('Preload progress: id=$id, progress=$progress');
-      },
-      onLoadError: (id, errorCode) {
-        _addLog('Preload error: id=$id, code=$errorCode');
-      },
-    ));
-    _addLog('Set preload observer');
-  }
-  void setMusicObserver() {
-    if (_musicId == null) return;
-    _audioEffectManager?.setMusicObserver(_musicId!, TXMusicPlayObserver(
-      onStart: (id, errorCode) {
-        _addLog('Music start: id=$id, code=$errorCode');
-      },
-      onPlayProgress: (id, curPts, duration) {
-        _addLog('Music progress: id=$id, $curPts/$duration');
-      },
-      onComplete: (id, errorCode) {
-        _addLog('Music complete: id=$id, code=$errorCode');
-      },
-    ));
-    _addLog('Set music observer: id=$_musicId');
-  }
-
-  void _addLog(String msg) {
-    logs.insert(0, msg);
-    if (logs.length > 50) logs.removeLast();
-    notifyListeners();
   }
 
   @override
   void dispose() {
-    musicPathController.dispose();
-    musicIdController.dispose();
-    loopCountController.dispose();
-    seekPosController.dispose();
-    trackIndexController.dispose();
-    userListState?.dispose();
-    TRTCCloud.destroySharedInstance();
+    _trtcCloud?.stopLocalPreview();
+    _trtcCloud?.exitRoom();
+    if (_listener != null) _trtcCloud?.unRegisterListener(_listener!);
     super.dispose();
   }
-} 
+}

@@ -103,31 +103,81 @@ void TextureRenderer::NotifySizeChanged(uint32_t width, uint32_t height) {
   });
 }
 
-void TextureRenderer::ConvertAndMarkFrame(const char* src_data, uint32_t width, uint32_t height) {
-  const uint32_t pixels_total = width * height;
-  const size_t data_size = static_cast<size_t>(pixels_total) * 4;
+void TextureRenderer::ConvertI420ToRGBA(const uint8_t* yuv, uint8_t* rgba,
+                                      uint32_t width, uint32_t height) {
+  const uint32_t y_size = width * height;
+  const uint32_t uv_stride = (width & 1) ? ((width + 1) / 2) : (width / 2);
+  const uint32_t uv_height = (height & 1) ? ((height + 1) / 2) : (height / 2);
+  const uint32_t uv_size = uv_stride * uv_height;
+  const uint8_t* y_plane = yuv;
+  const uint8_t* u_plane = yuv + y_size;
+  const uint8_t* v_plane = yuv + y_size + uv_size;
 
-  if (data_size == 0) {
-    return;
-  }
+  for (uint32_t row = 0; row < height; ++row) {
+    for (uint32_t col = 0; col < width; ++col) {
+      int y_val = y_plane[row * width + col];
+      int u_val = u_plane[(row / 2) * uv_stride + (col / 2)] - 128;
+      int v_val = v_plane[(row / 2) * uv_stride + (col / 2)] - 128;
 
-  if (pixel_buffer_.size() != data_size) {
-    try {
-      pixel_buffer_.resize(data_size);
-    } catch (const std::bad_alloc&) {
-      return;
+      // BT.601 full-range: YUV → RGB
+      int r = y_val + ((359 * v_val) >> 8);
+      int g = y_val - ((88 * u_val + 183 * v_val) >> 8);
+      int b = y_val + ((454 * u_val) >> 8);
+
+      r = (r < 0) ? 0 : (r > 255) ? 255 : r;
+      g = (g < 0) ? 0 : (g > 255) ? 255 : g;
+      b = (b < 0) ? 0 : (b > 255) ? 255 : b;
+
+      uint32_t rgba_index = (row * width + col) * 4;
+      rgba[rgba_index + 0] = static_cast<uint8_t>(r);
+      rgba[rgba_index + 1] = static_cast<uint8_t>(g);
+      rgba[rgba_index + 2] = static_cast<uint8_t>(b);
+      rgba[rgba_index + 3] = 255;  // alpha
     }
   }
+}
 
-  // BGRA -> RGBA
-  const uint32_t* src = reinterpret_cast<const uint32_t*>(src_data);
-  uint32_t* dst = reinterpret_cast<uint32_t*>(pixel_buffer_.data());
+void TextureRenderer::ConvertBGRA32ToRGBA(const uint8_t* bgra, uint8_t* rgba,
+                                        uint32_t width, uint32_t height) {
+  const uint32_t pixels_total = width * height;
+  const uint32_t* src = reinterpret_cast<const uint32_t*>(bgra);
+  uint32_t* dst = reinterpret_cast<uint32_t*>(rgba);
 
   for (uint32_t i = 0; i < pixels_total; ++i) {
     uint32_t pixel = src[i];
     dst[i] = (pixel & 0xFF00FF00) |          // A and G unchanged
              ((pixel & 0x00FF0000) >> 16) |   // B -> R
              ((pixel & 0x000000FF) << 16);    // R -> B
+  }
+}
+
+void TextureRenderer::ConvertAndMarkFrame(
+    const char* src_data, uint32_t width, uint32_t height, int pixel_format) {
+  const uint32_t pixels_total = width * height;
+  const size_t output_size = static_cast<size_t>(pixels_total) * 4;
+
+  if (output_size == 0) {
+    return;
+  }
+
+  if (pixel_buffer_.size() != output_size) {
+    try {
+      pixel_buffer_.resize(output_size);
+    } catch (const std::bad_alloc&) {
+      return;
+    }
+  }
+
+  if (pixel_format == TRTCVideoPixelFormat_I420) {
+    ConvertI420ToRGBA(reinterpret_cast<const uint8_t*>(src_data),
+                      pixel_buffer_.data(), width, height);
+  } else if (pixel_format == TRTCVideoPixelFormat_BGRA32) {
+    ConvertBGRA32ToRGBA(reinterpret_cast<const uint8_t*>(src_data),
+                        pixel_buffer_.data(), width, height);
+  } else if (pixel_format == TRTCVideoPixelFormat_RGBA32) {
+    memcpy(pixel_buffer_.data(), src_data, output_size);
+  } else {
+    return;
   }
 
   is_frame_pending_ = true;
@@ -165,7 +215,8 @@ void TextureRenderer::onVideoFrame(TRTCVideoFrame* video_frame) {
     NotifySizeChanged(texture_width_, texture_height_);
   }
 
-  ConvertAndMarkFrame(video_frame->data, video_frame->width, video_frame->height);
+  ConvertAndMarkFrame(video_frame->data, video_frame->width, video_frame->height,
+                       video_frame->videoFormat);
 }
 
 // V2TXLivePlayerObserver
@@ -200,5 +251,6 @@ void TextureRenderer::onRenderVideoFrame(
     NotifySizeChanged(texture_width_, texture_height_);
   }
 
-  ConvertAndMarkFrame(videoFrame->data, w, h);
+  ConvertAndMarkFrame(videoFrame->data, w, h,
+                       static_cast<int>(videoFrame->pixelFormat));
 }

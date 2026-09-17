@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_final_fields
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:tencent_rtc_sdk/ai_transcriber_manager.dart';
@@ -212,7 +213,6 @@ class TRTCCloudImpl extends TRTCCloud {
       TRTCLog(_tag, "startLocalPreview fail, viewId does not exist");
       return;
     }
-    _updateRenderType();
     TRTCCloudNative.instance
         .startLocalPreview(frontCamera, _useTextureRender ? null : viewId);
     if (_useTextureRender) {
@@ -223,6 +223,9 @@ class TRTCCloudImpl extends TRTCCloud {
         await TRTCMethodChannel()
             .setLocalTextureRender(viewId, TRTCVideoStreamType.big);
       }
+    }
+    if (TRTCPlatform.isOhos && viewId != null) {
+      TRTCCloudNative.instance.updateLocalView(viewId);
     }
   }
 
@@ -235,7 +238,6 @@ class TRTCCloudImpl extends TRTCCloud {
       TRTCLog(_tag, "startRemoteView fail, viewId does not exist");
       return;
     }
-    _updateRenderType();
     TRTCCloudNative.instance.startRemoteView(
         userId, streamType.value(), _useTextureRender ? null : viewId);
     if (_useTextureRender) {
@@ -245,6 +247,9 @@ class TRTCCloudImpl extends TRTCCloud {
         await TRTCMethodChannel()
             .setRemoteTextureRender(userId, streamType, viewId);
       }
+    }
+    if (TRTCPlatform.isOhos && viewId != null) {
+      TRTCCloudNative.instance.updateRemoteView(userId, streamType, viewId);
     }
   }
 
@@ -294,7 +299,21 @@ class TRTCCloudImpl extends TRTCCloud {
   @override
   String callExperimentalAPI(String jsonStr) {
     if (!jsonStr.contains("enableVideoProcessByNative")) {
-      return TRTCCloudNative.instance.callExperimentalAPI(jsonStr);
+      final result = TRTCCloudNative.instance.callExperimentalAPI(jsonStr);
+      if (jsonStr.contains('Liteav.Video.flutter.video.render.type')) {
+        try {
+          final configs = jsonDecode(jsonStr)['params']['configs'] as List;
+          for (final config in configs) {
+            if (config['key'] == 'Liteav.Video.flutter.video.render.type') {
+              _useTextureRender = (config['value'] == 1);
+              break;
+            }
+          }
+        } catch (e) {
+          TRTCLog(_tag, 'parse render type failed: $e');
+        }
+      }
+      return result;
     }
 
     try {
@@ -639,7 +658,6 @@ class TRTCCloudImpl extends TRTCCloud {
       );
       effectiveViewId = null;
     }
-    _updateRenderType();
     final useTexture = _useTextureRender;
     TRTCCloudNative.instance.startScreenCapture(
         useTexture ? null : effectiveViewId, streamType, encParam);
@@ -786,7 +804,6 @@ class TRTCCloudImpl extends TRTCCloud {
       TRTCLog(_tag, "updateLocalView fail, viewId does not exist");
       return;
     }
-    _updateRenderType();
     TRTCCloudNative.instance.updateLocalView(_useTextureRender ? null : viewId);
     if (_useTextureRender) {
       if (viewId == null) {
@@ -806,7 +823,6 @@ class TRTCCloudImpl extends TRTCCloud {
       TRTCLog(_tag, "updateRemoteView fail, viewId does not exist");
       return;
     }
-    _updateRenderType();
     TRTCCloudNative.instance.updateRemoteView(
         userId, streamType, _useTextureRender ? null : viewId);
     if (_useTextureRender) {

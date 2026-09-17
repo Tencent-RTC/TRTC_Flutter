@@ -1,38 +1,51 @@
+import 'package:api_example/common/room_id_spec.dart';
 import 'package:api_example/debug/generate_test_user_sig.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/ai_transcriber_manager.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 
+enum TranscriberStatus { enteringRoom, idle, starting, transcribing, paused, stopping, error }
+
 class AITranscriberState extends ChangeNotifier {
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+  final String sourceLanguage;
+  final List<String> translationLanguages;
+
+  AITranscriberState({
+    required this.userId,
+    required this.roomIdSpec,
+    required this.sourceLanguage,
+    required this.translationLanguages,
+  });
+
   TRTCCloud? _trtcCloud;
   AITranscriberManager? _transcriberManager;
   TRTCCloudListener? _listener;
   AITranscriberListener? _transcriberListener;
 
-  String? _localUserId;
-  int? _roomId;
-  bool _isEnterRoomSuccess = false;
-  bool _isTranscribing = false;
-  bool _isPaused = false;
-  String _statusMessage = 'Preparing...';
+  bool _isEnterRoom = false;
+  TranscriberStatus _status = TranscriberStatus.enteringRoom;
+  String? _robotId;
+  String? _errorMessage;
+
   final List<TranscriptItem> _transcripts = [];
 
-  String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
-  bool get isEnterRoomSuccess => _isEnterRoomSuccess;
-  bool get isTranscribing => _isTranscribing;
-  bool get isPaused => _isPaused;
-  String get statusMessage => _statusMessage;
+  /// Event notification for SnackBar (format: "type:message")
+  ValueNotifier<String?> eventMessage = ValueNotifier(null);
+
+  bool get isEnterRoom => _isEnterRoom;
+  TranscriberStatus get status => _status;
+  String? get robotId => _robotId;
+  String? get errorMessage => _errorMessage;
   List<TranscriptItem> get transcripts => List.unmodifiable(_transcripts);
+  int get completedCount => _transcripts.where((t) => t.isCompleted).length;
+  int get pendingCount => _transcripts.where((t) => !t.isCompleted).length;
 
-  Future<void> initialize({required String userId, required int roomId}) async {
-    _localUserId = userId;
-    _roomId = roomId;
-    _statusMessage = 'Initializing...';
-    notifyListeners();
-
+  Future<void> initialize() async {
     _trtcCloud = await TRTCCloud.sharedInstance();
     _transcriberManager = _trtcCloud?.getAITranscriberManager();
 
@@ -45,26 +58,26 @@ class AITranscriberState extends ChangeNotifier {
     _transcriberManager?.addListener(_transcriberListener!);
 
     _listener = TRTCCloudListener(
-      onError: (errorCode, errorMsg) {
-        _statusMessage = 'Error: $errorMsg';
+      onError: (code, msg) {
+        _errorMessage = '$code: $msg';
+        _status = TranscriberStatus.error;
+        _emitEvent('error:$msg');
         notifyListeners();
       },
       onEnterRoom: (result) {
-        if (result > 0) {
-          _statusMessage = 'Room entered';
-          _isEnterRoomSuccess = true;
+        _isEnterRoom = result > 0;
+        if (_isEnterRoom) {
+          _status = TranscriberStatus.idle;
+          _emitEvent('room_success');
         } else {
-          _statusMessage = 'Enter room failed: $result';
-          _isEnterRoomSuccess = false;
+          _status = TranscriberStatus.error;
+          _errorMessage = 'Enter room failed: $result';
+          _emitEvent('room_failed:$result');
         }
         notifyListeners();
       },
-      onRemoteUserEnterRoom: (userId) {
-        _statusMessage = 'User $userId joined';
-        notifyListeners();
-      },
-      onRemoteUserLeaveRoom: (userId, reason) {
-        _statusMessage = 'User $userId left';
+      onExitRoom: (reason) {
+        _isEnterRoom = false;
         notifyListeners();
       },
     );
@@ -74,48 +87,46 @@ class AITranscriberState extends ChangeNotifier {
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
-        role: TRTCRoleType.anchor,
+        roomId: roomIdSpec.effectiveRoomId,
+        strRoomId: roomIdSpec.effectiveStrRoomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
+        role: TRTCRoleType.anchor,
       ),
       TRTCAppScene.audioCall,
     );
     _trtcCloud?.startLocalAudio(TRTCAudioQuality.speech);
+    notifyListeners();
   }
 
-  void startTranscriber({
-    String? sourceLanguage,
-    List<String>? translationLanguages,
-  }) {
+  void startTranscriber() {
     if (_transcriberManager == null) return;
-
     final params = TranscriberParams(
-      sourceLanguage: sourceLanguage ?? 'zh',
-      translationLanguages: translationLanguages ?? ['en'],
+      sourceLanguage: sourceLanguage,
+      translationLanguages: translationLanguages,
     );
-
     _transcriberManager?.startRealtimeTranscriber(params);
-    _statusMessage = 'Starting transcriber...';
+    _status = TranscriberStatus.starting;
+    _errorMessage = null;
     notifyListeners();
   }
 
   void stopTranscriber() {
     _transcriberManager?.stopRealtimeTranscriber('');
-    _statusMessage = 'Stopping transcriber...';
+    _status = TranscriberStatus.stopping;
     notifyListeners();
   }
 
   void pauseReceiving() {
     _transcriberManager?.pauseReceivingMessage();
-    _isPaused = true;
-    _statusMessage = 'Paused receiving';
+    _status = TranscriberStatus.paused;
+    _emitEvent('paused');
     notifyListeners();
   }
 
   void resumeReceiving() {
     _transcriberManager?.resumeReceivingMessage();
-    _isPaused = false;
-    _statusMessage = 'Resumed receiving';
+    _status = TranscriberStatus.transcribing;
+    _emitEvent('resumed');
     notifyListeners();
   }
 
@@ -125,18 +136,17 @@ class AITranscriberState extends ChangeNotifier {
   }
 
   void _onTranscriberStarted(String roomId, String robotId) {
-    _isTranscribing = true;
-    _statusMessage = 'Transcriber started (robotId: $robotId)';
+    _robotId = robotId;
+    _status = TranscriberStatus.transcribing;
+    _emitEvent('started:$robotId');
     notifyListeners();
   }
 
   void _onTranscriberMessage(String roomId, TranscriberMessage message) {
-    // Use segmentId for deduplication, fallback to speakerUserId if segmentId is empty
     int existingIndex = -1;
     if (message.segmentId.isNotEmpty) {
       existingIndex = _transcripts.indexWhere((t) => t.segmentId == message.segmentId);
     } else {
-      // If no segmentId, find the last incomplete message from the same speaker
       existingIndex = _transcripts.lastIndexWhere(
         (t) => t.speakerUserId == message.speakerUserId && !t.isCompleted,
       );
@@ -160,27 +170,39 @@ class AITranscriberState extends ChangeNotifier {
   }
 
   void _onTranscriberStopped(String roomId, String robotId, TranscriberStopReason reason) {
-    _isTranscribing = false;
-    _statusMessage = 'Transcriber stopped (reason: ${reason.name})';
+    _status = TranscriberStatus.idle;
+    _emitEvent('stopped:${reason.name}');
     notifyListeners();
   }
 
   void _onTranscriberError(String roomId, String robotId, int error, String errorInfo) {
-    _statusMessage = 'Transcriber error: $error - $errorInfo';
+    _status = TranscriberStatus.error;
+    _errorMessage = '$error: $errorInfo';
+    _emitEvent('error:$errorInfo');
     notifyListeners();
   }
 
-  Future<void> release() async {
-    if (_transcriberListener != null) {
-      _transcriberManager?.removeListener(_transcriberListener!);
+  void _emitEvent(String event) {
+    eventMessage.value = event;
+  }
+
+  void exitRoom() {
+    if (_status == TranscriberStatus.transcribing || _status == TranscriberStatus.paused) {
+      _transcriberManager?.stopRealtimeTranscriber('');
     }
     _trtcCloud?.exitRoom();
-    TRTCCloud.destroySharedInstance();
+    _isEnterRoom = false;
+    _status = TranscriberStatus.idle;
+    notifyListeners();
   }
 
   @override
   void dispose() {
-    release();
+    if (_transcriberListener != null) {
+      _transcriberManager?.removeListener(_transcriberListener!);
+    }
+    _trtcCloud?.exitRoom();
+    if (_listener != null) _trtcCloud?.unRegisterListener(_listener!);
     super.dispose();
   }
 }

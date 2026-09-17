@@ -1,103 +1,176 @@
-
-import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
-
-import '../../../common/user_list_state.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import '../../../debug/generate_test_user_sig.dart';
 
 class SmallVideoStreamState extends ChangeNotifier {
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  SmallVideoStreamState({required this.userId, required this.roomIdSpec});
+
   TRTCCloud? _trtcCloud;
-  bool _isInitialized = false;
+  TRTCCloudListener? _listener;
+  bool _isEnterRoom = false;
+  int? _localViewId;
 
-  String? localUserId;
-  int? roomId;
-  UserListState? userListState;
+  bool get isEnterRoom => _isEnterRoom;
 
-  ValueNotifier<bool> isEnterRoom = ValueNotifier(false);
+  final Map<String, RemoteVideoUser> _remoteUsers = {};
+  List<RemoteVideoUser> get remoteUsers => _remoteUsers.values.toList();
 
-  ValueNotifier<bool> enableSmallVideo = ValueNotifier(false);
+  ValueNotifier<bool> enableSmallStream = ValueNotifier(false);
+  ValueNotifier<int> smallVideoBitrate = ValueNotifier(400);
+  ValueNotifier<int> smallVideoFps = ValueNotifier(15);
+  ValueNotifier<TRTCVideoResolution> smallVideoResolution =
+      ValueNotifier(TRTCVideoResolution.res_320_180);
 
-  ValueNotifier<bool> displaySmall = ValueNotifier(false);
-
-  ValueNotifier<bool> enableAdjustRes = ValueNotifier(false);
-  ValueNotifier<int> minVideoBitrate = ValueNotifier(0);
-  ValueNotifier<int> videoBitrate = ValueNotifier(1600);
-  ValueNotifier<int> videoFps = ValueNotifier(10);
-  ValueNotifier<TRTCVideoResolution> videoResolution = ValueNotifier(TRTCVideoResolution.res_640_360);
-  ValueNotifier<TRTCVideoResolutionMode> videoResolutionMode = ValueNotifier(TRTCVideoResolutionMode.portrait);
-
-
-  void initialize(TRTCCloud? trtcCloud, UserListState state)  {
-    if (_isInitialized) return;
-    _trtcCloud = trtcCloud;
-    userListState = state;
-    _isInitialized = true;
+  Future<void> initialize() async {
+    _trtcCloud = await TRTCCloud.sharedInstance();
+    _listener = _getListener();
+    _trtcCloud?.registerListener(_listener!);
+    _enterRoom();
+    _addParamListeners();
+    notifyListeners();
   }
 
-  void enterRoom() {
-    if (localUserId == null || roomId == null) {
-      print("SmallVideoStreamState localUserId or roomId is null");
-      Fluttertoast.showToast(msg: "localUserId or roomId is null");
-      return;
-    }
-
+  void _enterRoom() {
     _trtcCloud?.enterRoom(
-        TRTCParams(
-            sdkAppId: GenerateTestUserSig.sdkAppId,
-            userId: localUserId!,
-            roomId: roomId!,
-            role: TRTCRoleType.anchor,
-            userSig: GenerateTestUserSig.genTestSig(localUserId!)
-        ), TRTCAppScene.videoCall);
-    userListState?.setLocalUser(localUserId!);
-    isEnterRoom.value = true;
-    _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
+      TRTCParams(
+        sdkAppId: GenerateTestUserSig.sdkAppId,
+        userId: userId,
+        roomId: roomIdSpec.effectiveRoomId,
+        strRoomId: roomIdSpec.effectiveStrRoomId,
+        role: TRTCRoleType.anchor,
+        userSig: GenerateTestUserSig.genTestSig(userId),
+      ),
+      TRTCAppScene.videoCall,
+    );
+    _trtcCloud?.startLocalAudio(TRTCAudioQuality.speech);
+  }
+
+  void setLocalViewId(int viewId) {
+    if (_localViewId == viewId) return;
+    if (!TRTCCloudVideoView.containsViewId(viewId)) return;
+    _localViewId = viewId;
+    _trtcCloud?.startLocalPreview(true, viewId);
+  }
+
+  void setRemoteViewId(String remoteUserId, int viewId) {
+    if (!TRTCCloudVideoView.containsViewId(viewId)) return;
+    final user = _remoteUsers[remoteUserId];
+    if (user == null || user.viewId == viewId) return;
+    user.viewId = viewId;
+    if (user.isVideoAvailable) {
+      final type = user.useSmallStream
+          ? TRTCVideoStreamType.sub
+          : TRTCVideoStreamType.big;
+      _trtcCloud?.startRemoteView(remoteUserId, type, viewId);
+    }
+  }
+
+  void toggleRemoteStreamType(String remoteUserId) {
+    final user = _remoteUsers[remoteUserId];
+    if (user == null || !user.isVideoAvailable) return;
+    user.useSmallStream = !user.useSmallStream;
+    if (user.viewId != null && user.viewId! > 0) {
+      final type = user.useSmallStream
+          ? TRTCVideoStreamType.sub
+          : TRTCVideoStreamType.big;
+      _trtcCloud?.setRemoteVideoStreamType(remoteUserId, type);
+      _trtcCloud?.startRemoteView(remoteUserId, type, user.viewId);
+    }
+    notifyListeners();
   }
 
   void exitRoom() {
+    _trtcCloud?.stopAllRemoteView();
+    _trtcCloud?.stopLocalPreview();
     _trtcCloud?.exitRoom();
-    isEnterRoom.value = false;
+    _isEnterRoom = false;
+    _remoteUsers.clear();
+    notifyListeners();
   }
 
-  void enableAllRemoteUserDisplaySmallVideoStream() {
-    displaySmall.value = !displaySmall.value;
-    if (userListState != null && userListState!.users.isNotEmpty) {
-      for (var userEntry in userListState!.users.entries) {
-        if (userEntry.key != localUserId) {
-          if (displaySmall.value) {
-            _trtcCloud?.stopRemoteView(userEntry.key, TRTCVideoStreamType.big);
-            _trtcCloud?.startRemoteView(userEntry.key, TRTCVideoStreamType.small, userEntry.value.viewId ?? 0);
-          } else {
-            _trtcCloud?.stopRemoteView(userEntry.key, TRTCVideoStreamType.small);
-            _trtcCloud?.startRemoteView(userEntry.key, TRTCVideoStreamType.big, userEntry.value.viewId ?? 0);
-          }
-        }
-      }
+  void _addParamListeners() {
+    enableSmallStream.addListener(() => _updateSmallVideoStream());
+    for (var n in [smallVideoBitrate, smallVideoFps, smallVideoResolution]) {
+      n.addListener(() {
+        if (enableSmallStream.value) _updateSmallVideoStream();
+      });
     }
   }
 
-  void enableSmallVideoStream() {
-    TRTCVideoEncParam param = TRTCVideoEncParam(
-      enableAdjustRes: enableAdjustRes.value,
-      minVideoBitrate: minVideoBitrate.value,
-      videoBitrate: videoBitrate.value,
-      videoFps: videoFps.value,
-      videoResolution: videoResolution.value,
-      videoResolutionMode: videoResolutionMode.value,
-    );
-
+  void _updateSmallVideoStream() {
     _trtcCloud?.enableSmallVideoStream(
-        enableSmallVideo.value,
-        param
+      enableSmallStream.value,
+      TRTCVideoEncParam(
+        videoBitrate: smallVideoBitrate.value,
+        videoFps: smallVideoFps.value,
+        videoResolution: smallVideoResolution.value,
+      ),
+    );
+  }
+
+  TRTCCloudListener _getListener() {
+    return TRTCCloudListener(
+      onError: (code, msg) => debugPrint('SmallVideoStream onError: $code, $msg'),
+      onEnterRoom: (result) {
+        _isEnterRoom = result > 0;
+        notifyListeners();
+      },
+      onRemoteUserEnterRoom: (remoteUserId) {
+        _remoteUsers[remoteUserId] = RemoteVideoUser(userId: remoteUserId);
+        notifyListeners();
+      },
+      onRemoteUserLeaveRoom: (remoteUserId, reason) {
+        _remoteUsers.remove(remoteUserId);
+        notifyListeners();
+      },
+      onUserVideoAvailable: (remoteUserId, available) {
+        final user = _remoteUsers[remoteUserId];
+        if (user == null) return;
+        user.isVideoAvailable = available;
+        if (available) {
+          if (user.viewId != null && user.viewId! > 0) {
+            final type = user.useSmallStream
+                ? TRTCVideoStreamType.sub
+                : TRTCVideoStreamType.big;
+            _trtcCloud?.startRemoteView(remoteUserId, type, user.viewId);
+          }
+        } else {
+          _trtcCloud?.stopRemoteView(remoteUserId, TRTCVideoStreamType.big);
+          _trtcCloud?.stopRemoteView(remoteUserId, TRTCVideoStreamType.sub);
+        }
+        notifyListeners();
+      },
     );
   }
 
   @override
   void dispose() {
+    _trtcCloud?.stopAllRemoteView();
+    _trtcCloud?.stopLocalPreview();
+    _trtcCloud?.exitRoom();
+    if (_listener != null) _trtcCloud?.unRegisterListener(_listener!);
     super.dispose();
-    exitRoom();
-    TRTCCloud.destroySharedInstance();
   }
+}
+
+class RemoteVideoUser {
+  final String userId;
+  int? viewId;
+  bool isVideoAvailable;
+  bool useSmallStream;
+
+  RemoteVideoUser({
+    required this.userId,
+    this.viewId,
+    this.isVideoAvailable = false,
+    this.useSmallStream = false,
+  });
 }

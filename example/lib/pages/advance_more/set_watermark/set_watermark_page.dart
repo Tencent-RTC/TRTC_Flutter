@@ -1,182 +1,223 @@
-import 'package:api_example/utils/utils.dart';
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
-import 'package:api_example/debug/generate_test_user_sig.dart';
-import 'package:api_example/common/user_list_state.dart';
-import 'package:api_example/common/user_list_widget.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import 'set_watermark_state.dart';
 
 class SetWatermarkPage extends StatefulWidget {
   final String userId;
-  final String roomId;
+  final RoomIdSpec roomIdSpec;
 
-  const SetWatermarkPage({Key? key, required this.userId, required this.roomId}) : super(key: key);
+  const SetWatermarkPage({Key? key, required this.userId, required this.roomIdSpec})
+      : super(key: key);
 
   @override
   State<SetWatermarkPage> createState() => _SetWatermarkPageState();
 }
 
 class _SetWatermarkPageState extends State<SetWatermarkPage> {
-  TRTCCloud? _trtcCloud;
-  TRTCCloudListener? _listener;
-  UserListState? _userListState;
-  bool _isEntered = false;
-  bool _isInit = false;
-
-  TRTCVideoStreamType _streamType = TRTCVideoStreamType.big;
-  double _x = 0.5;
-  double _y = 0.5;
-  double _width = 0.2;
+  late SetWatermarkState _state;
+  static const _accentColor = Color(0xFF6D4C41);
 
   @override
   void initState() {
     super.initState();
-    _initTRTC();
+    _state = SetWatermarkState(userId: widget.userId, roomIdSpec: widget.roomIdSpec);
+    _state.addListener(_onChanged);
+    _state.initialize();
   }
 
-  Future<void> _initTRTC() async {
-    _trtcCloud = await TRTCCloud.sharedInstance();
-    _userListState = UserListState(_trtcCloud!);
-    _listener = TRTCCloudListener(
-      onEnterRoom: (result) {
-        if (result > 0) {
-          setState(() {
-            _isEntered = true;
-          });
-          _userListState?.setLocalUser(widget.userId);
-          Fluttertoast.showToast(msg: 'Enter room success');
-        } else {
-          Fluttertoast.showToast(msg: 'Enter room failed: $result');
-        }
-      },
-      onError: (code, msg) {
-        Fluttertoast.showToast(msg: 'Error: $msg($code)');
-      },
-      onExitRoom: (reason) {
-        setState(() {
-          _isEntered = false;
-        });
-        Fluttertoast.showToast(msg: 'Exited room');
-      },
-    );
-    _trtcCloud?.registerListener(_listener!);
-    _enterRoom();
-    setState(() {
-      _isInit = true;
-    });
-  }
-
-  void _enterRoom() {
-    _trtcCloud?.enterRoom(
-      TRTCParams(
-        sdkAppId: GenerateTestUserSig.sdkAppId,
-        userId: widget.userId,
-        roomId: int.tryParse(widget.roomId) ?? 0,
-        userSig: GenerateTestUserSig.genTestSig(widget.userId),
-        role: TRTCRoleType.anchor,
-      ),
-      TRTCAppScene.live,
-    );
-  }
-
-  void _setWatermark() async {
-    var imagePath = await Utils.getAssetsFilePath('assets/images/watermark_img.png');
-    _trtcCloud?.setWatermark(imagePath, _streamType, _x, _y, _width);
-    Fluttertoast.showToast(msg: 'setWatermark applied');
-  }
+  void _onChanged() => mounted ? setState(() {}) : null;
 
   @override
   void dispose() {
-    _trtcCloud?.unRegisterListener(_listener!);
-    _trtcCloud?.exitRoom();
-    _userListState?.dispose();
-    TRTCCloud.destroySharedInstance();
+    _state.removeListener(_onChanged);
+    _state.dispose();
     super.dispose();
   }
 
+  BoxDecoration _cardDec() => BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+      );
+
   @override
   Widget build(BuildContext context) {
-    if (_userListState == null) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+    final l10n = AppLocalizations.of(context)!;
     return ChangeNotifierProvider.value(
-      value: _userListState!,
+      value: _state,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Set Watermark')),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Room User List'),
-              const SizedBox(height: 8),
-              const SizedBox(height: 220, child: UserListWidget(isVideoMode: true)),
-              const Divider(height: 20),
-              const Text('Watermark Image Path'),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Text('Stream Type: '),
-                  const SizedBox(width: 8),
-                  DropdownButton<TRTCVideoStreamType>(
-                    value: _streamType,
-                    items: TRTCVideoStreamType.values.map((type) {
-                      return DropdownMenuItem(
-                        value: type,
-                        child: Text(type.toString().split('.').last),
-                      );
-                    }).toList(),
-                    onChanged: (type) {
-                      if (type != null) setState(() => _streamType = type);
-                    },
-                  ),
-                ],
+        appBar: AppBar(
+          title: Text(l10n.setWatermarkTitle),
+          actions: [
+            Container(
+              width: 10, height: 10, margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: _state.isEnterRoom ? Colors.green : Colors.grey,
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 8),
-              Text('X: ${_x.toStringAsFixed(2)}'),
-              Slider(
-                value: _x,
-                min: 0,
-                max: 1,
-                divisions: 100,
-                label: _x.toStringAsFixed(2),
-                onChanged: (v) => setState(() => _x = v),
-              ),
-              Text('Y: ${_y.toStringAsFixed(2)}'),
-              Slider(
-                value: _y,
-                min: 0,
-                max: 1,
-                divisions: 100,
-                label: _y.toStringAsFixed(2),
-                onChanged: (v) => setState(() => _y = v),
-              ),
-              Text('Width: ${_width.toStringAsFixed(2)}'),
-              Slider(
-                value: _width,
-                min: 0.01,
-                max: 1,
-                divisions: 100,
-                label: _width.toStringAsFixed(2),
-                onChanged: (v) => setState(() => _width = v),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isEntered ? _setWatermark : null,
-                  child: const Text('Apply Watermark'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
+        body: Column(children: [
+          _buildPreview(l10n),
+          Expanded(child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(children: [
+              _buildStreamTypeCard(l10n),
+              const SizedBox(height: 10),
+              _buildPositionCard(l10n),
+            ]),
+          )),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: SizedBox(
+              width: double.infinity, height: 48,
+              child: FilledButton(
+                onPressed: () { _state.exitRoom(); Navigator.pop(context); },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                ),
+                child: Text(l10n.exitRoomButton),
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }
-} 
+
+  // ─── Local preview ───────────────────────────────────────────
+
+  Widget _buildPreview(AppLocalizations l10n) => Container(
+        margin: const EdgeInsets.all(12),
+        height: 240,
+        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(14)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: Stack(children: [
+            TRTCCloudVideoView(onViewCreated: (v) => _state.setLocalViewId(v)),
+            Positioned(
+              top: 8, left: 12,
+              child: _label(l10n.localPreview, _accentColor),
+            ),
+          ]),
+        ),
+      );
+
+  Widget _label(String text, Color color) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(6)),
+        child: Text(text, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+      );
+
+  // ─── Stream type card ────────────────────────────────────────
+
+  Widget _buildStreamTypeCard(AppLocalizations l10n) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: _cardDec(),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Icon(Icons.stream, size: 18, color: _accentColor),
+          const SizedBox(width: 8),
+          Text(l10n.streamTypeLabel.trim(),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+        ]),
+        const SizedBox(height: 12),
+        Row(children: [
+          Expanded(
+            child: _streamChip(TRTCVideoStreamType.big, l10n.streamTypeBig, Icons.hd_outlined),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _streamChip(TRTCVideoStreamType.sub, l10n.streamTypeSub, Icons.screen_share_outlined),
+          ),
+        ]),
+      ]),
+    );
+  }
+
+  Widget _streamChip(TRTCVideoStreamType value, String label, IconData icon) {
+    final selected = _state.streamType == value;
+    return GestureDetector(
+      onTap: () => _state.setStreamType(value),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: selected ? _accentColor.withOpacity(0.12) : Colors.grey.withOpacity(0.06),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: selected ? _accentColor : Colors.transparent, width: 1.5),
+        ),
+        child: Column(children: [
+          Icon(icon, size: 24, color: selected ? _accentColor : Colors.grey),
+          const SizedBox(height: 4),
+          Text(label, style: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w600,
+            color: selected ? _accentColor : Colors.grey.shade700,
+          )),
+        ]),
+      ),
+    );
+  }
+
+  // ─── Position & size card ────────────────────────────────────
+
+  Widget _buildPositionCard(AppLocalizations l10n) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: _cardDec(),
+      child: Column(children: [
+        _sliderItem(
+          l10n.xAxisLabel, _state.x, Icons.arrow_right_alt,
+          (v) => _state.setX(v),
+        ),
+        const Divider(height: 24),
+        _sliderItem(
+          l10n.yAxisLabel, _state.y, Icons.arrow_downward,
+          (v) => _state.setY(v),
+        ),
+        const Divider(height: 24),
+        _sliderItem(
+          l10n.widthLabel, _state.watermarkWidth, Icons.swap_horiz,
+          (v) => _state.setWidth(v),
+          min: 0.01,
+        ),
+      ]),
+    );
+  }
+
+  Widget _sliderItem(String label, double value, IconData icon, ValueChanged<double> onChanged,
+      {double min = 0}) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Row(children: [
+        Icon(icon, size: 18, color: _accentColor),
+        const SizedBox(width: 8),
+        Expanded(child: Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500))),
+        Container(
+          width: 48, height: 28,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: _accentColor.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(value.toStringAsFixed(2), style: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w700, color: _accentColor)),
+        ),
+      ]),
+      Slider(
+        value: value,
+        min: min, max: 1, divisions: 100,
+        activeColor: _accentColor,
+        label: value.toStringAsFixed(2),
+        onChanged: onChanged,
+      ),
+    ]);
+  }
+}

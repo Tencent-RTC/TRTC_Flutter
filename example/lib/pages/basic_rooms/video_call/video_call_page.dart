@@ -1,17 +1,18 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
-import 'package:api_example/common/render_type_probe.dart';
 import 'video_call_state.dart';
 
 class VideoCallPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final RoomIdSpec roomIdSpec;
 
   const VideoCallPage({
     Key? key,
     required this.userId,
-    required this.roomId,
+    required this.roomIdSpec,
   }) : super(key: key);
 
   @override
@@ -21,9 +22,6 @@ class VideoCallPage extends StatefulWidget {
 class _VideoCallPageState extends State<VideoCallPage> {
   late VideoCallState _callState;
   bool _isInitializing = true;
-
-  /// 当前渲染类型(探测得到,本次进房后固定且所有窗口一致)
-  RenderType _renderType = RenderType.unknown;
 
   @override
   void initState() {
@@ -35,7 +33,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
     _callState = VideoCallState();
     await _callState.initializeCall(
       userId: widget.userId,
-      roomId: widget.roomId,
+      roomIdSpec: widget.roomIdSpec,
     );
 
     if (mounted) {
@@ -55,16 +53,17 @@ class _VideoCallPageState extends State<VideoCallPage> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
-      return const Scaffold(
+      final l10n = AppLocalizations.of(context)!;
+      return Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
               Text(
-                'Initializing...',
-                style: TextStyle(color: Colors.white70),
+                l10n.initializing,
+                style: const TextStyle(color: Colors.white70),
               ),
             ],
           ),
@@ -104,6 +103,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
   }
 
   Widget _buildCallHeader() {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<VideoCallState>(
       builder: (context, callState, child) {
         return Padding(
@@ -114,14 +114,12 @@ class _VideoCallPageState extends State<VideoCallPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Room ID: ${callState.roomId}',
+                    l10n.roomIdDisplay(callState.roomId ?? ''),
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white70,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  _buildRenderTypeBadge(),
                 ],
               ),
               const SizedBox(height: 10),
@@ -132,13 +130,16 @@ class _VideoCallPageState extends State<VideoCallPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  callState.statusMessage,
+                  callState.status.toText(l10n),
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
               ),
+              if (callState.connectionState != 'normal' ||
+                  callState.rtt != null)
+                _buildQualityPanel(callState, l10n),
             ],
           ),
         );
@@ -146,47 +147,106 @@ class _VideoCallPageState extends State<VideoCallPage> {
     );
   }
 
-  /// 仅用本地画面探测一次渲染类型(本次进房后全局一致,无需每个窗口都探)
-  Widget _wrapWithProbeIfNeeded({
-    required bool isLocalUser,
-    required Widget child,
-  }) {
-    if (!isLocalUser || _renderType != RenderType.unknown) {
-      return child;
+  Widget _buildQualityPanel(VideoCallState callState, AppLocalizations l10n) {
+    final items = <Widget>[];
+
+    // Connection state
+    if (callState.connectionState != 'normal') {
+      String label;
+      Color color;
+      switch (callState.connectionState) {
+        case 'reconnecting':
+          label = l10n.connStateReconnecting;
+          color = Colors.orangeAccent;
+          break;
+        case 'lost':
+          label = l10n.connStateLost;
+          color = Colors.redAccent;
+          break;
+        case 'recovered':
+          label = l10n.connStateRecovered;
+          color = Colors.greenAccent;
+          break;
+        default:
+          label = '';
+          color = Colors.white;
+      }
+      items.add(_qualityChip(Icons.wifi, label, color));
     }
-    return RenderTypeProbe(
-      onDetected: (type) {
-        if (mounted && type != _renderType) {
-          setState(() {
-            _renderType = type;
-          });
-        }
-      },
-      child: child,
+
+    // Statistics
+    if (callState.rtt != null) {
+      items.add(_qualityChip(
+          Icons.speed, 'RTT ${callState.rtt}ms', Colors.white70));
+    }
+    if (callState.upLoss != null) {
+      items.add(_qualityChip(
+          Icons.upload, '↑${callState.upLoss}%', Colors.white70));
+    }
+    if (callState.downLoss != null) {
+      items.add(_qualityChip(
+          Icons.download, '↓${callState.downLoss}%', Colors.white70));
+    }
+    if (callState.appCpu != null) {
+      items.add(_qualityChip(
+          Icons.memory, 'CPU ${callState.appCpu}%', Colors.white70));
+    }
+
+    // Warning
+    if (callState.lastWarning != null) {
+      items.add(_qualityChip(Icons.warning_amber,
+          '${l10n.warningLabel} ${callState.lastWarning}', Colors.amberAccent));
+    }
+
+    // First-frame events
+    for (final e in callState.frameEvents.take(3)) {
+      String text;
+      switch (e.type) {
+        case 'localVideo':
+          text = l10n.firstLocalVideoFrame;
+          break;
+        case 'localAudio':
+          text = l10n.firstLocalAudioFrame;
+          break;
+        case 'remoteVideo':
+          text = l10n.firstRemoteVideoFrame(e.userId ?? '');
+          break;
+        case 'remoteAudio':
+          text = l10n.firstRemoteAudioFrame(e.userId ?? '');
+          break;
+        default:
+          text = e.type;
+      }
+      items.add(_qualityChip(Icons.movie_outlined, text, Colors.white54));
+    }
+
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        alignment: WrapAlignment.center,
+        children: items,
+      ),
     );
   }
 
-  Widget _buildRenderTypeBadge() {
-    final bool known = _renderType != RenderType.unknown;
-    final Color color = _renderType == RenderType.texture
-        ? Colors.greenAccent
-        : (_renderType == RenderType.platformView
-            ? Colors.orangeAccent
-            : Colors.grey);
+  Widget _qualityChip(IconData icon, String label, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color, width: 1),
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: Text(
-        known ? _renderType.label : 'Detecting...',
-        style: TextStyle(
-          fontSize: 12,
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(label, style: TextStyle(fontSize: 10, color: color)),
+        ],
       ),
     );
   }
@@ -233,17 +293,14 @@ class _VideoCallPageState extends State<VideoCallPage> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: _wrapWithProbeIfNeeded(
-              isLocalUser: isLocalUser,
-              child: TRTCCloudVideoView(
-                onViewCreated: (viewId) {
-                  if (isLocalUser) {
-                    _callState.setLocalViewId(viewId);
-                  } else {
-                    _callState.setRemoteViewId(participant.userId, viewId);
-                  }
-                },
-              ),
+            child: TRTCCloudVideoView(
+              onViewCreated: (viewId) {
+                if (isLocalUser) {
+                  _callState.setLocalViewId(viewId);
+                } else {
+                  _callState.setRemoteViewId(participant.userId, viewId);
+                }
+              },
             ),
           ),
         ),
@@ -277,14 +334,39 @@ class _VideoCallPageState extends State<VideoCallPage> {
                     size: 16,
                   ),
                 ),
+              if (participant.videoWidth != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    '${participant.videoWidth}x${participant.videoHeight}',
+                    style: const TextStyle(color: Colors.white54, fontSize: 11),
+                  ),
+                ),
             ],
           ),
         ),
+        if (participant.isVideoBuffering || participant.isAudioBuffering)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.orangeAccent.withOpacity(0.85),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.avStatusLoading,
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ),
+          ),
       ],
     );
   }
 
   Widget _buildCallControls() {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<VideoCallState>(
       builder: (context, callState, child) {
         return Column(
@@ -294,24 +376,24 @@ class _VideoCallPageState extends State<VideoCallPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildTextButton(
-                  text: callState.isMuteAllRemoteAudio ? 'UnMute\nAll\nAudio' : 'Mute\nAll\nAudio',
+                  text: callState.isMuteAllRemoteAudio ? l10n.unmuteAllAudio : l10n.muteAllAudio,
                   onPressed: () {
                     _callState.muteAllRemoteAudio(!callState.isMuteAllRemoteAudio);
                   },
                 ),
                 TextButton(
                   onPressed: _callState.stopAllRemoteView,
-                  child: const Text(
-                    "Stop\nAll\nRemote\nView",
+                  child: Text(
+                    l10n.stopAllRemoteView,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                     ),
                   ),
                 ),
                 _buildTextButton(
-                  text: callState.isMuteAllRemoteVideo ? 'UnMute\nAll\nVideo' : 'Mute\nAll\nVideo',
+                  text: callState.isMuteAllRemoteVideo ? l10n.unmuteAllVideo : l10n.muteAllVideo,
                   onPressed: () {
                     _callState.muteAllRemoteVideo(!callState.isMuteAllRemoteVideo);
                   },
@@ -324,20 +406,20 @@ class _VideoCallPageState extends State<VideoCallPage> {
               children: [
                 _buildControlButton(
                   icon: callState.isLocalMicrophoneMute ? Icons.mic_off : Icons.mic,
-                  label: 'Mic',
+                  label: l10n.microphone,
                   onPressed: () {
                     _callState.muteLocalAudio(!callState.isLocalMicrophoneMute);
                   },
                 ),
                 _buildControlButton(
                   icon: Icons.call_end,
-                  label: 'End Call',
+                  label: l10n.endCall,
                   backgroundColor: Colors.red,
                   onPressed: _endCall,
                 ),
                 _buildControlButton(
                   icon: callState.isLocalCameraMute ? Icons.videocam_off : Icons.videocam,
-                  label: 'Camera',
+                  label: l10n.camera,
                   onPressed: () {
                     _callState.muteLocalVideo(!callState.isLocalCameraMute);
                   },

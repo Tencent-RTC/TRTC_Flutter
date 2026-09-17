@@ -22,9 +22,6 @@ TXCloudVideoViewChannel::TXCloudVideoViewChannel(flutter::PluginRegistrarWindows
 }
 
 TXCloudVideoViewChannel::~TXCloudVideoViewChannel() {
-  if (method_channel_) {
-    method_channel_->SetMethodCallHandler(nullptr);
-  }
   for (auto& pair : texture_map_) {
     if (render_will_dispose_callback_) {
       render_will_dispose_callback_(pair.second.get());

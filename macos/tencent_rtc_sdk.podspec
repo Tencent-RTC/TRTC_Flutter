@@ -36,6 +36,6 @@ Pod::Spec.new do |s|
                  'Accelerate', 'MetalKit', 'MetalPerformanceShaders'
   
   # SDK 依赖
-  s.dependency 'TXLiteAVSDK_TRTC_Mac', '13.4.21067'
+  s.dependency 'TXLiteAVSDK_TRTC_Mac', '13.5.21355'
 
 end

@@ -70,6 +70,6 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin "Ws2
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(tencent_rtc_sdk_bundled_libraries
-  "${CMAKE_CURRENT_SOURCE_DIR}/lib/txsoundtouch.dll;${CMAKE_CURRENT_SOURCE_DIR}/lib/txffmpeg.dll;${CMAKE_CURRENT_SOURCE_DIR}/lib/liteav.dll;"
+  "${CMAKE_CURRENT_SOURCE_DIR}/lib/txsoundtouch.dll;${CMAKE_CURRENT_SOURCE_DIR}/lib/txffmpeg.dll;${CMAKE_CURRENT_SOURCE_DIR}/lib/liteav.dll;${CMAKE_CURRENT_SOURCE_DIR}/lib/liteav_screen.dll;"
   PARENT_SCOPE
 )

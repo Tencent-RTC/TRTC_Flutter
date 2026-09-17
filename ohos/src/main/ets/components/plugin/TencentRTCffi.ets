@@ -17,7 +17,7 @@ import { TextureRegistry } from '@ohos/flutter_ohos/src/main/ets/view/TextureReg
 /** FfipluginPlugin **/
 export default class TencentRTCOhosPlugin implements FlutterPlugin, MethodCallHandler {
   private static isInitialize: boolean = false;
-
+  private static readonly TEXTURE_BACKGROUND_COLOR: number = 0xFF000000;
   private channel: MethodChannel | null = null;
   private videoViewChannel: MethodChannel | null = null;
   private textureRegistry: TextureRegistry | null = null;
@@ -74,6 +74,7 @@ export default class TencentRTCOhosPlugin implements FlutterPlugin, MethodCallHa
         return;
       }
       let surfaceId = this.textureRegistry!.registerTexture(textureId).getSurfaceId();
+      this.textureRegistry!.setTextureBackGroundColor(textureId, TencentRTCOhosPlugin.TEXTURE_BACKGROUND_COLOR);
       this.textureToSurfaceMap.set(textureId, surfaceId);
       hilog.info(0, "TencentRTCOhosPlugin", "getSurfaceId (new), textureId: %d, surfaceId: %d", textureId, surfaceId)
       result.success(surfaceId);

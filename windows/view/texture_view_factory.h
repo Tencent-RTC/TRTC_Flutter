@@ -49,7 +49,12 @@ class TextureRenderer : public liteav::V2TXLivePlayerObserver {
  private:
   const FlutterDesktopPixelBuffer* CopyPixelBuffer(size_t width, size_t height);
   void NotifySizeChanged(uint32_t width, uint32_t height);
-  void ConvertAndMarkFrame(const char* src_data, uint32_t width, uint32_t height);
+  void ConvertAndMarkFrame(const char* src_data, uint32_t width, uint32_t height,
+                           int pixel_format);
+  static void ConvertI420ToRGBA(const uint8_t* yuv, uint8_t* rgba,
+                                uint32_t width, uint32_t height);
+  static void ConvertBGRA32ToRGBA(const uint8_t* bgra, uint8_t* rgba,
+                                  uint32_t width, uint32_t height);
 
   SP<flutter::MethodChannel<>> method_channel_;
   flutter::PluginRegistrarWindows *registrar_ = nullptr;

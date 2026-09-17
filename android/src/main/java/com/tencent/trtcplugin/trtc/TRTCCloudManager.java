@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import com.tencent.liteav.live.V2TXLivePremierJni;
 import com.tencent.live.beauty.custom.ITXCustomBeautyProcesser;
 import com.tencent.live.beauty.custom.ITXCustomBeautyProcesserFactory;
-import com.tencent.live.beauty.custom.TXCustomBeautyDef;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
@@ -169,25 +168,29 @@ public class TRTCCloudManager {
     private void enableVideoProcessByNative(MethodCall call, MethodChannel.Result result) {
         boolean enable = MethodCallParams.getParam(call, result, "enable");
         ITXCustomBeautyProcesserFactory processFactory = TRTCPlugin.getBeautyProcesserFactory();
-        if (enable) {
-            if (mCustomBeautyProcesser == null) {
-                mCustomBeautyProcesser = processFactory.createCustomBeautyProcesser();
-            }
-            TXCustomBeautyDef.TXCustomBeautyBufferType bufferType = mCustomBeautyProcesser.getSupportedBufferType();
-            TXCustomBeautyDef.TXCustomBeautyPixelFormat pixelFormat = mCustomBeautyProcesser.getSupportedPixelFormat();
-            ProcessVideoFrame processVideo = new ProcessVideoFrame(mCustomBeautyProcesser);
-            int ret = TRTCCloud.sharedInstance(mContext).setLocalVideoProcessListener(ObjectUtils.convertTRTCPixelFormat(pixelFormat),  // CHECKSTYLE:SUPPRESS LineLength
-                    ObjectUtils.convertTRTCBufferType(bufferType), processVideo);
-            result.success(ret);
-        } else {
-            if (mCustomBeautyProcesser != null) {
-                processFactory.destroyCustomBeautyProcesser();
-                mCustomBeautyProcesser = null;
-            }
-            int ret = TRTCCloud.sharedInstance(mContext).setLocalVideoProcessListener(TRTCCloudDef.TRTC_VIDEO_PIXEL_FORMAT_UNKNOWN,  // CHECKSTYLE:SUPPRESS LineLength
-                    TRTCCloudDef.TRTC_VIDEO_BUFFER_TYPE_UNKNOWN, null);
-            result.success(ret);
+        if (processFactory == null) {
+            result.success(null);
+            return;
         }
+        if (enable && mCustomBeautyProcesser == null) {
+            mCustomBeautyProcesser = processFactory.createCustomBeautyProcesser();
+        }
+        if (mCustomBeautyProcesser == null) {
+            result.success(null);
+            return;
+        }
+
+        int pixelFormat = ObjectUtils.convertTRTCPixelFormat(mCustomBeautyProcesser.getSupportedPixelFormat());
+        int bufferType = ObjectUtils.convertTRTCBufferType(mCustomBeautyProcesser.getSupportedBufferType());
+        ProcessVideoFrame listener = enable ? new ProcessVideoFrame(mCustomBeautyProcesser) : null;
+        int ret = TRTCCloud.sharedInstance(mContext)
+                .setLocalVideoProcessListener(pixelFormat, bufferType, listener);
+
+        if (!enable) {
+            mCustomBeautyProcesser = null;
+            processFactory.destroyCustomBeautyProcesser();
+        }
+        result.success(ret);
     }
 
     private void getCustomVideoProcessListener(MethodCall call, MethodChannel.Result result) {

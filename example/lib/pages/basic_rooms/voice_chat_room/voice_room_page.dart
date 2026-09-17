@@ -1,15 +1,17 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'voice_room_state.dart';
 
 class VoiceRoomPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final RoomIdSpec roomIdSpec;
 
   const VoiceRoomPage({
     Key? key,
     required this.userId,
-    required this.roomId,
+    required this.roomIdSpec,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
     state = VoiceRoomState();
     await state.initializeRoom(
       userId: widget.userId,
-      roomId: widget.roomId,
+      roomIdSpec: widget.roomIdSpec,
     );
     if (mounted) {
       setState(() {
@@ -142,7 +144,9 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            user.isLocalUser ? '${user.userId}(Me)' : user.userId,
+            user.isLocalUser
+                ? '${user.userId}${AppLocalizations.of(context)!.meSuffix}'
+                : user.userId,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
@@ -173,10 +177,10 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
             color: Colors.white54,
             size: 24,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
-            'Waiting to join',
-            style: TextStyle(
+            AppLocalizations.of(context)!.waitingToJoin,
+            style: const TextStyle(
               color: Colors.white54,
               fontSize: 12,
             ),
@@ -187,6 +191,7 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
   }
 
   Widget _buildRoomHeader(VoiceRoomState state) {
+    final l10n = AppLocalizations.of(context)!;
     return Positioned(
       top: 0,
       left: 0,
@@ -218,7 +223,7 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Room ID: ${state.roomId}',
+                    l10n.roomIdDisplay(state.roomId ?? ''),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -227,7 +232,7 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    state.statusMessage,
+                    state.status.toText(l10n),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.8),
                       fontSize: 12,
@@ -245,7 +250,7 @@ class _VoiceRoomPageState extends State<VoiceRoomPage> {
               child: InkWell(
                 onTap: state.isAnchor || state.canBecomeAnchor ? () => state.switchRole() : null,
                 child: Text(
-                  state.isAnchor ? 'Anchor' : 'Audience',
+                  state.isAnchor ? l10n.anchor : l10n.audience,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,

@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.cer",
+          "certpath": "keystore/liteav_debug_0412.cer",
+          "storePassword": "0000001A2793E648224F0CFE1920E171BEF4093964B98D4149F051F4371FA05BC4B7D8FCDA73985C2163",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A19B3F3B1E0DA97E11AD67ABC5EFFAE06EEEFD123902AA0B11BFDBF0BC85D55DDACEB60F10583",
-          "profile": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.p7b",
+          "keyPassword": "0000001A6D9BF44A67516D951001C65D8357E6C8B12BA71B9D326E5575845D059F151E605DBB5DD607A4",
+          "profile": "keystore/liteav_flutter_demo_0412Debug.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/iveshe/.ohos/config/default_ohos_q6ry0Mzbq1BeZJvTVqSbbsMWqoRJODPFg96TPNdHa0g=.p12",
-          "storePassword": "0000001AC4CD9E3FD3EC17055F0084302A55133446FBB52A2C22EB8EEAE5FBC9EEAA1FE84780855340DE"
+          "storeFile": "keystore/liteav.p12"
         }
       }
     ],

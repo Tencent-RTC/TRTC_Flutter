@@ -1,50 +1,52 @@
+import 'dart:convert';
+import 'package:api_example/common/room_id_spec.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
-import 'package:api_example/debug/generate_test_user_sig.dart';
-import 'package:api_example/common/user_list_state.dart';
-import 'dart:convert';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
+import '../../../debug/generate_test_user_sig.dart';
 
 class ConnectOtherRoomState extends ChangeNotifier {
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  ConnectOtherRoomState({required this.userId, required this.roomIdSpec});
+
   TRTCCloud? _trtcCloud;
   TRTCCloudListener? _listener;
-
-  String? _userId;
-  int? _roomId;
-  String _statusMessage = 'Not in room';
   bool _isEnterRoom = false;
-  bool _isConnecting = false;
-  bool _isConnected = false;
-  String? _targetUserId;
-  int? _targetRoomId;
+  int? _localViewId;
 
-  UserListState? userListState;
-
-  String? get userId => _userId;
-  int? get roomId => _roomId;
-  String get statusMessage => _statusMessage;
   bool get isEnterRoom => _isEnterRoom;
-  bool get isConnecting => _isConnecting;
-  bool get isConnected => _isConnected;
-  String? get targetUserId => _targetUserId;
-  int? get targetRoomId => _targetRoomId;
 
-  Future<void> enterRoom(String userId, int roomId) async {
-    _userId = userId;
-    _roomId = roomId;
-    _statusMessage = 'Entering room...';
-    notifyListeners();
+  final Map<String, PkRemoteUser> _remoteUsers = {};
+  List<PkRemoteUser> get remoteUsers => _remoteUsers.values.toList();
+
+  ValueNotifier<bool> isConnecting = ValueNotifier(false);
+  ValueNotifier<bool> isConnected = ValueNotifier(false);
+  ValueNotifier<String?> resultEvent = ValueNotifier(null);
+
+  /// The connected anchor's userId (set on success).
+  String? _connectedUserId;
+  String? get connectedUserId => _connectedUserId;
+
+  Future<void> initialize() async {
     _trtcCloud = await TRTCCloud.sharedInstance();
-    _listener ??= _getTRTCCloudListener();
+    _listener = _getListener();
     _trtcCloud?.registerListener(_listener!);
-    userListState = UserListState(_trtcCloud!);
-    userListState?.setLocalUser(userId);
+    _enterRoom();
+    notifyListeners();
+  }
+
+  void _enterRoom() {
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: userId,
-        roomId: roomId,
+        roomId: roomIdSpec.effectiveRoomId,
+        strRoomId: roomIdSpec.effectiveStrRoomId,
         userSig: GenerateTestUserSig.genTestSig(userId),
         role: TRTCRoleType.anchor,
       ),
@@ -53,15 +55,33 @@ class ConnectOtherRoomState extends ChangeNotifier {
     _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
   }
 
-  void connectOtherRoom(int targetRoomId, String targetUserId) {
-    if (_trtcCloud == null) return;
-    _isConnecting = true;
-    _statusMessage = 'Connecting to other room...';
-    _targetRoomId = targetRoomId;
-    _targetUserId = targetUserId;
-    notifyListeners();
+  void setLocalViewId(int viewId) {
+    if (_localViewId == viewId) return;
+    if (!TRTCCloudVideoView.containsViewId(viewId)) return;
+    _localViewId = viewId;
+    _trtcCloud?.startLocalPreview(true, viewId);
+  }
+
+  void setRemoteViewId(String remoteUserId, int viewId) {
+    if (!TRTCCloudVideoView.containsViewId(viewId)) return;
+    final user = _remoteUsers[remoteUserId];
+    if (user == null || user.viewId == viewId) return;
+    user.viewId = viewId;
+    if (user.isVideoAvailable) {
+      _trtcCloud?.startRemoteView(remoteUserId, TRTCVideoStreamType.big, viewId);
+    }
+  }
+
+  /// Connect to another room for cross-room PK.
+  /// Supports both numeric and string room IDs.
+  void connectOtherRoom(String targetRoomId, String targetUserId) {
+    if (_trtcCloud == null || targetRoomId.isEmpty || targetUserId.isEmpty) return;
+    isConnecting.value = true;
+    resultEvent.value = null;
+
+    final parsed = int.tryParse(targetRoomId);
     final jsonStr = jsonEncode({
-      'roomId': targetRoomId,
+      if (parsed != null) 'roomId': parsed else 'strRoomId': targetRoomId,
       'userId': targetUserId,
     });
     _trtcCloud?.connectOtherRoom(jsonStr);
@@ -69,59 +89,77 @@ class ConnectOtherRoomState extends ChangeNotifier {
 
   void disconnectOtherRoom() {
     if (_trtcCloud == null) return;
-    _isConnecting = true;
-    _statusMessage = 'Disconnecting from other room...';
-    notifyListeners();
+    isConnecting.value = true;
+    resultEvent.value = null;
     _trtcCloud?.disconnectOtherRoom();
   }
 
   void exitRoom() {
+    if (isConnected.value) {
+      _trtcCloud?.disconnectOtherRoom();
+    }
+    _trtcCloud?.stopAllRemoteView();
+    _trtcCloud?.stopLocalPreview();
     _trtcCloud?.exitRoom();
     _isEnterRoom = false;
-    _statusMessage = 'Exited room';
+    _remoteUsers.clear();
     notifyListeners();
   }
 
-  TRTCCloudListener _getTRTCCloudListener() {
+  TRTCCloudListener _getListener() {
     return TRTCCloudListener(
+      onError: (code, msg) => debugPrint('ConnectOtherRoom onError: $code, $msg'),
       onEnterRoom: (result) {
-        if (result > 0) {
-          _isEnterRoom = true;
-          _statusMessage = 'Enter room success';
-        } else {
-          _isEnterRoom = false;
-          _statusMessage = 'Enter room failed: $result';
-        }
-        notifyListeners();
-      },
-      onConnectOtherRoom: (userId, errCode, errMsg) {
-        _isConnecting = false;
-        if (errCode == 0) {
-          _isConnected = true;
-          _statusMessage = 'Connect other room success';
-        } else {
-          _isConnected = false;
-          _statusMessage = 'Connect other room failed: $errMsg($errCode)';
-        }
-        notifyListeners();
-      },
-      onDisconnectOtherRoom: (errCode, errMsg) {
-        _isConnecting = false;
-        if (errCode == 0) {
-          _isConnected = false;
-          _statusMessage = 'Disconnect other room success';
-        } else {
-          _statusMessage = 'Disconnect other room failed: $errMsg($errCode)';
-        }
+        _isEnterRoom = result > 0;
         notifyListeners();
       },
       onExitRoom: (reason) {
         _isEnterRoom = false;
-        _statusMessage = 'Exited room';
         notifyListeners();
       },
-      onError: (code, msg) {
-        _statusMessage = 'Error: $msg($code)';
+      onRemoteUserEnterRoom: (remoteUserId) {
+        _remoteUsers[remoteUserId] = PkRemoteUser(userId: remoteUserId);
+        notifyListeners();
+      },
+      onRemoteUserLeaveRoom: (remoteUserId, reason) {
+        _remoteUsers.remove(remoteUserId);
+        notifyListeners();
+      },
+      onUserVideoAvailable: (remoteUserId, available) {
+        final user = _remoteUsers[remoteUserId] ??
+            (_remoteUsers[remoteUserId] = PkRemoteUser(userId: remoteUserId));
+        user.isVideoAvailable = available;
+        if (available) {
+          if (user.viewId != null && user.viewId! > 0) {
+            _trtcCloud?.startRemoteView(
+                remoteUserId, TRTCVideoStreamType.big, user.viewId);
+          }
+        } else {
+          _trtcCloud?.stopRemoteView(remoteUserId, TRTCVideoStreamType.big);
+        }
+        notifyListeners();
+      },
+      onConnectOtherRoom: (remoteUserId, errCode, errMsg) {
+        isConnecting.value = false;
+        if (errCode == 0) {
+          isConnected.value = true;
+          _connectedUserId = remoteUserId;
+          resultEvent.value = 'connect_success';
+        } else {
+          isConnected.value = false;
+          resultEvent.value = 'connect_failed:$errCode:$errMsg';
+        }
+        notifyListeners();
+      },
+      onDisconnectOtherRoom: (errCode, errMsg) {
+        isConnecting.value = false;
+        isConnected.value = false;
+        _connectedUserId = null;
+        if (errCode == 0) {
+          resultEvent.value = 'disconnect_success';
+        } else {
+          resultEvent.value = 'disconnect_failed:$errCode:$errMsg';
+        }
         notifyListeners();
       },
     );
@@ -129,8 +167,17 @@ class ConnectOtherRoomState extends ChangeNotifier {
 
   @override
   void dispose() {
-    userListState?.dispose();
-    TRTCCloud.destroySharedInstance();
+    _trtcCloud?.stopAllRemoteView();
+    _trtcCloud?.stopLocalPreview();
+    _trtcCloud?.exitRoom();
+    if (_listener != null) _trtcCloud?.unRegisterListener(_listener!);
     super.dispose();
   }
-} 
+}
+
+class PkRemoteUser {
+  final String userId;
+  int? viewId;
+  bool isVideoAvailable = false;
+  PkRemoteUser({required this.userId});
+}

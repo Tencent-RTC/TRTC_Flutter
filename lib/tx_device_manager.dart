@@ -4,6 +4,10 @@ part 'tx_device_manager.g.dart';
 /// Audio route (the route via which audio is played)
 @JsonEnum(alwaysCreate: true)
 enum TXAudioRoute {
+  /// - Unknown: the default route device.
+  @JsonValue(-1)
+  unknown,
+
   /// - Speakerphone: the speaker at the bottom is used for playback (hands-free). With relatively high volume, it is used to play music out loud.
   @JsonValue(0)
   speakerPhone,
