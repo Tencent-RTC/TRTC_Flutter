@@ -1,3 +1,6 @@
+import 'package:api_example/common/scene_entry_scaffold.dart';
+import 'package:api_example/common/user_room_id_form.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'video_call_page.dart';
@@ -10,10 +13,10 @@ class VideoCallPreparePage extends StatefulWidget {
 }
 
 class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<UserRoomIdFormState> _formKey = GlobalKey();
   bool _sdkReady = false;
+
+  static const _accentColor = Color(0xFF1565C0);
 
   @override
   void initState() {
@@ -26,83 +29,32 @@ class _VideoCallPreparePageState extends State<VideoCallPreparePage> {
     if (mounted) setState(() => _sdkReady = true);
   }
 
-  @override
-  void dispose() {
-    _userIdController.dispose();
-    _roomIdController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Video Call Setup'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _userIdController,
-                decoration: const InputDecoration(
-                  labelText: 'User ID',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter user ID';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _roomIdController,
-                decoration: const InputDecoration(
-                  labelText: 'Room ID',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.meeting_room),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter room ID';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: _startCall,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: const Text('Start Call'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _startCall() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState!.save();
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => VideoCallPage(
-            userId: _userIdController.text,
-            roomId: int.parse(_roomIdController.text),
+            userId: _formKey.currentState!.userId,
+            roomIdSpec: _formKey.currentState!.roomIdSpec,
           ),
         ),
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return SceneEntryScaffold(
+      icon: Icons.videocam_rounded,
+      accentColor: _accentColor,
+      title: l10n.videoCallSetup,
+      subtitle: l10n.descVideoCall,
+      form: UserRoomIdForm(key: _formKey),
+      actionLabel: l10n.startCall,
+      onAction: _sdkReady ? _startCall : null,
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
@@ -47,11 +48,11 @@ class _CameraDeviceTestPageState extends State<CameraDeviceTestPage> {
 
   void _startTest() {
     if (_viewId == null || _deviceManager == null) {
-      _appendLog('预览尚未就绪，请稍候');
+      _appendLog(AppLocalizations.of(context)!.previewNotReady);
       return;
     }
     final code = _deviceManager!.startCameraDeviceTest(_viewId!);
-    _appendLog('startCameraDeviceTest → code=$code');
+    _appendLog(AppLocalizations.of(context)!.startCameraDeviceTestLog(code));
     if (code == 0) {
       setState(() => _isTesting = true);
     }
@@ -59,7 +60,7 @@ class _CameraDeviceTestPageState extends State<CameraDeviceTestPage> {
 
   void _stopTest() {
     _deviceManager?.stopCameraDeviceTest();
-    _appendLog('stopCameraDeviceTest');
+    _appendLog(AppLocalizations.of(context)!.stopCameraDeviceTestLog);
     setState(() => _isTesting = false);
   }
 
@@ -77,8 +78,9 @@ class _CameraDeviceTestPageState extends State<CameraDeviceTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Camera Device Test')),
+      appBar: AppBar(title: Text(l10n.cameraDeviceTestTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -106,22 +108,22 @@ class _CameraDeviceTestPageState extends State<CameraDeviceTestPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isTesting ? null : _startTest,
-                    child: const Text('Start Test'),
+                    child: Text(l10n.startTestButton),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isTesting ? _stopTest : null,
-                    child: const Text('Stop Test'),
+                    child: Text(l10n.stopTestButton),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
-              child: Text('Logs:'),
+              child: Text(l10n.logsLabel),
             ),
             const SizedBox(height: 8),
             Expanded(

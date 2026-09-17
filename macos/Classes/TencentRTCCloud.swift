@@ -9,6 +9,20 @@ import Cocoa
 import FlutterMacOS
 import TXLiteAVSDK_TRTC_Mac
 
+private typealias TRTCCameraTestVideoFrameCallback = @convention(c) (
+    UnsafePointer<UInt8>?, UInt32, Int32, UInt32, UInt32
+) -> Void
+
+@_silgen_name("trtc_camera_device_test_start")
+private func trtc_camera_device_test_start(
+    _ callback: TRTCCameraTestVideoFrameCallback?
+) -> Int32
+
+@_silgen_name("trtc_camera_device_test_stop")
+private func trtc_camera_device_test_stop() -> Int32
+
+private var g_cameraTestRender: TextureRender?
+
 public class TencentRTCCloud: NSObject, FlutterPlugin {
     
     private let channel: FlutterMethodChannel
@@ -141,30 +155,39 @@ public class TencentRTCCloud: NSObject, FlutterPlugin {
             result(-1)
             return
         }
-        if localDispatcher == nil {
-            localDispatcher = TRTCVideoFrameDispatcher(userId: "local")
+
+        if g_cameraTestRender != nil {
+           result(-1)
+           return
         }
-        TRTCCloud.sharedInstance().setLocalVideoRenderDelegate(localDispatcher, pixelFormat: ._32BGRA, bufferType: .pixelBuffer)
-        localDispatcher!.setRender(render, streamType: .big)
-        let code = TRTCCloud.sharedInstance().getDeviceManager().startCameraDeviceTest(NSView())
+
+        g_cameraTestRender = render      // 强引用保活 + 供 C 回调转发定位
+
+        let code = trtc_camera_device_test_start({ data, length, format, width, height in
+            guard let data = data, let render = g_cameraTestRender else { return }
+            render.onVideoBuffer(data, length: length, format: format, width: width, height: height)
+        })
+
+        // 启动失败（含已在运行被拒）时回滚，避免状态残留
+        if code != 0 {
+            g_cameraTestRender = nil
+        }
         result(Int(code))
     }
 
     private func stopCameraDeviceTest(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        TRTCCloud.sharedInstance().getDeviceManager().stopCameraDeviceTest()
-        if let dispatcher = localDispatcher {
-            dispatcher.removeRender(streamType: .big)
-            if dispatcher.isEmpty {
-                TRTCCloud.sharedInstance().setLocalVideoRenderDelegate(nil, pixelFormat: ._32BGRA, bufferType: .pixelBuffer)
-                localDispatcher = nil
-            }
-        }
-        result(nil)
+        let code = trtc_camera_device_test_stop()
+        g_cameraTestRender = nil
+        result(Int(code))
     }
 
     // MARK: - Lifecycle
 
     private func destroySharedInstance(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if g_cameraTestRender != nil {
+            _ = trtc_camera_device_test_stop()
+            g_cameraTestRender = nil
+        }
         localDispatcher?.disposeAll()
         if localDispatcher != nil {
             TRTCCloud.sharedInstance().setLocalVideoRenderDelegate(nil, pixelFormat: ._32BGRA, bufferType: .pixelBuffer)
@@ -197,6 +220,10 @@ public class TencentRTCCloud: NSObject, FlutterPlugin {
     }
 
     private func removeRenderFromDispatchers(_ render: TextureRender) {
+        if g_cameraTestRender === render {
+            _ = trtc_camera_device_test_stop()
+            g_cameraTestRender = nil
+        }
         if let dispatcher = localDispatcher {
             dispatcher.onRenderWillDispose(render)
             if dispatcher.isEmpty {

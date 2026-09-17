@@ -88,7 +88,7 @@ class V2TXLivePremier {
  * @param url license的地址。
  * @param key license的秘钥。
  */
-#if TARGET_PLATFORM_PHONE
+#if TARGET_PLATFORM_PHONE || TARGET_PLATFORM_DESKTOP
     virtual void setLicense(const char* url, const char* key) = 0;
 #endif
 
@@ -154,7 +154,7 @@ class V2TXLivePremierObserver {
  * @param result 设置 licence 结果 0 成功，负数失败。
  * @param reason 设置 licence 失败原因。
  */
-#if TARGET_PLATFORM_PHONE
+#if TARGET_PLATFORM_PHONE || TARGET_PLATFORM_DESKTOP
     virtual void onLicenceLoaded(int result, const char* msg) {
     }
 #endif

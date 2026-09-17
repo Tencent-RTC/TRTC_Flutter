@@ -121,6 +121,13 @@ void TrtcPlugin::removeTextureRenderFromDispatchers(TextureRenderer* render) {
       ++d_it;
     }
   }
+  if (device_test_dispatcher_) {
+    device_test_dispatcher_->onRenderWillDispose(render);
+    if (device_test_dispatcher_->isEmpty()) {
+      getTRTCShareInstance()->getDeviceManager()->stopCameraDeviceTest();
+      device_test_dispatcher_.reset();
+    }
+  }
 }
 
 // MARK: - Dispatcher-pattern methods (aligned with Android/iOS)
@@ -129,7 +136,12 @@ void TrtcPlugin::setLocalTextureRender(
   const flutter::MethodCall<flutter::EncodableValue> &method_call,
   std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-  auto viewId = std::get<int64_t>(methodParams[flutter::EncodableValue("viewId")]);
+  auto viewIdIt = methodParams.find(flutter::EncodableValue("viewId"));
+  if (viewIdIt == methodParams.end() || viewIdIt->second.IsNull()) {
+    result->Success(nullptr);
+    return;
+  }
+  int64_t viewId = viewIdIt->second.LongValue();
   auto streamType = std::get<int>(methodParams[flutter::EncodableValue("streamType")]);
 
   TextureRenderer* render = video_view_channel_->getTextureRenderer(viewId);
@@ -153,7 +165,12 @@ void TrtcPlugin::setRemoteTextureRender(
   const flutter::MethodCall<flutter::EncodableValue> &method_call,
   std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-  auto viewId = std::get<int64_t>(methodParams[flutter::EncodableValue("viewId")]);
+  auto viewIdIt = methodParams.find(flutter::EncodableValue("viewId"));
+  if (viewIdIt == methodParams.end() || viewIdIt->second.IsNull()) {
+    result->Success(nullptr);
+    return;
+  }
+  int64_t viewId = viewIdIt->second.LongValue();
   auto user_id = std::get<std::string>(methodParams[flutter::EncodableValue("userId")]);
   auto streamType = std::get<int>(methodParams[flutter::EncodableValue("streamType")]);
 
@@ -217,7 +234,12 @@ void TrtcPlugin::startCameraDeviceTest(
   const flutter::MethodCall<flutter::EncodableValue> &method_call,
   std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   auto methodParams = std::get<flutter::EncodableMap>(*method_call.arguments());
-  auto viewId = std::get<int64_t>(methodParams[flutter::EncodableValue("viewId")]);
+  auto viewIdIt = methodParams.find(flutter::EncodableValue("viewId"));
+  if (viewIdIt == methodParams.end() || viewIdIt->second.IsNull()) {
+    result->Success(flutter::EncodableValue(-1));
+    return;
+  }
+  int64_t viewId = viewIdIt->second.LongValue();
 
   TextureRenderer* render = video_view_channel_->getTextureRenderer(viewId);
   if (render == nullptr) {
@@ -225,12 +247,12 @@ void TrtcPlugin::startCameraDeviceTest(
     return;
   }
 
-  if (!local_dispatcher_) {
-    local_dispatcher_ = MK_SP<trtc_sdk_flutter::VideoFrameDispatcher>("local");
+  if (!device_test_dispatcher_) {
+    device_test_dispatcher_ = MK_SP<trtc_sdk_flutter::VideoFrameDispatcher>("device_test");
   }
-  local_dispatcher_->setRender(static_cast<int>(TRTCVideoStreamTypeBig), render);
+  device_test_dispatcher_->setRender(static_cast<int>(TRTCVideoStreamTypeBig), render);
 
-  int code = getTRTCShareInstance()->getDeviceManager()->startCameraDeviceTest(local_dispatcher_.get());
+  int code = getTRTCShareInstance()->getDeviceManager()->startCameraDeviceTest(device_test_dispatcher_.get());
   result->Success(flutter::EncodableValue(code));
 }
 
@@ -238,10 +260,10 @@ void TrtcPlugin::stopCameraDeviceTest(
   const flutter::MethodCall<flutter::EncodableValue> &method_call,
   std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   getTRTCShareInstance()->getDeviceManager()->stopCameraDeviceTest();
-  if (local_dispatcher_) {
-    local_dispatcher_->removeRender(static_cast<int>(TRTCVideoStreamTypeBig));
-    if (local_dispatcher_->isEmpty()) {
-      local_dispatcher_.reset();
+  if (device_test_dispatcher_) {
+    device_test_dispatcher_->removeRender(static_cast<int>(TRTCVideoStreamTypeBig));
+    if (device_test_dispatcher_->isEmpty()) {
+      device_test_dispatcher_.reset();
     }
   }
   result->Success(nullptr);
@@ -251,7 +273,12 @@ void TrtcPlugin::getCustomVideoFrameListener(
   const flutter::MethodCall<flutter::EncodableValue> &method_call,
   std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   auto arguments = std::get<flutter::EncodableMap>(*method_call.arguments());
-  auto texture_id = std::get<int64_t>(arguments[flutter::EncodableValue("textureId")]);
+  auto textureIdIt = arguments.find(flutter::EncodableValue("textureId"));
+  if (textureIdIt == arguments.end() || textureIdIt->second.IsNull()) {
+    result->Error("INVALID_ARGUMENT", "No observer found for textureId");
+    return;
+  }
+  int64_t texture_id = textureIdIt->second.LongValue();
 
   TextureRenderer* texture_renderer = video_view_channel_->getTextureRenderer(texture_id);
   if (texture_renderer == nullptr) {

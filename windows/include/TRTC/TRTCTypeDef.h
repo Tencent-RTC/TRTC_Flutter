@@ -1326,6 +1326,12 @@ struct TRTCMixUser {
     /// 【特别说明】水印图和占位图暂时不支持设置 renderMode，默认强制拉伸处理。
     uint32_t renderMode;
 
+    /// 【字段含义】视频画面圆角半径（单位：像素）。上行视频流在按照 renderMode 渲染后，对其最终画面进行圆角裁剪。
+    /// 【默认取值】0，即不进行圆角处理。
+    /// 【取值范围】[0, min(width, height) / 2]，即最大不超过画面短边的一半。
+    /// 【特别说明】该参数仅在 renderMode 为 0（裁剪模式）时生效。
+    uint32_t cornerRadius;
+
     /// 【字段含义】该路音频参与混音时的音量等级（取值范围：[0, 100]）。
     /// 【默认取值】默认值：100。
     uint32_t soundLevel;
@@ -1345,7 +1351,7 @@ struct TRTCMixUser {
     ///   - image 仅在 inputType 为 {@link TRTCMixInputTypePureAudio} 或者 {@link TRTCMixInputTypeWatermark} 时才生效。
     const char *image;
 
-    TRTCMixUser() : userId(nullptr), roomId(nullptr), rect(), zOrder(0), streamType(TRTCVideoStreamTypeBig), pureAudio(false), inputType(TRTCMixInputTypeUndefined), renderMode(0), soundLevel(100), image(nullptr) {
+    TRTCMixUser() : userId(nullptr), roomId(nullptr), rect(), zOrder(0), streamType(TRTCVideoStreamTypeBig), pureAudio(false), inputType(TRTCMixInputTypeUndefined), renderMode(0), cornerRadius(0), soundLevel(100), image(nullptr) {
         rect.left = 0;
         rect.top = 0;
         rect.right = 0;
@@ -1849,6 +1855,11 @@ struct TRTCVideoLayout {
     /// 【推荐取值】填充（画面可能会被拉伸裁剪）或适应（画面可能会有黑边），默认值：{@link TRTCVideoFillMode_Fill}。
     TRTCVideoFillMode fillMode;
 
+    /// 【字段含义】视频画面圆角半径（单位：像素）。上行视频流在按照 fillMode 渲染后，对其最终画面进行圆角裁剪。
+    /// 【默认取值】0，即不进行圆角处理。
+    /// 【取值范围】[0, min(width, height) / 2]，即最大不超过画面短边的一半。
+    uint32_t cornerRadius;
+
     /// 【字段含义】指定混合画面的底色颜色。
     /// 【推荐取值】默认值：0x000000 代表黑色。格式为十六进制数字，例如：“0x61B9F1” 代表 RGB 分别为 (97,158,241)。
     uint32_t backgroundColor;
@@ -1868,7 +1879,7 @@ struct TRTCVideoLayout {
     /// 【字段含义】指定该路画面是主路画面（{@link TRTCVideoStreamTypeBig}）还是辅路画面（{@link TRTCVideoStreamTypeSub}）。
     TRTCVideoStreamType fixedVideoStreamType;
 
-    TRTCVideoLayout() : zOrder(0), fillMode(TRTCVideoFillMode_Fill), backgroundColor(0), placeHolderImage(nullptr), fixedVideoUser(nullptr), fixedVideoStreamType(TRTCVideoStreamTypeBig) {
+    TRTCVideoLayout() : zOrder(0), fillMode(TRTCVideoFillMode_Fill), cornerRadius(0), backgroundColor(0), placeHolderImage(nullptr), fixedVideoUser(nullptr), fixedVideoStreamType(TRTCVideoStreamTypeBig) {
     }
 };
 

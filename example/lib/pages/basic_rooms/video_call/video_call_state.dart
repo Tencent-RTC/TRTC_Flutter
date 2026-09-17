@@ -1,8 +1,11 @@
+import 'package:api_example/common/call_status.dart';
+import 'package:api_example/common/room_id_spec.dart';
 import 'package:api_example/debug/generate_test_user_sig.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'package:tencent_rtc_sdk/tx_device_manager.dart';
 
 class VideoCallState extends ChangeNotifier {
@@ -11,15 +14,24 @@ class VideoCallState extends ChangeNotifier {
   bool _isMuteAllRemoteVideo = false;
   bool _isMuteAllRemoteAudio = false;
   String? _localUserId;
-  int? _roomId;
+  RoomIdSpec _roomIdSpec = const RoomIdSpec();
   int _localViewId = 0;
   bool _isCallActive = false;
   TRTCCloud? _trtcCloud;
   TXDeviceManager? _deviceManager;
   bool _isInitialized = false;
   final Map<String, RemoteUserState> _remoteUsers = {};
-  String _statusMessage = 'Preparing...';
+  CallStatus _status = CallStatus.preparing;
   bool _isEnterRoomSuccess = false;
+
+  // Connection / quality monitoring state
+  String _connectionState = 'normal'; // normal | reconnecting | lost | recovered
+  String? _lastWarning;
+  int? _rtt;
+  int? _upLoss;
+  int? _downLoss;
+  int? _appCpu;
+  final List<FrameEvent> _frameEvents = [];
 
   // Getters
   bool get isLocalCameraMute => _isLocalCameraMute;
@@ -27,24 +39,36 @@ class VideoCallState extends ChangeNotifier {
   bool get isMuteAllRemoteVideo => _isMuteAllRemoteVideo;
   bool get isMuteAllRemoteAudio => _isMuteAllRemoteAudio;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomIdSpec.display;
   int get localViewId => _localViewId;
   bool get isCallActive => _isCallActive;
   List<RemoteUserState> get remoteUsers => _remoteUsers.values.toList();
   bool get isInitialized => _isInitialized;
-  String get statusMessage => _statusMessage;
+  CallStatus get status => _status;
   bool get isEnterRoomSuccess => _isEnterRoomSuccess;
+  String get connectionState => _connectionState;
+  String? get lastWarning => _lastWarning;
+  int? get rtt => _rtt;
+  int? get upLoss => _upLoss;
+  int? get downLoss => _downLoss;
+  int? get appCpu => _appCpu;
+  List<FrameEvent> get frameEvents => List.unmodifiable(_frameEvents);
+
+  void _addFrameEvent(FrameEvent event) {
+    _frameEvents.insert(0, event);
+    if (_frameEvents.length > 10) _frameEvents.removeLast();
+  }
 
   TRTCCloudListener? _listener;
 
   Future<void> initializeCall({
     required String userId,
-    required int roomId,
+    required RoomIdSpec roomIdSpec,
   }) async {
     _localUserId = userId;
-    _roomId = roomId;
+    _roomIdSpec = roomIdSpec;
     _isCallActive = true;
-    _statusMessage = 'Initializing...';
+    _status = CallStatus.initializing;
     notifyListeners();
 
     await _initializeTRTC();
@@ -62,11 +86,12 @@ class VideoCallState extends ChangeNotifier {
       _trtcCloud?.registerListener(_listener!);
     }
 
-    _statusMessage = 'Entering room...';
+    _status = CallStatus.enteringRoom;
     _trtcCloud?.enterRoom(TRTCParams(
       sdkAppId: GenerateTestUserSig.sdkAppId,
       userId: _localUserId ?? "",
-      roomId: roomId ?? 123456,
+      roomId: _roomIdSpec.effectiveRoomId,
+      strRoomId: _roomIdSpec.effectiveStrRoomId,
       role: TRTCRoleType.anchor,
       userSig: GenerateTestUserSig.genTestSig(_localUserId!)
     ), TRTCAppScene.videoCall);
@@ -76,35 +101,95 @@ class VideoCallState extends ChangeNotifier {
   _getTRTCCloudListener() {
     return _listener ??= TRTCCloudListener(
       onError: (errorCode, errorMsg) {
-        _statusMessage = 'Error: $errorMsg';
+        _status = CallStatus.error(errorMsg);
         notifyListeners();
       },
       onEnterRoom: (result) {
         if (result > 0) {
-          _statusMessage = 'Room entered successfully';
+          _status = CallStatus.roomEnteredSuccess;
           _isEnterRoomSuccess = true;
         } else {
-          _statusMessage = 'Failed to enter room: $result';
+          _status = CallStatus.failedToEnterRoom(result);
           _isEnterRoomSuccess = false;
         }
         notifyListeners();
       },
       onRemoteUserEnterRoom: (userId) {
         addRemoteUser(userId);
-        _statusMessage = 'User $userId joined the room';
+        _status = CallStatus.userJoined(userId);
         notifyListeners();
       },
       onRemoteUserLeaveRoom: (userId, reason) {
         removeRemoteUser(userId);
-        _statusMessage = 'User $userId left the room';
+        _status = CallStatus.userLeft(userId);
         notifyListeners();
       },
       onUserVideoAvailable: (userId, available) {
-        print("object: $userId, $available");
         updateRemoteUserCameraState(userId, !available);
       },
       onUserAudioAvailable: (userId, available) {
         updateRemoteUserMicrophoneState(userId, !available);
+      },
+      onWarning: (warningCode, warningMsg) {
+        _lastWarning = '$warningCode: $warningMsg';
+        notifyListeners();
+      },
+      onTryToReconnect: () {
+        _connectionState = 'reconnecting';
+        notifyListeners();
+      },
+      onConnectionLost: () {
+        _connectionState = 'lost';
+        notifyListeners();
+      },
+      onConnectionRecovery: () {
+        _connectionState = 'recovered';
+        notifyListeners();
+      },
+      onStatistics: (statistics) {
+        _rtt = statistics.rtt;
+        _upLoss = statistics.upLoss;
+        _downLoss = statistics.downLoss;
+        _appCpu = statistics.appCpu;
+        notifyListeners();
+      },
+      onSendFirstLocalVideoFrame: (streamType) {
+        _addFrameEvent(FrameEvent.local('localVideo'));
+        notifyListeners();
+      },
+      onSendFirstLocalAudioFrame: () {
+        _addFrameEvent(FrameEvent.local('localAudio'));
+        notifyListeners();
+      },
+      onFirstVideoFrame: (userId, streamType, width, height) {
+        _addFrameEvent(FrameEvent.remote('remoteVideo', userId));
+        notifyListeners();
+      },
+      onFirstAudioFrame: (userId) {
+        _addFrameEvent(FrameEvent.remote('remoteAudio', userId));
+        notifyListeners();
+      },
+      onUserVideoSizeChanged: (userId, streamType, newWidth, newHeight) {
+        final user = _remoteUsers[userId];
+        if (user != null) {
+          user.videoWidth = newWidth;
+          user.videoHeight = newHeight;
+          notifyListeners();
+        }
+      },
+      onRemoteVideoStatusUpdated: (userId, streamType, status, reason) {
+        final user = _remoteUsers[userId];
+        if (user != null) {
+          user.isVideoBuffering = status == TRTCAVStatusType.loading;
+          notifyListeners();
+        }
+      },
+      onRemoteAudioStatusUpdated: (userId, status, reason) {
+        final user = _remoteUsers[userId];
+        if (user != null) {
+          user.isAudioBuffering = status == TRTCAVStatusType.loading;
+          notifyListeners();
+        }
       },
     );
   }
@@ -112,7 +197,7 @@ class VideoCallState extends ChangeNotifier {
   stopAllRemoteView() {
     _trtcCloud?.stopAllRemoteView();
   }
-  
+
   muteAllRemoteAudio(bool mute) {
     if (_isMuteAllRemoteAudio != mute && _trtcCloud != null) {
       _isMuteAllRemoteAudio = mute;
@@ -120,7 +205,7 @@ class VideoCallState extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   muteAllRemoteVideo(bool mute) {
     if (_isMuteAllRemoteVideo != mute && _trtcCloud != null) {
       _isMuteAllRemoteVideo = mute;
@@ -132,6 +217,8 @@ class VideoCallState extends ChangeNotifier {
   muteLocalVideo(bool mute) {
     if (_isLocalCameraMute != mute && _trtcCloud != null) {
       _isLocalCameraMute = mute;
+      // Software-level mute: doesn't stop/restart the camera hardware,
+      // so the view and startLocalPreview are only called once.
       _trtcCloud?.muteLocalVideo(TRTCVideoStreamType.big, mute);
       notifyListeners();
     }
@@ -185,15 +272,18 @@ class VideoCallState extends ChangeNotifier {
   setLocalViewId(int id) {
     _localViewId = id;
     if (_trtcCloud != null) {
+      // startLocalPreview is called exactly once when the view is created.
+      // Camera on/off is then controlled via muteLocalVideo (software-level).
       _trtcCloud?.startLocalPreview(true, id);
       _trtcCloud?.muteLocalVideo(TRTCVideoStreamType.big, _isLocalCameraMute);
     }
   }
 
   setRemoteViewId(String userId, int id) {
+    if (!TRTCCloudVideoView.containsViewId(id)) return;
     if (_remoteUsers.containsKey(userId)) {
       _remoteUsers[userId]!.viewId = id;
-      if (_remoteUsers[userId]!.isCameraMuted)  {
+      if (_remoteUsers[userId]!.isCameraMuted) {
         _trtcCloud?.stopRemoteView(userId, TRTCVideoStreamType.big);
       } else {
         _trtcCloud?.startRemoteView(userId, TRTCVideoStreamType.big, id);
@@ -215,7 +305,6 @@ class VideoCallState extends ChangeNotifier {
 
   @override
   void dispose() {
-    print("object disposed");
     TRTCCloud.destroySharedInstance();
     super.dispose();
   }
@@ -226,10 +315,27 @@ class RemoteUserState {
   int viewId = 0;
   bool isCameraMuted;
   bool isMicrophoneMuted;
+  int? videoWidth;
+  int? videoHeight;
+  bool isVideoBuffering = false;
+  bool isAudioBuffering = false;
 
   RemoteUserState({
     required this.userId,
     this.isCameraMuted = false,
     this.isMicrophoneMuted = false,
   });
+}
+
+/// A first-frame milestone event shown in the call quality panel.
+class FrameEvent {
+  /// One of: localVideo, localAudio, remoteVideo, remoteAudio
+  final String type;
+  final String? userId;
+
+  const FrameEvent._(this.type, this.userId);
+
+  factory FrameEvent.local(String type) => FrameEvent._(type, null);
+  factory FrameEvent.remote(String type, String userId) =>
+      FrameEvent._(type, userId);
 }

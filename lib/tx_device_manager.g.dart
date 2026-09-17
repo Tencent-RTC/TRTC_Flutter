@@ -7,6 +7,7 @@ part of 'tx_device_manager.dart';
 // **************************************************************************
 
 const _$TXAudioRouteEnumMap = {
+  TXAudioRoute.unknown: -1,
   TXAudioRoute.speakerPhone: 0,
   TXAudioRoute.earpiece: 1,
   TXAudioRoute.wiredHeadset: 2,

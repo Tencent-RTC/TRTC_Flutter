@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.example.trtc",
+    "bundleName": "io.trtc.flutter.apiexample",
     "vendor": "example",
     "versionCode": 1,
     "versionName": "1.0.0",

@@ -1,15 +1,17 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'audio_call_state.dart';
 
 class AudioCallPage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final RoomIdSpec roomIdSpec;
 
   const AudioCallPage({
     Key? key,
     required this.userId,
-    required this.roomId,
+    required this.roomIdSpec,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
     _callState = AudioCallState();
     await _callState.initializeCall(
       userId: widget.userId,
-      roomId: widget.roomId,
+      roomIdSpec: widget.roomIdSpec,
     );
 
     if (mounted) {
@@ -49,7 +51,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
   @override
   Widget build(BuildContext context) {
     if (_isInitializing) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -88,6 +90,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
   }
 
   Widget _buildCallHeader() {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<AudioCallState>(
       builder: (context, callState, child) {
         return Padding(
@@ -95,7 +98,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
           child: Column(
             children: [
               Text(
-                'Room ID: ${callState.roomId}',
+                l10n.roomIdDisplay(callState.roomId ?? ''),
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white70,
@@ -109,7 +112,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  callState.statusMessage,
+                  callState.status.toText(l10n),
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
@@ -214,6 +217,7 @@ class _AudioCallPageState extends State<AudioCallPage> {
   }
 
   Widget _buildCallControls() {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<AudioCallState>(
       builder: (context, callState, child) {
         return Row(
@@ -221,21 +225,21 @@ class _AudioCallPageState extends State<AudioCallPage> {
           children: [
             _buildControlButton(
               icon: callState.isLocalMicrophoneEnabled ? Icons.mic : Icons.mic_off,
-              label: 'Microphone',
+              label: l10n.microphone,
               onPressed: () {
                 _onMicrophoneToggle(!callState.isLocalMicrophoneEnabled);
               },
             ),
             _buildControlButton(
               icon: callState.isLocalSpeakerEnabled ? Icons.volume_up : Icons.volume_off,
-              label: 'Speaker',
+              label: l10n.speaker,
               onPressed: () {
                 _onSpeakerToggle(!callState.isLocalSpeakerEnabled);
               },
             ),
             _buildControlButton(
               icon: Icons.call_end,
-              label: 'End Call',
+              label: l10n.endCall,
               backgroundColor: Colors.red,
               onPressed: _endCall,
             ),

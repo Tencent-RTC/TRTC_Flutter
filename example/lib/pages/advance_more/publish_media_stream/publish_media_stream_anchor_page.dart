@@ -1,687 +1,586 @@
-import 'dart:math';
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud.dart';
+import 'package:provider/provider.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
-import '../../../debug/generate_test_user_sig.dart';
+import 'publish_media_stream_anchor_state.dart';
 
 class PublishMediaStreamAnchorPage extends StatefulWidget {
-  const PublishMediaStreamAnchorPage({Key? key}) : super(key: key);
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  const PublishMediaStreamAnchorPage({
+    Key? key,
+    required this.userId,
+    required this.roomIdSpec,
+  }) : super(key: key);
 
   @override
-  _PublishMediaStreamAnchorPageState createState() => _PublishMediaStreamAnchorPageState();
+  State<PublishMediaStreamAnchorPage> createState() =>
+      _PublishMediaStreamAnchorPageState();
 }
 
-class _PublishMediaStreamAnchorPageState extends State<PublishMediaStreamAnchorPage> {
-  late TRTCCloud trtcCloud;
-  late final TRTCCloudListener _trtcCloudListener;
-  TRTCPublishMode currentMode = TRTCPublishMode.mixStreamToRoom;
-  int? localViewId;
-  bool isStartPush = false;
-  bool isStartPublishMediaStream = false;
-  bool isAudioOnlyMode = false;
-  late int localRoomId = int.parse(_generateRandomStrRoomId());
-  late String localUserId = _generateRandomUserId();
-  int remoteRoomId = 0;
-  String remoteUserId = '0';
-  int mixRoomId = 0;
-  String mixUserId = '0';
-  String cndUrlList = 'http://';
-  String publishMediaStreamTaskId = '';
-  List<String> remoteUidList = [];
-  Map<String, TRTCRenderParams> remoteRenderParamsDic = {};
+class _PublishMediaStreamAnchorPageState
+    extends State<PublishMediaStreamAnchorPage> {
+  late PublishMediaStreamAnchorState _state;
+  static const _accentColor = Color(0xFF6A1B9A);
+
+  late final TextEditingController _strRoomIdController;
+  late final TextEditingController _userIdController;
+  late final TextEditingController _mixStrRoomIdController;
+  late final TextEditingController _mixUserIdController;
+  late final TextEditingController _cdnUrlController;
 
   @override
   void initState() {
-    _trtcCloudListener = TRTCCloudListener(
-      onUserVideoAvailable: (userId, available) {
-        _onUserVideoAvailable(userId, available);
-      },
-    );
-    initTRTCCloud();
     super.initState();
+    _state = PublishMediaStreamAnchorState(
+      userId: widget.userId,
+      roomIdSpec: widget.roomIdSpec,
+    );
+    _state.addListener(_onChanged);
+    _state.initialize();
+    _strRoomIdController = TextEditingController(text: _state.localStrRoomId);
+    _userIdController = TextEditingController(text: _state.localUserId);
+    _mixStrRoomIdController = TextEditingController(text: _state.mixStrRoomId);
+    _mixUserIdController = TextEditingController(text: _state.mixUserId);
+    _cdnUrlController = TextEditingController(text: _state.cdnUrl);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Anchor'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            // stop mix then exit room before leaving page
-            if (isStartPublishMediaStream) {
-              try { stopPublishMediaStream(); } catch (_) {}
-              isStartPublishMediaStream = false;
-            }
-            if (isStartPush) {
-              try { await exitRoom(); } catch (_) {}
-              isStartPush = false;
-            }
-            if (mounted) Navigator.of(context).maybePop();
-          },
-        ),
-      ),
-      backgroundColor: Colors.black,
-      body: Stack(
-      alignment: Alignment.topLeft,
-      fit: StackFit.expand,
-      children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {},
-          child: TRTCCloudVideoView(
-            key: ValueKey("LocalView"),
-            onViewCreated: (viewId) async {
-              setState(() {
-                localViewId = viewId;
-              });
-            },
-          ),
-        ),
-
-        Positioned(
-          left: 10,
-          top: 15,
-          width: 72,
-          height: 370,
-          child: Container(
-            child: GridView.builder(
-              itemCount: remoteUidList.length,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 0.6,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                String userId = remoteUidList[index];
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 72,
-                    minWidth: 72,
-                    maxHeight: 120,
-                    minHeight: 120,
-                  ),
-                  child: Stack(
-                    children: [
-                      TRTCCloudVideoView(
-                        key: ValueKey('RemoteView_$userId'),
-                        onViewCreated: (viewId) async {
-                          trtcCloud.startRemoteView(userId, TRTCVideoStreamType.big, viewId);
-                        },
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Text(
-                          userId,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-
-        Positioned(
-          left: 0,
-          height: 400,
-          bottom: 10,
-          child: Container(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const Text('publish_mode',
-                    style: TextStyle(fontSize: 15, inherit: false)),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: getBGWidgetList(),
-                ),
-
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text('only audio',
-                        style: TextStyle(fontSize: 15, inherit: false, color: Colors.white)
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-
-                    Switch(
-                      value: isAudioOnlyMode,
-                      activeColor: Colors.green,
-                      onChanged: (bool value) {
-                        setState(() {
-                          isAudioOnlyMode = value;
-                        });
-                      },
-                    )
-
-                  ],
-                ),
-
-                currentMode == TRTCPublishMode.mixStreamToRoom
-                    ? Row(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: TextField(
-                              autofocus: false,
-                              enabled: !isStartPublishMediaStream,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(color: Colors.white),
-                                labelText: 'mix room id',
-                              ),
-                              controller: TextEditingController.fromValue(
-                                TextEditingValue(
-                                  text: this.mixRoomId.toString(),
-                                  selection: TextSelection.fromPosition(
-                                    TextPosition(
-                                      affinity: TextAffinity.downstream,
-                                      offset: this.mixRoomId.toString().length,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) {
-                                mixRoomId = int.parse(value);
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 100,
-                            child: TextField(
-                              autofocus: false,
-                              enabled: !isStartPublishMediaStream,
-                              decoration: InputDecoration(
-                                labelText: 'mix user id',
-                                labelStyle: TextStyle(color: Colors.white),
-                              ),
-                              controller: TextEditingController.fromValue(
-                                TextEditingValue(
-                                  text: this.mixUserId,
-                                  selection: TextSelection.fromPosition(
-                                    TextPosition(
-                                      affinity: TextAffinity.downstream,
-                                      offset: this.mixUserId.length,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.text,
-                              onChanged: (value) {
-                                mixUserId = value;
-                              },
-                            ),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 180,
-                            child: TextField(
-                              autofocus: false,
-                              enabled: !isStartPublishMediaStream,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(color: Colors.white),
-                                labelText: 'publish url',
-                              ),
-                              controller: TextEditingController.fromValue(
-                                TextEditingValue(
-                                  text: cndUrlList,
-                                  selection: TextSelection.fromPosition(
-                                    TextPosition(
-                                      affinity: TextAffinity.downstream,
-                                      offset: this.cndUrlList.toString().length,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.text,
-                              onChanged: (value) {
-                                cndUrlList = value;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      child: TextField(
-                        autofocus: false,
-                        enabled: !isStartPublishMediaStream,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.white),
-                          labelText: 'remote room id',
-                        ),
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: this.remoteRoomId.toString(),
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: this.remoteRoomId.toString().length,
-                              ),
-                            ),
-                          ),
-                        ),
-                        style: TextStyle(color: Colors.white),
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          remoteRoomId = int.parse(value);
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: 100,
-                      child: TextField(
-                        autofocus: false,
-                        enabled: !isStartPublishMediaStream,
-                        decoration: InputDecoration(
-                          labelText: 'remote user id',
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: this.remoteUserId,
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: this.remoteUserId.length,
-                              ),
-                            ),
-                          ),
-                        ),
-                        style: TextStyle(color: Colors.white),
-                        keyboardType: TextInputType.text,
-                        onChanged: (value) {
-                          remoteUserId = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 130,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.green),
-                        ),
-                        onPressed: () {
-                          _onPublishMediaStreamClick();
-                        },
-                        child: Text(
-                          isStartPublishMediaStream
-                              ? 'StopPublish'
-                              : 'Publish',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      child: TextField(
-                        autofocus: false,
-                        enabled: !isStartPush,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.white),
-                          labelText: "Room ID",
-                        ),
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: this.localRoomId.toString(),
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: this.localRoomId.toString().length,
-                              ),
-                            ),
-                          ),
-                        ),
-                        style: TextStyle(color: Colors.white),
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          localRoomId = int.parse(value);
-
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-
-                    SizedBox(
-                      width: 100,
-                      child: TextField(
-                        autofocus: false,
-                        enabled: !isStartPush,
-                        decoration: InputDecoration(
-                          labelText: "User ID",
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: this.localUserId,
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: this.localUserId.length,
-                              ),
-                            ),
-                          ),
-                        ),
-                        style: TextStyle(color: Colors.white),
-                        keyboardType: TextInputType.text,
-                        onChanged: (value) {
-                          localUserId = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 120,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.green),
-                        ),
-                        onPressed: () {
-                          onStartPushClick();
-                        },
-                        child: Text(isStartPush
-                            ? 'ExitRoom'
-                            : 'EnterRoom'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-        ),
-      ],
-    ),
-    );
+  void _onChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    destroyRoom();
+    _strRoomIdController.dispose();
+    _userIdController.dispose();
+    _mixStrRoomIdController.dispose();
+    _mixUserIdController.dispose();
+    _cdnUrlController.dispose();
+    _state.removeListener(_onChanged);
+    _state.dispose();
     super.dispose();
   }
 
-  initTRTCCloud() async {
-    trtcCloud = (await TRTCCloud.sharedInstance())!;
-    trtcCloud.registerListener(_trtcCloudListener);
-  }
-
-  enterRoom() async {
-    trtcCloud.startLocalPreview(true, localViewId!);
-    TRTCParams params = new TRTCParams();
-    params.sdkAppId = GenerateTestUserSig.sdkAppId;
-    params.roomId = this.localRoomId;
-    params.userId = this.localUserId;
-    params.role = TRTCRoleType.anchor;
-    params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    params.streamId = getStreamId();
-    trtcCloud.callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.startLocalAudio(TRTCAudioQuality.defaultMode);
-    trtcCloud.enterRoom(params, TRTCAppScene.live);
-  }
-
-  exitRoom() async {
-    // stop mix publishing before exit room when exiting internally
-    if (isStartPublishMediaStream) {
-      try { stopPublishMediaStream(); } catch (_) {}
-      isStartPublishMediaStream = false;
-    }
-    remoteRenderParamsDic.clear();
-    remoteUidList = [];
-    trtcCloud.unRegisterListener(_trtcCloudListener);
-    trtcCloud.stopLocalAudio();
-    trtcCloud.stopLocalPreview();
-    trtcCloud.exitRoom();
-  }
-
-  destroyRoom() async {
-    trtcCloud.stopLocalAudio();
-    trtcCloud.stopLocalPreview();
-    trtcCloud.exitRoom();
-    trtcCloud.unRegisterListener(_trtcCloudListener);
-    TRTCCloud.destroySharedInstance();
-  }
-
-  String getStreamId() {
-    String streamId =
-        GenerateTestUserSig.sdkAppId.toString() + '_' + this.localRoomId.toString() + '_' + this.localUserId + '_main';
-    return streamId;
-  }
-
-  Widget getButtonItem({
-    required String tile,
-    required TRTCPublishMode value,
-    required Function onClick,
-  }) {
-    MaterialStateProperty<Color> greenColor =
-        currentMode == value ? MaterialStateProperty.all(Colors.green) : MaterialStateProperty.all(Colors.grey);
-
-    return ElevatedButton(
-      style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(
-          TextStyle(fontSize: 12),
-        ),
-        padding: MaterialStateProperty.all(
-          EdgeInsets.only(left: 0, right: 0),
-        ),
-        backgroundColor: greenColor,
-      ),
-      onPressed: () {
-        onClick(value);
-      },
-      child: Text(tile),
+  InputDecoration _decoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(fontSize: 13),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
     );
   }
 
-  setPublishMode(value) {
-    setState(() {
-      currentMode = value;
-    });
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return ChangeNotifierProvider.value(
+      value: _state,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.anchor),
+          actions: [
+            Container(
+              width: 10,
+              height: 10,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: _state.isEnterRoom ? Colors.green : Colors.grey,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            _buildVideoArea(l10n),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    _buildRoomCard(l10n),
+                    const SizedBox(height: 12),
+                    _buildPublishCard(l10n),
+                    const SizedBox(height: 12),
+                    _buildEncoderCard(l10n),
+                    const SizedBox(height: 12),
+                    _buildStatusCard(l10n),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  getBGWidgetList() {
-    return [
-      getButtonItem(
-        tile: 'To Room',
-        value: TRTCPublishMode.mixStreamToRoom,
-        onClick: setPublishMode,
-      ),
-      const SizedBox(
-        width: 20,
-      ),
-      getButtonItem(
-        tile: 'To CDN',
-        value: TRTCPublishMode.mixStreamToCdn,
-        onClick: setPublishMode,
-      ),
-    ];
+  // ── Video area ──
+
+  Widget _buildVideoArea(AppLocalizations l10n) {
+    final remotes = _state.remoteUsers;
+    final hasRemote = remotes.isNotEmpty;
+    return SizedBox(
+      height: hasRemote ? 260 : 180,
+      child: hasRemote ? _buildVideoGrid(l10n, remotes) : _buildLocalOnly(l10n),
+    );
   }
 
-  void startPublishMediaStream() {
-    TRTCPublishTarget target = TRTCPublishTarget();
-    target.mode = currentMode;
+  Widget _buildLocalOnly(AppLocalizations l10n) {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            TRTCCloudVideoView(
+              onViewCreated: (id) => _state.setLocalViewId(id),
+            ),
+            Positioned(
+              top: 8, left: 12,
+              child: _label(l10n.localPreview, _accentColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-    if (target.mode == TRTCPublishMode.mixStreamToRoom) {
-      TRTCUser trtcUser = TRTCUser();
-      trtcUser.userId = mixUserId;
-      trtcUser.intRoomId = mixRoomId;
-
-      target.mixStreamIdentity = trtcUser;
-    } else if (target.mode == TRTCPublishMode.mixStreamToCdn) {
-      var urlList = cndUrlList.split(',');
-      if (urlList.isNotEmpty) {
-        target.cdnUrlList = <TRTCPublishCdnUrl>[];
-        for (String url in urlList) {
-          TRTCPublishCdnUrl cdnUrlEntity = new TRTCPublishCdnUrl();
-          cdnUrlEntity.rtmpUrl = url;
-
-          target.cdnUrlList?.add(cdnUrlEntity);
+  Widget _buildVideoGrid(l10n, List remotes) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.85,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
+      itemCount: 1 + remotes.length,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Stack(
+                children: [
+                  TRTCCloudVideoView(
+                    onViewCreated: (id) => _state.setLocalViewId(id),
+                  ),
+                  Positioned(
+                    top: 6, left: 10,
+                    child: _label(l10n.localPreview, _accentColor),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
-      }
-    }
-
-    TRTCStreamMixingConfig config = TRTCStreamMixingConfig();
-
-    if (!isAudioOnlyMode) {
-      List<TRTCVideoLayout> videoLayoutList = [];
-      
-      TRTCUser selfUser = TRTCUser();
-      selfUser.userId = localUserId;
-      selfUser.intRoomId = localRoomId;
-
-      TRTCVideoLayout selfVideoLayout = TRTCVideoLayout();
-      selfVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.big;
-      selfVideoLayout.rect = TRTCRect(left: 0, top: 0, right: 1080, bottom: 1920);
-      selfVideoLayout.zOrder = 0;
-      selfVideoLayout.fixedVideoUser = selfUser;
-      selfVideoLayout.fillMode = TRTCVideoFillMode.fit;
-
-      videoLayoutList.add(selfVideoLayout);
-
-      TRTCUser remoteUser = TRTCUser();
-      remoteUser.userId = remoteUserId;
-      remoteUser.intRoomId = remoteRoomId;
-
-      TRTCVideoLayout remoteVideoLayout = TRTCVideoLayout();
-      remoteVideoLayout.fixedVideoStreamType = TRTCVideoStreamType.big;
-      remoteVideoLayout.rect = TRTCRect(left: 50, top: 900, right: 250, bottom: 1300);
-      remoteVideoLayout.zOrder = 1;
-      remoteVideoLayout.fixedVideoUser = remoteUser;
-      remoteVideoLayout.fillMode = TRTCVideoFillMode.scaleFill;
-
-      videoLayoutList.add(remoteVideoLayout);
-      
-      config.videoLayoutList = videoLayoutList;
-    }
-
-    TRTCStreamEncoderParam param = TRTCStreamEncoderParam();
-    if (isAudioOnlyMode) {
-      param.videoEncodedWidth = 0;
-      param.videoEncodedHeight = 0;
-    } else {
-      param.videoEncodedWidth = 1080;
-      param.videoEncodedHeight = 1920;
-      param.videoEncodedKbps = 5000;
-      param.videoEncodedFPS = 30;
-      param.videoEncodedGOP = 3;
-    }
-    param.audioEncodedSampleRate = 48000;
-    param.audioEncodedChannelNum = 2;
-    param.audioEncodedKbps = 128;
-    param.audioEncodedCodecType = 2;
-
-    trtcCloud.startPublishMediaStream(target, param, config);
+        final user = remotes[index - 1];
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
+              children: [
+                TRTCCloudVideoView(
+                  key: ValueKey('remote_${user.userId}'),
+                  onViewCreated: (id) =>
+                      _state.setRemoteViewId(user.userId, id),
+                ),
+                Positioned(
+                  top: 6, left: 10,
+                  child: _label('${l10n.remoteUser}: ${user.userId}',
+                      Colors.teal),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  void stopPublishMediaStream() {
-    trtcCloud.stopPublishMediaStream(publishMediaStreamTaskId);
+  Widget _label(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(text,
+          style: TextStyle(
+              color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+    );
   }
 
-  onStartPushClick() {
-    bool newIsStartPush = !isStartPush;
-    isStartPush = newIsStartPush;
-    if (isStartPush) {
-      enterRoom();
-    } else {
-      exitRoom();
-    }
-    setState(() {});
+  // ── Cards ──
+
+  Widget _buildCard({
+    required IconData icon,
+    required String title,
+    required List<Widget> children,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Icon(icon, size: 18, color: _accentColor),
+              const SizedBox(width: 8),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w600)),
+            ]),
+            const SizedBox(height: 12),
+            ...children,
+          ],
+        ),
+      ),
+    );
   }
 
-  _onPublishMediaStreamClick() {
-    isStartPublishMediaStream = !isStartPublishMediaStream;
-    setState(() {});
-    if (isStartPublishMediaStream) {
-      startPublishMediaStream();
-    } else {
-      stopPublishMediaStream();
-    }
+  Widget _buildRoomCard(AppLocalizations l10n) {
+    return _buildCard(
+      icon: Icons.meeting_room,
+      title: l10n.myRoomLabel,
+      children: [
+        Text(l10n.myRoomHint,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+        const SizedBox(height: 12),
+        TextField(
+          enabled: !_state.isEnterRoom,
+          decoration: _decoration(l10n.roomIdLabel),
+          controller: _strRoomIdController,
+          onChanged: _state.setLocalStrRoomId,
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          enabled: !_state.isEnterRoom,
+          decoration: _decoration(l10n.userIdLabel),
+          controller: _userIdController,
+          onChanged: _state.setLocalUserId,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 44,
+          child: FilledButton(
+            onPressed: _state.isEnterRoom
+                ? () => _state.exitRoom()
+                : () {
+                    if (_state.localStrRoomId.isEmpty ||
+                        _state.localUserId.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(l10n.enterUserIdAndRoomId),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+                    _state.enterRoom();
+                  },
+            style: FilledButton.styleFrom(
+              backgroundColor: _state.isEnterRoom ? Colors.red : _accentColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text(_state.isEnterRoom
+                ? l10n.exitRoomButton
+                : l10n.enterRoom),
+          ),
+        ),
+      ],
+    );
   }
 
-  _onUserVideoAvailable(String userId, bool available) {
-    if (available) {
-      remoteUidList.add(userId);
-    } else {
-      remoteUidList.remove(userId);
-    }
-
-    if (remoteUidList.length > 0) {
-      setPublishMode(currentMode);
-    } else {
-    }
-    setState(() {});
+  Widget _buildPublishCard(AppLocalizations l10n) {
+    return _buildCard(
+      icon: Icons.stream,
+      title: l10n.publishSettingsLabel,
+      children: [
+        // Mode selector
+        Row(children: [
+          Expanded(
+            child: _modeChip(
+              l10n.toRoomButton,
+              TRTCPublishMode.mixStreamToRoom,
+              Icons.cast_for_education,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _modeChip(
+              l10n.toCdnButton,
+              TRTCPublishMode.mixStreamToCdn,
+              Icons.cloud_upload,
+            ),
+          ),
+        ]),
+        const SizedBox(height: 8),
+        Text(l10n.publishModeHint,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+        const SizedBox(height: 10),
+        // Audio only switch
+        Row(children: [
+          Text(l10n.onlyAudioLabel,
+              style: const TextStyle(fontSize: 13)),
+          const Spacer(),
+          Switch(
+            value: _state.audioOnly,
+            activeTrackColor: _accentColor,
+            onChanged: _state.setAudioOnly,
+          ),
+        ]),
+        const SizedBox(height: 10),
+        // Mix remote video switch
+        Row(children: [
+          Expanded(
+            child: Text(l10n.mixIncludeRemoteLabel,
+                style: const TextStyle(fontSize: 13)),
+          ),
+          Switch(
+            value: _state.mixRemote,
+            activeTrackColor: _accentColor,
+            onChanged: _state.setMixRemote,
+          ),
+        ]),
+        const SizedBox(height: 10),
+        // Mode-specific target fields
+        if (_state.publishMode == TRTCPublishMode.mixStreamToRoom)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Expanded(
+                  child: TextField(
+                    enabled: !_state.isPublishing,
+                    decoration: _decoration(l10n.roomIdLabel),
+                    controller: _mixStrRoomIdController,
+                    onChanged: _state.setMixStrRoomId,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    enabled: !_state.isPublishing,
+                    decoration: _decoration(l10n.mixUserIdLabel),
+                    controller: _mixUserIdController,
+                    onChanged: _state.setMixUserId,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 6),
+              Text(l10n.targetRoomHint,
+                  style:
+                      TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+            ],
+          )
+        else
+          TextField(
+            enabled: !_state.isPublishing,
+            decoration: _decoration(l10n.publishUrlLabel),
+            controller: _cdnUrlController,
+            onChanged: _state.setCdnUrl,
+          ),
+        const SizedBox(height: 10),
+        // Action buttons
+        Row(children: [
+          Expanded(
+            child: SizedBox(
+              height: 44,
+              child: FilledButton(
+                onPressed: _state.isEnterRoom && !_state.isPublishing
+                    ? () => _state.startPublishMediaStream()
+                    : null,
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  disabledBackgroundColor: Colors.grey.shade300,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(l10n.publishButton),
+              ),
+            ),
+          ),
+          if (_state.isPublishing) ...[
+            const SizedBox(width: 8),
+            SizedBox(
+              height: 44,
+              child: FilledButton(
+                onPressed: () => _state.updatePublishMediaStream(),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(l10n.updatePublishButton),
+              ),
+            ),
+            const SizedBox(width: 8),
+            SizedBox(
+              height: 44,
+              child: FilledButton(
+                onPressed: () => _state.stopPublishMediaStream(),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(l10n.stopPublishButton),
+              ),
+            ),
+          ],
+        ]),
+      ],
+    );
   }
 
-  String _generateRandomUserId() {
-    String line = "";
-    var rng = new Random();
-    for (var i = 0; i < 6; i++) {
-      int num = rng.nextInt(10);
-      if (num <= 0) num = rng.nextInt(10);
-      line += num.toString();
-    }
-    return line;
+  Widget _modeChip(String label, TRTCPublishMode mode, IconData icon) {
+    final selected = _state.publishMode == mode;
+    return GestureDetector(
+      onTap: _state.isPublishing ? null : () => _state.setPublishMode(mode),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+          color: selected ? _accentColor.withOpacity(0.12) : Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: selected ? _accentColor : Colors.grey.shade200,
+            width: 1.5,
+          ),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(icon, size: 16,
+              color: selected ? _accentColor : Colors.grey.shade500),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                  color: selected ? _accentColor : Colors.grey.shade700,
+                )),
+          ),
+        ]),
+      ),
+    );
   }
 
-  String _generateRandomStrRoomId() {
-    String line = "";
-    var rng = new Random();
-    for (var i = 0; i < 7; i++) {
-      int num = rng.nextInt(10);
-      if (num <= 0) num = rng.nextInt(10);
-      line += num.toString();
-    }
-    return line;
+  Widget _buildEncoderCard(AppLocalizations l10n) {
+    return _buildCard(
+      icon: Icons.tune,
+      title: l10n.encoderParamsTitle,
+      children: [
+        _sliderRow(l10n.videoBitrateLabel(_state.videoBitrate), _state.videoBitrate, 500, 8000, 50,
+            'kbps', _state.setVideoBitrate),
+        _sliderRow(l10n.videoFpsLabel(_state.videoFps), _state.videoFps, 1, 30, 1, 'fps',
+            _state.setVideoFps),
+        const SizedBox(height: 8),
+        Row(children: [
+          Text('${_state.videoWidth}x${_state.videoHeight}',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+          const Spacer(),
+          Text('GOP: ${_state.videoGop}s',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+          const SizedBox(width: 16),
+          Text('Audio: ${_state.audioSampleRate}Hz ${_state.audioChannelNum == 2 ? 'Stereo' : 'Mono'} ${_state.audioBitrate}kbps',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+        ]),
+      ],
+    );
+  }
+
+  Widget _sliderRow(String label, int value, int min, int max, int divisions,
+      String unit, Function(int) onChanged) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(children: [
+        Text(label, style: const TextStyle(fontSize: 13)),
+        Expanded(
+          child: Slider(
+            value: value.toDouble(),
+            min: min.toDouble(),
+            max: max.toDouble(),
+            divisions: divisions,
+            activeColor: _accentColor,
+            label: '$value$unit',
+            onChanged: (v) => onChanged(v.toInt()),
+          ),
+        ),
+        SizedBox(
+          width: 60,
+          child: Text('$value$unit',
+              textAlign: TextAlign.right,
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: _accentColor)),
+        ),
+      ]),
+    );
+  }
+
+  Widget _buildStatusCard(AppLocalizations l10n) {
+    return _buildCard(
+      icon: Icons.info_outline,
+      title: l10n.publishStatusTitle,
+      children: [
+        _statusRow(l10n.publishStatusLabel, _state.publishStatus,
+            _state.publishErrCode == 0 || _state.publishStatus.contains('Start') || _state.publishStatus.contains('Updat')),
+        if (_state.cdnStatus.isNotEmpty)
+          _statusRow('CDN', _state.cdnStatus, true),
+        if (_state.taskId.isNotEmpty)
+          _statusRow('Task ID', _state.taskId, true),
+      ],
+    );
+  }
+
+  Widget _statusRow(String label, String value, bool ok) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(children: [
+        Text(label,
+            style: TextStyle(fontSize: 13, color: Colors.grey.shade600)),
+        const Spacer(),
+        Flexible(
+          child: Text(value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: ok ? Colors.green : Colors.orange)),
+        ),
+      ]),
+    );
   }
 }

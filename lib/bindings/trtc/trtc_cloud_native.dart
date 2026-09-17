@@ -335,8 +335,8 @@ class TRTCCloudNative {
             FFIConverter.getStringFromChar(sourceInfo.ref.source_name);
         info.thumbBGRA = getImageBuffer(sourceInfo.ref.thumb_bgra);
         info.iconBGRA = getImageBuffer(sourceInfo.ref.icon_bgra);
-        info.isMinimizeWindow = (sourceInfo.ref.is_minimize_window == 0);
-        info.isMainScreen = (sourceInfo.ref.is_main_screen == 0);
+        info.isMinimizeWindow = (sourceInfo.ref.is_minimize_window != 0);
+        info.isMainScreen = (sourceInfo.ref.is_main_screen != 0);
         info.x = sourceInfo.ref.x;
         info.y = sourceInfo.ref.y;
         info.width = sourceInfo.ref.width;

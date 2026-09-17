@@ -1,3 +1,6 @@
+import 'package:api_example/common/scene_entry_scaffold.dart';
+import 'package:api_example/common/user_room_id_form.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'custom_message.dart';
 
@@ -9,59 +12,36 @@ class CustomMessagePreparePage extends StatefulWidget {
 }
 
 class _CustomMessagePreparePageState extends State<CustomMessagePreparePage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _roomIdController = TextEditingController();
+  final GlobalKey<UserRoomIdFormState> _formKey = GlobalKey();
+
+  static const _accentColor = Color(0xFF5E35B1);
+
+  void _onEnterRoom() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState!.save();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomMessagePage(
+            userId: _formKey.currentState!.userId,
+            roomIdSpec: _formKey.currentState!.roomIdSpec,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Custom Message/SEI - Prepare Page')),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _userIdController,
-              decoration: const InputDecoration(
-                labelText: 'User ID',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _roomIdController,
-              decoration: const InputDecoration(
-                labelText: 'Room ID',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: _onEnterRoom,
-              child: const Text('Enter Room'),
-            ),
-          ],
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return SceneEntryScaffold(
+      icon: Icons.sms_rounded,
+      accentColor: _accentColor,
+      title: l10n.sceneCustomMessage,
+      subtitle: l10n.descCustomMessage,
+      form: UserRoomIdForm(key: _formKey),
+      actionLabel: l10n.enterRoom,
+      onAction: _onEnterRoom,
     );
   }
-
-  void _onEnterRoom() {
-    final userId = _userIdController.text.trim();
-    final roomId = int.tryParse(_roomIdController.text.trim());
-    if (userId.isEmpty || roomId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter User ID and Room ID')),
-      );
-      return;
-    }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CustomMessagePage(userId: userId, roomId: roomId),
-      ),
-    );
-  }
-} 
+}

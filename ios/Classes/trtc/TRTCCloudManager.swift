@@ -130,31 +130,25 @@ class TRTCCloudManager {
                 return
             }
             
-            if enable {
-                if self.beautyProcesser == nil {
-                    self.beautyProcesser = customBeautyInstance.createCustomBeautyProcesser()
-                }
-                // swiftlint:disable:next force_unwrapping
-                let pixelFormat = self.beautyProcesser!.getSupportedPixelFormat()
-                // swiftlint:disable:next force_unwrapping
-                let bufferType = self.beautyProcesser!.getSupportedBufferType()
-                let v2PixelFormat = ObjectUtils.convertToTRTCPixelFormat(beautyPixelFormat: pixelFormat)
-                let v2BufferType = ObjectUtils.convertToTRTCBufferType(beautyBufferType: bufferType)
-                // swiftlint:disable:next force_unwrapping
-                localProcessVideoFrame = ProcessVideoFrame(self.beautyProcesser!)
-                let code = TRTCCloud.sharedInstance().setLocalVideoProcessDelegete(localProcessVideoFrame, pixelFormat:
-                    v2PixelFormat,
-                                                        bufferType: v2BufferType)
-                result(code)
-            } else {
-                if self.beautyProcesser != nil {
-                    self.beautyProcesser = nil
-                    customBeautyInstance.destroyCustomBeautyProcesser()
-                }
-                let code = TRTCCloud.sharedInstance().setLocalVideoProcessDelegete(nil, pixelFormat: ._Unknown,
-                    bufferType: .unknown)
-                result(code)
+            if enable && self.beautyProcesser == nil {
+                self.beautyProcesser = customBeautyInstance.createCustomBeautyProcesser()
             }
+            guard let processer = self.beautyProcesser else {
+                result(nil)
+                return
+            }
+            let pixelFormat = ObjectUtils.convertToTRTCPixelFormat(beautyPixelFormat: processer.getSupportedPixelFormat())
+            let bufferType = ObjectUtils.convertToTRTCBufferType(beautyBufferType: processer.getSupportedBufferType())
+            localProcessVideoFrame = enable ? ProcessVideoFrame(processer) : nil
+            let code = TRTCCloud.sharedInstance().setLocalVideoProcessDelegete(localProcessVideoFrame,
+                                                                               pixelFormat: pixelFormat,
+                                                                               bufferType: bufferType)
+
+            if !enable {
+                self.beautyProcesser = nil
+                customBeautyInstance.destroyCustomBeautyProcesser()
+            }
+            result(code)
         }
     }
     

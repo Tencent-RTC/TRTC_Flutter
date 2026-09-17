@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:api_example/common/call_status.dart';
+import 'package:api_example/common/room_id_spec.dart';
 import 'package:api_example/debug/generate_test_user_sig.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
@@ -65,13 +67,13 @@ class VoiceRoomState extends ChangeNotifier {
   bool _isLocalMicrophoneEnabled = true;
   bool _isLocalSpeakerEnabled = true;
   String? _localUserId;
-  int? _roomId;
+  RoomIdSpec _roomIdSpec = const RoomIdSpec();
   bool _isCallActive = false;
   TRTCCloud? _trtcCloud;
   TXDeviceManager? _deviceManager;
   bool _isInitialized = false;
   final Map<String, AudioUser> _audioUsers = {};
-  String _statusMessage = 'Initializing...';
+  CallStatus _status = CallStatus.initializing;
   bool _isEnterRoomSuccess = false;
   bool _isAnchor = false;
 
@@ -81,11 +83,11 @@ class VoiceRoomState extends ChangeNotifier {
   bool get isLocalMicrophoneEnabled => _isLocalMicrophoneEnabled;
   bool get isLocalSpeakerEnabled => _isLocalSpeakerEnabled;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomIdSpec.display;
   bool get isCallActive => _isCallActive;
   List<AudioUser> get audioUsers => _audioUsers.values.toList();
   bool get isInitialized => _isInitialized;
-  String get statusMessage => _statusMessage;
+  CallStatus get status => _status;
   bool get isEnterRoomSuccess => _isEnterRoomSuccess;
   bool get isAnchor => _isAnchor;
   bool get canBecomeAnchor => _viewManager.hasAvailableView;
@@ -95,12 +97,12 @@ class VoiceRoomState extends ChangeNotifier {
 
   Future<void> initializeRoom({
     required String userId,
-    required int roomId,
+    required RoomIdSpec roomIdSpec,
   }) async {
     _localUserId = userId;
-    _roomId = roomId;
+    _roomIdSpec = roomIdSpec;
     _isCallActive = true;
-    _statusMessage = 'Initializing...';
+    _status = CallStatus.initializing;
 
     await _initializeTRTC();
     notifyListeners();
@@ -117,11 +119,12 @@ class VoiceRoomState extends ChangeNotifier {
       _trtcCloud?.registerListener(_listener!);
     }
 
-    _statusMessage = 'Entering room...';
+    _status = CallStatus.enteringRoom;
     _trtcCloud?.enterRoom(TRTCParams(
       sdkAppId: GenerateTestUserSig.sdkAppId,
       userId: _localUserId ?? "",
-      roomId: _roomId ?? 123456,
+      roomId: _roomIdSpec.effectiveRoomId,
+      strRoomId: _roomIdSpec.effectiveStrRoomId,
       role: _isAnchor ? TRTCRoleType.anchor : TRTCRoleType.audience,
       userSig: GenerateTestUserSig.genTestSig(_localUserId!)
     ), TRTCAppScene.voiceChatRoom);
@@ -136,27 +139,26 @@ class VoiceRoomState extends ChangeNotifier {
   _getTRTCCloudListener() {
     return _listener ??= TRTCCloudListener(
       onError: (errorCode, errorMsg) {
-        _statusMessage = 'Error: $errorMsg';
+        _status = CallStatus.error(errorMsg);
         notifyListeners();
       },
       onEnterRoom: (result) {
-        print("TRTCCloudListener onEnterRoom: $result");
         if (result > 0) {
-          _statusMessage = 'Room entered successfully';
+          _status = CallStatus.roomEnteredSuccess;
           _isEnterRoomSuccess = true;
         } else {
-          _statusMessage = 'Failed to enter room: $result';
+          _status = CallStatus.failedToEnterRoom(result);
           _isEnterRoomSuccess = false;
         }
         notifyListeners();
       },
       onRemoteUserEnterRoom: (userId) {
-        _statusMessage = 'User $userId joined the room';
+        _status = CallStatus.userJoined(userId);
         notifyListeners();
       },
       onRemoteUserLeaveRoom: (userId, reason) {
         removeAudioUser(userId);
-        _statusMessage = 'User $userId left the room';
+        _status = CallStatus.userLeft(userId);
         notifyListeners();
       },
       onUserAudioAvailable: (userId, available) {
@@ -167,7 +169,7 @@ class VoiceRoomState extends ChangeNotifier {
               addAudioUser(userId);
             }
           } else {
-            _statusMessage = 'Room anchor limit reached';
+            _status = CallStatus.roomAnchorLimitReached;
             notifyListeners();
           }
         } else {
@@ -178,7 +180,6 @@ class VoiceRoomState extends ChangeNotifier {
         for (final userVolume in userVolumes) {
           if (userVolume.userId == "") userVolume.userId = localUserId ?? "";
 
-          print("TRTCCloudListener onUserVoiceVolume: ${userVolume.userId} ${userVolume.volume}");
           if (_audioUsers.containsKey(userVolume.userId)) {
             _audioUsers[userVolume.userId]!.isSpeaking = userVolume.volume > 10;
             notifyListeners();
@@ -191,7 +192,7 @@ class VoiceRoomState extends ChangeNotifier {
   Future<void> switchRole() async {
     if (_trtcCloud != null) {
       if (!_isAnchor && !canBecomeAnchor) {
-        _statusMessage = 'Room anchor limit reached';
+        _status = CallStatus.roomAnchorLimitReached;
         notifyListeners();
         return;
       }
@@ -200,13 +201,13 @@ class VoiceRoomState extends ChangeNotifier {
       _trtcCloud?.switchRole(_isAnchor ? TRTCRoleType.anchor : TRTCRoleType.audience);
 
       if (_isAnchor) {
-        _statusMessage = 'Switched to anchor';
+        _status = CallStatus.switchToAnchor;
         if (_isLocalMicrophoneEnabled) {
           _trtcCloud?.startLocalAudio(TRTCAudioQuality.defaultMode);
           addAudioUser(_localUserId!);
         }
       } else {
-        _statusMessage = 'Switched to audience';
+        _status = CallStatus.switchToAudience;
         _trtcCloud?.stopLocalAudio();
         _isLocalMicrophoneEnabled = false;
         removeAudioUser(_localUserId!);

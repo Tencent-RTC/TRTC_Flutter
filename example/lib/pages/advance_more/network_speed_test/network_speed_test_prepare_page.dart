@@ -1,3 +1,6 @@
+import 'package:api_example/common/scene_entry_scaffold.dart';
+import 'package:api_example/common/user_room_id_form.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'network_speed_test_page.dart';
 
@@ -9,57 +12,36 @@ class NetworkSpeedTestPreparePage extends StatefulWidget {
 }
 
 class _NetworkSpeedTestPreparePageState extends State<NetworkSpeedTestPreparePage> {
-  final TextEditingController _roomIdController = TextEditingController();
-  final TextEditingController _userIdController = TextEditingController();
+  final GlobalKey<UserRoomIdFormState> _formKey = GlobalKey();
 
-  @override
-  void dispose() {
-    _roomIdController.dispose();
-    _userIdController.dispose();
-    super.dispose();
-  }
+  static const _accentColor = Color(0xFF0277BD);
 
   void _onStartTest() {
-    final roomId = _roomIdController.text;
-    final userId = _userIdController.text;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => NetworkSpeedTestPage(
-          roomId: roomId,
-          userId: userId,
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState!.save();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => NetworkSpeedTestPage(
+            roomIdSpec: _formKey.currentState!.roomIdSpec,
+            userId: _formKey.currentState!.userId,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Network Speed Test Prepare')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('User ID'),
-            TextField(controller: _userIdController),
-            const SizedBox(height: 16),
-            const Text('Room ID'),
-            TextField(controller: _roomIdController),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _onStartTest,
-                child: const Text('Start Speed Test'),
-              ),
-            ),
-          ],
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return SceneEntryScaffold(
+      icon: Icons.network_check_rounded,
+      accentColor: _accentColor,
+      title: l10n.sceneNetworkSpeedTest,
+      subtitle: l10n.descNetworkSpeedTest,
+      form: UserRoomIdForm(key: _formKey),
+      actionLabel: l10n.startSpeedTest,
+      onAction: _onStartTest,
     );
   }
 }
-
-// TRTCSpeedTestScene 枚举需要在 network_speed_test_page.dart 或公共文件中定义/导入。 

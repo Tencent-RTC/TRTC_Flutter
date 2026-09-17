@@ -1,261 +1,244 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
+import 'package:provider/provider.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
-
-import '../../../debug/generate_test_user_sig.dart';
+import 'publish_media_stream_audience_state.dart';
 
 class PublishMediaStreamAudiencePage extends StatefulWidget {
-  const PublishMediaStreamAudiencePage({Key? key}) : super(key: key);
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  const PublishMediaStreamAudiencePage({
+    Key? key,
+    required this.userId,
+    required this.roomIdSpec,
+  }) : super(key: key);
 
   @override
-  _PublishMediaStreamAudiencePageState createState() => _PublishMediaStreamAudiencePageState();
+  State<PublishMediaStreamAudiencePage> createState() =>
+      _PublishMediaStreamAudiencePageState();
 }
 
-class _PublishMediaStreamAudiencePageState extends State<PublishMediaStreamAudiencePage> {
-  int roomId = 0;
-  String userId = '0';
-  Map<String, String> remoteUidSet = {};
-  bool isEnterRoom = false;
-  late TRTCCloud trtcCloud;
-  late final TRTCCloudListener _trtcCloudListener;
+class _PublishMediaStreamAudiencePageState
+    extends State<PublishMediaStreamAudiencePage> {
+  late PublishMediaStreamAudienceState _state;
+  static const _accentColor = Color(0xFF6A1B9A);
+
+  late final TextEditingController _strRoomIdController;
+  late final TextEditingController _userIdController;
 
   @override
   void initState() {
-    _trtcCloudListener = TRTCCloudListener(
-      onUserVideoAvailable: (userId, available) {
-        onUserVideoAvailable(userId, available);
-      },
-      onRemoteUserLeaveRoom: (userId, reason) {
-        onRemoteUserLeaveRoom(userId, reason);
-      },
-    );
     super.initState();
+    _state = PublishMediaStreamAudienceState(
+      userId: widget.userId,
+      roomIdSpec: widget.roomIdSpec,
+    );
+    _state.addListener(_onChanged);
+    _state.initialize();
+    _strRoomIdController = TextEditingController(text: _state.strRoomId);
+    _userIdController = TextEditingController(text: _state.userId);
   }
 
+  void _onChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
-    if (isEnterRoom) {
-      exitRoom();
-    }
+    _strRoomIdController.dispose();
+    _userIdController.dispose();
+    _state.removeListener(_onChanged);
+    _state.dispose();
     super.dispose();
+  }
+
+  InputDecoration _decoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(fontSize: 13),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> remoteUidList = remoteUidSet.values.toList();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Audience'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            try {
-              if (isEnterRoom) {
-                await exitRoom();
-                isEnterRoom = false;
-              }
-            } catch (_) {}
-            if (mounted) Navigator.of(context).maybePop();
-          },
-        ),
-      ),
-      backgroundColor: Colors.black,
-      body: Stack(
-        alignment: Alignment.topLeft,
-        fit: StackFit.expand,
-        children: [
-        (remoteUidList.length > 0)
-            ? Container(
-          child: TRTCCloudVideoView(
-            onViewCreated: (viewId) async {
-              if (mounted && isEnterRoom) {
-                setState(() {
-                  trtcCloud.startRemoteView(remoteUidList[0], TRTCVideoStreamType.big, viewId);
-                });
-              }
-            },
-          ),
-        )
-            : Container(),
-        Positioned(
-          right: 15,
-          top: 15,
-          width: 72,
-          height: 370,
-          child: (remoteUidList.length > 1)
-              ? Container(
-            child: GridView.builder(
-              itemCount: remoteUidList.length - 1,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 0.6,
+    final l10n = AppLocalizations.of(context)!;
+    return ChangeNotifierProvider.value(
+      value: _state,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.audience),
+          actions: [
+            Container(
+              width: 10,
+              height: 10,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: _state.isEnterRoom ? Colors.green : Colors.grey,
+                shape: BoxShape.circle,
               ),
-              itemBuilder: (BuildContext context, int index) {
-                String userId = remoteUidList[index + 1];
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 72,
-                    minWidth: 72,
-                    maxHeight: 120,
-                    minHeight: 120,
-                  ),
-                  child: TRTCCloudVideoView(
-                    key: ValueKey('RemoteView_$userId'),
-                    onViewCreated: (viewId) async {
-                      if (mounted && isEnterRoom) {
-                        trtcCloud.startRemoteView(userId, TRTCVideoStreamType.small, viewId);
-                      }
-                    },
-                  ),
-                );
-              },
             ),
-          )
-              : Container(),
+          ],
         ),
-        Positioned(
-          left: 30,
-          height: 80,
-          width: 500,
-          bottom: 35,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 100,
-                child: TextField(
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: Colors.white),
-                    labelText: "Room ID",
-                  ),
-                  controller: TextEditingController.fromValue(
-                    TextEditingValue(
-                      text: this.roomId.toString(),
-                      selection: TextSelection.fromPosition(
-                        TextPosition(
-                          affinity: TextAffinity.downstream,
-                          offset: this.roomId.toString().length,
-                        ),
-                      ),
-                    ),
-                  ),
-                  style: TextStyle(color: Colors.white),
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) {
-                    roomId = int.parse(value);
-                  },
-                ),
+        body: Column(
+          children: [
+            _buildVideoArea(l10n),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: _buildRoomCard(l10n),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                width: 100,
-                child: TextField(
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    labelText: "User ID",
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                  controller: TextEditingController.fromValue(
-                    TextEditingValue(
-                      text: this.userId,
-                      selection: TextSelection.fromPosition(
-                        TextPosition(
-                          affinity: TextAffinity.downstream,
-                          offset: this.userId.length,
-                        ),
-                      ),
-                    ),
-                  ),
-                  style: TextStyle(color: Colors.white),
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    userId = value;
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 130,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.green),
-                  ),
-                  onPressed: () {
-                    onStartPushClick();
-                  },
-                  child: Text(
-                      isEnterRoom ? 'Exit Room' : 'Enter Room'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        ],
       ),
     );
   }
 
-  enterRoom() async {
-    trtcCloud = (await TRTCCloud.sharedInstance())!;
-    TRTCParams params = new TRTCParams();
-    params.sdkAppId = GenerateTestUserSig.sdkAppId;
-    params.roomId = this.roomId;
-    params.userId = this.userId;
-    params.role = TRTCRoleType.audience;
-    params.userSig = await GenerateTestUserSig.genTestSig(params.userId);
-    trtcCloud.callExperimentalAPI("{\"api\": \"setFramework\", \"params\": {\"framework\": 7, \"component\": 2}}");
-    trtcCloud.enterRoom(params, TRTCAppScene.live);
-    trtcCloud.registerListener(_trtcCloudListener);
+  Widget _buildVideoArea(AppLocalizations l10n) {
+    final remotes = _state.remoteUsers;
+    final hasRemote = remotes.isNotEmpty;
+    return SizedBox(
+      height: hasRemote ? 260 : 180,
+      child: hasRemote
+          ? _buildVideoGrid(l10n, remotes)
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.tv_off,
+                      size: 48, color: Colors.grey.shade400),
+                  const SizedBox(height: 8),
+                  Text(l10n.noRemoteUser,
+                      style: TextStyle(
+                          fontSize: 14, color: Colors.grey.shade500)),
+                ],
+              ),
+            ),
+    );
   }
 
-  exitRoom() async {
-    remoteUidSet.clear();
-    try {
-      trtcCloud.exitRoom();
-      trtcCloud.unRegisterListener(_trtcCloudListener);
-    } catch (_) {}
-    TRTCCloud.destroySharedInstance();
+  Widget _buildVideoGrid(l10n, List remotes) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.85,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
+      itemCount: remotes.length,
+      itemBuilder: (context, index) {
+        final user = remotes[index];
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
+              children: [
+                TRTCCloudVideoView(
+                  key: ValueKey('audience_remote_${user.userId}'),
+                  onViewCreated: (id) =>
+                      _state.setRemoteViewId(user.userId, id),
+                ),
+                Positioned(
+                  top: 6, left: 10,
+                  child: _label('${l10n.remoteUser}: ${user.userId}',
+                      Colors.teal),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  onStartPushClick() {
-    isEnterRoom = !isEnterRoom;
-    if (isEnterRoom) {
-      enterRoom();
-    } else {
-      exitRoom();
-    }
-    setState(() {});
+  Widget _label(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(text,
+          style: TextStyle(
+              color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+    );
   }
 
-  onRemoteUserLeaveRoom(String userId, int reason) {
-    setState(() {
-      if (remoteUidSet.containsKey(userId)) {
-        remoteUidSet.remove(userId);
-      }
-    });
+  Widget _buildRoomCard(AppLocalizations l10n) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border:
+            Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              const Icon(Icons.meeting_room, size: 18, color: _accentColor),
+              const SizedBox(width: 8),
+              Text(l10n.enterRoom,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w600)),
+            ]),
+            const SizedBox(height: 14),
+            TextField(
+              enabled: !_state.isEnterRoom,
+              decoration: _decoration(l10n.roomIdLabel),
+              controller: _strRoomIdController,
+              onChanged: _state.setStrRoomId,
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              enabled: !_state.isEnterRoom,
+              decoration: _decoration(l10n.userIdLabel),
+              controller: _userIdController,
+              onChanged: _state.setUserId,
+            ),
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: FilledButton(
+                onPressed: _state.isEnterRoom
+                    ? () => _state.exitRoom()
+                    : () => _state.enterRoom(),
+                style: FilledButton.styleFrom(
+                  backgroundColor:
+                      _state.isEnterRoom ? Colors.red : _accentColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                child: Text(_state.isEnterRoom
+                    ? l10n.exitRoomButton
+                    : l10n.enterRoom),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(l10n.audienceWatchHint,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+          ],
+        ),
+      ),
+    );
   }
-
-  onUserVideoAvailable(String userId, bool available) {
-    if (available) {
-      setState(() {
-        remoteUidSet[userId] = userId;
-      });
-    }
-    if (!available && remoteUidSet.containsKey(userId)) {
-      setState(() {
-        remoteUidSet.remove(userId);
-      });
-    }
-  }
-
-  
 }

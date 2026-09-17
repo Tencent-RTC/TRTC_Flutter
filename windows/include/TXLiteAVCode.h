@@ -249,6 +249,9 @@ enum TXLiteAVError {
     /// 同时播放 bgm 数量超过限定值，如当前同时播放 bgm 数量超过 10 后提示该错误，请检查并发播放 bgm 数量
     ERR_CONCURRENT_BGM_OVER_LIMIT = -4009,
 
+    /// 设置 BGM 音轨失败，请检查音频文件是否包含对应的音轨索引，或对应音轨的数据是否受损
+    ERR_BGM_SET_MUSIC_TRACK_FAILED = -4010,
+
 };
 
 /**

@@ -1,3 +1,17 @@
+## 13.5.1
+### Bugfix
+- Fix a version conflict between tencent_rtc_sdk and super_player over their shared TRTC native SDK (TXLiteAVSDK_Professional) dependency.
+
+## 13.5.0
+### Dependency Notes
+- Native SDK update to 13.5.+
+### Bugfix
+- Fix several bugs in the TRTC Flutter SDK
+
+## 13.4.2-customer.2026080320
+### Bugfix
+- Fix missing callbacks on 32-bit Android.
+
 ## 13.4.2
 ### Bugfix
 - Fixed rendering type update timing issue

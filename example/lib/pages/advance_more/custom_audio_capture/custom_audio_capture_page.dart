@@ -1,15 +1,17 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'custom_audio_capture_state.dart';
 
 class CustomAudioCapturePage extends StatefulWidget {
   final String userId;
-  final int roomId;
+  final RoomIdSpec roomIdSpec;
 
   const CustomAudioCapturePage({
     Key? key,
     required this.userId,
-    required this.roomId,
+    required this.roomIdSpec,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
     _captureState = CustomAudioCaptureState();
     await _captureState.initialize(
       userId: widget.userId,
-      roomId: widget.roomId,
+      roomIdSpec: widget.roomIdSpec,
     );
 
     if (mounted) {
@@ -56,11 +58,12 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
       );
     }
 
+    final l10n = AppLocalizations.of(context)!;
     return ChangeNotifierProvider.value(
       value: _captureState,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Custom Audio Capture'),
+          title: Text(l10n.customAudioCaptureTitle),
           backgroundColor: Colors.deepPurple,
         ),
         body: Container(
@@ -99,7 +102,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
           child: Column(
             children: [
               Text(
-                'Room ID: ${state.roomId}',
+                AppLocalizations.of(context)!.roomIdDisplay(state.roomId ?? ''),
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white70,
@@ -113,7 +116,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  state.statusMessage,
+                  state.status.toText(AppLocalizations.of(context)!),
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
@@ -139,7 +142,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Frames sent: ${state.frameCount}',
+                        AppLocalizations.of(context)!.framesSent(state.frameCount),
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white,
@@ -250,7 +253,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
               ),
               const SizedBox(width: 4),
               Text(
-                participant.hasAudio ? 'Audio On' : 'Audio Off',
+                participant.hasAudio ? AppLocalizations.of(context)!.audioOnLabel : AppLocalizations.of(context)!.audioOffLabel,
                 style: TextStyle(
                   color: participant.hasAudio ? Colors.green : Colors.red,
                   fontSize: 12,
@@ -264,6 +267,7 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
   }
 
   Widget _buildControlPanel() {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<CustomAudioCaptureState>(
       builder: (context, state, child) {
         return Container(
@@ -275,9 +279,9 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
           ),
           child: Column(
             children: [
-              const Text(
-                'Custom Audio Capture Controls',
-                style: TextStyle(
+              Text(
+                l10n.customAudioCaptureControls,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -289,13 +293,13 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
                 children: [
                   _buildControlButton(
                     icon: state.isCustomAudioEnabled ? Icons.stop : Icons.play_arrow,
-                    label: state.isCustomAudioEnabled ? 'Stop Capture' : 'Start Capture',
+                    label: state.isCustomAudioEnabled ? l10n.stopCaptureButton : l10n.startCaptureButton,
                     backgroundColor: state.isCustomAudioEnabled ? Colors.red : Colors.green,
                     onPressed: () => _toggleCustomAudioCapture(!state.isCustomAudioEnabled),
                   ),
                   _buildControlButton(
                     icon: Icons.exit_to_app,
-                    label: 'Exit Room',
+                    label: l10n.exitRoomButton,
                     backgroundColor: Colors.orange,
                     onPressed: _exitRoom,
                   ),
@@ -308,26 +312,21 @@ class _CustomAudioCapturePageState extends State<CustomAudioCapturePage> {
                   color: Colors.black26,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'About Custom Audio Capture:',
-                      style: TextStyle(
+                      l10n.aboutCustomAudioCapture,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      '• Sample Rate: 48000 Hz\n'
-                      '• Channel: Stereo (2)\n'
-                      '• Frame Duration: 20 ms\n'
-                      '• Format: PCM (int16)\n'
-                      '• Audio: High-Quality Synthesis (C D E F G A B)\n'
-                      '• Features: Rich Harmonics, Vibrato, Smooth Transitions',
-                      style: TextStyle(
+                      l10n.customAudioCaptureInfo,
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                       ),

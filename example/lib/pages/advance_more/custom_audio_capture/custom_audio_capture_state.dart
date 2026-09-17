@@ -1,19 +1,60 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:api_example/common/call_status.dart';
+import 'package:api_example/common/room_id_spec.dart';
 import 'package:api_example/debug/generate_test_user_sig.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_listener.dart';
 
+/// custom_audio_capture 场景独有的运行时状态语义（复用 [CallStatus] 无法覆盖的部分）。
+enum CustomAudioExtraStatusCode {
+  customAudioCaptureEnabled,
+  customAudioCaptureDisabled,
+  playingMelody,
+}
+
+class CustomAudioStatus {
+  final CallStatus? callStatus;
+  final CustomAudioExtraStatusCode? extraCode;
+  final String? note;
+  final String? seconds;
+
+  const CustomAudioStatus._({this.callStatus, this.extraCode, this.note, this.seconds});
+
+  factory CustomAudioStatus.fromCallStatus(CallStatus status) => CustomAudioStatus._(callStatus: status);
+
+  static const CustomAudioStatus customAudioCaptureEnabled =
+      CustomAudioStatus._(extraCode: CustomAudioExtraStatusCode.customAudioCaptureEnabled);
+  static const CustomAudioStatus customAudioCaptureDisabled =
+      CustomAudioStatus._(extraCode: CustomAudioExtraStatusCode.customAudioCaptureDisabled);
+
+  factory CustomAudioStatus.playingMelody(String note, String seconds) =>
+      CustomAudioStatus._(extraCode: CustomAudioExtraStatusCode.playingMelody, note: note, seconds: seconds);
+
+  String toText(AppLocalizations l10n) {
+    if (callStatus != null) return callStatus!.toText(l10n);
+    switch (extraCode!) {
+      case CustomAudioExtraStatusCode.customAudioCaptureEnabled:
+        return l10n.customAudioCaptureEnabled;
+      case CustomAudioExtraStatusCode.customAudioCaptureDisabled:
+        return l10n.customAudioCaptureDisabled;
+      case CustomAudioExtraStatusCode.playingMelody:
+        return l10n.playingMelody(note ?? '', seconds ?? '');
+    }
+  }
+}
+
 class CustomAudioCaptureState extends ChangeNotifier {
   bool _isCustomAudioEnabled = false;
   String? _localUserId;
-  int? _roomId;
+  RoomIdSpec _roomIdSpec = const RoomIdSpec();
   TRTCCloud? _trtcCloud;
   bool _isInitialized = false;
   final Map<String, RemoteUserState> _remoteUsers = {};
-  String _statusMessage = 'Preparing...';
+  CustomAudioStatus _status = CustomAudioStatus.fromCallStatus(CallStatus.preparing);
   bool _isEnterRoomSuccess = false;
   Timer? _audioSendTimer;
   int _frameCount = 0;
@@ -52,10 +93,10 @@ class CustomAudioCaptureState extends ChangeNotifier {
   // Getters
   bool get isCustomAudioEnabled => _isCustomAudioEnabled;
   String? get localUserId => _localUserId;
-  int? get roomId => _roomId;
+  String? get roomId => _roomIdSpec.display;
   List<RemoteUserState> get remoteUsers => _remoteUsers.values.toList();
   bool get isInitialized => _isInitialized;
-  String get statusMessage => _statusMessage;
+  CustomAudioStatus get status => _status;
   bool get isEnterRoomSuccess => _isEnterRoomSuccess;
   int get frameCount => _frameCount;
 
@@ -63,11 +104,11 @@ class CustomAudioCaptureState extends ChangeNotifier {
 
   Future<void> initialize({
     required String userId,
-    required int roomId,
+    required RoomIdSpec roomIdSpec,
   }) async {
     _localUserId = userId;
-    _roomId = roomId;
-    _statusMessage = 'Initializing...';
+    _roomIdSpec = roomIdSpec;
+    _status = CustomAudioStatus.fromCallStatus(CallStatus.initializing);
 
     await _initializeTRTC();
     notifyListeners();
@@ -83,12 +124,12 @@ class CustomAudioCaptureState extends ChangeNotifier {
       _trtcCloud?.registerListener(_listener!);
     }
 
-    _statusMessage = 'Entering room...';
+    _status = CustomAudioStatus.fromCallStatus(CallStatus.enteringRoom);
     _trtcCloud?.enterRoom(
       TRTCParams(
         sdkAppId: GenerateTestUserSig.sdkAppId,
         userId: _localUserId ?? "",
-        roomId: roomId ?? 123456,
+        roomId: _roomIdSpec.effectiveRoomId, strRoomId: _roomIdSpec.effectiveStrRoomId,
         role: TRTCRoleType.anchor,
         userSig: GenerateTestUserSig.genTestSig(_localUserId!),
       ),
@@ -99,27 +140,27 @@ class CustomAudioCaptureState extends ChangeNotifier {
   TRTCCloudListener _getTRTCCloudListener() {
     return _listener ??= TRTCCloudListener(
       onError: (errorCode, errorMsg) {
-        _statusMessage = 'Error: $errorMsg';
+        _status = CustomAudioStatus.fromCallStatus(CallStatus.error(errorMsg));
         notifyListeners();
       },
       onEnterRoom: (result) {
         if (result > 0) {
-          _statusMessage = 'Room entered successfully';
+          _status = CustomAudioStatus.fromCallStatus(CallStatus.roomEnteredSuccess);
           _isEnterRoomSuccess = true;
         } else {
-          _statusMessage = 'Failed to enter room: $result';
+          _status = CustomAudioStatus.fromCallStatus(CallStatus.failedToEnterRoom(result));
           _isEnterRoomSuccess = false;
         }
         notifyListeners();
       },
       onRemoteUserEnterRoom: (userId) {
         addRemoteUser(userId);
-        _statusMessage = 'User $userId joined the room';
+        _status = CustomAudioStatus.fromCallStatus(CallStatus.userJoined(userId));
         notifyListeners();
       },
       onRemoteUserLeaveRoom: (userId, reason) {
         removeRemoteUser(userId);
-        _statusMessage = 'User $userId left the room';
+        _status = CustomAudioStatus.fromCallStatus(CallStatus.userLeft(userId));
         notifyListeners();
       },
       onUserAudioAvailable: (userId, available) {
@@ -136,10 +177,10 @@ class CustomAudioCaptureState extends ChangeNotifier {
     
     if (enable) {
       _startSendingAudioData();
-      _statusMessage = 'Custom audio capture enabled - Playing C D E F G A B melody';
+      _status = CustomAudioStatus.customAudioCaptureEnabled;
     } else {
       _stopSendingAudioData();
-      _statusMessage = 'Custom audio capture disabled';
+      _status = CustomAudioStatus.customAudioCaptureDisabled;
     }
     
     notifyListeners();
@@ -198,7 +239,7 @@ class CustomAudioCaptureState extends ChangeNotifier {
       // Update status every 1 second (50 frames * 20ms)
       final double seconds = _frameCount * _frameDuration / 1000.0;
       const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-      _statusMessage = 'Playing melody (${notes[_currentNoteIndex]}) - ${seconds.toStringAsFixed(1)}s';
+      _status = CustomAudioStatus.playingMelody(notes[_currentNoteIndex], seconds.toStringAsFixed(1));
       notifyListeners();
     }
   }

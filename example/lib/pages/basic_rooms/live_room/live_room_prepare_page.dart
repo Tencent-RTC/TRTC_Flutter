@@ -1,3 +1,6 @@
+import 'package:api_example/common/scene_entry_scaffold.dart';
+import 'package:api_example/common/user_room_id_form.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'live_room_page.dart';
 
@@ -9,77 +12,36 @@ class LiveRoomPreparePage extends StatefulWidget {
 }
 
 class _LiveRoomPreparePageState extends State<LiveRoomPreparePage> {
-  final _userIdController = TextEditingController();
-  final _roomIdController = TextEditingController();
+  final GlobalKey<UserRoomIdFormState> _formKey = GlobalKey();
 
-  @override
-  void dispose() {
-    _userIdController.dispose();
-    _roomIdController.dispose();
-    super.dispose();
+  static const _accentColor = Color(0xFFC62828);
+
+  void _startLive() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState!.save();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LiveRoomPage(
+            userId: _formKey.currentState!.userId,
+            roomIdSpec: _formKey.currentState!.roomIdSpec,
+          ),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Live Room Setup'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _userIdController,
-              decoration: const InputDecoration(
-                labelText: 'User ID',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _roomIdController,
-              decoration: const InputDecoration(
-                labelText: 'Room ID',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: _startLive,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-              child: Text('Join Room'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _startLive() {
-    final userId = _userIdController.text.trim();
-    final roomId = _roomIdController.text.trim();
-
-    if (userId.isEmpty || roomId.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter user ID and room ID')),
-      );
-      return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LiveRoomPage(
-          userId: userId,
-          roomId: int.parse(roomId),
-        ),
-      ),
+    final l10n = AppLocalizations.of(context)!;
+    return SceneEntryScaffold(
+      icon: Icons.live_tv_rounded,
+      accentColor: _accentColor,
+      title: l10n.liveRoomSetup,
+      subtitle: l10n.descLiveRoom,
+      form: UserRoomIdForm(key: _formKey),
+      actionLabel: l10n.joinRoom,
+      onAction: _startLive,
     );
   }
 }

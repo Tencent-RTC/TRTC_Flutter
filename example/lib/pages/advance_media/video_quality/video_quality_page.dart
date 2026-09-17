@@ -1,119 +1,596 @@
+import 'package:api_example/common/room_id_spec.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tencent_rtc_sdk/trtc_cloud.dart';
 import 'package:tencent_rtc_sdk/trtc_cloud_def.dart';
+import 'package:tencent_rtc_sdk/trtc_cloud_video_view.dart';
 import 'video_quality_state.dart';
-import '../../../../common/user_list_widget.dart';
-import '../../../../common/user_list_state.dart';
 
 class VideoQualityPage extends StatefulWidget {
-  const VideoQualityPage({Key? key}) : super(key: key);
+  final String userId;
+  final RoomIdSpec roomIdSpec;
+
+  const VideoQualityPage({
+    Key? key,
+    required this.userId,
+    required this.roomIdSpec,
+  }) : super(key: key);
 
   @override
   State<VideoQualityPage> createState() => _VideoQualityPageState();
 }
 
-class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerProviderStateMixin {
+class _VideoQualityPageState extends State<VideoQualityPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late VideoQualityState _videoQualityState;
-  UserListState? _userListState;
+  late VideoQualityState _state;
+
+  static const _accentColor = Color(0xFF5C6BC0);
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _videoQualityState = VideoQualityState();
+    _tabController = TabController(length: 2, vsync: this);
+    _state = VideoQualityState(
+      userId: widget.userId,
+      roomIdSpec: widget.roomIdSpec,
+    );
+    _state.addListener(_onStateChanged);
+    _state.initialize();
   }
 
-  Future<void> _initialize() async {
-    TRTCCloud trtcCloud = await TRTCCloud.sharedInstance();
-    _userListState = UserListState(trtcCloud);
-    _videoQualityState.initialize(trtcCloud, _userListState!);
+  void _onStateChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
+    _state.removeListener(_onStateChanged);
+    _state.dispose();
     _tabController.dispose();
-    _videoQualityState.dispose();
-    _userListState?.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initialize(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  // ── UI helpers ──
 
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(value: _videoQualityState),
-            ChangeNotifierProvider.value(value: _userListState!),
-          ],
-          child: Builder(
-            builder: (context) => _buildPageContent(context),
-          ),
-        );
-      },
+  InputDecoration _decoration(String label, {IconData? icon}) {
+    return InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      prefixIcon: icon != null ? Icon(icon, size: 20) : null,
     );
   }
 
-  Widget _buildPageContent(BuildContext context) {
-    final state = Provider.of<VideoQualityState>(context);
+  Color _qualityColor(TRTCQuality q) {
+    switch (q) {
+      case TRTCQuality.excellent:
+        return Colors.green;
+      case TRTCQuality.good:
+        return Colors.lightGreen;
+      case TRTCQuality.poor:
+        return Colors.amber;
+      case TRTCQuality.bad:
+        return Colors.orange;
+      case TRTCQuality.vBad:
+        return Colors.red;
+      case TRTCQuality.down:
+        return Colors.grey;
+      default:
+        return Colors.grey;
+    }
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+  String _qualityText(TRTCQuality q, AppLocalizations l10n) {
+    switch (q) {
+      case TRTCQuality.excellent:
+        return l10n.qualityExcellent;
+      case TRTCQuality.good:
+        return l10n.qualityGood;
+      case TRTCQuality.poor:
+        return l10n.qualityPoor;
+      case TRTCQuality.bad:
+        return l10n.qualityBad;
+      case TRTCQuality.vBad:
+        return l10n.qualityVBad;
+      case TRTCQuality.down:
+        return l10n.qualityDown;
+      default:
+        return l10n.qualityUnknown;
+    }
+  }
+
+  String _resolutionLabel(TRTCVideoResolution res) {
+    const map = {
+      TRTCVideoResolution.res_120_120: '120×120',
+      TRTCVideoResolution.res_160_160: '160×160',
+      TRTCVideoResolution.res_270_270: '270×270',
+      TRTCVideoResolution.res_480_480: '480×480',
+      TRTCVideoResolution.res_160_120: '160×120 (4:3)',
+      TRTCVideoResolution.res_240_180: '240×180 (4:3)',
+      TRTCVideoResolution.res_280_210: '280×210 (4:3)',
+      TRTCVideoResolution.res_320_240: '320×240 (4:3)',
+      TRTCVideoResolution.res_400_300: '400×300 (4:3)',
+      TRTCVideoResolution.res_480_360: '480×360 (4:3)',
+      TRTCVideoResolution.res_640_480: '640×480 (4:3)',
+      TRTCVideoResolution.res_960_720: '960×720 (4:3)',
+      TRTCVideoResolution.res_160_90: '160×90 (16:9)',
+      TRTCVideoResolution.res_256_144: '256×144 (16:9)',
+      TRTCVideoResolution.res_320_180: '320×180 (16:9)',
+      TRTCVideoResolution.res_480_270: '480×270 (16:9)',
+      TRTCVideoResolution.res_640_360: '640×360 (16:9)',
+      TRTCVideoResolution.res_960_540: '960×540 (16:9)',
+      TRTCVideoResolution.res_1280_720: '1280×720 (16:9)',
+      TRTCVideoResolution.res_1920_1080: '1920×1080 (16:9)',
+    };
+    return map[res] ?? '1280×720 (16:9)';
+  }
+
+  // ── Build ──
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return ChangeNotifierProvider.value(
+      value: _state,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.videoQualityTitle),
+          actions: [
+            Container(
+              width: 10,
+              height: 10,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: _state.isEnterRoom ? Colors.green : Colors.grey,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
         ),
-        title: const Text('Video Quality Settings'),
-        actions: [
-          ValueListenableBuilder<bool>(
-            valueListenable: state.isEnterRoom,
-            builder: (context, isEnterRoom, _) {
-              return Container(
-                width: 24,
-                height: 24,
-                margin: const EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  color: isEnterRoom ? Colors.green : Colors.grey,
-                  shape: BoxShape.circle,
+        body: Column(
+          children: [
+            _buildVideoArea(l10n),
+            _buildNetworkQualityBar(l10n),
+            Expanded(
+              child: Column(
+                children: [
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: _accentColor,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(text: l10n.encoderSettingsTab),
+                      Tab(text: l10n.networkSettingsTab),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _buildEncoderSettings(l10n),
+                        _buildNetworkSettings(l10n),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: FilledButton(
+                  onPressed: () {
+                    _state.exitRoom();
+                    Navigator.pop(context);
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  child: Text(l10n.exitRoomButton),
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── Video area: local + remote grid ──
+
+  Widget _buildVideoArea(AppLocalizations l10n) {
+    final remotes = _state.remoteUsers
+        .where((u) => u.isVideoAvailable)
+        .toList();
+    final hasRemote = remotes.isNotEmpty;
+
+    return SizedBox(
+      height: hasRemote ? 280 : 200,
+      child: hasRemote ? _buildVideoGrid(l10n, remotes) : _buildLocalOnly(l10n),
+    );
+  }
+
+  Widget _buildLocalOnly(AppLocalizations l10n) {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            TRTCCloudVideoView(
+              onViewCreated: (viewId) => _state.setLocalViewId(viewId),
+            ),
+            Positioned(
+              top: 8,
+              left: 12,
+              child: _videoLabel(l10n.localPreview, _accentColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVideoGrid(
+      AppLocalizations l10n, List<RemoteVideoUser> remotes) {
+    final all = [
+      _VideoTileData(isLocal: true, label: l10n.localPreview),
+      ...remotes.map((u) => _VideoTileData(
+            isLocal: false,
+            label: '${l10n.remoteUser}: ${u.userId}',
+            user: u,
+          )),
+    ];
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.85,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
+      itemCount: all.length,
+      itemBuilder: (context, index) => _buildVideoTile(all[index]),
+    );
+  }
+
+  Widget _buildVideoTile(_VideoTileData data) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          children: [
+            if (data.isLocal)
+              TRTCCloudVideoView(
+                onViewCreated: (viewId) => _state.setLocalViewId(viewId),
+              )
+            else
+              TRTCCloudVideoView(
+                onViewCreated: (viewId) =>
+                    _state.setRemoteViewId(data.user!.userId, viewId),
+              ),
+            Positioned(
+              top: 6,
+              left: 10,
+              child: _videoLabel(
+                data.label,
+                data.isLocal ? _accentColor : Colors.teal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _videoLabel(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  // ── Network quality bar ──
+
+  Widget _buildNetworkQualityBar(AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          Icon(Icons.wifi, size: 16, color: _qualityColor(_state.localQuality)),
+          const SizedBox(width: 6),
+          Text('${l10n.networkQuality}: ',
+              style: const TextStyle(fontSize: 13)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: _qualityColor(_state.localQuality).withOpacity(0.15),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: _qualityColor(_state.localQuality),
+                width: 0.5,
+              ),
+            ),
+            child: Text(
+              _qualityText(_state.localQuality, l10n),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: _qualityColor(_state.localQuality),
+              ),
+            ),
+          ),
+          const Spacer(),
+          if (_state.remoteUsers.isEmpty)
+            Text(l10n.noRemoteUser,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+        ],
+      ),
+    );
+  }
+
+  // ── Encoder settings tab ──
+
+  Widget _buildSliderCard({
+    required String label,
+    required String valueText,
+    required double value,
+    required double min,
+    required double max,
+    int? divisions,
+    required ValueChanged<double> onChanged,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 2),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, style: const TextStyle(fontSize: 14)),
+              Text(valueText,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: _accentColor)),
+            ],
+          ),
+          Slider(
+            value: value,
+            min: min,
+            max: max,
+            divisions: divisions,
+            activeColor: _accentColor,
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwitchCard({
+    required String label,
+    required IconData icon,
+    required ValueNotifier<bool> notifier,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20),
+          const SizedBox(width: 12),
+          Expanded(child: Text(label, style: const TextStyle(fontSize: 14))),
+          ValueListenableBuilder<bool>(
+            valueListenable: notifier,
+            builder: (context, value, _) {
+              return Switch(
+                value: value,
+                activeColor: _accentColor,
+                onChanged: (v) => notifier.value = v,
               );
             },
           ),
         ],
       ),
-      body: Column(
+    );
+  }
+
+  Widget _buildDropdownCard<T>({
+    required String label,
+    required IconData icon,
+    required ValueNotifier<T> notifier,
+    required List<DropdownMenuItem<T>> items,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+      ),
+      child: ValueListenableBuilder<T>(
+        valueListenable: notifier,
+        builder: (context, value, _) {
+          return DropdownButtonFormField<T>(
+            value: value,
+            decoration: _decoration(label, icon: icon),
+            items: items,
+            onChanged: (v) {
+              if (v != null) notifier.value = v;
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEncoderSettings(AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
         children: [
-          const Expanded(
-            child: UserListWidget(isVideoMode: true),
+          ValueListenableBuilder<int>(
+            valueListenable: _state.minVideoBitrate,
+            builder: (context, v, _) => _buildSliderCard(
+              label: l10n.minVideoBitrateLabel(v),
+              valueText: '$v kbps',
+              value: v.toDouble(),
+              min: 0, max: 1000, divisions: 100,
+              onChanged: (val) => _state.minVideoBitrate.value = val.toInt(),
+            ),
           ),
-          Expanded(
+          ValueListenableBuilder<int>(
+            valueListenable: _state.videoBitrate,
+            builder: (context, v, _) => _buildSliderCard(
+              label: l10n.videoBitrateLabel(v),
+              valueText: '$v kbps',
+              value: v.toDouble(),
+              min: 0, max: 2000, divisions: 100,
+              onChanged: (val) => _state.videoBitrate.value = val.toInt(),
+            ),
+          ),
+          ValueListenableBuilder<int>(
+            valueListenable: _state.videoFps,
+            builder: (context, v, _) => _buildSliderCard(
+              label: l10n.videoFpsLabel(v),
+              valueText: '$v fps',
+              value: v.toDouble(),
+              min: 1, max: 30, divisions: 29,
+              onChanged: (val) => _state.videoFps.value = val.toInt(),
+            ),
+          ),
+          _buildDropdownCard<TRTCVideoResolution>(
+            label: l10n.enableResolutionAdjustment,
+            icon: Icons.aspect_ratio,
+            notifier: _state.videoResolution,
+            items: TRTCVideoResolution.values
+                .map((r) => DropdownMenuItem(
+                      value: r,
+                      child: Text(_resolutionLabel(r), style: const TextStyle(fontSize: 13)),
+                    ))
+                .toList(),
+          ),
+          _buildDropdownCard<TRTCVideoResolutionMode>(
+            label: l10n.portraitMode,
+            icon: Icons.screen_rotation,
+            notifier: _state.videoResolutionMode,
+            items: TRTCVideoResolutionMode.values
+                .map((m) => DropdownMenuItem(
+                      value: m,
+                      child: Text(
+                        m == TRTCVideoResolutionMode.portrait
+                            ? l10n.portraitMode
+                            : l10n.landscapeMode,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ))
+                .toList(),
+          ),
+          _buildSwitchCard(
+            label: l10n.enableResolutionAdjustment,
+            icon: Icons.tune,
+            notifier: _state.enableAdjustRes,
+          ),
+          _buildSwitchCard(
+            label: l10n.encoderMirror,
+            icon: Icons.flip,
+            notifier: _state.videoEncoderMirror,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Network settings tab ──
+
+  Widget _buildNetworkSettings(AppLocalizations l10n) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // QoS preference
+          _buildDropdownCard<TRTCVideoQosPreference>(
+            label: l10n.networkQosPreference,
+            icon: Icons.network_check,
+            notifier: _state.preference,
+            items: TRTCVideoQosPreference.values
+                .map((p) => DropdownMenuItem(
+                      value: p,
+                      child: Text(
+                        p == TRTCVideoQosPreference.smooth
+                            ? l10n.smoothFirst
+                            : l10n.clearFirst,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ))
+                .toList(),
+          ),
+          const SizedBox(height: 8),
+          // Network quality detail card
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.3)),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Room Settings'),
-                    Tab(text: 'Encoder Settings'),
-                    Tab(text: 'Network Settings'),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      getRoomSettings(state),
-                      getVideoEncSettings(state),
-                      getNetworkQosSettings(state),
-                    ],
+                Text(l10n.networkQuality,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 12),
+                _qualityRow(l10n.localPreview, _state.localQuality),
+                ..._state.remoteUsers.map((u) =>
+                    _qualityRow('${l10n.remoteUser}: ${u.userId}', u.quality)),
+                if (_state.remoteUsers.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(l10n.noRemoteUser,
+                        style: TextStyle(
+                            fontSize: 13, color: Colors.grey.shade500)),
                   ),
-                ),
               ],
             ),
           ),
@@ -122,315 +599,41 @@ class _VideoQualityPageState extends State<VideoQualityPage> with SingleTickerPr
     );
   }
 
-  getRoomSettings(VideoQualityState state) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Room ID',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                state.roomId = int.tryParse(value) ?? 0;
-              },
+  Widget _qualityRow(String label, TRTCQuality quality) {
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(Icons.wifi, size: 16, color: _qualityColor(quality)),
+          const SizedBox(width: 8),
+          Text(label, style: const TextStyle(fontSize: 13)),
+          const Spacer(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: _qualityColor(quality).withOpacity(0.15),
+              borderRadius: BorderRadius.circular(6),
             ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'User ID',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              ),
-              onChanged: (value) {
-                state.localUserId = value;
-              },
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ValueListenableBuilder<bool>(
-                valueListenable: state.isEnterRoom,
-                builder: (context, isEnterRoom, _) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      if (isEnterRoom) {
-                        state.exitRoom();
-                      } else {
-                        if (state.localUserId != null && state.roomId != null) {
-                          state.enterRoom(state.localUserId!, state.roomId!);
-                        }
-                      }
-                    },
-                    child: Text(isEnterRoom ? 'Exit Room' : 'Enter'),
-                  );
-                },
+            child: Text(
+              _qualityText(quality, l10n),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: _qualityColor(quality),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget getVideoEncSettings(VideoQualityState state) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-        child: Column(
-          children: [
-            ValueListenableBuilder(
-                valueListenable: state.minVideoBitrate,
-                builder: (context, value, child) {
-                  return Column(
-                    children: [
-                      Text('Min Video Bitrate: ${state.minVideoBitrate.value}'),
-                      Slider(
-                        value: state.minVideoBitrate.value.toDouble(),
-                        min: 0,
-                        max: 1000,
-                        divisions: 100,
-                        onChanged: (value) {
-                          state.minVideoBitrate.value = value.toInt();
-                          print('Min video bitrate updated to: ${state.minVideoBitrate.value}');
-                        },
-                      ),
-                    ],
-                  );
-                }),
-            const SizedBox(height: 16),
-            ValueListenableBuilder(
-                valueListenable: state.videoBitrate,
-                builder: (context, value, child) {
-                  return Column(
-                    children: [
-                      Text('Video Bitrate: ${state.videoBitrate.value}'),
-                      Slider(
-                        value: state.videoBitrate.value.toDouble(),
-                        min: 0,
-                        max: 2000,
-                        divisions: 100,
-                        onChanged: (value) {
-                          state.videoBitrate.value = value.toInt();
-                          print('Video bitrate updated to: ${state.videoBitrate.value}');
-                        },
-                      ),
-                    ],
-                  );
-                }),
-            const SizedBox(height: 16),
-            ValueListenableBuilder(
-                valueListenable: state.videoFps,
-                builder: (context, value, child) {
-                  return Column(
-                    children: [
-                      Text('Video FPS: ${state.videoFps.value}'),
-                      Slider(
-                        value: state.videoFps.value.toDouble(),
-                        min: 1,
-                        max: 30,
-                        divisions: 29,
-                        onChanged: (value) {
-                          state.videoFps.value = value.toInt();
-                          print('Video FPS updated to: ${state.videoFps.value}');
-                        },
-                      ),
-                    ],
-                  );
-                }),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                const Text('Enable Resolution Adjustment'),
-                const Spacer(),
-                ValueListenableBuilder(
-                    valueListenable: state.enableAdjustRes,
-                    builder: (context, value, child) {
-                      return Column(
-                        children: [
-                          Switch(
-                            value: state.enableAdjustRes.value,
-                            onChanged: (value) {
-                              state.enableAdjustRes.value = value;
-                            },
-                          ),
-                        ],
-                      );
-                    }),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ValueListenableBuilder(
-              valueListenable: state.videoResolution,
-              builder: (context, value, child) {
-                return DropdownButton<TRTCVideoResolution>(
-                  value: state.videoResolution.value,
-                  items: TRTCVideoResolution.values.map((resolution) {
-                    String description;
-                    switch (resolution) {
-                      case TRTCVideoResolution.res_120_120:
-                        description = "120x120";
-                        break;
-                      case TRTCVideoResolution.res_160_160:
-                        description = "160x160";
-                        break;
-                      case TRTCVideoResolution.res_270_270:
-                        description = "270x270";
-                        break;
-                      case TRTCVideoResolution.res_480_480:
-                        description = "480x480";
-                        break;
-                      case TRTCVideoResolution.res_160_120:
-                        description = "160x120 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_240_180:
-                        description = "240x180 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_280_210:
-                        description = "280x210 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_320_240:
-                        description = "320x240 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_400_300:
-                        description = "400x300 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_480_360:
-                        description = "480x360 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_640_480:
-                        description = "640x480 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_960_720:
-                        description = "960x720 (4:3)";
-                        break;
-                      case TRTCVideoResolution.res_160_90:
-                        description = "160x90 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_256_144:
-                        description = "256x144 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_320_180:
-                        description = "320x180 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_480_270:
-                        description = "480x270 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_640_360:
-                        description = "640x360 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_960_540:
-                        description = "960x540 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_1280_720:
-                        description = "1280x720 (16:9)";
-                        break;
-                      case TRTCVideoResolution.res_1920_1080:
-                        description = "1920x1080 (16:9)";
-                        break;
-                      default:
-                        description = "1280x720 (16:9)";
-                    }
-                    return DropdownMenuItem(
-                      value: resolution,
-                      child: Text(description),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      state.videoResolution.value = value;
-                    }
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            ValueListenableBuilder(
-              valueListenable: state.videoResolutionMode,
-              builder: (context, value, child) {
-                return DropdownButton<TRTCVideoResolutionMode>(
-                  value: state.videoResolutionMode.value,
-                  items: TRTCVideoResolutionMode.values.map((mode) {
-                    return DropdownMenuItem(
-                      value: mode,
-                      child: Text(mode == TRTCVideoResolutionMode.portrait ? 'Portrait' : 'Landscape'),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      state.videoResolutionMode.value = value;
-                    }
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class _VideoTileData {
+  final bool isLocal;
+  final String label;
+  final RemoteVideoUser? user;
 
-  Widget getNetworkQosSettings(VideoQualityState state) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-        child: Column(
-          children: [
-            const Text('Network QoS Preference'),
-            const SizedBox(height: 16),
-            ValueListenableBuilder(
-              valueListenable: state.preference,
-              builder: (context, value, child) {
-                return DropdownButton<TRTCVideoQosPreference>(
-                  value: state.preference.value,
-                  items: TRTCVideoQosPreference.values.map((preference) {
-                    String description;
-                    switch (preference) {
-                      case TRTCVideoQosPreference.smooth:
-                        description = "Smooth First";
-                        break;
-                      case TRTCVideoQosPreference.clear:
-                        description = "Clear First";
-                        break;
-                      default:
-                        description = "Clear First";
-                    }
-                    return DropdownMenuItem(
-                      value: preference,
-                      child: Text(description),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      state.preference.value = value;
-                    }
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  _VideoTileData({required this.isLocal, required this.label, this.user});
 }

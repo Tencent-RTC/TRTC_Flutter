@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:api_example/debug/settings_page.dart';
+import 'package:api_example/l10n/gen/app_localizations.dart';
 import 'package:api_example/router/router_info.dart';
+import 'package:flutter/material.dart';
 
 class RouterPage extends StatefulWidget {
   const RouterPage({Key? key}) : super(key: key);
@@ -11,15 +13,29 @@ class RouterPage extends StatefulWidget {
 class _RouterPageState extends State<RouterPage> {
   bool _isBasicRoomsExpanded = true;
   bool _isAdvancedAVExpanded = true;
+  bool _isAdvancedOtherExpanded = true;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Router Page'),
+        title: Text(l10n.appTitle),
         elevation: 0,
         backgroundColor: Colors.blue[700],
-        actions: [],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: l10n.settings,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -50,7 +66,7 @@ class _RouterPageState extends State<RouterPage> {
                   },
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
                   title: Text(
-                    'Basic Rooms',
+                    l10n.basicRooms,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -58,27 +74,7 @@ class _RouterPageState extends State<RouterPage> {
                     ),
                   ),
                   children: [
-                    ...basicRoomList.map((room) => ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[100],
-                              shape: BoxShape.circle,
-                            ),
-                            child: room.icon,
-                          ),
-                          title: Text(
-                            room.title,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => room.page),
-                            );
-                          },
-                        )),
+                    ...basicRoomList.map((room) => _buildRoomTile(context, room, l10n)),
                   ],
                 ),
               ),
@@ -102,7 +98,7 @@ class _RouterPageState extends State<RouterPage> {
                   },
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
                   title: Text(
-                    'Advanced AV',
+                    l10n.advancedAV,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -110,27 +106,7 @@ class _RouterPageState extends State<RouterPage> {
                     ),
                   ),
                   children: [
-                    ...advanceAvList.map((room) => ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[100],
-                              shape: BoxShape.circle,
-                            ),
-                            child: room.icon,
-                          ),
-                          title: Text(
-                            room.title,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => room.page),
-                            );
-                          },
-                        )),
+                    ...advanceAvList.map((room) => _buildRoomTile(context, room, l10n)),
                   ],
                 ),
               ),
@@ -146,15 +122,15 @@ class _RouterPageState extends State<RouterPage> {
                   dividerColor: Colors.transparent,
                 ),
                 child: ExpansionTile(
-                  initiallyExpanded: _isAdvancedAVExpanded,
+                  initiallyExpanded: _isAdvancedOtherExpanded,
                   onExpansionChanged: (expanded) {
                     setState(() {
-                      _isAdvancedAVExpanded = expanded;
+                      _isAdvancedOtherExpanded = expanded;
                     });
                   },
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
                   title: Text(
-                    'Advanced Other',
+                    l10n.advancedOther,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -162,27 +138,7 @@ class _RouterPageState extends State<RouterPage> {
                     ),
                   ),
                   children: [
-                    ...advanceOtherList.map((room) => ListTile(
-                      leading: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[100],
-                          shape: BoxShape.circle,
-                        ),
-                        child: room.icon,
-                      ),
-                      title: Text(
-                        room.title,
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => room.page),
-                        );
-                      },
-                    )),
+                    ...advanceOtherList.map((room) => _buildRoomTile(context, room, l10n)),
                   ],
                 ),
               ),
@@ -190,6 +146,38 @@ class _RouterPageState extends State<RouterPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRoomTile(
+    BuildContext context,
+    RouterInfo room,
+    AppLocalizations l10n,
+  ) {
+    final enabled = room.isSupported();
+    return ListTile(
+      enabled: enabled,
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.blue[100],
+          shape: BoxShape.circle,
+        ),
+        child: room.icon,
+      ),
+      title: Text(
+        room.titleBuilder(l10n),
+        style: const TextStyle(fontWeight: FontWeight.w500),
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: enabled
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => room.page),
+              );
+            }
+          : null,
     );
   }
 }
