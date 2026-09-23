@@ -87,18 +87,18 @@ TRTCCloudVideoView(
 });
 ```
 
-6. **显示远端屏幕分享**
+6. **开启/关闭麦克风**
 
 ```
-/// 参数说明：
-/// userId：指定远端用户的 userid
-/// streamType：要播放的远端用户视频流类型：
-///* 辅流（屏幕分享）：TRTCVideoStreamType.sub
-/// viewId：由 `TRTCCloudVideoView` 生成的视图 ID
-TRTCCloudVideoView(
-    onViewCreated: (viewId) {
-      trtcCloud.startRemoteView(userId, TRTCVideoStreamType.sub, viewId);
-});
+// 开麦：开启本地音频采集并上行。
+// quality：音频质量
+//* 流畅（适合语音通话）：TRTCAudioQuality.speech
+//* 默认：TRTCAudioQuality.defaultMode
+//* 高清（适合音乐）：TRTCAudioQuality.music
+trtcCloud.startLocalAudio(TRTCAudioQuality.defaultMode);
+
+// 关麦：停止本地音频采集并上行。
+trtcCloud.stopLocalAudio();
 ```
 
 ### 如何查看 TRTC 日志？
