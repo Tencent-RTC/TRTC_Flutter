@@ -6,11 +6,11 @@
 
 ## **Demo 快速开始**
 
-请参见 [Demo 快速开始（Flutter）](https://trtc.io/zh/document/39243?product=rtcengine&menulabel=core%20sdk&platform=flutter)
+请参见 [Demo 快速开始（Flutter）](https://cloud.tencent.com/document/product/647/51601)
 
 ## **SDK 快速集成**
 
-请参见 [快速集成（Flutter）](https://trtc.io/zh/document/64203?product=rtcengine&menulabel=core%20sdk&platform=flutter)
+请参见 [快速集成（Flutter）](https://cloud.tencent.com/document/product/647/116547)
 
 ## **SDK 类文件**
 
