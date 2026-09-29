@@ -22,7 +22,7 @@ public class TRTCPlatformViewFactory extends PlatformViewFactory {
     @NonNull
     @Override
     public PlatformView create(Context context, int i, @Nullable Object o) {
-        TXCLog.i("TRTCPlatformViewFactory", "trtcFlutter onOhosViewCreate | viewId: " + i);
+        TXCLog.i("TRTCPlatformViewFactory", "trtcFlutter onAndroidViewCreate | viewId: " + i);
         return new TRTCPlatformView(context, messenger, i);
     }
 }

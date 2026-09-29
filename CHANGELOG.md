@@ -1,3 +1,7 @@
+## 13.5.2
+### Optimize
+- Optimize example documentation
+
 ## 13.5.1
 ### Bugfix
 - Fix a version conflict between tencent_rtc_sdk and super_player over their shared TRTC native SDK (TXLiteAVSDK_Professional) dependency.
