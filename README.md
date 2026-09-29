@@ -1,4 +1,4 @@
-[简体中文](https://github.com/Tencent-RTC/TRTC_Flutter/blob/master/SDK/README-zh_CN.md) | English
+[简体中文](https://github.com/Tencent-RTC/TRTC_Flutter/blob/master/README-zh_CN.md) | English
 
 # **Tencent RTC Flutter SDK**
 

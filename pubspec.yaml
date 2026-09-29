@@ -1,7 +1,8 @@
 name: tencent_rtc_sdk
 description: A powerful real-time SDK for Video Calling and Live Video Streaming. Delivers ultra-low latency and crystal-clear audio/video via​ a simple API for quick integration.
-version: 13.5.1
+version: 13.5.2
 homepage: https://trtc.io/
+repository: https://github.com/Tencent-RTC/TRTC_Flutter
 
 environment:
   sdk: '>=2.19.6 <4.0.0'
