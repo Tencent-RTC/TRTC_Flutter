@@ -7,11 +7,19 @@ With TRTC, you can quickly develop cost-effective, low-latency, and high-quality
 
 ## **Demo quick start**
 
-Please see [Demo Quick Start(Flutter)](https://trtc.io/document/39243?platform=flutter&product=rtcengine&menulabel=sdk)
+Tencent RTC publishes documentation on two sites. Please use the one that matches your region:
+
+| Region | Documentation |
+| --- | --- |
+| Outside the Chinese mainland | [Demo Quick Start(Flutter)](https://trtc.io/document/39243?platform=flutter&product=rtcengine&menulabel=sdk) |
+| Chinese mainland | [Demo Quick Start(Flutter)](https://cloud.tencent.com/document/product/647/51601) |
 
 ## **SDK quick integration**
 
-Please see [Quick integration(Flutter)](https://trtc.io/document/64203?platform=flutter&product=rtcengine&menulabel=sdk)
+| Region | Documentation |
+| --- | --- |
+| Outside the Chinese mainland | [Quick integration(Flutter)](https://trtc.io/document/64203?platform=flutter&product=rtcengine&menulabel=sdk) |
+| Chinese mainland | [Quick integration(Flutter)](https://cloud.tencent.com/document/product/647/116547) |
 
 ## **SDK class files**
 

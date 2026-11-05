@@ -1,3 +1,4 @@
+/// @nodoc
 /// Compatibility re-export for the legacy package path.
 ///
 /// Since 13.4.x tencent_rtc_sdk no longer bundles superPlayer and instead depends

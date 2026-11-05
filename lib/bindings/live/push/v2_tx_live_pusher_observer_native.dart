@@ -1,3 +1,4 @@
+/// @nodoc
 // ignore_for_file: prefer_collection_literals
 // ignore_for_file: unnecessary_import
 import 'dart:convert';

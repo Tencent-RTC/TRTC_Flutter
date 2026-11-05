@@ -5,11 +5,11 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "keystore/liteav_debug_0412.cer",
+          "certpath": "keystore/liteav_debug_1009.cer",
           "storePassword": "0000001A2793E648224F0CFE1920E171BEF4093964B98D4149F051F4371FA05BC4B7D8FCDA73985C2163",
           "keyAlias": "debugKey",
           "keyPassword": "0000001A6D9BF44A67516D951001C65D8357E6C8B12BA71B9D326E5575845D059F151E605DBB5DD607A4",
-          "profile": "keystore/liteav_flutter_demo_0412Debug.p7b",
+          "profile": "keystore/liteav_flutter_demo_1009Debug.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "keystore/liteav.p12"
         }

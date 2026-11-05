@@ -1,3 +1,4 @@
+/// @nodoc
 import 'dart:ffi' as ffi;
 
 import 'package:tencent_rtc_sdk/bindings/chorus_music_player/chorus_music_player_struct.dart';
@@ -20,7 +21,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _createPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Void> Function(trtc_cloud,
-              ffi.Pointer<ffi.Char>)>>('chorus_music_player_create');
+              ffi.Pointer<ffi.Char>)>>('tx_chorus_music_player_create');
   late final _create = _createPtr.asFunction<
       ffi.Pointer<ffi.Void> Function(trtc_cloud, ffi.Pointer<ffi.Char>)>();
 
@@ -30,7 +31,7 @@ class ChorusMusicPlayerFFIBindings {
 
   late final _destroyPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'chorus_music_player_destroy');
+          'tx_chorus_music_player_destroy');
   late final _destroy =
       _destroyPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
@@ -45,7 +46,7 @@ class ChorusMusicPlayerFFIBindings {
           ffi.NativeFunction<
               ffi.Void Function(
                   ffi.Pointer<ffi.Void>, ffi.Int, ffi.Pointer<trtc_params_t>)>>(
-      'chorus_music_player_set_chorus_role');
+      'tx_chorus_music_player_set_chorus_role');
   late final _setChorusRole = _setChorusRolePtr.asFunction<
       void Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<trtc_params_t>)>();
 
@@ -60,7 +61,7 @@ class ChorusMusicPlayerFFIBindings {
           ffi.NativeFunction<
               ffi.Void Function(
                   ffi.Pointer<ffi.Void>, chorus_external_music_params_t)>>(
-      'chorus_music_player_load_external_music');
+      'tx_chorus_music_player_load_external_music');
   late final _loadExternalMusic = _loadExternalMusicPtr.asFunction<
       void Function(ffi.Pointer<ffi.Void>, chorus_external_music_params_t)>();
 
@@ -72,7 +73,7 @@ class ChorusMusicPlayerFFIBindings {
 
   late final _startPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'chorus_music_player_start');
+          'tx_chorus_music_player_start');
   late final _start =
       _startPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
@@ -82,7 +83,7 @@ class ChorusMusicPlayerFFIBindings {
 
   late final _stopPtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'chorus_music_player_stop');
+          'tx_chorus_music_player_stop');
   late final _stop =
       _stopPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
@@ -92,7 +93,7 @@ class ChorusMusicPlayerFFIBindings {
 
   late final _pausePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'chorus_music_player_pause');
+          'tx_chorus_music_player_pause');
   late final _pause =
       _pausePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
@@ -102,7 +103,7 @@ class ChorusMusicPlayerFFIBindings {
 
   late final _resumePtr =
       _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'chorus_music_player_resume');
+          'tx_chorus_music_player_resume');
   late final _resume =
       _resumePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
@@ -115,7 +116,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _seekPtr = _lookup<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Int64)>>(
-      'chorus_music_player_seek');
+      'tx_chorus_music_player_seek');
   late final _seek =
       _seekPtr.asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
@@ -128,7 +129,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _switchMusicTrackPtr = _lookup<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Int)>>(
-      'chorus_music_player_switch_music_track');
+      'tx_chorus_music_player_switch_music_track');
   late final _switchMusicTrack = _switchMusicTrackPtr
       .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
@@ -141,7 +142,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _setPlayoutVolumePtr = _lookup<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Int32)>>(
-      'chorus_music_player_set_playout_volume');
+      'tx_chorus_music_player_set_playout_volume');
   late final _setPlayoutVolume = _setPlayoutVolumePtr
       .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
@@ -152,7 +153,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _setPublishVolumePtr = _lookup<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Int32)>>(
-      'chorus_music_player_set_publish_volume');
+      'tx_chorus_music_player_set_publish_volume');
   late final _setPublishVolume = _setPublishVolumePtr
       .asFunction<void Function(ffi.Pointer<ffi.Void>, int)>();
 
@@ -165,7 +166,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _setMusicPitchPtr = _lookup<
           ffi
           .NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Float)>>(
-      'chorus_music_player_set_music_pitch');
+      'tx_chorus_music_player_set_music_pitch');
   late final _setMusicPitch = _setMusicPitchPtr
       .asFunction<void Function(ffi.Pointer<ffi.Void>, double)>();
 
@@ -179,7 +180,7 @@ class ChorusMusicPlayerFFIBindings {
   late final _callExperimentalAPIPtr = _lookup<
           ffi.NativeFunction<
               ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>>(
-      'chorus_music_player_call_experimental_api');
+      'tx_chorus_music_player_call_experimental_api');
   late final _callExperimentalAPI = _callExperimentalAPIPtr.asFunction<
       void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>)>();
 

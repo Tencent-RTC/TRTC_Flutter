@@ -1,3 +1,4 @@
+/// @nodoc
 // ignore_for_file: avoid_print
 // ignore_for_file: empty_statements
 import 'dart:convert';

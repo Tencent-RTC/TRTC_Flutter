@@ -14,13 +14,15 @@ Pod::Spec.new do |s|
    s.license          = { :file => '../LICENSE' }
    s.author           = { 'Your Company' => 'email@example.com' }
    s.source           = { :path => '.' }
-   s.source_files     = 'Classes/**/*'
+   s.source_files     = 'tencent_rtc_sdk/Sources/**/*'
    s.dependency 'FlutterMacOS'
 
    s.platform = :osx, '10.11'
    # s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
    # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
-   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
+   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64',
+        # SymbolDummy.m / CameraDeviceTestBridge.mm 以 "live_c_api/xxx.h" 相对路径引用 C API 头文件
+        'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/tencent_rtc_sdk/Sources/tencent_rtc_sdk_c/include"' }
    s.swift_version = '5.0'
 
    # 启用静态库
@@ -28,14 +30,14 @@ Pod::Spec.new do |s|
 
    # 资源导入
    s.vendored_frameworks = '**/*.framework'
-	 s.project_header_files = 'Classes/**/*.h'
+	 s.project_header_files = 'tencent_rtc_sdk/Sources/tencent_rtc_sdk_c/include/**/*.h'
 
-  s.public_header_files = 'Classes/**/*.h'
+  s.public_header_files = 'tencent_rtc_sdk/Sources/tencent_rtc_sdk_c/include/**/*.h'
   
   s.frameworks = 'CoreGraphics', 'ImageIO',
                  'Accelerate', 'MetalKit', 'MetalPerformanceShaders'
   
   # SDK 依赖
-  s.dependency 'TXLiteAVSDK_TRTC_Mac', '13.5.21355'
+  s.dependency 'TXLiteAVSDK_TRTC_Mac', '13.6.21648'
 
 end

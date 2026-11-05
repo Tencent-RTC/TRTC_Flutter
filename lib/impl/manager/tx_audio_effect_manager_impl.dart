@@ -1,3 +1,4 @@
+/// @nodoc
 // ignore_for_file: annotate_overrides
 // ignore_for_file: avoid_init_to_null
 import 'dart:ffi' as ffi;

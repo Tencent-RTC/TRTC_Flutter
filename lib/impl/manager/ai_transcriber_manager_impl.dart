@@ -1,3 +1,4 @@
+/// @nodoc
 import 'package:tencent_rtc_sdk/ai_transcriber_manager.dart';
 import 'package:tencent_rtc_sdk/bridge/trtc/trtc_method_channel.dart';
 

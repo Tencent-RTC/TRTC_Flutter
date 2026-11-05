@@ -1,3 +1,4 @@
+/// @nodoc
 class TRTCChannelListener {
   const TRTCChannelListener({
     this.handleNativeOnSnapshotComplete,

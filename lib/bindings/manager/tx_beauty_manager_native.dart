@@ -1,3 +1,4 @@
+/// @nodoc
 import 'package:tencent_rtc_sdk/bindings/trtc/ffi_bindings.dart' as native;
 import 'package:tencent_rtc_sdk/bindings/trtc/load_dynamic_lib.dart';
 import 'package:tencent_rtc_sdk/bindings/manager/manager_struct.dart';

@@ -1,3 +1,4 @@
+/// @nodoc
 import 'dart:ffi' as ffi;
 import 'package:ffi/ffi.dart';
 import 'package:tencent_rtc_sdk/v2_tx_live_code.dart';

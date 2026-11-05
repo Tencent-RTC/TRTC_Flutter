@@ -29,9 +29,9 @@ class ITRTCCloudCallback {
      *
      * 错误事件，表示 SDK 抛出的不可恢复的错误，例如进入房间失败或设备开启失败等。
      * 参考文档：[错误码表](https://cloud.tencent.com/document/product/647/38308)
-     * @param errCode 错误码
-     * @param errMsg  错误信息
-     * @param extInfo 扩展信息字段，个别错误码可能会带额外的信息帮助定位问题
+     * @param errCode 错误码。
+     * @param errMsg  错误信息。
+     * @param extInfo 扩展信息字段，个别错误码可能会带额外的信息帮助定位问题。
      */
     virtual void onError(TXLiteAVError errCode, const char* errMsg, void* extraInfo) = 0;
 
@@ -40,9 +40,9 @@ class ITRTCCloudCallback {
      *
      * 警告事件，表示 SDK 抛出的提示性问题，例如视频出现卡顿或 CPU 使用率太高等。
      * 参考文档：[错误码表](https://cloud.tencent.com/document/product/647/38308)
-     * @param warningCode 警告码
-     * @param warningMsg 警告信息
-     * @param extInfo 扩展信息字段，个别警告码可能会带额外的信息帮助定位问题
+     * @param warningCode 警告码。
+     * @param warningMsg 警告信息。
+     * @param extInfo 扩展信息字段，个别警告码可能会带额外的信息帮助定位问题。
      */
     virtual void onWarning(TXLiteAVWarning warningCode, const char* warningMsg, void* extraInfo) = 0;
 

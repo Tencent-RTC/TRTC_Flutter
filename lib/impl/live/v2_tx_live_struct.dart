@@ -1,3 +1,4 @@
+/// @nodoc
 // ignore_for_file: avoid_print
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_interpolation_to_compose_strings
