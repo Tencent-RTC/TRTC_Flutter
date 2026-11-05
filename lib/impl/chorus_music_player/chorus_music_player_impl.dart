@@ -1,3 +1,4 @@
+/// @nodoc
 import 'package:tencent_rtc_sdk/bindings/chorus_music_player/chorus_music_player_listener_native.dart';
 import 'package:tencent_rtc_sdk/bindings/chorus_music_player/chorus_music_player_native.dart';
 import 'package:tencent_rtc_sdk/bindings/trtc/trtc_cloud_native.dart';

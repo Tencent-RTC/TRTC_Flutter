@@ -1,3 +1,13 @@
+## 13.6.0
+### Dependency Notes
+- Native SDK update to 13.6.+
+### New Features
+- iOS and macOS support integration via Swift Package Manager (SPM).
+
+## 13.5.3
+### Optimize
+- Optimize the README documentation for running the demo
+
 ## 13.5.2
 ### Optimize
 - Optimize example documentation

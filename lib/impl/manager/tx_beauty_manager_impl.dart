@@ -1,3 +1,4 @@
+/// @nodoc
 import 'package:tencent_rtc_sdk/bindings/manager/tx_beauty_manager_native.dart';
 
 class TXBeautyManagerImpl {

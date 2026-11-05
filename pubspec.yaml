@@ -1,6 +1,6 @@
 name: tencent_rtc_sdk
 description: A powerful real-time SDK for Video Calling and Live Video Streaming. Delivers ultra-low latency and crystal-clear audio/video via​ a simple API for quick integration.
-version: 13.5.2
+version: 13.6.0
 homepage: https://trtc.io/
 repository: https://github.com/Tencent-RTC/TRTC_Flutter
 
@@ -21,7 +21,7 @@ dependencies:
   plugin_platform_interface: ^2.0.2
   ffi: ^2.0.1
   json_annotation: ^4.8.1
-  super_player: 13.5.0
+  super_player: 13.6.1
 
 dev_dependencies:
   ffigen: ^6.1.2
@@ -98,3 +98,4 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
+

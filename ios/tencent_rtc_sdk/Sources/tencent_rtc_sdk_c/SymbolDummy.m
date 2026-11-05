@@ -478,21 +478,21 @@
   LiteavFFIRegisterChorusPlayerObserver(0, NULL);
   LiteavFFIUnRegisterChorusPlayerObserver(0, NULL);
   
-  chorus_music_player_create(NULL, NULL);
-  chorus_music_player_destroy(NULL);
-  chorus_music_player_set_chorus_role(NULL, 0, NULL);
+  tx_chorus_music_player_create(NULL, NULL);
+  tx_chorus_music_player_destroy(NULL);
+  tx_chorus_music_player_set_chorus_role(NULL, 0, NULL);
   chorus_external_music_params_t chorus_external_music_params_t_;
-  chorus_music_player_load_external_music(NULL, chorus_external_music_params_t_);
-  chorus_music_player_start(NULL);
-  chorus_music_player_stop(NULL);
-  chorus_music_player_pause(NULL);
-  chorus_music_player_resume(NULL);
-  chorus_music_player_seek(NULL, 0);
-  chorus_music_player_switch_music_track(NULL, 0);
-  chorus_music_player_set_playout_volume(NULL, 0);
-  chorus_music_player_set_publish_volume(NULL, 0);
-  chorus_music_player_set_music_pitch(NULL, 0);
-  chorus_music_player_call_experimental_api(NULL, NULL);
+  tx_chorus_music_player_load_external_music(NULL, chorus_external_music_params_t_);
+  tx_chorus_music_player_start(NULL);
+  tx_chorus_music_player_stop(NULL);
+  tx_chorus_music_player_pause(NULL);
+  tx_chorus_music_player_resume(NULL);
+  tx_chorus_music_player_seek(NULL, 0);
+  tx_chorus_music_player_switch_music_track(NULL, 0);
+  tx_chorus_music_player_set_playout_volume(NULL, 0);
+  tx_chorus_music_player_set_publish_volume(NULL, 0);
+  tx_chorus_music_player_set_music_pitch(NULL, 0);
+  tx_chorus_music_player_call_experimental_api(NULL, NULL);
 }
 
 @end

@@ -1,3 +1,4 @@
+/// @nodoc
 // ignore_for_file: avoid_print
 import 'package:tencent_rtc_sdk/chorus_music_player.dart';
 

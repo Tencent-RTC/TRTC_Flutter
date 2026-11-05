@@ -1391,7 +1391,7 @@ class ITRTCCloud : public IDeprecatedTRTCCloud {
      * @param params 测速选项
      * @return 接口调用结果，< 0：失败
      * @note
-     * 1. 测速过程将产生少量的基础服务费用，详见 [计费概述 > 基础服务](https://cloud.tencent.com/document/product/647/17157#.E5.9F.BA.E7.A1.80.E6.9C.8D.E5.8A.A1) 文档说明。
+     * 1. 测速过程将产生少量的基础服务费用，详见 [计费概述 > 基础服务](https://cloud.tencent.com/document/product/647/17157) 文档说明。
      * 2. 请在进入房间前进行网速测试，在房间中网速测试会影响正常的音视频传输效果，而且由于干扰过多，网速测试结果也不准确。
      * 3. 同一时间只允许一项网速测试任务运行。
      */

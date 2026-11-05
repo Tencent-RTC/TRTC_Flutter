@@ -1,3 +1,4 @@
+/// @nodoc
 import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
